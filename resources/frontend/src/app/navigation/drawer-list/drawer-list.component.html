@@ -1,0 +1,8 @@
+<div fxLayout="row" *ngIf="selectedApp && selectedApp.children">
+    <span fxFlex *ngIf="expandDrawer"></span> <button (click)="expandDrawer = !expandDrawer" mat-button> <mat-icon>{{expandDrawer?'chevron_left':'chevron_right'}}</mat-icon></button>
+</div>
+<mat-nav-list *ngIf="selectedApp && selectedApp.children">
+    <a mat-list-item *ngFor="let app of selectedApp.children" routerLink="{{ selectedApp.route }}/{{ app.route }}" routerLinkActive="list-item-active"> 
+        <mat-icon matListIcon>{{ app.icon }}</mat-icon> <h3 matLine *ngIf="expandDrawer"> {{ app.name }} </h3> 
+    </a>
+</mat-nav-list>
