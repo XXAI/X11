@@ -53,12 +53,14 @@ export class LoginComponent implements OnInit {
   }
 
   checkAvatar(username){
-    let loginHistory = JSON.parse(localStorage.getItem('loginHistory'));
-    
-    if(loginHistory[username]){
-      this.avatarPlaceholder = loginHistory[username];
-    }else{
-      this.avatarPlaceholder = 'assets/profile-icon.svg';
+    this.avatarPlaceholder = 'assets/profile-icon.svg';
+
+    if(localStorage.getItem('loginHistory')){
+      let loginHistory = JSON.parse(localStorage.getItem('loginHistory'));
+      
+      if(loginHistory[username]){
+        this.avatarPlaceholder = loginHistory[username];
+      }
     }
   }
 
