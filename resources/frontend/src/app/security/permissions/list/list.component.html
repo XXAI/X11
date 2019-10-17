@@ -10,7 +10,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>Buscar</mat-label>
                             <input matInput [(ngModel)]="searchQuery" (keyup.enter)="applyFilter()" placeholder="Buscar">
-                            <button mat-icon-button flexFill matSuffix (click)="applyFilter()" color="primary" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                            <button mat-icon-button flexFill matSuffix (click)="applyFilter()" color="primary">
                                 <mat-icon>search</mat-icon>
                             </button>
                         </mat-form-field>

@@ -28,35 +28,29 @@ class DatabaseSeeder extends Seeder
             'permission_role'
         ];
 
-        try{
-            DB::beginTransaction();
+        //DB::beginTransaction();
 
-            DB::statement('SET FOREIGN_KEY_CHECKS=0');
-            
-            foreach($lista_csv as $csv){
-                $archivo_csv = storage_path().'/app/seeds/'.$csv.'.csv';
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        
+        foreach($lista_csv as $csv){
+            $archivo_csv = storage_path().'/app/seeds/'.$csv.'.csv';
 
-                $query = sprintf("
-                    LOAD DATA local INFILE '%s' 
-                    REPLACE 
-                    INTO TABLE $csv 
-                    CHARACTER SET utf8
-                    FIELDS TERMINATED BY ',' 
-                    OPTIONALLY ENCLOSED BY '\"' 
-                    ESCAPED BY '\"' 
-                    LINES TERMINATED BY '\\n' 
-                    IGNORE 1 LINES", addslashes($archivo_csv));
-                DB::connection()->getpdo()->exec($query);
-            }
-            
-            DB::statement('SET FOREIGN_KEY_CHECKS=1');
-
-            DB::commit();
-        } catch (\Illuminate\Database\QueryException $e){
-            DB::rollback();
-            return \Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
-        } catch(\Exception $e ){
-            return \Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+            $query = sprintf("
+                LOAD DATA local INFILE '%s' 
+                REPLACE 
+                INTO TABLE $csv 
+                CHARACTER SET utf8
+                FIELDS TERMINATED BY ',' 
+                OPTIONALLY ENCLOSED BY '\"' 
+                ESCAPED BY '\"' 
+                LINES TERMINATED BY '\\n' 
+                IGNORE 1 LINES", addslashes($archivo_csv));
+            echo $query;
+            DB::connection()->getpdo()->exec($query);
         }
+            
+            //DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+            //DB::commit();
     }
 }

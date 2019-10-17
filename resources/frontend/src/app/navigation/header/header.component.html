@@ -1,18 +1,20 @@
 <mat-toolbar color="primary"  class="">
-    <button mat-icon-button aria-label="Mostrar Sidenav" (click)="toggleSidenav()" fxShow.xs fxHide.gt-sm>
-      <mat-icon>menu</mat-icon>
-    </button>
-    <button mat-icon-button aria-label="Ir al inicio" routerLink="/" fxShow.xs fxHide.gt-sm>
+    <!--button mat-icon-button aria-label="Ir al inicio" routerLink="/" fxShow.xs fxHide.gt-sm>
       <mat-icon>home</mat-icon>
-    </button>
+    </button-->
     <img src="{{(selectedApp)?selectedApp.icon:'assets/app-icon.svg'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true">
-    <span style="margin-left:10px" fxHide.xs="true"><a routerLink="/">Plataforma Base</a>&nbsp;</span> <span *ngIf="selectedApp">| <small><a routerLink="{{selectedApp.route}}">{{selectedApp.name}}</a></small></span>
+    <span style="margin-left:10px" *ngIf="!selectedApp"><a routerLink="/">Plataforma Base</a></span> <span *ngIf="selectedApp">&nbsp; <a routerLink="{{selectedApp.route}}">{{selectedApp.name}}</a></span>
 
     <span class="spacer"></span>
 
     <ng-template [ngIf]="isAuthenticated">
-      <button mat-icon-button color="white" [matMenuTriggerFor]="menuApps">
+      <!--button mat-icon-button color="white" [matMenuTriggerFor]="menuApps" fxHide.xs>
         <mat-icon aria-label="Apps">apps</mat-icon>
+      </button-->
+
+      <button mat-icon-button aria-label="Mostrar Sidenav" (click)="toggleSidenav()" fxShow.xs fxHide.gt-sm>
+        <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
+        <!--mat-icon>menu</mat-icon-->
       </button>
 
       <button mat-icon-button [matMenuTriggerFor]="menuAccount" fxHide.xs="true">
@@ -20,12 +22,12 @@
         <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
       </button>
 
-      <mat-menu #menuApps="matMenu">
+      <!--mat-menu #menuApps="matMenu">
         <div class="apps" fxLayout="row" fxLayoutAlign="center center">
           <ng-container *ngFor="let app of apps; let i = index">
               <figure [routerLink]="['/'+app.route]" *ngIf="i<12" matTooltip="{{app.name}}">
                   <img src="{{ app.icon }}" alt="Icon">
-                  <!--figcaption class="ellipsis">{{ app.name }}</figcaption-->
+                  <figcaption class="ellipsis">{{ app.name }}</figcaption>
               </figure>
           </ng-container>
         </div>
@@ -33,7 +35,7 @@
         <button mat-menu-item style="text-align:center" routerLink="/apps">
           <mat-icon>more_horiz</mat-icon>
         </button>
-      </mat-menu>
+      </mat-menu-->
 
       <mat-menu #menuAccount="matMenu">
         <div style="width:280px;" style="display:flex; justify-content: start center">
@@ -48,6 +50,22 @@
             </button>
           </div>
         </div>
+        <mat-divider></mat-divider>
+        
+        <div>
+          <div class="apps" fxLayout="row" fxLayoutAlign="center center">
+            <ng-container *ngFor="let app of apps; let i = index">
+                <figure [routerLink]="['/'+app.route]" *ngIf="i<9">
+                    <img src="{{ app.icon }}" alt="Icon">
+                    <figcaption class="ellipsis">{{ app.name }}</figcaption>
+                </figure>
+            </ng-container>
+          </div>
+          <button mat-menu-item style="text-align:center" routerLink="/apps">
+            <mat-icon>apps</mat-icon>
+          </button>
+        </div>
+
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
