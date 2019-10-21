@@ -37,9 +37,7 @@ class DatabaseSeeder extends Seeder
 
             $query = sprintf("
                 LOAD DATA local INFILE '%s' 
-                REPLACE 
                 INTO TABLE $csv 
-                CHARACTER SET utf8
                 FIELDS TERMINATED BY ',' 
                 OPTIONALLY ENCLOSED BY '\"' 
                 ESCAPED BY '\"' 
