@@ -28,6 +28,10 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('user',          'API\Admin\UserController');
     Route::apiResource('permission',    'API\Admin\PermissionController');
     Route::apiResource('role',          'API\Admin\RoleController');
+    
+    //Modulos del Sistema
+    Route::apiResource('empleados',          'API\Modulos\EmpleadosController');
+    Route::apiResource('catalogos',          'API\Modulos\CatalogosController');
 
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
 });

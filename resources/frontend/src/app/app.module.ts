@@ -30,6 +30,9 @@ import { SecurityModule } from './security/security.module';
 import { ProfileModule } from './profile/profile.module';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 
+//Modulos del Sistema
+import { EmpleadosModule } from './empleados/empleados.module';
+
 
 @NgModule({
   declarations: [
@@ -49,6 +52,7 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
     SharedModule,
     AppsListModule,
     UsersModule,
+    EmpleadosModule,
     SecurityModule,
     ProfileModule,
     AppRoutingModule,

@@ -11,7 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
         \App\Models\User::create([
             'name' => 'Usuario Root',
             'username' => 'root',
@@ -25,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $lista_csv = [
             'permissions',
             'roles',
+            'role_user',
             'permission_role'
         ];
 
@@ -46,6 +46,22 @@ class DatabaseSeeder extends Seeder
             echo $query;
             DB::connection()->getpdo()->exec($query);
         }
+
+	    $this->call(TabuladorSeeder::class);
+        $this->call(NivelAcademicoSeeder::class);
+        $this->call(TipoNominaSeeder::class);
+        $this->call(RamaSeeder::class);
+        $this->call(ProgramaSeeder::class);
+        $this->call(TipoProfesionSeeder::class);
+        $this->call(ProfesionSeeder::class);
+        $this->call(NivelAcademicoSeeder::class);
+        $this->call(FuenteSeeder::class);
+        $this->call(CrSeeder::class);
+        $this->call(ComprobanteSeeder::class);
+        $this->call(CodigoSeeder::class);
+        $this->call(CluesSeeder::class);
+        $this->call(EmpleadoSeeder::class);
+        $this->call(BajasSeeder::class);
             
             //DB::statement('SET FOREIGN_KEY_CHECKS=1');
 

@@ -1,0 +1,188 @@
+<br fxHide.xs="true">
+<section class="profile" >
+    <div  fxFill>
+        <section fxLayout fxLayoutAlign="center">
+            <mat-card fxFlex.xs="100%" fxFlex="90%">
+                <mat-card-content>
+                    <div class="edit-container" [formGroup]="empleadoForm">
+                        <div class="edit-loading-shade" *ngIf="isLoading">
+                            <mat-spinner *ngIf="isLoading"></mat-spinner>
+                        </div>
+
+                        <div class="edit-loading-shade" *ngIf="!isLoading && !empleado">No se encontraron los datos del empleado</div>
+
+                        
+                        <div fxLayout="row" fxLayout.xs="column">
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <input matInput id="rfc" formControlName="rfc" placeholder="RFC" required>
+                                <mat-error *ngIf="empleadoForm.get('rfc').invalid && (empleadoForm.get('rfc').dirty || empleadoForm.get('rfc').touched)">
+                                    <span *ngIf="empleadoForm.get('rfc').errors.required">El RFC es obligatorio</span>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <input matInput id="curp" formControlName="curp" placeholder="CURP" required>
+                                <mat-error *ngIf="empleadoForm.get('curp').invalid && (empleadoForm.get('curp').dirty || empleadoForm.get('curp').touched)">
+                                    <span *ngIf="empleadoForm.get('curp').errors.required">La Curp es obligatorio</span>
+                                    
+                                </mat-error>
+                            </mat-form-field>
+                        
+                        
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <input matInput id="nombre" formControlName="nombre" placeholder="Nombre de Usuario" required>
+                                <mat-error *ngIf="empleadoForm.get('nombre').invalid && (empleadoForm.get('nombre').dirty || empleadoForm.get('nombre').touched)">
+                                    <span *ngIf="empleadoForm.get('nombre').errors.required">El Nombre de Usuario es obligatorio</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.xs="column">
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <input matInput [matDatepicker]="picker" placeholder="Fecha Ingreso a la SSA"  formControlName="fissa">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <input matInput [matDatepicker]="picker2" placeholder="Fecha Ingreso al Gobierno Federal"  formControlName="figf">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </div>    
+                        <div fxLayout="row" fxLayout.xs="column">
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <input matInput id="clues" formControlName="clues" placeholder="Clues" required>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.xs="column">
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>Tipo de Nomina</mat-label>
+                                <mat-select formControlName="tipo_nomina_id">
+                                  <mat-option *ngFor="let item of catalogos['tipoNomina']" [value]="item.id">
+                                    {{item.descripcion}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>Programa</mat-label>
+                                <mat-select formControlName="programa_id">
+                                  <mat-option *ngFor="let item of catalogos['programa']" [value]="item.id">
+                                    {{item.descripcion}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>Fuente</mat-label>
+                                <mat-select formControlName="fuente_id">
+                                  <mat-option *ngFor="let item of catalogos['fuente']" [value]="item.id">
+                                    {{item.descripcion}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>    
+                        <div fxLayout="row" fxLayout.xs="column">
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>Codigo</mat-label>
+                                <mat-select formControlName="codigo_id">
+                                  <mat-option *ngFor="let item of catalogos['codigo']" [value]="item.codigo">
+                                    {{item.descripcion}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>Cr</mat-label>
+                                <mat-select formControlName="cr_id">
+                                  <mat-option *ngFor="let item of catalogos['cr']" [value]="item.cr">
+                                    {{item.descripcion}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>Rama</mat-label>
+                                <mat-select formControlName="rama_id">
+                                  <mat-option *ngFor="let item of catalogos['rama']" [value]="item.id">
+                                    {{item.descripcion}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>    
+                        <div fxLayout="row" fxLayout.xs="column">
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>Tipo Profesión</mat-label>
+                                <mat-select formControlName="tipo_profesion_id">
+                                    <mat-option *ngFor="let item of catalogos['tipo_profesion']" [value]="item.id">
+                                    {{item.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>Profesión</mat-label>
+                                <mat-select formControlName="profesion_id">
+                                  <mat-option *ngFor="let item of catalogos['profesion']" [value]="item.id">
+                                    {{item.descripcion}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <input matInput id="nombre" formControlName="crespdes" placeholder="Descripción CR" required>
+                                <mat-error *ngIf="empleadoForm.get('crespdes').invalid && (empleadoForm.get('crespdes').dirty || empleadoForm.get('crespdes').touched)">
+                                    <span *ngIf="empleadoForm.get('crespdes').errors.required">El Nombre de Usuario es obligatorio</span>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-label>¿Comisionado Sindical?</mat-label>
+                                <mat-select formControlName="comision_sindical">
+                                  <mat-option [value]="0">NO</mat-option>
+                                  <mat-option [value]="1">SI</mat-option>
+                                </mat-select>
+                            </mat-form-field>                            
+                        </div>    
+                        <!--div fxLayout="row" fxLayout.xs="column">
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Secundaria</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Preparatoria</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Técnica</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Carrera</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Titulo</mat-slide-toggle>
+                            </mat-form-field>
+                            
+                        </div>
+                        <div fxLayout="row" fxLayout.xs="column">
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Maestría</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Doctorado</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Cursos</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Especialidad</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Diplomado</mat-slide-toggle>
+                            </mat-form-field>
+                            <mat-form-field fxFlex fxFlex.xs="100">
+                                <mat-slide-toggle>Poliglota</mat-slide-toggle>
+                            </mat-form-field>
+                        </div-->
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <span fxFlex></span>
+                    <button mat-raised-button routerLink="/empleados">Cancelar</button>
+                    <button mat-raised-button (click)="accionGuardar()" color="accent" [disabled]="!empleadoForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
+                    <button mat-raised-button (click)="accionGuardar()" color="accent" [disabled]="!empleadoForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar y Validar</button>
+                </mat-card-actions>
+            </mat-card>
+        </section>
+    </div>
+</section>

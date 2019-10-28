@@ -15,10 +15,10 @@ class CreatePermissionRoleTable extends Migration
     {
         Schema::create('permission_role', function (Blueprint $table) {
             $table->unsignedSmallInteger('role_id');
-            $table->string('permission_id');
+            $table->string('permission_id', 40);
 
             $table->foreign('role_id')->references('id')->on('roles');
-            $table->foreign('permission_id')->references('id')->on('permissions')->onUpdate('cascade');
+            //$table->foreign('permission_id')->references('id')->on('permissions')->onUpdate('cascade');
 
 
         });
