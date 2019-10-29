@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ComprobanteSeeder::class);
         $this->call(CodigoSeeder::class);
         $this->call(CluesSeeder::class);
+        $this->call(SindicatoSeeder::class);
         $this->call(EmpleadoSeeder::class);
         $this->call(BajasSeeder::class);
             

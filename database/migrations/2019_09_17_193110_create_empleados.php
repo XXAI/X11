@@ -36,15 +36,12 @@ class CreateEmpleados extends Migration
             $table->string('no_interno',14)->nullable()->nullable();
             $table->text('observacion')->nullable();
             $table->string('clave_google', 14)->nullable();
-            $table->tinyInteger('comision_sindical')->unsigned()->nullable();
+            $table->tinyInteger('comision_sindical_id')->unsigned();
             $table->tinyInteger('estatus')->default(0)->unsigned();
             $table->tinyInteger("validado")->unsigned();
 
             $table->timestamps();
             $table->softDeletes();
-
-            
-
 
             $table->foreign('clues')
                   ->references('clues')->on('catalogo_clues')
@@ -66,10 +63,10 @@ class CreateEmpleados extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');      
             
-            /*$table->foreign('codigo_id')
+            $table->foreign('codigo_id')
                   ->references('codigo')->on('catalogo_codigo')
                   ->onUpdate('cascade')
-                  ->onDelete('cascade');*/      
+                  ->onDelete('cascade');      
             
             $table->foreign('rama_id')
                   ->references('id')->on('catalogo_rama')
