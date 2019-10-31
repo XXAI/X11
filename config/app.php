@@ -228,6 +228,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Permissions' => App\Classes\Permissions::class,
+        'Encryption' => App\Classes\Encryption::class,
     ],
 
 ];

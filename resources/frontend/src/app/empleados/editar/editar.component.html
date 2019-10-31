@@ -1,16 +1,50 @@
 <br fxHide.xs="true">
-<section class="profile" >
-    <div  fxFill>
-        <section fxLayout fxLayoutAlign="center">
-            <mat-card fxFlex.xs="100%" fxFlex="90%">
+<section class="profile">
+    <!--div fxFill-->
+        <section fxLayout="row" fxLayoutAlign="space-evenly start">
+            <mat-card fxFlex="25">
+                <div class="credential-loading-shade" *ngIf="isLoadingCredential">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
+                    <span>Cargando los datos de la credencial del empleado</span>    
+                </div>
+
+                <div *ngIf="!isLoadingCredential && !datosCredencial" style="text-align: center;">
+                    <span>No se encontraron los datos de la credencial de este empleado</span><br>
+                    <button mat-button color="primary"><mat-icon>refresh</mat-icon> Recargar los Datos</button>
+                </div>
+                
+                <img *ngIf="!isLoadingCredential && datosCredencial" mat-card-image style="width:100%; margin:0 auto 0 auto; border-radius: 50%;" src="{{datosCredencial.photo}}" alt="">
+                <mat-card-content *ngIf="!isLoadingCredential && datosCredencial" fxLayout="column" fxLayoutAlign="center center">
+                    <div fxFlex style="text-align: center;">
+                        <h2>{{datosCredencial.Nombre}}</h2>
+                        <h3>{{datosCredencial.Adscripcion_Area}}<br/>{{datosCredencial.Direccion}}</h3>
+                    </div>
+                    <div fxFlex>
+                        <table class="infoEmployee">
+                            <tr>
+                                <th>CLUES</th><td>{{datosCredencial.clues}}</td>
+                            </tr>
+                            <tr>
+                                <th>Tipo de Sangre</th><td>{{datosCredencial.TipoSangre}}</td>
+                            </tr>
+                            <tr>
+                                <th>CURP</th><td>{{datosCredencial.Curp}}</td>
+                            </tr>
+                            <tr>
+                                <th>RFC</th><td>{{datosCredencial.Rfc}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card fxFlex="70">
                 <mat-card-content>
                     <div class="edit-container" [formGroup]="empleadoForm">
-                        <div class="edit-loading-shade" *ngIf="isLoading">
+                        <div class="loading-shade" *ngIf="isLoading">
                             <mat-spinner *ngIf="isLoading"></mat-spinner>
                         </div>
 
-                        <div class="edit-loading-shade" *ngIf="!isLoading && !empleado">No se encontraron los datos del empleado</div>
-
+                        <div class="loading-shade" *ngIf="!isLoading && !empleado">No se encontraron los datos del empleado</div>
                         
                         <div fxLayout="row" fxLayout.xs="column">
                             <mat-form-field fxFlex fxFlex.xs="100">
@@ -23,16 +57,15 @@
                             <mat-form-field fxFlex fxFlex.xs="100">
                                 <input matInput id="curp" formControlName="curp" placeholder="CURP" required>
                                 <mat-error *ngIf="empleadoForm.get('curp').invalid && (empleadoForm.get('curp').dirty || empleadoForm.get('curp').touched)">
-                                    <span *ngIf="empleadoForm.get('curp').errors.required">La Curp es obligatorio</span>
-                                    
+                                    <span *ngIf="empleadoForm.get('curp').errors.required">La CURP es obligatoria</span>
                                 </mat-error>
                             </mat-form-field>
                         
                         
                             <mat-form-field fxFlex fxFlex.xs="100">
-                                <input matInput id="nombre" formControlName="nombre" placeholder="Nombre de Usuario" required>
+                                <input matInput id="nombre" formControlName="nombre" placeholder="Nombre del empleado" required>
                                 <mat-error *ngIf="empleadoForm.get('nombre').invalid && (empleadoForm.get('nombre').dirty || empleadoForm.get('nombre').touched)">
-                                    <span *ngIf="empleadoForm.get('nombre').errors.required">El Nombre de Usuario es obligatorio</span>
+                                    <span *ngIf="empleadoForm.get('nombre').errors.required">El Nombre es obligatorio</span>
                                 </mat-error>
                             </mat-form-field>
                         </div>
@@ -184,5 +217,5 @@
                 </mat-card-actions>
             </mat-card>
         </section>
-    </div>
+    <!--/div-->
 </section>

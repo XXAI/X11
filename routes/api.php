@@ -31,6 +31,8 @@ Route::group(['middleware'=>'auth'],function($router){
     
     //Modulos del Sistema
     Route::apiResource('empleados',          'API\Modulos\EmpleadosController');
+    Route::get('catalogos-filtro-empleados', 'API\Modulos\EmpleadosController@getFilterCatalogs');
+
     Route::apiResource('catalogos',          'API\Modulos\CatalogosController');
 
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);

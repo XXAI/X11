@@ -6,6 +6,7 @@ import { App } from 'src/app/apps-list/apps';
 import { AppsListService } from 'src/app/apps-list/apps-list.service';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/internal/operators/filter';
+import { SharedService } from '../../shared/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -23,14 +24,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   apps: App[];
   breakpoint = 6;
 
-  constructor(private authService:AuthService, private appsService: AppsListService, private router: Router) {
+  constructor(private authService:AuthService, private appsService: AppsListService, private sharedService: SharedService, private router: Router) {
     router.events.pipe(
       filter(event => event instanceof NavigationEnd)  
     ).subscribe((event: NavigationEnd) => {
+      
       this.getApps();
       let routes = event.url.split('/',2);
       let selected_route = routes[1];
 
+      let currentApp = this.sharedService.getCurrentApp();
+      if(currentApp.name != selected_route ){
+        this.sharedService.newCurrentApp(selected_route);
+      }
+      
       if(selected_route){
         this.selectedApp = this.apps.find(function(element) {
           return element.route == selected_route;

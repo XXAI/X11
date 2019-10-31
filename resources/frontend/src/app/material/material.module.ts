@@ -27,6 +27,8 @@ import {
   MatTooltipModule,
   MatBadgeModule,
   MatButtonToggleModule,
+  MatProgressBarModule,
+  MatExpansionModule,
 } from '@angular/material';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -61,6 +63,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTooltipModule,
     MatBadgeModule,
     MatButtonToggleModule,
+    MatProgressBarModule,
+    MatExpansionModule,
   ],
   exports: [
     MatButtonModule,
@@ -89,6 +93,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTooltipModule,
     MatBadgeModule,
     MatButtonToggleModule,
+    MatProgressBarModule,
+    MatExpansionModule,
   ],
 })
 export class MaterialModule { }

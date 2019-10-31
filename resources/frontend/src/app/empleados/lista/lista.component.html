@@ -1,24 +1,89 @@
 <br>
 <section class="profile" >
-    <div  fxFill>
-        <section fxLayout fxLayoutAlign="center">
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <section fxFlex="95" fxLayout="column" fxLayoutAlign="center">
             <div class="users-loading-shade" *ngIf="isLoading"><mat-spinner></mat-spinner></div>
             <mat-card fxFlex.xs="100%" fxFlex="90%">
                 <div fxLayout="row">
-                    <div fxFlex="100%">
-                        <mat-form-field appearance="outline">
+                    <div fxFlex="100%" fxLayout="row">
+                        <mat-form-field fxFill appearance="outline">
                             <mat-label>Buscar</mat-label>
-                            <input matInput [(ngModel)]="searchQuery" (keyup.enter)="applyFilter()" placeholder="Buscar">
-                            <button mat-icon-button flexFill matSuffix (click)="applyFilter()" color="primary" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hidePassword'">
-                                <mat-icon>search</mat-icon>
-                            </button>
+                            <input matInput [(ngModel)]="searchQuery" (keyup.escape)="cleanSearch()" (keyup.enter)="applyFilter()" placeholder="Buscar">
+                            <span matSuffix>
+                                <button *ngIf="searchQuery" mat-icon-button (click)="cleanSearch()" style="display: inline;" [attr.aria-label]="'Apply Filter'" [attr.aria-pressed]="'applyFilter'">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="applyFilter()" color="primary" style="display: inline;" [attr.aria-label]="'Apply Filter'" [attr.aria-pressed]="'applyFilter'">
+                                    <mat-icon>search</mat-icon>
+                                </button>
+                            </span>
+                            <mat-hint><mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)">Filtro Avanzado</mat-slide-toggle></mat-hint>
                         </mat-form-field>
                     </div>
                 </div>
-                
+            </mat-card>
+
+            <mat-accordion class="advanced-filter-container">
+                <mat-expansion-panel #advancedFilter  class="advanced-filter">
+                    <br>
+                    <div fxLayout="row" [formGroup]="filterForm">
+                        <mat-form-field fxFlex="30">
+                            <mat-label>CLUES</mat-label>
+                            <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
+                            <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let item of filteredCatalogs['clues'] | async" [value]="item">
+                                    {{item.nombre_unidad}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="30">
+                            <mat-label>CR</mat-label>
+                            <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
+                            <mat-autocomplete #crAutocomplete="matAutocomplete">
+                                <mat-option *ngFor="let item of filteredCatalogs['cr'] | async" [value]="item.cr">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="25">
+                            <mat-label>Profesión</mat-label>
+                            <input type="text" aria-label="profesion" matInput formControlName="profesion" [matAutocomplete]="profesionAutocomplete">
+                            <mat-autocomplete #profesionAutocomplete="matAutocomplete">
+                                <mat-option *ngFor="let item of filteredCatalogs['profesion'] | async" [value]="item.descripcion">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field fxFlex>
+                            <mat-label>Rama</mat-label>
+                            <mat-select #ramaFilter formControlName="rama">
+                                <mat-option>Sin Filtro</mat-option>
+                                <mat-option *ngFor="let item of filterCatalogs['rama']" [value]="item.id">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div fxFlex></div>
+                        <div fxFlex="none">
+                            <button mat-flat-button>
+                                Limpiar
+                            </button>
+                        </div>
+                        <div fxFlex="none">
+                            <button mat-raised-button color="accent" (click)="applyFilter()">
+                                <mat-icon>search</mat-icon> Aplicar
+                            </button>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            
+            <mat-card fxFlex.xs="100%" fxFlex="90%">
                 <div fxLayout="row" style="padding-bottom:10px;">
                     <div fxFlex></div>
-                    <button mat-raised-button color="primary" routerLink="/empleados/nuevo"><mat-icon>add_circle</mat-icon> Nuevo Empleado</button>
+                    <button mat-raised-button color="primary" routerLink="/empleados/nuevo"><mat-icon>add_circle</mat-icon> Agregar Empleado</button>
                 </div>
 
                 <mat-divider [inset]="true"></mat-divider>
@@ -34,19 +99,19 @@
                     
                             <!-- Username Column -->
                             <ng-container matColumnDef="Nombre">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo </th>
                                 <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
                             </ng-container>
                     
                             <!-- Name Column -->
                             <ng-container matColumnDef="RFC" >
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> Name </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> RFC </th>
                                 <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.rfc}} </td>
                             </ng-container>
                     
                             <!-- Email Column -->
                             <ng-container matColumnDef="Clues" >
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> Email </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> CLUES </th>
                                 <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.clues}} </td>
                             </ng-container>
 
@@ -54,7 +119,7 @@
                                 <th mat-header-cell *matHeaderCellDef>Acciones</th>
                                 <td mat-cell *matCellDef="let row">
                                     <button mat-raised-button color="accent" routerLink="/empleados/editar/{{row.id}}"><mat-icon>edit</mat-icon></button> &nbsp;
-                                    <button mat-icon-button color="warn" (click)="confirmUntieEmploye(row.id)"><mat-icon>highlight_off</mat-icon></button>
+                                    <button mat-icon-button color="warn" (click)="confirmUntieEmploye(row.id)"><mat-icon>link_off</mat-icon></button>
                                 </td>
                             </ng-container>
 
@@ -70,9 +135,8 @@
                             <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
                         </table>
                     </div>
-                    <mat-paginator #paginator pageSize="20" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadEmpleadosData($event)"></mat-paginator>
+                    <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadEmpleadosData($event)"></mat-paginator>
                 </div>
-                
             </mat-card>
         </section>
     </div>

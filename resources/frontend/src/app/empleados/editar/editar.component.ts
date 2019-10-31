@@ -21,6 +21,10 @@ export class EditarComponent implements OnInit {
   empleado:boolean = false;
   datos_empleado:any;
 
+  datosCredencial:any;
+
+  photoPlaceholder = 'assets/profile-icon.svg';
+
   constructor(
     private sharedService: SharedService, 
     private empleadosService: EmpleadosService,
@@ -31,6 +35,7 @@ export class EditarComponent implements OnInit {
   ) { }
 
   isLoading:boolean = false;
+  isLoadingCredential:boolean = false;
   hidePassword:boolean = true;
 
   empleadoForm = this.fb.group({
@@ -67,15 +72,37 @@ export class EditarComponent implements OnInit {
   loadEmpleadoData(id:any)
   {
     this.isLoading = true;
+    this.isLoadingCredential = true;
+
     this.empleadosService.desligarEmpleado(id).subscribe(
       response =>{
+        console.log(response);
         this.datos_empleado = response;
         //this.empleadoForm.patchValue(response);
         //this.empleadoForm.patchValue({ "clues": response.clues.clues +" "+response.clues.nombre_unidad });
-        if(typeof response === 'object')
-        {
+        if(typeof response === 'object'){
           this.empleado = true;
-          this.loadCatalogos(this.datos_empleado)
+
+          this.loadCatalogos(this.datos_empleado);
+
+          if(this.datos_empleado.clave_credencial){
+            this.empleadosService.getDatosCredencial(this.datos_empleado.clave_credencial).subscribe(
+              response => {
+                console.log(response);
+                if(response.length > 0){
+                  this.datosCredencial = response[0];
+                  if(this.datosCredencial.tieneFoto == '1'){
+                    this.datosCredencial.photo = 'http://credencializacion.saludchiapas.gob.mx/images/credenciales/'+this.datosCredencial.id+'.'+this.datosCredencial.tipoFoto;
+                  }else{
+                    this.datosCredencial.photo = this.photoPlaceholder;
+                  }
+                }else{
+                  this.datosCredencial = undefined;
+                }
+                this.isLoadingCredential = false;
+              }
+            );
+          }
         }
           /*if(response.error) {
           let errorMessage = response.error.message;
@@ -101,8 +128,7 @@ export class EditarComponent implements OnInit {
     );
   }
 
-  loadCatalogos(obj_empleado:any)
-  {
+  loadCatalogos(obj_empleado:any){
     this.empleadosService.getCatalogosList(obj_empleado).subscribe(
       response =>{
         //console.log(response);

@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
 
 use App\Models\Empleados;
+use App\Models\Clues;
+use App\Models\Cr;
+use App\Models\Profesion;
+use App\Models\Rama;
 
 class EmpleadosController extends Controller
 {
@@ -26,7 +30,9 @@ class EmpleadosController extends Controller
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
                 $empleados = $empleados->where(function($query)use($parametros){
-                    return $query->where('nombre','LIKE','%'.$parametros['query'].'%');
+                    return $query->where('nombre','LIKE','%'.$parametros['query'].'%')
+                                ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
+                                ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
                 });
             }
 
@@ -47,7 +53,27 @@ class EmpleadosController extends Controller
 
     public function show($id)
     {
-        $empleados = Empleados::with("clues")->find($id);
-        return response()->json(['data'=>$empleados],HttpResponse::HTTP_OK);
+        $empleado = Empleados::with("clues")->find($id);
+
+        if($empleado){
+            $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
+        }
+
+        return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+    }
+
+    public function getFilterCatalogs(){
+        try{
+            $catalogos = [
+                'clues'     => Clues::all(),
+                'cr'        => Cr::orderBy("descripcion")->get(),
+                'profesion' => Profesion::all(),
+                'rama'      => Rama::all(),
+            ];
+
+            return response()->json(['data'=>$catalogos],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
     }
 }
