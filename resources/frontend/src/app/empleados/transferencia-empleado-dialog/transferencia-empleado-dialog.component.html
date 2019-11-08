@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Transferir Empleado</h1>
+<div mat-dialog-content>
+    <div fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex fxFlex.xs="100">
+            <input matInput id="cedula" placeholder="Nombre del empleado">
+        </mat-form-field>                      
+    </div>
+</div>
+<div mat-dialog-actions>
+    <span fxFlex></span>
+    <button mat-button (click)='cancelar()'>Cancelar</button>
+    <button mat-raised-button (click)="transferir()" color="primary"><mat-icon>check</mat-icon> Transferir</button>
+</div>

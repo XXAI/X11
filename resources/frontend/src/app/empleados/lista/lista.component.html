@@ -5,20 +5,22 @@
             <div class="users-loading-shade" *ngIf="isLoading"><mat-spinner></mat-spinner></div>
             <mat-card fxFlex.xs="100%" fxFlex="90%">
                 <div fxLayout="row">
-                    <div fxFlex="100%" fxLayout="row">
+                    <div fxFlex fxLayout="row wrap">
                         <mat-form-field fxFill appearance="outline">
                             <mat-label>Buscar</mat-label>
                             <input matInput [(ngModel)]="searchQuery" (keyup.escape)="cleanSearch()" (keyup.enter)="applyFilter()" placeholder="Buscar">
-                            <span matSuffix>
-                                <button *ngIf="searchQuery" mat-icon-button (click)="cleanSearch()" style="display: inline;" [attr.aria-label]="'Apply Filter'" [attr.aria-pressed]="'applyFilter'">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                                <button mat-icon-button (click)="applyFilter()" color="primary" style="display: inline;" [attr.aria-label]="'Apply Filter'" [attr.aria-pressed]="'applyFilter'">
-                                    <mat-icon>search</mat-icon>
-                                </button>
-                            </span>
+                            <button matSuffix *ngIf="searchQuery" mat-icon-button (click)="cleanSearch()" [attr.aria-label]="'Clean Query'" [attr.aria-pressed]="'cleanQuery'">
+                                <mat-icon>close</mat-icon>
+                            </button>
                             <mat-hint><mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)">Filtro Avanzado</mat-slide-toggle></mat-hint>
                         </mat-form-field>
+                    </div>
+                    <div fxFlex="none" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
+                        <section class="search-button">
+                            <button mat-raised-button color="accent" (click)="applyFilter()">
+                                <mat-icon>search</mat-icon> Buscar
+                            </button>
+                        </section>
                     </div>
                 </div>
             </mat-card>
@@ -26,39 +28,41 @@
             <mat-accordion class="advanced-filter-container">
                 <mat-expansion-panel #advancedFilter  class="advanced-filter">
                     <br>
-                    <div fxLayout="row" [formGroup]="filterForm">
-                        <mat-form-field fxFlex="30">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" [formGroup]="filterForm">
+                        <mat-form-field fxFlex="22">
                             <mat-label>CLUES</mat-label>
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
-                            <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                            <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
                                 <mat-option *ngFor="let item of filteredCatalogs['clues'] | async" [value]="item">
                                     {{item.nombre_unidad}}
                                 </mat-option>
                             </mat-autocomplete>
+                            <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="30">
+                        <mat-form-field fxFlex="23">
                             <mat-label>CR</mat-label>
                             <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
-                            <mat-autocomplete #crAutocomplete="matAutocomplete">
-                                <mat-option *ngFor="let item of filteredCatalogs['cr'] | async" [value]="item.cr">
+                            <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('cr')" [panelWidth]="'auto'">
+                                <mat-option *ngFor="let item of filteredCatalogs['cr'] | async" [value]="item">
                                     {{item.descripcion}}
                                 </mat-option>
                             </mat-autocomplete>
+                            <mat-hint *ngIf="filterForm.get('cr').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="25">
+                        <mat-form-field fxFlex="35">
                             <mat-label>Profesión</mat-label>
                             <input type="text" aria-label="profesion" matInput formControlName="profesion" [matAutocomplete]="profesionAutocomplete">
-                            <mat-autocomplete #profesionAutocomplete="matAutocomplete">
-                                <mat-option *ngFor="let item of filteredCatalogs['profesion'] | async" [value]="item.descripcion">
+                            <mat-autocomplete #profesionAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('descripcion')" [panelWidth]="'auto'">
+                                <mat-option *ngFor="let item of filteredCatalogs['profesion'] | async" [value]="item">
                                     {{item.descripcion}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-                        <mat-form-field fxFlex>
+                        <mat-form-field fxFlex="15">
                             <mat-label>Rama</mat-label>
-                            <mat-select #ramaFilter formControlName="rama">
+                            <mat-select #ramaFilter formControlName="rama" [compareWith]="compareRamaSelect">
                                 <mat-option>Sin Filtro</mat-option>
-                                <mat-option *ngFor="let item of filterCatalogs['rama']" [value]="item.id">
+                                <mat-option *ngFor="let item of filterCatalogs['rama']" [value]="item">
                                     {{item.descripcion}}
                                 </mat-option>
                             </mat-select>
@@ -67,7 +71,7 @@
                     <div fxLayout="row wrap">
                         <div fxFlex></div>
                         <div fxFlex="none">
-                            <button mat-flat-button>
+                            <button mat-flat-button (click)="filterForm.reset()">
                                 Limpiar
                             </button>
                         </div>
@@ -82,8 +86,15 @@
             
             <mat-card fxFlex.xs="100%" fxFlex="90%">
                 <div fxLayout="row" style="padding-bottom:10px;">
-                    <div fxFlex></div>
-                    <button mat-raised-button color="primary" routerLink="/empleados/nuevo"><mat-icon>add_circle</mat-icon> Agregar Empleado</button>
+                    <div fxFlex>
+                        <mat-chip-list aria-label="Fish selection">
+                            <mat-chip *ngFor="let item of filterChips; let i = index" [disabled]="!item.active" [removable]="true" (removed)="removeFilterChip(item,i)" matTooltip="{{item.tooltip}}" [matTooltipPosition]="'above'">
+                                {{item.tag}}
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                    <button mat-raised-button color="info" routerLink="/empleados/nuevo"><mat-icon>add_circle</mat-icon> Agregar Empleado</button>
                 </div>
 
                 <mat-divider [inset]="true"></mat-divider>
@@ -118,8 +129,8 @@
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>Acciones</th>
                                 <td mat-cell *matCellDef="let row">
-                                    <button mat-raised-button color="accent" routerLink="/empleados/editar/{{row.id}}"><mat-icon>edit</mat-icon></button> &nbsp;
-                                    <button mat-icon-button color="warn" (click)="confirmUntieEmploye(row.id)"><mat-icon>link_off</mat-icon></button>
+                                    <button mat-raised-button color="primary" routerLink="/empleados/editar/{{row.id}}"><mat-icon>edit</mat-icon></button> &nbsp;
+                                    <button mat-icon-button color="accent" (click)="confirmUntieEmploye(row.id)"><mat-icon>undo</mat-icon></button>
                                 </td>
                             </ng-container>
 

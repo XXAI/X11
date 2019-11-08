@@ -32,3 +32,73 @@
 .loading-shade span{
     margin:0 auto;
 }
+
+.employee-status-bar{
+    height: auto;
+    min-height: 35px;
+}
+
+.employee-status-bar mat-toolbar-row {
+    min-height: 35px;
+}
+
+.employee-status-bar .status-icon {
+    padding: 0 14px;
+}
+
+.employee-status-bar .spacer {
+    flex: 1 1 auto;
+}
+
+.escolaridad-table {
+    width: 100%;
+}
+
+/* Column Widths */
+.mat-column-actions{
+    width: 120px;
+}
+
+.not-results-found{
+    text-align: center;
+    font-style: italic;
+}
+
+.hide{
+    display: none;
+}
+
+.check-box {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+    margin: 0 10px;
+}
+
+.schedule-header th{
+    background-color: black; 
+    color:white;
+    border-radius: 15px;
+}
+
+.schedule-body{
+    background-color: #dddddd;
+    font-size: smaller;
+}
+
+.schedule-body td.start{
+    background-color: #c4cdff; 
+    color:#2c3258;
+    border-bottom-left-radius:15px; 
+    border-top-left-radius: 15px; 
+    text-align: center;
+}
+
+.schedule-body td.end{
+    background-color: #7c8cfa; 
+    color:white;
+    border-bottom-right-radius:15px; 
+    border-top-right-radius: 15px; 
+    text-align: center;
+}

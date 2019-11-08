@@ -36,6 +36,24 @@ class EmpleadosController extends Controller
                 });
             }
 
+            if(isset($parametros['active_filter']) && $parametros['active_filter']){
+                if(isset($parametros['clues']) && $parametros['clues']){
+                    $empleados = $empleados->where('clues',$parametros['clues']);
+                }
+
+                if(isset($parametros['cr']) && $parametros['cr']){
+                    $empleados = $empleados->where('cr_id',$parametros['cr']);
+                }
+
+                if(isset($parametros['profesion']) && $parametros['profesion']){
+                    $empleados = $empleados->where('profesion_id',$parametros['profesion']);
+                }
+
+                if(isset($parametros['rama']) && $parametros['rama']){
+                    $empleados = $empleados->where('rama_id',$parametros['rama']);
+                }
+            }
+
             if(isset($parametros['page'])){
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     

@@ -29,7 +29,7 @@ class CatalogosController extends Controller
             $codigo = Codigo::orderBy("descripcion")->get();
             $cr = Cr::orderBy("descripcion")->get();
             $fuente = Fuente::orderBy("descripcion")->get();
-            $tipoProfesion = TipoProfesion::orderBy("descripcion")->get();
+            $tipoProfesion = TipoProfesion::orderBy("id")->get();
 
             if($params['profesion_id'] && $params['profesion_id'] != 'null'){
                 $consultaprofesion = Profesion::where("id", "=", $params['profesion_id'])->select("tipo_profesion_id")->first();
