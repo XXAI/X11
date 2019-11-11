@@ -19,6 +19,7 @@ use App\Models\Rama;
 use App\Models\TipoNomina;
 use App\Models\TipoProfesion;
 use App\Models\NivelAcademico;
+use App\Models\Sindicato;
 
 class CatalogosController extends Controller
 {
@@ -26,14 +27,15 @@ class CatalogosController extends Controller
     {
         try{
             $params = Input::all();
-            $clues = Clues::all();
-            $codigo = Codigo::orderBy("descripcion")->get();
+            //$clues = Clues::all();
+            //$codigo = Codigo::orderBy("descripcion")->get();
             $cr = Cr::orderBy("descripcion")->get();
             $fuente = Fuente::orderBy("descripcion")->get();
-            $tipoProfesion = TipoProfesion::orderBy("id")->get();
+            //$tipoProfesion = TipoProfesion::orderBy("id")->get();
             $nivelAcademico = NivelAcademico::orderBy('nivel')->get();
+            $sindicatos = Sindicato::all();
 
-            if($params['profesion_id'] && $params['profesion_id'] != 'null'){
+            /*if($params['profesion_id'] && $params['profesion_id'] != 'null'){
                 $consultaprofesion = Profesion::where("id", "=", $params['profesion_id'])->select("tipo_profesion_id")->first();
                 $profesion = Profesion::where("tipo_profesion_id", "=", $consultaprofesion->tipo_profesion_id)->orderBy("descripcion")->get();
 
@@ -41,13 +43,13 @@ class CatalogosController extends Controller
             }else{
                 $tipo_profesion_id = null;
                 $profesion = [];
-            }
+            }*/
             
             $programa = Programa::orderBy("descripcion")->get();
             $rama = Rama::orderBy("descripcion")->get();
             $tipoNomina = TipoNomina::orderBy("descripcion")->get();
             
-            return response()->json(['clues'=>$clues, "codigo"=>$codigo, "cr"=>$cr, "fuente"=>$fuente, "tipo_profesion"=>$tipoProfesion, "profesion"=>$profesion, "programa"=>$programa, "rama"=>$rama, "tipoNomina"=>$tipoNomina, "consulta_tipo_profesion"=>$tipo_profesion_id, 'nivel_academico'=>$nivelAcademico],HttpResponse::HTTP_OK);
+            return response()->json(["cr"=>$cr, "fuente"=>$fuente, "programa"=>$programa, "rama"=>$rama, "tipoNomina"=>$tipoNomina, 'nivel_academico'=>$nivelAcademico, 'sindicatos'=>$sindicatos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

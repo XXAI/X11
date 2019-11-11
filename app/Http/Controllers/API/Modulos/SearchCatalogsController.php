@@ -21,6 +21,38 @@ use App\Models\TipoProfesion;
 
 class SearchCatalogsController extends Controller
 {
+    public function getCodigoAutocomplete()
+    {
+        /*if (\Gate::denies('has-permission', \Permissions::VER_ROL) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_ROL)){
+            return response()->json(['message'=>'No esta autorizado para ver este contenido'],HttpResponse::HTTP_FORBIDDEN);
+        }*/
+
+        try{
+            $parametros = Input::all();
+            $codigos = Codigo::select('codigo', 'descripcion');
+            
+            //Filtros, busquedas, ordenamiento
+            if(isset($parametros['query']) && $parametros['query']){
+                $codigos = $codigos->where(function($query)use($parametros){
+                    return $query->where('codigo','LIKE','%'.$parametros['query'].'%')
+                                ->orWhere('descripcion','LIKE','%'.$parametros['query'].'%');
+                });
+            }
+            
+            if(isset($parametros['page'])){
+                $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
+                $codigos = $codigos->paginate($resultadosPorPagina);
+            } else {
+
+                $codigos = $codigos->get();
+            }
+
+            return response()->json(['data'=>$codigos],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function getCluesAutocomplete()
     {
         /*if (\Gate::denies('has-permission', \Permissions::VER_ROL) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_ROL)){

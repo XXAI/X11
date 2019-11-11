@@ -5,7 +5,7 @@ import { EmpleadosService } from '../empleados.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, combineLatest, of, forkJoin } from 'rxjs';
-import { startWith, map, throwIfEmpty } from 'rxjs/operators';
+import { startWith, map, throwIfEmpty, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.component';
 import { TransferenciaEmpleadoDialogComponent } from '../transferencia-empleado-dialog/transferencia-empleado-dialog.component';
@@ -30,10 +30,21 @@ export class EditarComponent implements OnInit {
   statusLabel: string;
   statusIcon: string;
 
+  //Botones Anterior-Siguiente
+  miniPagination:any = {
+    previous: 0,
+    current: 0,
+    next: 0,
+    total: 0
+  };
+
+  codigosIsLoading: boolean = false;
+  filteredCodigos: Observable<any[]>;
+
   displayedColumns: string[] = ['Grado','Estudios','Fecha','actions'];
   tablaEscolaridad: any = [{id:1,grado:'123',estudios:'12312',fecha:'123'}];
 
-                        //de = dia entrada, he = hora entrada, ds = dia salida, hs = hora salida
+  //de = dia entrada, he = hora entrada, ds = dia salida, hs = hora salida
   horarioEmpleado: any = [
       {id:1,de:'1',he:'20:00',ds:'2',hs:'03:00'},
       {id:2,de:'2',he:'20:00',ds:'3',hs:'03:00'},
@@ -64,25 +75,58 @@ export class EditarComponent implements OnInit {
   isLoadingCredential:boolean = false;
   hidePassword:boolean = true;
 
+  escolaridad:any = [
+    { id: 'secundaria',     label:'Secundaria' },
+    { id: 'preparatoria',   label:'Preparatoria' },
+    { id: 'tecnica',        label:'Técnica' },
+    { id: 'carrera',        label:'Carrera' },
+    { id: 'titulo',         label:'Titulo' },
+    { id: 'maestria',       label:'Maestria' },
+    { id: 'doctorado',      label:'Doctorado' },
+    { id: 'cursos',         label:'Cursos' },
+    { id: 'especialidad',   label:'Especialidad' },
+    { id: 'diplomado',      label:'Diplomado' },
+    { id: 'poliglota',      label:'Inglés' },
+  ];
+
   empleadoForm = this.fb.group({
     'rfc': ['',Validators.required],
     'curp': ['',[Validators.required]],
     'nombre': ['',[Validators.required]],
     'fissa': ['',[Validators.required]],
-    'figf': [false],
-    'clues': [''],
-    'clues_desc': [''],
+    'figf': [''],
+
+    //'clues': [''],
+    //'clues_desc': [''],
+
     'horario':[''],
-    'tipo_nomina_id': [[]],
-    'programa_id': [[]],
-    'fuente_id': [[]],
-    'codigo_id': [[]],
-    'cr_id': [[]],
-    'rama_id': [[]],
-    'tipo_profesion_id': [[]],
-    'profesion_id': [[]],
-    'crespdes': [[]],
-    'comision_sindical': [[]]
+    'tipo_nomina_id': [''],
+    'programa_id': [''],
+    'fuente_id': [''],
+
+    'codigo_id': [''],
+    'codigo': [''],
+    'cr_id': [''],
+    'rama_id': [''],
+
+    //'tipo_profesion_id': [[]],
+    //'profesion_id': [[]],
+    //'crespdes': [[]],
+
+    'comision_sindical_id': [''],
+    'escolaridad': this.fb.group({
+      'secundaria':[''], 
+      'preparatoria':[''], 
+      'tecnica':[''], 
+      'carrera':[''], 
+      'titulo':[''], 
+      'maestria':[''], 
+      'doctorado':[''], 
+      'cursos':[''], 
+      'especialidad':[''], 
+      'diplomado':[''], 
+      'poliglota':['']
+    })
   });
 
   
@@ -108,6 +152,25 @@ export class EditarComponent implements OnInit {
         this.tablaHorarioHoras.push({dia:element.ds,hora:element.hs,tipo:'end'});
       });
 
+      this.empleadoForm.get('codigo').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          this.codigosIsLoading = true;
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              return this.empleadosService.buscarCodigo({query:value,rama:this.empleadoForm.get('rama_id').value}).pipe(
+                finalize(() => this.codigosIsLoading = false )
+              );
+            }else{
+              this.codigosIsLoading = false;
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredCodigos = items);
+
       this.tablaHorarioHoras.sort((a,b)=>(a.dia > b.dia)?1:((a.dia == b.dia)?((a.hora > b.hora)?1:-1):-1));
 
       //console.log(this.tablaHorarioDias);
@@ -121,6 +184,7 @@ export class EditarComponent implements OnInit {
     this.isLoadingCredential = true;
     let params = {};
 
+    //Inicia: Datos para los botones de Anterior y Siguiente
     let paginator = this.sharedService.getDataFromCurrentApp('paginator');
     let filter = this.sharedService.getDataFromCurrentApp('filter');
 
@@ -129,13 +193,12 @@ export class EditarComponent implements OnInit {
     }
 
     for (let i in filter) {
-      if(filter[i]){
-        params[i] = filter[i];
-      }
+      if(filter.clues){ params['clues'] = filter.clues.clues; }
+      if(filter.cr){ params['cr'] = filter.cr.cr; }
+      if(filter.profesion){ params['profesion'] = filter.profesion.id; }
+      if(filter.rama){ params['rama'] = filter.rama.id; }
     }
-
-    //params.paginator = JSON.stringify(this.sharedService.getDataFromCurrentApp('paginator'));
-    //params.filter = JSON.stringify(this.sharedService.getDataFromCurrentApp('filter'));
+    //Termina: Datos para los botones de Anterior y Siguiente
 
     this.empleadosService.obtenerDatosEmpleado(id,params).subscribe(
       response =>{
@@ -156,6 +219,19 @@ export class EditarComponent implements OnInit {
           }
 
           this.empleado = true;
+
+          if(response.pagination){
+            let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+
+            let paginationIndex = response.pagination.next_prev.findIndex(item => item.id == this.datos_empleado.id);
+            this.miniPagination.next = (response.pagination.next_prev[paginationIndex+1])?response.pagination.next_prev[paginationIndex+1].id:0;
+            this.miniPagination.previous = (response.pagination.next_prev[paginationIndex-1])?response.pagination.next_prev[paginationIndex-1].id:0;
+
+            this.miniPagination.total = response.pagination.total;
+
+
+            this.miniPagination.current = (paginator.pageSize*paginator.pageIndex)+paginator.selectedIndex+1;
+          }
 
           this.loadCatalogos(this.datos_empleado);
 
@@ -192,12 +268,14 @@ export class EditarComponent implements OnInit {
         this.isLoading = false;
       },
       errorResponse =>{
+        console.log(errorResponse);
         var errorMessage = "Ocurrió un error.";
         if(errorResponse.status == 409){
-          errorMessage = errorResponse.error.message;
+          errorMessage = errorResponse.error.error.message;
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
+        this.isLoadingCredential = false;
       }
     );
   }
@@ -211,19 +289,7 @@ export class EditarComponent implements OnInit {
         this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
         this.empleadoForm.patchValue({ "clues_desc": this.datos_empleado.clues.nombre_unidad});
         this.empleadoForm.patchValue({ "tipo_profesion_id": this.catalogos['consulta_tipo_profesion'] });
-        
-        //this.loadEmpleadoData(this.id_empleado);
-        /*if(response.error) {
-          let errorMessage = response.error.message;
-          this.sharedService.showSnackBar(errorMessage, null, 3000);
-        } else {
-          this.dataSource = [];
-          this.resultsLength = 0;
-          if(response.data.total > 0){
-            this.dataSource = response.data.data;
-            this.resultsLength = response.data.total;
-          }
-        }*/
+
         this.isLoading = false;
       },
       errorResponse =>{
@@ -236,6 +302,40 @@ export class EditarComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  displayCodigoFn(item: any) {
+    if (item) { return item.descripcion; }
+  }
+
+  loadNext(){
+    let nextId = this.miniPagination.next;
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+
+    if(paginator.selectedIndex+1 >= paginator.pageSize){
+      paginator.pageIndex += 1;
+      paginator.selectedIndex = 0;
+    }else{
+      paginator.selectedIndex += 1;
+    }
+
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
+    this.loadEmpleadoData(nextId);
+  }
+
+  loadPrevious(){
+    let prevId = this.miniPagination.previous;
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    
+    if(paginator.selectedIndex-1 < 0){
+      paginator.pageIndex -= 1;
+      paginator.selectedIndex = paginator.pageSize-1;
+    }else{
+      paginator.selectedIndex -= 1;
+    }
+
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
+    this.loadEmpleadoData(prevId);
   }
 
   showEstudiosDialog(id?:number){
@@ -345,6 +445,9 @@ export class EditarComponent implements OnInit {
   }
 
   accionGuardar(){
+    console.log('--------------------------- Guardando --------------------------------------');
     console.log(this.empleadoForm.value);
+    console.log(this.empleadoForm.validator);
+    console.log('--------------------------- Termino Guardando --------------------------------------');
   }
 }

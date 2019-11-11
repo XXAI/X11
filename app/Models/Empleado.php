@@ -11,6 +11,14 @@ class Empleado extends Model
     protected $fillable = [''];
     protected $table = 'empleados';
 
+    public function sindicato(){
+        return $this->hasOne('App\Models\Sindicato','id','comision_sindical_id');
+    }
+
+    public function codigo(){
+        return $this->hasOne('App\Models\Codigo','codigo','codigo_id');
+    }
+
     public function clues(){
         return $this->hasOne('App\Models\Clues', 'clues', "clues");
     }

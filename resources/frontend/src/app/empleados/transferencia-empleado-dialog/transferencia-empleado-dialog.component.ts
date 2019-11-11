@@ -43,8 +43,7 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
 
       console.log(this.cluesActual);
     }
-
-    //this.filteredClues = 
+    
     this.cluesForm.get('clues').valueChanges
     .pipe(
       debounceTime(300),

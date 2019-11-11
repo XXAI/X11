@@ -7,12 +7,12 @@
             <span>{{statusLabel}}&nbsp;</span>
             <span *ngIf="datos_empleado && datos_empleado.permuta_adscripcion_activa" matTooltip="{{datos_empleado.permuta_adscripcion_activa.clues_destino.nombre_unidad}}">[{{datos_empleado.permuta_adscripcion_activa.clues_destino.clues}}]</span>
             <span class="spacer"></span>
-            <section>
-                <button mat-raised-button><mat-icon>navigate_before</mat-icon> Anterior</button>
+            <section *ngIf="miniPagination">
+                <button mat-raised-button [disabled]="miniPagination.previous == 0" (click)="loadPrevious()"><mat-icon>navigate_before</mat-icon> Anterior</button>
                 &nbsp;
-                <span>4/10</span>
+                <span>{{miniPagination.current}}/{{miniPagination.total}}</span>
                 &nbsp;
-                <button mat-raised-button>Siguiente <mat-icon>navigate_next</mat-icon></button>
+                <button mat-raised-button [disabled]="miniPagination.next == 0" (click)="loadNext()">Siguiente <mat-icon>navigate_next</mat-icon></button>
             </section>
         </mat-toolbar-row>
     </mat-toolbar>
@@ -35,7 +35,7 @@
                     </div>
                     
                     <img *ngIf="!isLoadingCredential && datosCredencial" mat-card-image style="width:100%; margin:0 auto 0 auto; border-radius: 50%;" src="{{datosCredencial.photo}}" alt="">
-                    <mat-card-content *ngIf="!isLoadingCredential && datosCredencial" fxLayout="column" fxLayoutAlign="center center">
+                    <mat-card-content *ngIf="!isLoadingCredential && datosCredencial" fxLayout="column" >
                         <div fxFlex style="text-align: center;">
                             <h3>{{datosCredencial.Nombre}}<br>
                             <small>{{datosCredencial.Adscripcion_Area}} <!-- <br/>{{datosCredencial.Direccion}} --> </small>
@@ -73,10 +73,17 @@
                                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                     <mat-datepicker #picker2></mat-datepicker>
                                 </mat-form-field>
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
                                     <input matInput [matDatepicker]="picker" placeholder="Fecha Ingreso a la SSA"  formControlName="fissa">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex fxFlex.xs="100">
+                                    <input matInput id="horario" formControlName="horario" placeholder="Horario" required>
+                                    <mat-error *ngIf="empleadoForm.get('horario').invalid && (empleadoForm.get('horario').dirty || empleadoForm.get('horario').touched)">
+                                        <span *ngIf="empleadoForm.get('horario').errors.required">El Nombre es obligatorio</span>
+                                    </mat-error>
                                 </mat-form-field>
 
                                 <!--section fxFlex fxLayout="column" >
@@ -176,26 +183,30 @@
                                 </mat-form-field>
 
                                 <mat-form-field fxFlex fxFlex.xs="100">
-                                    <mat-label>Codigo</mat-label>
-                                    <mat-select formControlName="codigo_id">
-                                    <mat-option *ngFor="let item of catalogos['codigo']" [value]="item.codigo">
-                                        {{item.descripcion}}
-                                    </mat-option>
-                                    </mat-select>
+                                    <input matInput placeholder="Codigo" [matAutocomplete]="codigoAutocomplete" formControlName='codigo'>
+                                    <mat-autocomplete #codigoAutocomplete="matAutocomplete" [displayWith]="displayCodigoFn">
+                                        <mat-option *ngIf="codigosIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                        <ng-container *ngIf="!codigosIsLoading">
+                                            <mat-option *ngFor="let item of filteredCodigos" [value]="item">
+                                                [{{item.codigo}}] {{ item.descripcion }}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                    <input type="hidden" formControlName='codigo_id'>
+                                    <mat-hint align="end" *ngIf="empleadoForm.get('codigo').value">[{{empleadoForm.get('codigo').value.codigo}}]</mat-hint>
                                 </mat-form-field>
-                                
+
                                 <mat-form-field fxFlex="20" fxFlex.xs="100">
                                     <mat-label>¿Comisionado Sindical?</mat-label>
-                                    <mat-select formControlName="comision_sindical">
-                                        <mat-option [value]="0">NO</mat-option>
-                                        <mat-option [value]="1">SI</mat-option>
+                                    <mat-select formControlName="comision_sindical_id">
+                                        <mat-option *ngFor="let item of catalogos['sindicatos']" [value]="item.id">{{item.descripcion}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <fieldset>
                                 <legend>Grado de Estudios</legend>
-                                <div fxLayout="row wrap">
-                                    <mat-checkbox fxFlex="33" style="margin-top:5px; margin-bottom:5px;" *ngFor="let item of catalogos['nivel_academico']" value="{{item.id}}">{{item.descripcion}}</mat-checkbox>
+                                <div fxLayout="row wrap" formGroupName="escolaridad">
+                                    <mat-checkbox formControlName="{{item.id}}" fxFlex="33" style="margin-top:5px; margin-bottom:5px;" *ngFor="let item of escolaridad" value="true">{{item.label}}</mat-checkbox>
                                 </div>
                             </fieldset>
                             <!--div fxLayout="row" fxLayout.xs="column">

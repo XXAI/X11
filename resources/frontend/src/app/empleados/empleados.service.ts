@@ -17,6 +17,7 @@ export class EmpleadosService {
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
 
   url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
+  url_codigos_catalogo = `${environment.base_url}/busqueda-codigos`;
   /*url_role = `${environment.base_url}/role`;
   url_permission = `${environment.base_url}/permission`;
   url_avatars = `${environment.base_url}/avatar-images`;*/
@@ -25,6 +26,14 @@ export class EmpleadosService {
 
   buscarClues(payload):Observable<any>{
     return this.http.get<any>(this.url_clues_catalogo,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
+
+  buscarCodigo(payload):Observable<any>{
+    return this.http.get<any>(this.url_codigos_catalogo,{params:payload}).pipe(
       map( response => {
         return response.data;
       })

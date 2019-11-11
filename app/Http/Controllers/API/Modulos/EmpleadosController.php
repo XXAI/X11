@@ -74,23 +74,64 @@ class EmpleadosController extends Controller
         try{
             $params = Input::all();
 
-            $empleado = Empleado::with("clues",'permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues')->find($id);
+            $empleado = Empleado::with('clues','codigo','permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues')->find($id);
 
             if($empleado){
                 $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
             }
 
+            $returnData = ['data'=>$empleado];
+
             if(isset($params['selectedIndex'])){
                 $per_page = $params['pageSize'];
                 $page_index = $params['pageIndex'];
-                $selected_index = ($params['selectedIndex'] > 0)? $params['selectedIndex'] - 1 : 0;
+                $selected_index = $params['selectedIndex'];
 
-                $limit_index = ($per_page * $page_index) + $selected_index;
+                $real_index = ($per_page * $page_index) + $selected_index;
+                $empleados = Empleado::select('id');
 
-                $empleados = Empleado::select('id')->skip($limit_index)->take(3)->get();
+                if($real_index == 0){
+                    $limit_index = 0;
+                    $total_results = 2;
+                }else{
+                    $limit_index = $real_index-1;
+                    $total_results = 3;
+                }
+
+                if(isset($params['query']) && $params['query']){
+                    $empleados = $empleados->where(function($query)use($params){
+                        return $query->where('nombre','LIKE','%'.$params['query'].'%')
+                                    ->orWhere('curp','LIKE','%'.$params['query'].'%')
+                                    ->orWhere('rfc','LIKE','%'.$params['query'].'%');
+                    });
+                }
+
+                if(isset($params['clues']) && $params['clues']){
+                    $empleados = $empleados->where('clues',$params['clues']);
+                }
+
+                if(isset($params['cr']) && $params['cr']){
+                    $empleados = $empleados->where('cr_id',$params['cr']);
+                }
+
+                if(isset($params['profesion']) && $params['profesion']){
+                    $empleados = $empleados->where('profesion_id',$params['profesion']);
+                }
+
+                if(isset($params['rama']) && $params['rama']){
+                    $empleados = $empleados->where('rama_id',$params['rama']);
+                }
+
+                $total_empleados = clone $empleados;
+                $total_empleados = $total_empleados->count();
+                $empleados = $empleados->skip($limit_index)->take($total_results)->get();
+
+                $mini_pagination = ['next_prev'=>$empleados,'total'=>$total_empleados];
+
+                $returnData['pagination'] = $mini_pagination;
             }
 
-            return response()->json(['data'=>$empleado,'params'=>$empleados],HttpResponse::HTTP_OK);
+            return response()->json($returnData,HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
