@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Input;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Empleados;
+use App\Models\Empleado;
 use App\Models\Clues;
 use App\Models\Cr;
 use App\Models\Profesion;
@@ -25,7 +25,7 @@ class EmpleadosController extends Controller
 
         try{
             $parametros = Input::all();
-            $empleados = Empleados::getModel();
+            $empleados = Empleado::getModel();
             
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
@@ -71,13 +71,52 @@ class EmpleadosController extends Controller
 
     public function show($id)
     {
-        $empleado = Empleados::with("clues")->find($id);
+        try{
+            $params = Input::all();
 
-        if($empleado){
-            $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
+            $empleado = Empleado::with("clues",'permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues')->find($id);
+
+            if($empleado){
+                $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
+            }
+
+            if(isset($params['selectedIndex'])){
+                $per_page = $params['pageSize'];
+                $page_index = $params['pageIndex'];
+                $selected_index = ($params['selectedIndex'] > 0)? $params['selectedIndex'] - 1 : 0;
+
+                $limit_index = ($per_page * $page_index) + $selected_index;
+
+                $empleados = Empleado::select('id')->skip($limit_index)->take(3)->get();
+            }
+
+            return response()->json(['data'=>$empleado,'params'=>$empleados],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
+    }
 
-        return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+    public function transferEmployee($id){
+        try{
+            //['empleado_id', 'user_origen_id', 'clues_origen', 'user_destino_id', 'clues_destino', 'observacion', 'estatus', 'user_id']
+            $parametros = Input::all();
+            $empleado = Empleado::find($id);
+            $loggedUser = auth()->userOrFail();
+
+            $empleado->permutasAdscripcion()->create([
+                'clues_origen'=>$empleado->clues,
+                'clues_destino'=>$parametros['clues']['clues'],
+                'estatus' => 1,
+                'user_origen_id'=>$loggedUser->id,
+                'user_destino_id'=>$loggedUser->id,
+                'user_id'=>$loggedUser->id,
+                'observacion'=>''
+            ]);
+
+            return response()->json(['data'=>$parametros],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
     }
 
     public function getFilterCatalogs(){

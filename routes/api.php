@@ -31,9 +31,11 @@ Route::group(['middleware'=>'auth'],function($router){
     
     //Modulos del Sistema
     Route::apiResource('empleados',          'API\Modulos\EmpleadosController');
+    Route::put('transferir-empleado/{id}',   'API\Modulos\EmpleadosController@transferEmployee');
     Route::get('catalogos-filtro-empleados', 'API\Modulos\EmpleadosController@getFilterCatalogs');
 
     Route::apiResource('catalogos',          'API\Modulos\CatalogosController');
+    Route::get('busqueda-clues',             'API\Modulos\SearchCatalogsController@getCluesAutocomplete');
 
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
 });

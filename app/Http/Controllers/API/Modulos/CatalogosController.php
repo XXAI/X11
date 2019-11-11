@@ -18,6 +18,7 @@ use App\Models\Programa;
 use App\Models\Rama;
 use App\Models\TipoNomina;
 use App\Models\TipoProfesion;
+use App\Models\NivelAcademico;
 
 class CatalogosController extends Controller
 {
@@ -30,6 +31,7 @@ class CatalogosController extends Controller
             $cr = Cr::orderBy("descripcion")->get();
             $fuente = Fuente::orderBy("descripcion")->get();
             $tipoProfesion = TipoProfesion::orderBy("id")->get();
+            $nivelAcademico = NivelAcademico::orderBy('nivel')->get();
 
             if($params['profesion_id'] && $params['profesion_id'] != 'null'){
                 $consultaprofesion = Profesion::where("id", "=", $params['profesion_id'])->select("tipo_profesion_id")->first();
@@ -45,7 +47,7 @@ class CatalogosController extends Controller
             $rama = Rama::orderBy("descripcion")->get();
             $tipoNomina = TipoNomina::orderBy("descripcion")->get();
             
-            return response()->json(['clues'=>$clues, "codigo"=>$codigo, "cr"=>$cr, "fuente"=>$fuente, "tipo_profesion"=>$tipoProfesion, "profesion"=>$profesion, "programa"=>$programa, "rama"=>$rama, "tipoNomina"=>$tipoNomina, "consulta_tipo_profesion"=>$tipo_profesion_id],HttpResponse::HTTP_OK);
+            return response()->json(['clues'=>$clues, "codigo"=>$codigo, "cr"=>$cr, "fuente"=>$fuente, "tipo_profesion"=>$tipoProfesion, "profesion"=>$profesion, "programa"=>$programa, "rama"=>$rama, "tipoNomina"=>$tipoNomina, "consulta_tipo_profesion"=>$tipo_profesion_id, 'nivel_academico'=>$nivelAcademico],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

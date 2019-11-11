@@ -10,14 +10,26 @@ import { map } from 'rxjs/operators';
 export class EmpleadosService {
 
   url = `${environment.base_url}/empleados`;
+  url_transfer = `${environment.base_url}/transferir-empleado/`;
+
   url_catalogos = `${environment.base_url}/catalogos`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
+
+  url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
   /*url_role = `${environment.base_url}/role`;
   url_permission = `${environment.base_url}/permission`;
   url_avatars = `${environment.base_url}/avatar-images`;*/
 
   constructor(private http: HttpClient) { }
+
+  buscarClues(payload):Observable<any>{
+    return this.http.get<any>(this.url_clues_catalogo,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
 
   getEmpleadosList(payload):Observable<any> {
     return this.http.get<any>(this.url,{params: payload}).pipe(
@@ -25,6 +37,22 @@ export class EmpleadosService {
         return response;
       })
     );
+  }
+
+  transferirEmpleado(id:any,payload:any):Observable<any> {
+    return this.http.put<any>(this.url_transfer + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  obtenerDatosEmpleado(id:any, payload:any):Observable<any> {
+    return this.http.get<any>(this.url +"/"+ id, {params:payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
   }
 
   desligarEmpleado(id:any):Observable<any> {

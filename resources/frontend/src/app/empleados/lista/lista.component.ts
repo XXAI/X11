@@ -36,6 +36,7 @@ export class ListaComponent implements OnInit {
   resultsLength: number = 0;
   currentPage: number = 0;
   pageSize: number = 20;
+  selectedItemIndex: number = -1;
 
   filterCatalogs:any = {};
   filteredCatalogs:any = {};
@@ -75,7 +76,24 @@ export class ListaComponent implements OnInit {
       this.currentPage = appStoredData['paginator'].pageIndex;
       this.pageSize = appStoredData['paginator'].pageSize;
       event = appStoredData['paginator'];
+
+      if(event.selectedIndex >= 0){
+        console.log(event);
+        this.selectedItemIndex = event.selectedIndex;
+      }
+    }else{
+      let dummyPaginator = {
+        length: 0,
+        pageIndex: this.currentPage,
+        pageSize: this.pageSize,
+        previousPageIndex: (this.currentPage > 0)?this.currentPage-1:0
+       };
+       console.log('asfdasdfasdfds------------------------------');
+       console.log(dummyPaginator);
+      this.sharedService.setDataToCurrentApp('paginator', dummyPaginator);
     }
+
+    console.log(this.selectedItemIndex);
 
     if(appStoredData['filter']){
       this.filterForm.patchValue(appStoredData['filter']);
@@ -141,6 +159,10 @@ export class ListaComponent implements OnInit {
         per_page: event.pageSize
       };
     }
+
+    if(event && !event.hasOwnProperty('selectedIndex')){
+      this.selectedItemIndex = -1;
+    }
     
     params.query = this.searchQuery;
 
@@ -166,8 +188,11 @@ export class ListaComponent implements OnInit {
       params.active_filter = true;
     }
 
+    if(event){
+      this.sharedService.setDataToCurrentApp('paginator',event);
+    }
+
     this.sharedService.setDataToCurrentApp('searchQuery',this.searchQuery);
-    this.sharedService.setDataToCurrentApp('paginator',event);
     this.sharedService.setDataToCurrentApp('filter',filterFormValues);
 
     this.empleadosService.getEmpleadosList(params).subscribe(
@@ -225,6 +250,12 @@ export class ListaComponent implements OnInit {
         this.filterChips.push(item);
       }
     }
+  }
+
+  editEmpleado(index){
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    paginator.selectedIndex = index;
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
   }
 
   removeFilterChip(item,index){

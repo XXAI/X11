@@ -25,6 +25,11 @@ export class EditarComponent implements OnInit {
   empleado:boolean = false;
   datos_empleado:any;
 
+  puedeGuardar: boolean = true;
+  puedeTransferir: boolean = true;
+  statusLabel: string;
+  statusIcon: string;
+
   displayedColumns: string[] = ['Grado','Estudios','Fecha','actions'];
   tablaEscolaridad: any = [{id:1,grado:'123',estudios:'12312',fecha:'123'}];
 
@@ -91,7 +96,7 @@ export class EditarComponent implements OnInit {
       this.id_empleado = params.get('id');
       this.loadEmpleadoData(this.id_empleado);
 
-      console.log(this.horarioEmpleado);
+      //console.log(this.horarioEmpleado);
       this.horarioEmpleado.forEach(element => {
         //this.tablaHorario[element.de].push({id:element.id, start:element.he});
         //this.tablaHorario[element.ds].push({id:element.id, end:element.hs});
@@ -105,8 +110,8 @@ export class EditarComponent implements OnInit {
 
       this.tablaHorarioHoras.sort((a,b)=>(a.dia > b.dia)?1:((a.dia == b.dia)?((a.hora > b.hora)?1:-1):-1));
 
-      console.log(this.tablaHorarioDias);
-      console.log(this.tablaHorarioHoras);
+      //console.log(this.tablaHorarioDias);
+      //console.log(this.tablaHorarioHoras);
     });
   }
 
@@ -114,14 +119,42 @@ export class EditarComponent implements OnInit {
   {
     this.isLoading = true;
     this.isLoadingCredential = true;
+    let params = {};
 
-    this.empleadosService.desligarEmpleado(id).subscribe(
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    let filter = this.sharedService.getDataFromCurrentApp('filter');
+
+    for (let i in paginator) {
+      params[i] = paginator[i];
+    }
+
+    for (let i in filter) {
+      if(filter[i]){
+        params[i] = filter[i];
+      }
+    }
+
+    //params.paginator = JSON.stringify(this.sharedService.getDataFromCurrentApp('paginator'));
+    //params.filter = JSON.stringify(this.sharedService.getDataFromCurrentApp('filter'));
+
+    this.empleadosService.obtenerDatosEmpleado(id,params).subscribe(
       response =>{
         console.log(response);
-        this.datos_empleado = response;
-        //this.empleadoForm.patchValue(response);
-        //this.empleadoForm.patchValue({ "clues": response.clues.clues +" "+response.clues.nombre_unidad });
         if(typeof response === 'object'){
+          this.datos_empleado = response.data;
+
+          this.puedeTransferir = true;
+          this.puedeGuardar = true;
+          this.statusIcon = 'help';
+          this.statusLabel = 'Por Validar';
+
+          if(this.datos_empleado.permuta_adscripcion_activa){
+            this.puedeTransferir = false;
+            this.puedeGuardar = false;
+            this.statusLabel = 'En Transferencia';
+            this.statusIcon = 'notification_important';
+          }
+
           this.empleado = true;
 
           this.loadCatalogos(this.datos_empleado);
@@ -234,11 +267,17 @@ export class EditarComponent implements OnInit {
   showTransferenciaEmpleadoDialog(id:number){
     const dialogRef = this.dialog.open(TransferenciaEmpleadoDialogComponent, {
       width: '90%',
-      data: {id:id}
+      data: {id:id, cluesActual:this.datos_empleado.clues.clues}
     });
 
     dialogRef.afterClosed().subscribe(response => {
       if(response){
+        this.loadEmpleadoData(id);
+
+        /*this.statusLabel = 'En Transferencia';
+        this.statusIcon = 'help';
+        this.puedeTransferir = false,
+        this.puedeGuardar = false;*/
         console.log(response);
       }
     });

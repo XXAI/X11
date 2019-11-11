@@ -2,12 +2,10 @@
     <!--div fxFill-->
     <mat-toolbar class="employee-status-bar" [class.mat-elevation-z2]="true">
         <mat-toolbar-row>
-            <mat-icon aria-hidden="false" aria-label="Estatus Empleado">verified_user</mat-icon>
-            <mat-icon aria-hidden="false" aria-label="Empleado verificado">help</mat-icon>
-            <mat-icon aria-hidden="false" aria-label="Empleado verificado">notification_important</mat-icon>
-            <mat-icon aria-hidden="false" aria-label="Empleado verificado">warning</mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Estatus Empleado">{{statusIcon}}</mat-icon>
             &nbsp;
-            <span>Estatus Empleado</span>
+            <span>{{statusLabel}}&nbsp;</span>
+            <span *ngIf="datos_empleado && datos_empleado.permuta_adscripcion_activa" matTooltip="{{datos_empleado.permuta_adscripcion_activa.clues_destino.nombre_unidad}}">[{{datos_empleado.permuta_adscripcion_activa.clues_destino.clues}}]</span>
             <span class="spacer"></span>
             <section>
                 <button mat-raised-button><mat-icon>navigate_before</mat-icon> Anterior</button>
@@ -18,9 +16,12 @@
             </section>
         </mat-toolbar-row>
     </mat-toolbar>
-    <br fxHide.xs="true">
-
-        <section fxLayout="row" fxLayoutAlign="space-evenly start">
+    <!--mat-icon aria-hidden="false" aria-label="Estatus Empleado">verified_user</mat-icon>
+    <mat-icon aria-hidden="false" aria-label="Empleado verificado">help</mat-icon>
+    <mat-icon aria-hidden="false" aria-label="Empleado verificado">notification_important</mat-icon>
+    <mat-icon aria-hidden="false" aria-label="Empleado verificado">warning</mat-icon-->
+    
+        <section fxLayout="row" fxLayoutAlign="space-evenly start" style="padding-top:5px;">
             <section  fxFlex="25">
                 <mat-card>
                     <div class="credential-loading-shade" *ngIf="isLoadingCredential">
@@ -36,24 +37,23 @@
                     <img *ngIf="!isLoadingCredential && datosCredencial" mat-card-image style="width:100%; margin:0 auto 0 auto; border-radius: 50%;" src="{{datosCredencial.photo}}" alt="">
                     <mat-card-content *ngIf="!isLoadingCredential && datosCredencial" fxLayout="column" fxLayoutAlign="center center">
                         <div fxFlex style="text-align: center;">
-                            <h2>{{datosCredencial.Nombre}}</h2>
-                            <h3>{{datosCredencial.Adscripcion_Area}}<br/>{{datosCredencial.Direccion}}</h3>
+                            <h3>{{datosCredencial.Nombre}}<br>
+                            <small>{{datosCredencial.Adscripcion_Area}} <!-- <br/>{{datosCredencial.Direccion}} --> </small>
+                            </h3>
                         </div>
-                        <div fxFlex>
-                            <table class="infoEmployee">
-                                <tr>
-                                    <th>CLUES</th><td>{{datosCredencial.clues}}</td>
-                                </tr>
-                                <tr>
-                                    <th>Tipo de Sangre</th><td>{{datosCredencial.TipoSangre}}</td>
-                                </tr>
-                                <tr>
-                                    <th>CURP</th><td>{{datosCredencial.Curp}}</td>
-                                </tr>
-                                <tr>
-                                    <th>RFC</th><td>{{datosCredencial.Rfc}}</td>
-                                </tr>
-                            </table>
+                        <div fxFlex fxLayout="column" class="info-credential">
+                            <mat-form-field fxFlex>
+                                <input matInput placeholder="CLUES"  value="{{datosCredencial.clues}}" readonly>
+                            </mat-form-field>
+                            <mat-form-field fxFlex>
+                                <input matInput placeholder="Tipo de Sangre"  value="{{datosCredencial.TipoSangre}}" readonly>
+                            </mat-form-field>
+                            <mat-form-field fxFlex>
+                                <input matInput placeholder="CURP"  value="{{datosCredencial.Curp}}" readonly>
+                            </mat-form-field>
+                            <mat-form-field fxFlex>
+                                <input matInput placeholder="RFC"  value="{{datosCredencial.Rfc}}" readonly>
+                            </mat-form-field>
                         </div>
                     </mat-card-content>
                 </mat-card>
@@ -68,18 +68,18 @@
                             <div class="loading-shade" *ngIf="!isLoading && !empleado">No se encontraron los datos del empleado</div>
                             
                             <div fxLayout="row" fxLayout.xs="column">
-                                <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                    <input matInput [matDatepicker]="picker" placeholder="Fecha Ingreso a la SSA"  formControlName="fissa">
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <input matInput [matDatepicker]="picker2" placeholder="Fecha Ingreso al Gobierno Federal"  formControlName="figf">
                                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                     <mat-datepicker #picker2></mat-datepicker>
                                 </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <input matInput [matDatepicker]="picker" placeholder="Fecha Ingreso a la SSA"  formControlName="fissa">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
 
-                                <section fxFlex fxLayout="column" >
+                                <!--section fxFlex fxLayout="column" >
                                     <table style="width:100%; border-collapse: collapse;">
                                         <tr class="schedule-header">
                                             <th *ngFor="let item of tablaHorarioDias" [attr.colspan]="item.count">{{item.label}}</th>
@@ -91,9 +91,20 @@
                                     <section fxLayoutAlign="end">
                                         <button mat-button color="accent" (click)="showHorarioDialog()"><mat-icon>schedule</mat-icon> Horario</button>
                                     </section>
-                                </section>
+                                </section-->
                             </div>
-
+                            
+                            <section fxLayout="column" >
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <mat-form-field fxFlex fxFlex.xs="100" appearance="fill">
+                                        <mat-label>CLUES</mat-label>
+                                        <input matInput value="{{(datos_empleado && datos_empleado.adscripcion_activa)?datos_empleado.adscripcion_activa.clues.nombre_unidad:'Sin CLUES asignada'}}" readonly>
+                                        <mat-hint *ngIf="datos_empleado && datos_empleado.adscripcion_activa">{{datos_empleado.adscripcion_activa.clues.nivel_atencion}}: {{datos_empleado.adscripcion_activa.clues.estatus}}</mat-hint>
+                                        <mat-hint *ngIf="datos_empleado && datos_empleado.adscripcion_activa" align="end">[ {{datos_empleado.adscripcion_activa.clues.clues}} ]</mat-hint>
+                                    </mat-form-field>
+                                </div>
+                            </section>
+                            <br>
                             <div fxLayout="row" fxLayout.xs="column">
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <input matInput id="rfc" formControlName="rfc" placeholder="RFC" required>
@@ -118,10 +129,6 @@
                             </div>
                             
                             <div fxLayout="row" fxLayout.xs="column">
-                                <mat-form-field fxFlex fxFlex.xs="100">
-                                    <input matInput id="clues" formControlName="clues_desc" placeholder="Clues" required>
-                                    <mat-hint *ngIf="datos_empleado" align="end">[ {{datos_empleado.clues.clues}} ]</mat-hint>
-                                </mat-form-field>
                                 <mat-form-field fxFlex fxFlex.xs="100">
                                     <mat-label>CR</mat-label>
                                     <mat-select formControlName="cr_id">
@@ -188,7 +195,7 @@
                             <fieldset>
                                 <legend>Grado de Estudios</legend>
                                 <div fxLayout="row wrap">
-                                    <mat-checkbox fxFlex="25" style="margin-top:5px; margin-bottom:5px;" *ngFor="let item of catalogos['tipo_profesion']">{{item.descripcion}}</mat-checkbox>
+                                    <mat-checkbox fxFlex="33" style="margin-top:5px; margin-bottom:5px;" *ngFor="let item of catalogos['nivel_academico']" value="{{item.id}}">{{item.descripcion}}</mat-checkbox>
                                 </div>
                             </fieldset>
                             <!--div fxLayout="row" fxLayout.xs="column">
@@ -256,12 +263,16 @@
                         </div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-raised-button color="primary" (click)="confirmUntieEmploye()"><mat-icon>undo</mat-icon></button>
-                        <button mat-raised-button color="primary" (click)="showTransferenciaEmpleadoDialog(datos_empleado.id)"><mat-icon>swap_horiz</mat-icon></button>
+                        <ng-container *ngIf="puedeTransferir">
+                            <button mat-raised-button color="primary" (click)="confirmUntieEmploye()"><mat-icon>undo</mat-icon></button>
+                            <button mat-raised-button color="primary" (click)="showTransferenciaEmpleadoDialog(datos_empleado.id)"><mat-icon>swap_horiz</mat-icon></button>
+                        </ng-container>
                         <span fxFlex></span>
                         <button mat-raised-button routerLink="/empleados">Cancelar</button>
-                        <button mat-raised-button (click)="accionGuardar()" color="success" [disabled]="!empleadoForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
-                        <button mat-raised-button (click)="confirmGuardarValidar()" color="success" [disabled]="!empleadoForm.valid || isLoading"><mat-icon>verified_user</mat-icon> Guardar y Validar</button>
+                        <ng-container *ngIf="puedeGuardar">
+                            <button mat-raised-button (click)="accionGuardar()" color="success" [disabled]="!empleadoForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
+                            <button mat-raised-button (click)="confirmGuardarValidar()" color="success" [disabled]="!empleadoForm.valid || isLoading"><mat-icon>verified_user</mat-icon> Guardar y Validar</button>
+                        </ng-container>
                     </mat-card-actions>
                 </mat-card>
             </section>
