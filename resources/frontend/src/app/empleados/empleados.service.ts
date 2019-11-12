@@ -73,6 +73,14 @@ export class EmpleadosService {
     ));
   }
 
+  actualizarEmpleado(id:any, form:any):Observable<any> {
+    return this.http.put<any>(this.url +"/"+ id, form).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
   getDatosCredencial(clave_credencial:string):Observable<any> {
     return this.http.get<any>(this.url_credencial+clave_credencial, {}).pipe(
       map( (response: any) => {

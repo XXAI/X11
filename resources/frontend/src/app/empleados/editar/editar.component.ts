@@ -492,17 +492,36 @@ export class EditarComponent implements OnInit {
     }
     delete formData.codigo;
 
+    let escolaridad = {};
     for(let i in formData.escolaridad){
       if(formData.escolaridad[i]){
-        formData['escolaridad['+i+']'] = true;
+        //formData['escolaridad['+index+']'] = i;
+        escolaridad[i] = true;
       }
     }
+    formData['escolaridad_json'] = JSON.stringify(escolaridad);
     delete formData.escolaridad;
 
     if(validar){
       formData.validado = true;
     }
 
+   
+    this.empleadosService.actualizarEmpleado(this.id_empleado, formData).subscribe(
+      respuesta => {
+        this.sharedService.showSnackBar("Se ha guardado correctamente", "Correcto", 3000);
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+        this.isLoadingCredential = false;
+      }
+    );
     console.log('--------------------------- Guardando --------------------------------------');
     console.log(formData);
     console.log('--------------------------- Termino Guardando --------------------------------------');

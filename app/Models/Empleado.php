@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Empleado extends Model
 {
     use SoftDeletes;
-    protected $fillable = [''];
+    protected $fillable = ["codigo_id", "comision_sindical_id", "cr_id","curp", "figf", "fissa", "fuente_id", "horario", "nombre", "programa_id", "rama_id", "rfc", "tipo_nomina_id", "validado"];
     protected $table = 'empleados';
 
     public function sindicato(){
@@ -37,5 +37,9 @@ class Empleado extends Model
 
     public function permutasAdscripcion(){
         return $this->hasMany('App\Models\PermutaAdscripcion', 'empleado_id', "id");
+    }
+
+    public function escolaridad(){
+        return $this->hasOne('App\Models\EmpleadoEscolaridad', 'empleado_id', "id");
     }
 }

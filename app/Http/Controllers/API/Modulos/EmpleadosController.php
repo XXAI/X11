@@ -5,11 +5,15 @@ namespace App\Http\Controllers\API\Modulos;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 
+use App\Http\Requests;
+
 use Illuminate\Support\Facades\Input;
 
 use App\Http\Controllers\Controller;
+use \Validator,\Hash, \Response, \DB;
 
 use App\Models\Empleado;
+use App\Models\EmpleadoEscolaridad;
 use App\Models\Clues;
 use App\Models\Cr;
 use App\Models\Profesion;
@@ -80,7 +84,7 @@ class EmpleadosController extends Controller
         try{
             $params = Input::all();
 
-            $empleado = Empleado::with('clues','codigo','permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues')->find($id);
+            $empleado = Empleado::with('escolaridad', 'clues','codigo','permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues')->find($id);
 
             if($empleado){
                 $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
@@ -141,6 +145,100 @@ class EmpleadosController extends Controller
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $mensajes = [
+            
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+
+        $reglas = [
+            'codigo_id'                => 'required',
+            'comision_sindical_id'                => 'required',
+            'cr_id'             => 'required',
+            'curp'              => 'required',
+            'figf'            => 'required',
+            'fissa'            => 'required',
+            'fuente_id'            => 'required',
+            'nombre'            => 'required',
+            'programa_id'            => 'required',
+            'rama_id'            => 'required',
+            'rfc'            => 'required',
+            'tipo_nomina_id'            => 'required'
+        ];
+
+        
+        $object = Empleado::find($id);
+        if(!$object){
+            return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
+        }
+
+        $inputs = Input::only("codigo_id", "comision_sindical_id", "cr_id","curp", "figf", "fissa", "fuente_id", "horario", "nombre", "programa_id", "rama_id", "rfc", "tipo_nomina_id", "validado", "escolaridad_json");
+        $v = Validator::make($inputs, $reglas, $mensajes);
+
+        if ($v->fails()) {
+            return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
+        }
+
+        DB::beginTransaction();
+        try {
+            if(isset($inputs['validado']))
+                $inputs['validado'] = 0;
+            else
+                $inputs['validado'] = 1;
+
+            $object->codigo_id              =  $inputs['codigo_id'];
+            $object->comision_sindical_id   =  $inputs['comision_sindical_id'];
+            $object->cr_id                  =  $inputs['cr_id'];
+            $object->curp                   =  $inputs['curp'];
+            $object->figf                   =  $inputs['figf'];
+            $object->fissa                  =  $inputs['fissa'];
+            $object->fuente_id              =  $inputs['fuente_id'];
+            $object->horario                = $inputs['horario'];
+            $object->nombre                 = $inputs['nombre'];
+            $object->programa_id            = $inputs['programa_id'];
+            $object->rama_id                = $inputs['rama_id'];
+            $object->rfc                    = $inputs['rfc'];
+            $object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
+            $object->validado         = $inputs['validado'];
+
+
+            $object->save();
+
+            $escolaridad = json_decode($inputs['escolaridad_json']);
+
+            $objeto_escolaridad = EmpleadoEscolaridad::where("empleado_id", "=", $object->id)->first();
+            $arreglo_escolaridad = array("empleado_id" => $object->id, "secundaria"=>0, "preparatoria"=>0, "tecnica"=>0, "carrera"=>0, "titulo"=>0, "maestria"=>0, "doctorado"=>0, "cursos"=>0, "especialidad"=>0, "diplomado"=>0, "poliglota"=>0);
+            foreach ($escolaridad as $key => $value) {
+                $arreglo_escolaridad[$key] = 1;
+            }
+            
+            if($objeto_escolaridad)
+                $objeto_escolaridad->update($arreglo_escolaridad);
+            else{
+                EmpleadoEscolaridad::create($arreglo_escolaridad);
+            } 
+                
+            DB::commit();
+            
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
     }
 
     public function transferEmployee($id){
