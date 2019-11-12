@@ -25,7 +25,13 @@ class EmpleadosController extends Controller
 
         try{
             $parametros = Input::all();
-            $empleados = Empleado::getModel();
+            $empleados = Empleado::select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues')
+                            ->leftJoin('permuta_adscripcion',function($join){
+                                $join->on('permuta_adscripcion.empleado_id','=','empleados.id')
+                                    ->where('permuta_adscripcion.estatus',1);
+                            });
+
+            $empleados = $empleados->where('empleados.estatus','!=','3');
             
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
@@ -88,7 +94,7 @@ class EmpleadosController extends Controller
                 $selected_index = $params['selectedIndex'];
 
                 $real_index = ($per_page * $page_index) + $selected_index;
-                $empleados = Empleado::select('id');
+                $empleados = Empleado::select('id')->where('estatus','!=','3');
 
                 if($real_index == 0){
                     $limit_index = 0;
@@ -154,7 +160,26 @@ class EmpleadosController extends Controller
                 'observacion'=>''
             ]);
 
+            $empleado->estatus = 4;
+            $empleado->save();
+
             return response()->json(['data'=>$parametros],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function unlinkEmployee($id){
+        try{
+            $empleado = Empleado::find($id);
+            $loggedUser = auth()->userOrFail();
+
+            $empleado->estatus = 3;
+            //$empleado->clues = null;
+            //$empleado->cr = null;
+            $empleado->save();
+
+            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

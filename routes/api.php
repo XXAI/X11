@@ -32,6 +32,8 @@ Route::group(['middleware'=>'auth'],function($router){
     //Modulos del Sistema
     Route::apiResource('empleados',          'API\Modulos\EmpleadosController');
     Route::put('transferir-empleado/{id}',   'API\Modulos\EmpleadosController@transferEmployee');
+    Route::put('liberar-empleado/{id}',   'API\Modulos\EmpleadosController@unlinkEmployee');
+
     Route::get('catalogos-filtro-empleados', 'API\Modulos\EmpleadosController@getFilterCatalogs');
 
     Route::apiResource('catalogos',          'API\Modulos\CatalogosController');

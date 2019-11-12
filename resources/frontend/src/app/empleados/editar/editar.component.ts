@@ -187,22 +187,29 @@ export class EditarComponent implements OnInit {
     //Inicia: Datos para los botones de Anterior y Siguiente
     let paginator = this.sharedService.getDataFromCurrentApp('paginator');
     let filter = this.sharedService.getDataFromCurrentApp('filter');
+    let query = this.sharedService.getDataFromCurrentApp('searchQuery');
 
     for (let i in paginator) {
       params[i] = paginator[i];
     }
 
     for (let i in filter) {
-      if(filter.clues){ params['clues'] = filter.clues.clues; }
-      if(filter.cr){ params['cr'] = filter.cr.cr; }
-      if(filter.profesion){ params['profesion'] = filter.profesion.id; }
-      if(filter.rama){ params['rama'] = filter.rama.id; }
+      if(filter.clues){       params['clues']     = filter.clues.clues; }
+      if(filter.cr){          params['cr']        = filter.cr.cr; }
+      if(filter.profesion){   params['profesion'] = filter.profesion.id; }
+      if(filter.rama){        params['rama']      = filter.rama.id; }
+    }
+
+    if(query){
+      params['query'] = query;
     }
     //Termina: Datos para los botones de Anterior y Siguiente
 
     this.empleadosService.obtenerDatosEmpleado(id,params).subscribe(
       response =>{
         console.log(response);
+        this.empleadoForm.reset();
+
         if(typeof response === 'object'){
           this.datos_empleado = response.data;
 
@@ -211,11 +218,26 @@ export class EditarComponent implements OnInit {
           this.statusIcon = 'help';
           this.statusLabel = 'Por Validar';
 
-          if(this.datos_empleado.permuta_adscripcion_activa){
+          if(this.datos_empleado.estatus == 3){
+            this.puedeTransferir = false;
+            this.puedeGuardar = false;
+            this.statusLabel = 'Sin Identificar';
+            this.statusIcon = 'warning';
+          }else if(this.datos_empleado.estatus == 4 && this.datos_empleado.permuta_adscripcion_activa){ //empelado estatus = 4
             this.puedeTransferir = false;
             this.puedeGuardar = false;
             this.statusLabel = 'En Transferencia';
             this.statusIcon = 'notification_important';
+          }else if(this.datos_empleado.status == 2){
+            this.puedeTransferir = false;
+            this.puedeGuardar = false;
+            this.statusLabel = 'Dado de Baja';
+            this.statusIcon = 'remove_circle';
+          }else if(this.datos_empleado.status == 1 && this.datos_empleado.validado == 1){
+            this.puedeTransferir = true;
+            this.puedeGuardar = true;
+            this.statusLabel = 'Validado';
+            this.statusIcon = 'verified_user';
           }
 
           this.empleado = true;
@@ -223,9 +245,17 @@ export class EditarComponent implements OnInit {
           if(response.pagination){
             let paginator = this.sharedService.getDataFromCurrentApp('paginator');
 
+            
             let paginationIndex = response.pagination.next_prev.findIndex(item => item.id == this.datos_empleado.id);
-            this.miniPagination.next = (response.pagination.next_prev[paginationIndex+1])?response.pagination.next_prev[paginationIndex+1].id:0;
-            this.miniPagination.previous = (response.pagination.next_prev[paginationIndex-1])?response.pagination.next_prev[paginationIndex-1].id:0;
+            //Aqui verificar estatus
+            if(paginationIndex < 0){
+              this.miniPagination.next = (response.pagination.next_prev[1])?response.pagination.next_prev[1].id:0;
+              this.miniPagination.previous = (response.pagination.next_prev[0])?response.pagination.next_prev[0].id:0;
+            }else{
+              this.miniPagination.next = (response.pagination.next_prev[paginationIndex+1])?response.pagination.next_prev[paginationIndex+1].id:0;
+              this.miniPagination.previous = (response.pagination.next_prev[paginationIndex-1])?response.pagination.next_prev[paginationIndex-1].id:0;
+            }
+            
 
             this.miniPagination.total = response.pagination.total;
 
@@ -383,7 +413,7 @@ export class EditarComponent implements OnInit {
     });
   }
 
-  confirmUntieEmploye(){
+  confirmUnlinkEmploye(){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
       data:{dialogTitle:'Liberar Empleado',dialogMessage:'¿Realmente desea liberar el trabajador de su clues? Escriba LIBERAR a continuación para realizar el proceso.',validationString:'LIBERAR',btnColor:'primary',btnText:'Liberar'}
@@ -400,6 +430,15 @@ export class EditarComponent implements OnInit {
               this.sharedService.showSnackBar(errorMessage, null, 3000);
             } else {
               console.log(response);
+              this.loadEmpleadoData(id);
+
+              let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+              if(paginator.selectedIndex > 0){
+                paginator.selectedIndex -= 1;
+              }else{
+                paginator.selectedIndex = paginator.pageSize-1;
+              }
+              this.sharedService.setDataToCurrentApp('paginator',paginator);
             }
             this.isLoading = false;
           },
@@ -439,15 +478,33 @@ export class EditarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
+        this.accionGuardar(true);
         console.log(valid);
       }
     });
   }
 
-  accionGuardar(){
+  accionGuardar(validar:boolean = false){
+    let formData = JSON.parse(JSON.stringify(this.empleadoForm.value));
+
+    if(formData.codigo){
+      formData.codigo_id = formData.codigo.codigo;
+    }
+    delete formData.codigo;
+
+    for(let i in formData.escolaridad){
+      if(formData.escolaridad[i]){
+        formData['escolaridad['+i+']'] = true;
+      }
+    }
+    delete formData.escolaridad;
+
+    if(validar){
+      formData.validado = true;
+    }
+
     console.log('--------------------------- Guardando --------------------------------------');
-    console.log(this.empleadoForm.value);
-    console.log(this.empleadoForm.validator);
+    console.log(formData);
     console.log('--------------------------- Termino Guardando --------------------------------------');
   }
 }

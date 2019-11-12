@@ -10,10 +10,11 @@ import { getEspPaginatorIntl } from '../esp-paginator-intl';
 import { EditarComponent } from './editar/editar.component';
 import { EstudiosDialogComponent } from './estudios-dialog/estudios-dialog.component';
 import { TransferenciaEmpleadoDialogComponent } from './transferencia-empleado-dialog/transferencia-empleado-dialog.component';
+import { ConfirmarTransferenciaDialogComponent } from './confirmar-transferencia-dialog/confirmar-transferencia-dialog.component';
 import { EditarHorarioDialogComponent } from './editar-horario-dialog/editar-horario-dialog.component';
 
 @NgModule({
-  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent],
+  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent],
   imports: [
     CommonModule,
     EmpleadosRoutingModule,
@@ -24,6 +25,7 @@ import { EditarHorarioDialogComponent } from './editar-horario-dialog/editar-hor
   entryComponents:[
     EstudiosDialogComponent,
     TransferenciaEmpleadoDialogComponent,
+    ConfirmarTransferenciaDialogComponent,
     EditarHorarioDialogComponent
   ],
   providers:[

@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Confirmar Transferencia del Empleado</h1>
+<div mat-dialog-content>
+    <div fxLayout="row" fxLayout.xs="column" >
+        <!--mat-form-field class="example-full-width" fxFlex>
+            <input matInput placeholder="CLUES" [matAutocomplete]="cluesAutocomplete" formControlName='clues'>
+            <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngIf="cluesLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                <ng-container *ngIf="!cluesLoading">
+                    <mat-option *ngFor="let item of filteredClues" [value]="item">
+                        [{{item.clues}}] {{ item.nombre_unidad }}
+                    </mat-option>
+                </ng-container>
+            </mat-autocomplete>
+            <mat-hint align="end" *ngIf="cluesForm.get('clues').value">[{{cluesForm.get('clues').value.clues}}]</mat-hint>
+        </mat-form-field-->
+    </div>
+</div>
+<div mat-dialog-actions>
+    <span fxFlex></span>
+    <button mat-button (click)='cancelar()'>Cancelar</button>
+    <button mat-raised-button (click)="guardar()" color="primary"><mat-icon>swap_horiz</mat-icon> Transferir</button>
+</div>

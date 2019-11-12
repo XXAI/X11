@@ -11,6 +11,7 @@ export class EmpleadosService {
 
   url = `${environment.base_url}/empleados`;
   url_transfer = `${environment.base_url}/transferir-empleado/`;
+  url_unlink = `${environment.base_url}/liberar-empleado/`;
 
   url_catalogos = `${environment.base_url}/catalogos`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
@@ -65,9 +66,9 @@ export class EmpleadosService {
   }
 
   desligarEmpleado(id:any):Observable<any> {
-    return this.http.get<any>(this.url +"/"+ id, {}).pipe(
+    return this.http.put<any>(this.url_unlink + id, {}).pipe(
       map( (response: any) => {        
-        return response.data;
+        return response;
       }
     ));
   }

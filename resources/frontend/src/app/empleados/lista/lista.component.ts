@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatExpansionPanel } from '@angular/material';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
+import { ConfirmarTransferenciaDialogComponent } from '../confirmar-transferencia-dialog/confirmar-transferencia-dialog.component';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
@@ -38,6 +39,14 @@ export class ListaComponent implements OnInit {
   pageSize: number = 20;
   selectedItemIndex: number = -1;
 
+  statusIcon:any = {
+    '1-0':'help', //activo
+    '1-1':'verified_user', //activo verificado 
+    '2':'remove_circle', //baja
+    '3':'warning', // No identificado
+    '4':'swap_horizontal_circle' //en transferencia
+  };
+
   filterCatalogs:any = {};
   filteredCatalogs:any = {};
 
@@ -50,7 +59,7 @@ export class ListaComponent implements OnInit {
     'rama': [undefined]
   });
 
-  displayedColumns: string[] = ['id','Nombre','RFC','Clues','actions'];
+  displayedColumns: string[] = ['estatus','Nombre','RFC','Clues','actions'];
   dataSource: any = [];
 
   //showAdvancedFilter:boolean = false;
@@ -88,12 +97,8 @@ export class ListaComponent implements OnInit {
         pageSize: this.pageSize,
         previousPageIndex: (this.currentPage > 0)?this.currentPage-1:0
        };
-       console.log('asfdasdfasdfds------------------------------');
-       console.log(dummyPaginator);
       this.sharedService.setDataToCurrentApp('paginator', dummyPaginator);
     }
-
-    console.log(this.selectedItemIndex);
 
     if(appStoredData['filter']){
       this.filterForm.patchValue(appStoredData['filter']);
@@ -268,6 +273,7 @@ export class ListaComponent implements OnInit {
   }
 
   applyFilter(){
+    this.selectedItemIndex = -1;
     this.paginator.pageIndex = 0;
     this.paginator.pageSize = this.pageSize;
     this.loadEmpleadosData(null);
@@ -292,11 +298,24 @@ export class ListaComponent implements OnInit {
     }
   }
 
+  confirmTransferEmploye(id:number){
+    const dialogRef = this.dialog.open(ConfirmarTransferenciaDialogComponent, {
+      width: '80%',
+      data:{id:id}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log(valid);
+      }
+    });
+  }
+
   confirmUntieEmploye(id: number)
   {
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
-      data:{dialogTitle:'Liberar Usuario',dialogMessage:'¿Realmente desea liberar el trabajador de su clues? Escriba LIBERAR a continuación para realizar el proceso.',validationString:'LIBERAR',btnColor:'warn',btnText:'Liberar'}
+      data:{dialogTitle:'Liberar Empleado',dialogMessage:'¿Realmente desea liberar el trabajador de su clues? Escriba LIBERAR a continuación para realizar el proceso.',validationString:'LIBERAR',btnColor:'primary',btnText:'Liberar'}
     });
 
     dialogRef.afterClosed().subscribe(valid => {
@@ -307,12 +326,7 @@ export class ListaComponent implements OnInit {
               let errorMessage = response.error.message;
               this.sharedService.showSnackBar(errorMessage, null, 3000);
             } else {
-              this.dataSource = [];
-              this.resultsLength = 0;
-              if(response.data.total > 0){
-                this.dataSource = response.data.data;
-                this.resultsLength = response.data.total;
-              }
+              this.loadEmpleadosData();
             }
             this.isLoading = false;
           },
