@@ -196,7 +196,7 @@ export class EditarComponent implements OnInit {
     for (let i in filter) {
       if(filter.clues){       params['clues']     = filter.clues.clues; }
       if(filter.cr){          params['cr']        = filter.cr.cr; }
-      if(filter.profesion){   params['profesion'] = filter.profesion.id; }
+      if(filter.estatus){     params['estatus']   = filter.estatus.id; }
       if(filter.rama){        params['rama']      = filter.rama.id; }
     }
 
@@ -397,7 +397,7 @@ export class EditarComponent implements OnInit {
   showTransferenciaEmpleadoDialog(id:number){
     const dialogRef = this.dialog.open(TransferenciaEmpleadoDialogComponent, {
       width: '90%',
-      data: {id:id, cluesActual:this.datos_empleado.clues.clues}
+      data: {id:id, cluesActual:this.datos_empleado.clues.clues, crActual:this.datos_empleado.cr_id}
     });
 
     dialogRef.afterClosed().subscribe(response => {

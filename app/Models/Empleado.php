@@ -27,7 +27,7 @@ class Empleado extends Model
         return $this->hasOne('App\Models\CluesEmpleado', 'empleado_id', "id")->whereNull('fecha_fin');
     }
 
-    public function adcripcionHistorial(){
+    public function adscripcionHistorial(){
         return $this->hasMany('App\Models\CluesEmpleado', 'empleado_id', "id");
     }
 

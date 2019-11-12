@@ -43,7 +43,6 @@ class SearchCatalogsController extends Controller
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
                 $codigos = $codigos->paginate($resultadosPorPagina);
             } else {
-
                 $codigos = $codigos->get();
             }
 
@@ -61,7 +60,7 @@ class SearchCatalogsController extends Controller
 
         try{
             $parametros = Input::all();
-            $unidades = Clues::select('clues', 'cve_jurisdiccion', 'nombre_unidad', 'estatus', 'clave_estatus', 'nivel_atencion', 'clave_nivel', 'estatus_acreditacion');
+            $unidades = Clues::select('clues', 'cve_jurisdiccion', 'nombre_unidad', 'estatus', 'clave_estatus', 'nivel_atencion', 'clave_nivel', 'estatus_acreditacion')->with('cr');
             
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){

@@ -1,14 +1,9 @@
 <h1 mat-dialog-title>Transferir Empleado</h1>
 <div mat-dialog-content>
-    <div fxLayout="row" fxLayout.xs="column" [formGroup]='cluesForm'>
+    <div fxLayout="column" fxLayout.xs="column" [formGroup]='cluesForm'>
         <mat-form-field class="example-full-width" fxFlex>
             <input matInput placeholder="CLUES" [matAutocomplete]="cluesAutocomplete" formControlName='clues'>
-            <!--mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="displayFn" [panelWidth]="'auto'">
-                <mat-option *ngFor="let item of filteredClues | async" [value]="item">
-                    {{item.nombre_unidad}}
-                </mat-option>
-            </mat-autocomplete-->
-            <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="displayFn">
+            <mat-autocomplete #cluesAutocomplete="matAutocomplete" (optionSelected)="mostrarCR($event.option.value)" [displayWith]="displayFn">
                 <mat-option *ngIf="cluesLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                 <ng-container *ngIf="!cluesLoading">
                     <mat-option *ngFor="let item of filteredClues" [value]="item">
@@ -18,10 +13,24 @@
             </mat-autocomplete>
             <mat-hint align="end" *ngIf="cluesForm.get('clues').value">[{{cluesForm.get('clues').value.clues}}]</mat-hint>
         </mat-form-field>
+
+        <mat-form-field fxFlex fxFlex.xs="100">
+            <mat-label>CR</mat-label>
+            <mat-select formControlName="cr">
+                <mat-option *ngFor="let item of cluesCR" [value]="item.cr">
+                    {{item.descripcion}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex fxFlex.xs="100" appearance="outline">
+            <mat-label>Observaciones</mat-label>
+            <textarea matInput formControlName="observaciones" rows="5"></textarea>
+          </mat-form-field>
     </div>
 </div>
 <div mat-dialog-actions>
     <span fxFlex></span>
     <button mat-button (click)='cancelar()'>Cancelar</button>
-    <button mat-raised-button (click)="transferir()" color="primary" [disabled]="!(this.cluesForm.get('clues').value.clues && this.cluesForm.get('clues').value.clues != cluesActual)"><mat-icon>swap_horiz</mat-icon> Transferir</button>
+    <button mat-raised-button (click)="transferir()" color="primary" [disabled]="!isValid()"><mat-icon>swap_horiz</mat-icon> Transferir</button>
 </div>

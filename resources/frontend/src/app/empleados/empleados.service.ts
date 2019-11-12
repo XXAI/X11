@@ -11,6 +11,8 @@ export class EmpleadosService {
 
   url = `${environment.base_url}/empleados`;
   url_transfer = `${environment.base_url}/transferir-empleado/`;
+  url_transfer_data = `${environment.base_url}/obtener-datos-transferencia/`;
+  url_finish_transfer = `${environment.base_url}/finalizar-transferencia/`;
   url_unlink = `${environment.base_url}/liberar-empleado/`;
 
   url_catalogos = `${environment.base_url}/catalogos`;
@@ -51,6 +53,22 @@ export class EmpleadosService {
 
   transferirEmpleado(id:any,payload:any):Observable<any> {
     return this.http.put<any>(this.url_transfer + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  obtenerDatosTransferenciaEmpleado(id:any):Observable<any> {
+    return this.http.get<any>(this.url_transfer_data+ id, {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  finalizarTransferenciaEmpleado(id:any, payload:any):Observable<any> {
+    return this.http.put<any>(this.url_finish_transfer + id, payload).pipe(
       map( (response: any) => {        
         return response;
       }

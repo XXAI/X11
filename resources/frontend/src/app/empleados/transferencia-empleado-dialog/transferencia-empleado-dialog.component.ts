@@ -10,6 +10,7 @@ import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/
 export interface TransferenciaDialogData {
   id: number;
   cluesActual: string;
+  crActual: string;
 }
 
 @Component({
@@ -28,9 +29,13 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
 
   id:number;
   cluesActual:any;
+  crActual:any;
+  cluesCR: any = [{cr:'',descripcion:'Seleccione una clues'}];
 
   cluesForm = this.fb.group({
-    clues: ['']
+    clues: ['',Validators.required],
+    cr: ['',Validators.required],
+    observaciones: []
   });
 
   cluesLoading: boolean = false;
@@ -40,8 +45,7 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
     if(this.data.id){
       this.id = this.data.id;
       this.cluesActual = this.data.cluesActual;
-
-      console.log(this.cluesActual);
+      this.crActual = this.data.crActual;
     }
     
     this.cluesForm.get('clues').valueChanges
@@ -56,6 +60,25 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
     ).subscribe(items => this.filteredClues = items);
   }
 
+  mostrarCR(clues){
+    this.cluesCR = clues.cr;
+    if(this.cluesCR.length == 1){
+      this.cluesForm.get('cr').patchValue(this.cluesCR[0].cr);
+    }else{
+      this.cluesForm.get('cr').reset();
+    }
+  }
+
+  isValid(){
+    console.log(this.cluesForm.get('cr').value);
+    if(this.cluesForm.valid){
+      if(this.cluesForm.get('cr').value != this.crActual){ //this.cluesForm.get('clues').value.clues != this.cluesActual && 
+        return true;
+      }
+    }
+    return false;
+  }
+
   transferir(){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
@@ -64,7 +87,12 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
-        this.empleadosService.transferirEmpleado(this.id,this.cluesForm.value).subscribe(
+        let params = {
+          clues: this.cluesForm.get('clues').value.clues,
+          cr: this.cluesForm.get('cr').value,
+          observaciones: this.cluesForm.get('observaciones').value
+        }
+        this.empleadosService.transferirEmpleado(this.id,params).subscribe(
           response => {
             console.log(response);
             this.dialogRef.close(true);

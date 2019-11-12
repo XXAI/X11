@@ -18,6 +18,8 @@ use App\Models\Clues;
 use App\Models\Cr;
 use App\Models\Profesion;
 use App\Models\Rama;
+use App\Models\PermutaAdscripcion;
+use App\Models\CluesEmpleado;
 
 class EmpleadosController extends Controller
 {
@@ -33,7 +35,7 @@ class EmpleadosController extends Controller
                             ->leftJoin('permuta_adscripcion',function($join){
                                 $join->on('permuta_adscripcion.empleado_id','=','empleados.id')
                                     ->where('permuta_adscripcion.estatus',1);
-                            });
+                            })->orderBy('nombre');
 
             $empleados = $empleados->where('empleados.estatus','!=','3');
             
@@ -55,9 +57,17 @@ class EmpleadosController extends Controller
                     $empleados = $empleados->where('cr_id',$parametros['cr']);
                 }
 
-                if(isset($parametros['profesion']) && $parametros['profesion']){
-                    $empleados = $empleados->where('profesion_id',$parametros['profesion']);
+                if(isset($parametros['estatus']) && $parametros['estatus']){
+                    $estatus = explode('-',$parametros['estatus']);
+                    $empleados = $empleados->where('empleados.estatus',$estatus[0]);
+                    if(isset($estatus[1])){
+                        $empleados = $empleados->where('validado',$estatus[1]);
+                    }
                 }
+
+                /*if(isset($parametros['profesion']) && $parametros['profesion']){
+                    $empleados = $empleados->where('profesion_id',$parametros['profesion']);
+                }*/
 
                 if(isset($parametros['rama']) && $parametros['rama']){
                     $empleados = $empleados->where('rama_id',$parametros['rama']);
@@ -98,7 +108,7 @@ class EmpleadosController extends Controller
                 $selected_index = $params['selectedIndex'];
 
                 $real_index = ($per_page * $page_index) + $selected_index;
-                $empleados = Empleado::select('id')->where('estatus','!=','3');
+                $empleados = Empleado::select('id')->where('estatus','!=','3')->orderBy('nombre');
 
                 if($real_index == 0){
                     $limit_index = 0;
@@ -124,9 +134,16 @@ class EmpleadosController extends Controller
                     $empleados = $empleados->where('cr_id',$params['cr']);
                 }
 
-                if(isset($params['profesion']) && $params['profesion']){
-                    $empleados = $empleados->where('profesion_id',$params['profesion']);
+                if(isset($params['estatus']) && $params['estatus']){
+                    $estatus = explode('-',$params['estatus']);
+                    $empleados = $empleados->where('empleados.estatus',$estatus[0]);
+                    if(isset($estatus[1])){
+                        $empleados = $empleados->where('validado',$estatus[1]);
+                    }
                 }
+                /*if(isset($params['profesion']) && $params['profesion']){
+                    $empleados = $empleados->where('profesion_id',$params['profesion']);
+                }*/
 
                 if(isset($params['rama']) && $params['rama']){
                     $empleados = $empleados->where('rama_id',$params['rama']);
@@ -250,12 +267,14 @@ class EmpleadosController extends Controller
 
             $empleado->permutasAdscripcion()->create([
                 'clues_origen'=>$empleado->clues,
-                'clues_destino'=>$parametros['clues']['clues'],
+                'cr_origen_id'=>$empleado->cr_id,
+                'clues_destino'=>$parametros['clues'],
+                'cr_destino_id'=>$parametros['cr'],
                 'estatus' => 1,
                 'user_origen_id'=>$loggedUser->id,
                 'user_destino_id'=>$loggedUser->id,
                 'user_id'=>$loggedUser->id,
-                'observacion'=>''
+                'observacion'=>$parametros['observaciones']
             ]);
 
             $empleado->estatus = 4;
@@ -263,6 +282,64 @@ class EmpleadosController extends Controller
 
             return response()->json(['data'=>$parametros],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function getEmployeeTransferData($id){
+        try{
+            $parametros = Input::all();
+            
+            $datos_transferencia = PermutaAdscripcion::with('cluesOrigen','cluesDestino','crOrigen','crDestino')->where('empleado_id',$id)->where('estatus',1)->first();
+            
+            return response()->json(['data'=>$datos_transferencia],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function finishTransferEmployee($id){
+        try{
+            $parametros = Input::all();
+            
+            $datos_transferencia = PermutaAdscripcion::where('empleado_id',$id)->where('estatus',1)->first();
+            $empleado = Empleado::find($id);
+
+            DB::beginTransaction();
+
+            if($parametros['estatus'] == 2){ //aceptado
+                $datos_transferencia->estatus = 2;
+                $datos_transferencia->save();
+
+                $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$datos_transferencia->clues_origen)->whereNull('fecha_fin')->first();
+
+                if(!$clues_empleado){
+                    throw new Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
+                }
+
+                $clues_empleado->fecha_fin = $parametros['fecha_transferencia'];
+                $clues_empleado->save();
+
+                $empleado->adscripcionHistorial()->create(['clues'=>$datos_transferencia->clues_destino, 'cr'=>$datos_transferencia->cr_destino_id, 'fecha_inicio'=>$parametros['fecha_transferencia']]);
+
+                $empleado->estatus = 1;
+                $empleado->clues = $datos_transferencia->clues_destino;
+                $empleado->cr_id = $datos_transferencia->cr_destino_id; 
+                $empleado->save();
+
+            }else{ //3 => cancelado
+                $datos_transferencia->estatus = 3;
+                $datos_transferencia->save();
+
+                $empleado->estatus = 1;
+                $empleado->save();
+            }
+
+            DB::commit();
+
+            return response()->json(['data'=>$datos_transferencia],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            DB::rollback();
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
@@ -288,8 +365,16 @@ class EmpleadosController extends Controller
             $catalogos = [
                 'clues'     => Clues::all(),
                 'cr'        => Cr::orderBy("descripcion")->get(),
-                'profesion' => Profesion::all(),
+                //'profesion' => Profesion::all(),
                 'rama'      => Rama::all(),
+                'estatus'   => [
+                                    ['id'=>'1','descripcion'=>'Activos'],
+                                    ['id'=>'1-0','descripcion'=>'Activos - Sin Validar'],
+                                    ['id'=>'1-1','descripcion'=>'Activos - Validados'],
+                                    //['id'=>'2','descripcion'=>'Baja'],
+                                    //['id'=>'3','descripcion'=>'Indefinidos'],
+                                    ['id'=>'4','descripcion'=>'En Transferencia']
+                            ]
             ];
 
             return response()->json(['data'=>$catalogos],HttpResponse::HTTP_OK);

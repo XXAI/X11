@@ -176,9 +176,9 @@
                                 <mat-form-field fxFlex="20" fxFlex.xs="100">
                                     <mat-label>Rama</mat-label>
                                     <mat-select formControlName="rama_id">
-                                    <mat-option *ngFor="let item of catalogos['rama']" [value]="item.id">
-                                        {{item.descripcion}}
-                                    </mat-option>
+                                        <mat-option *ngFor="let item of catalogos['rama']" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
 

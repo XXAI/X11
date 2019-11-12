@@ -55,7 +55,7 @@ export class ListaComponent implements OnInit {
   filterForm = this.fb.group({
     'clues': [undefined],
     'cr': [undefined],
-    'profesion': [undefined],
+    'estatus': [undefined],
     'rama': [undefined]
   });
 
@@ -115,13 +115,13 @@ export class ListaComponent implements OnInit {
         this.filterCatalogs = {
           'clues': response.data.clues,
           'cr': response.data.cr,
-          'profesion': response.data.profesion,
+          'estatus': response.data.estatus,
           'rama': response.data.rama
         };
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
         this.filteredCatalogs['cr'] = this.filterForm.controls['cr'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'cr','descripcion')));
-        this.filteredCatalogs['profesion'] = this.filterForm.controls['profesion'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'profesion','descripcion')));
+        //this.filteredCatalogs['estatus'] = this.filterForm.controls['estatus'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'estatus','descripcion')));
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -218,7 +218,7 @@ export class ListaComponent implements OnInit {
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
         if(errorResponse.status == 409){
-          errorMessage = errorResponse.error.message;
+          errorMessage = errorResponse.error.error.message;
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
@@ -269,6 +269,10 @@ export class ListaComponent implements OnInit {
   }
 
   compareRamaSelect(op,value){
+    return op.id == value.id;
+  }
+
+  compareEstatusSelect(op,value){
     return op.id == value.id;
   }
 
@@ -333,7 +337,7 @@ export class ListaComponent implements OnInit {
           errorResponse =>{
             var errorMessage = "Ocurrió un error.";
             if(errorResponse.status == 409){
-              errorMessage = errorResponse.error.message;
+              errorMessage = errorResponse.error.error.message;
             }
             this.sharedService.showSnackBar(errorMessage, null, 3000);
             this.isLoading = false;
