@@ -29,7 +29,7 @@ class CatalogosController extends Controller
             $params = Input::all();
             //$clues = Clues::all();
             //$codigo = Codigo::orderBy("descripcion")->get();
-            $cr = Cr::orderBy("descripcion")->get();
+            //$cr = Cr::orderBy("descripcion")->get();
             $fuente = Fuente::orderBy("descripcion")->get();
             //$tipoProfesion = TipoProfesion::orderBy("id")->get();
             $nivelAcademico = NivelAcademico::orderBy('nivel')->get();
@@ -49,7 +49,7 @@ class CatalogosController extends Controller
             $rama = Rama::orderBy("descripcion")->get();
             $tipoNomina = TipoNomina::orderBy("descripcion")->get();
             
-            return response()->json(["cr"=>$cr, "fuente"=>$fuente, "programa"=>$programa, "rama"=>$rama, "tipoNomina"=>$tipoNomina, 'nivel_academico'=>$nivelAcademico, 'sindicatos'=>$sindicatos],HttpResponse::HTTP_OK);
+            return response()->json(["fuente"=>$fuente, "programa"=>$programa, "rama"=>$rama, "tipoNomina"=>$tipoNomina, 'nivel_academico'=>$nivelAcademico, 'sindicatos'=>$sindicatos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

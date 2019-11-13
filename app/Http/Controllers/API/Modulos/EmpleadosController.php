@@ -30,15 +30,24 @@ class EmpleadosController extends Controller
         }*/
 
         try{
-            $parametros = Input::all();
-            $empleados = Empleado::select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues')
-                            ->leftJoin('permuta_adscripcion',function($join){
-                                $join->on('permuta_adscripcion.empleado_id','=','empleados.id')
-                                    ->where('permuta_adscripcion.estatus',1);
-                            })->orderBy('nombre');
-
-            $empleados = $empleados->where('empleados.estatus','!=','3');
+            $access = $this->getUserAccessData();
             
+            $parametros = Input::all();
+            $empleados = Empleado::select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
+                            ->leftJoin('permuta_adscripcion',function($join)use($access){
+                                $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1)->whereIn('cr_destino_id',$access->lista_cr);
+                            })->where('empleados.estatus','!=','3')->orderBy('nombre');
+
+            //filtro de valores por permisos del usuario
+            //$empleados = $empleados->->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+            $empleados = $empleados->where(function($query)use($access){
+                $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr);
+            });
+
+            $empleados = $empleados->orWhere(function($query)use($access){
+                $query->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+            });
+
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
                 $empleados = $empleados->where(function($query)use($parametros){
@@ -92,9 +101,11 @@ class EmpleadosController extends Controller
     public function show($id)
     {
         try{
+            $access = $this->getUserAccessData();
+
             $params = Input::all();
 
-            $empleado = Empleado::with('escolaridad', 'clues','codigo','permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues')->find($id);
+            $empleado = Empleado::with('escolaridad', 'clues','codigo','permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues','adscripcionActiva.cr')->find($id);
 
             if($empleado){
                 $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
@@ -108,7 +119,20 @@ class EmpleadosController extends Controller
                 $selected_index = $params['selectedIndex'];
 
                 $real_index = ($per_page * $page_index) + $selected_index;
-                $empleados = Empleado::select('id')->where('estatus','!=','3')->orderBy('nombre');
+                $empleados = Empleado::select('empleados.id')->leftJoin('permuta_adscripcion',function($join)use($access){
+                                            $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1)->whereIn('cr_destino_id',$access->lista_cr);
+                                        })->where('empleados.estatus','!=','3')->orderBy('nombre');
+
+                //filtro de valores por permisos del usuario
+                //filtro de valores por permisos del usuario
+                //$empleados = $empleados->->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                $empleados = $empleados->where(function($query)use($access){
+                    $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr);
+                });
+
+                $empleados = $empleados->orWhere(function($query)use($access){
+                    $query->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                });
 
                 if($real_index == 0){
                     $limit_index = 0;
@@ -211,24 +235,24 @@ class EmpleadosController extends Controller
         DB::beginTransaction();
         try {
             if(isset($inputs['validado']))
-                $inputs['validado'] = 0;
-            else
                 $inputs['validado'] = 1;
+            else
+                $inputs['validado'] = 0;
 
-            $object->codigo_id              =  $inputs['codigo_id'];
-            $object->comision_sindical_id   =  $inputs['comision_sindical_id'];
-            $object->cr_id                  =  $inputs['cr_id'];
-            $object->curp                   =  $inputs['curp'];
-            $object->figf                   =  $inputs['figf'];
-            $object->fissa                  =  $inputs['fissa'];
-            $object->fuente_id              =  $inputs['fuente_id'];
+            $object->codigo_id              = $inputs['codigo_id'];
+            $object->comision_sindical_id   = $inputs['comision_sindical_id'];
+            $object->cr_id                  = $inputs['cr_id'];
+            $object->curp                   = $inputs['curp'];
+            $object->figf                   = $inputs['figf'];
+            $object->fissa                  = $inputs['fissa'];
+            $object->fuente_id              = $inputs['fuente_id'];
             $object->horario                = $inputs['horario'];
             $object->nombre                 = $inputs['nombre'];
             $object->programa_id            = $inputs['programa_id'];
             $object->rama_id                = $inputs['rama_id'];
             $object->rfc                    = $inputs['rfc'];
             $object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
-            $object->validado         = $inputs['validado'];
+            $object->validado               = $inputs['validado'];
 
 
             $object->save();
@@ -309,6 +333,9 @@ class EmpleadosController extends Controller
 
             if($parametros['estatus'] == 2){ //aceptado
                 $datos_transferencia->estatus = 2;
+                if($parametros['observaciones']){
+                    $datos_transferencia->observacion .=  "\nACEPTADO: \n".$parametros['observaciones'];
+                }
                 $datos_transferencia->save();
 
                 $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$datos_transferencia->clues_origen)->whereNull('fecha_fin')->first();
@@ -329,6 +356,9 @@ class EmpleadosController extends Controller
 
             }else{ //3 => cancelado
                 $datos_transferencia->estatus = 3;
+                if($parametros['observaciones']){
+                    $datos_transferencia->observacion .=  "\nRECHAZADO: \n".$parametros['observaciones'];
+                }
                 $datos_transferencia->save();
 
                 $empleado->estatus = 1;
@@ -362,9 +392,11 @@ class EmpleadosController extends Controller
 
     public function getFilterCatalogs(){
         try{
+            $access = $this->getUserAccessData();
+
             $catalogos = [
-                'clues'     => Clues::all(),
-                'cr'        => Cr::orderBy("descripcion")->get(),
+                'clues'     => Clues::whereIn('clues',$access->lista_clues)->orderBy('nombre_unidad')->get(),
+                'cr'        => Cr::whereIn('cr',$access->lista_cr)->orderBy("descripcion")->get(),
                 //'profesion' => Profesion::all(),
                 'rama'      => Rama::all(),
                 'estatus'   => [
@@ -381,5 +413,25 @@ class EmpleadosController extends Controller
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
+    }
+
+    private function getUserAccessData($loggedUser = null){
+        if(!$loggedUser){
+            $loggedUser = auth()->userOrFail();
+        }
+        
+        $loggedUser->load('perfilCr');
+
+        $lista_relacion = $loggedUser->perfilCr->pluck('clues','cr')->toArray();
+
+        $lista_clues = array_values($lista_relacion);
+        $lista_cr = array_keys($lista_relacion);
+
+        $accessData = (object)[];
+        $accessData->lista_clues = $lista_clues;
+        $accessData->lista_cr = $lista_cr;
+
+        return $accessData;
+        //return ['userData'=>$loggedUser,'access'=>['clues'=>$lista_clues, 'cr'=>$lista_cr]];
     }
 }

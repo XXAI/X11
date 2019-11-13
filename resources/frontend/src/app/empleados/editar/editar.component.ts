@@ -26,6 +26,7 @@ export class EditarComponent implements OnInit {
   datos_empleado:any;
 
   puedeGuardar: boolean = true;
+  puedeValidar: boolean = true;
   puedeTransferir: boolean = true;
   statusLabel: string;
   statusIcon: string;
@@ -228,14 +229,15 @@ export class EditarComponent implements OnInit {
             this.puedeGuardar = false;
             this.statusLabel = 'En Transferencia';
             this.statusIcon = 'notification_important';
-          }else if(this.datos_empleado.status == 2){
+          }else if(this.datos_empleado.estatus == 2){
             this.puedeTransferir = false;
             this.puedeGuardar = false;
             this.statusLabel = 'Dado de Baja';
             this.statusIcon = 'remove_circle';
-          }else if(this.datos_empleado.status == 1 && this.datos_empleado.validado == 1){
+          }else if(this.datos_empleado.estatus == 1 && this.datos_empleado.validado == 1){
             this.puedeTransferir = true;
             this.puedeGuardar = true;
+            this.puedeValidar = false;
             this.statusLabel = 'Validado';
             this.statusIcon = 'verified_user';
           }
@@ -315,9 +317,14 @@ export class EditarComponent implements OnInit {
       response =>{
         //console.log(response);
         this.catalogos = response;
+
+        if(!this.datos_empleado.escolaridad){
+          this.datos_empleado.escolaridad = {};
+        }
+
         this.empleadoForm.patchValue(this.datos_empleado);
-        this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
-        this.empleadoForm.patchValue({ "clues_desc": this.datos_empleado.clues.nombre_unidad});
+        //this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
+        //this.empleadoForm.patchValue({ "clues_desc": this.datos_empleado.clues.nombre_unidad});
         this.empleadoForm.patchValue({ "tipo_profesion_id": this.catalogos['consulta_tipo_profesion'] });
 
         this.isLoading = false;
@@ -486,6 +493,14 @@ export class EditarComponent implements OnInit {
 
   accionGuardar(validar:boolean = false){
     let formData = JSON.parse(JSON.stringify(this.empleadoForm.value));
+    
+    //Pasando de objeto fecha a cadena ISO
+    let fissa = formData.fissa;
+    formData.fissa = fissa.substring(0,10);
+
+    //Pasando de objeto fecha a cadena ISO
+    let figf = formData.figf;
+    formData.figf = figf.substring(0,10);
 
     if(formData.codigo){
       formData.codigo_id = formData.codigo.codigo;

@@ -137,8 +137,8 @@
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>Acciones</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
-                                    <button *ngIf="row.estatus == 1" mat-raised-button color="primary" (click)="editEmpleado(i)" routerLink="/empleados/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>
-                                    <button *ngIf="row.permuta_activa_clues" mat-raised-button color="accent" (click)="confirmTransferEmploye(row.id)"><mat-icon>swap_horizontal_circle</mat-icon></button>
+                                    <button mat-raised-button color="primary" (click)="editEmpleado(i)" routerLink="/empleados/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>
+                                    <button *ngIf="row.permuta_activa_clues" mat-icon-button color="accent" (click)="confirmTransferEmploye(row.id)"><mat-icon>swap_horizontal_circle</mat-icon></button>
                                     <button *ngIf="row.estatus == 1" mat-icon-button color="accent" (click)="confirmUntieEmploye(row.id)"><mat-icon>undo</mat-icon></button>
                                 </td>
                             </ng-container>

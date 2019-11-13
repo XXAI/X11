@@ -310,7 +310,7 @@ export class ListaComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
-        console.log(valid);
+        this.loadEmpleadosData();
       }
     });
   }

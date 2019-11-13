@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ɵConsole } from '@angular/core';
+import { Component, Inject, OnInit, ɵConsole, ModuleWithComponentFactories } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EmpleadosService } from '../empleados.service';
@@ -35,6 +35,7 @@ export class ConfirmarTransferenciaDialogComponent implements OnInit {
   observaciones:string = '';
 
   permutaForm = this.fb.group({
+    'observaciones':[''],
     'fecha_transferencia':['',Validators.required]
   });
 
@@ -94,8 +95,18 @@ export class ConfirmarTransferenciaDialogComponent implements OnInit {
   guardar(estatus:number){
     let params = {};
 
-    params['fecha_transferencia'] = this.permutaForm.get('fecha_transferencia').value;
+    if(estatus == 2){
+      let fecha_transferencia = (this.permutaForm.get('fecha_transferencia').value).toISOString();
+      params['fecha_transferencia'] = fecha_transferencia.substring(0,10);
+    }
+    
     params['estatus'] = estatus;
+    params['observaciones'] = this.permutaForm.get('observaciones').value;
+
+    //console.log(params['fecha_transferencia']);
+    //console.log(fecha.toISOString());
+    //console.log(fecha.toLocaleDateString("es-MX",options));
+    //return false;
     
     this.empleadosService.finalizarTransferenciaEmpleado(this.id,params).subscribe(
       response =>{

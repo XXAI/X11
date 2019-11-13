@@ -10,6 +10,7 @@ class Clues extends Model
     use SoftDeletes;
     protected $fillable = [''];
     protected $table = 'catalogo_clues';
+    
 
     public function cr(){
         return $this->hasMany('App\Models\Cr','clues','clues');

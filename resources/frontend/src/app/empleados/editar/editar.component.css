@@ -111,3 +111,29 @@
     border-top-right-radius: 15px; 
     text-align: center;
 }
+
+.info-adscripcion-activa{
+    width: 100%;
+}
+
+.info-adscripcion-activa th.titulo-largo{
+    background-color: black;
+    color:white;
+    text-align: center;
+    padding:2px;
+}
+
+.info-adscripcion-activa th.titulo-corto{
+    background-color: lightsteelblue;
+    text-align: right;
+}
+
+.info-adscripcion-activa td{
+    background-color: #dddddd;
+    text-align: left;
+    padding:2px;
+}
+
+.info-adscripcion-activa td.descripcion{
+    text-align: center;
+}

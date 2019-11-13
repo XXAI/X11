@@ -10,4 +10,5 @@ class Cr extends Model
     use SoftDeletes;
     protected $fillable = [''];
     protected $table = 'catalogo_cr';
+    protected $primaryKey = 'cr';
 }
