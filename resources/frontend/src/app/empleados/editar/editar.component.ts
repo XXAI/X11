@@ -40,7 +40,9 @@ export class EditarComponent implements OnInit {
   };
 
   codigosIsLoading: boolean = false;
+  profesionIsLoading: boolean = false;
   filteredCodigos: Observable<any[]>;
+  filteredProfesiones: Observable<any[]>;
 
   displayedColumns: string[] = ['Grado','Estudios','Fecha','actions'];
   tablaEscolaridad: any = [{id:1,grado:'123',estudios:'12312',fecha:'123'}];
@@ -101,20 +103,21 @@ export class EditarComponent implements OnInit {
     //'clues_desc': [''],
 
     'turno_id':[''],
-    'horario':[''],
+    'hora_entrada':[''],
+    'hora_salida':[''],
     'tipo_nomina_id': [''],
     'programa_id': [''],
     'fuente_id': [''],
 
+
     'codigo_id': [''],
     'codigo': [''],
+    'profesion_id': [''],
+    'profesion': [''],
     'cr_id': [''],
     'rama_id': [''],
-
-    //'tipo_profesion_id': [[]],
-    //'profesion_id': [[]],
-    //'crespdes': [[]],
-
+    'area_servicio': [''],
+    
     'comision_sindical_id': [''],
     'escolaridad': this.fb.group({
       'secundaria':[''], 
@@ -128,7 +131,8 @@ export class EditarComponent implements OnInit {
       'especialidad':[''], 
       'diplomado':[''], 
       'poliglota':['']
-    })
+    }),
+    'observaciones':['']
   });
 
   
@@ -172,6 +176,25 @@ export class EditarComponent implements OnInit {
           }
         ),
       ).subscribe(items => this.filteredCodigos = items);
+
+      this.empleadoForm.get('profesion').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          this.profesionIsLoading = true;
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              return this.empleadosService.buscarProfesion({query:value}).pipe(
+                finalize(() => this.profesionIsLoading = false )
+              );
+            }else{
+              this.profesionIsLoading = false;
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredProfesiones = items);
 
       this.tablaHorarioHoras.sort((a,b)=>(a.dia > b.dia)?1:((a.dia == b.dia)?((a.hora > b.hora)?1:-1):-1));
 
@@ -343,6 +366,10 @@ export class EditarComponent implements OnInit {
   }
 
   displayCodigoFn(item: any) {
+    if (item) { return item.descripcion; }
+  }
+
+  displayProfesionFn(item: any) {
     if (item) { return item.descripcion; }
   }
 

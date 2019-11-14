@@ -113,7 +113,7 @@ class EmpleadosController extends Controller
 
             $params = Input::all();
 
-            $empleado = Empleado::with('escolaridad', 'clues','codigo','permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues','adscripcionActiva.cr')->find($id);
+            $empleado = Empleado::with('escolaridad', 'clues','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','adscripcionActiva.clues','adscripcionActiva.cr')->find($id);
 
             if($empleado){
                 $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
@@ -132,11 +132,9 @@ class EmpleadosController extends Controller
                                             if(!$access->is_admin){
                                                 $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                             }
-                                            //$join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1)->whereIn('cr_destino_id',$access->lista_cr);
                                         })->where('empleados.estatus','!=','3')->orderBy('nombre');
 
                 //filtro de valores por permisos del usuario
-                //$empleados = $empleados->->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                 if(!$access->is_admin){
                     $empleados = $empleados->where(function($query)use($access){
                         $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
@@ -144,10 +142,6 @@ class EmpleadosController extends Controller
                                     $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                 });
                     });
-    
-                    /*$empleados = $empleados->orWhere(function($query)use($access){
-                        $query->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
-                    });*/
                 }
 
                 if($real_index == 0){
@@ -250,11 +244,7 @@ class EmpleadosController extends Controller
 
         DB::beginTransaction();
         try {
-            if(isset($inputs['validado']))
-                $inputs['validado'] = 1;
-            else
-                $inputs['validado'] = 0;
-
+            
             $object->codigo_id              = $inputs['codigo_id'];
             $object->comision_sindical_id   = $inputs['comision_sindical_id'];
             $object->cr_id                  = $inputs['cr_id'];
@@ -262,15 +252,19 @@ class EmpleadosController extends Controller
             $object->figf                   = $inputs['figf'];
             $object->fissa                  = $inputs['fissa'];
             $object->fuente_id              = $inputs['fuente_id'];
-            $object->horario                = $inputs['horario'];
+            $object->hora_entrada           = $inputs['hora_entrada'];
+            $object->hora_salida            = $inputs['hora_salida'];
             $object->turno_id               = $inputs['turno_id'];
             $object->nombre                 = $inputs['nombre'];
             $object->programa_id            = $inputs['programa_id'];
             $object->rama_id                = $inputs['rama_id'];
             $object->rfc                    = $inputs['rfc'];
             $object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
-            $object->validado               = $inputs['validado'];
+            $object->area_servicio          = $inputs['area_servicio'];
+            $object->observaciones          = $inputs['observaciones'];
 
+            if(isset($inputs['validado']))
+                $object->validado           = true;
 
             $object->save();
 

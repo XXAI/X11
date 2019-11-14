@@ -21,6 +21,7 @@ export class EmpleadosService {
 
   url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
   url_codigos_catalogo = `${environment.base_url}/busqueda-codigos`;
+  url_profesion_catalogo = `${environment.base_url}/busqueda-profesiones`;
   /*url_role = `${environment.base_url}/role`;
   url_permission = `${environment.base_url}/permission`;
   url_avatars = `${environment.base_url}/avatar-images`;*/
@@ -37,6 +38,14 @@ export class EmpleadosService {
 
   buscarCodigo(payload):Observable<any>{
     return this.http.get<any>(this.url_codigos_catalogo,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
+
+  buscarProfesion(payload):Observable<any>{
+    return this.http.get<any>(this.url_profesion_catalogo,{params:payload}).pipe(
       map( response => {
         return response.data;
       })

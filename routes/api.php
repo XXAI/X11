@@ -40,7 +40,8 @@ Route::group(['middleware'=>'auth'],function($router){
 
     Route::apiResource('catalogos',          'API\Modulos\CatalogosController');
     Route::get('busqueda-clues',             'API\Modulos\SearchCatalogsController@getCluesAutocomplete');
-    Route::get('busqueda-codigos',             'API\Modulos\SearchCatalogsController@getCodigoAutocomplete');
+    Route::get('busqueda-codigos',           'API\Modulos\SearchCatalogsController@getCodigoAutocomplete');
+    Route::get('busqueda-profesiones',       'API\Modulos\SearchCatalogsController@getProfesionAutocomplete');
 
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
 });
