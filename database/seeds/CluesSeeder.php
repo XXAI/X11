@@ -19,7 +19,7 @@ class CluesSeeder extends Seeder
             OPTIONALLY ENCLOSED BY '\"' 
             ESCAPED BY '\"' 
             LINES TERMINATED BY '\\n' 
-            IGNORE 0 LINES", addslashes($archivo_csv));
+            IGNORE 1 LINES", addslashes($archivo_csv));
         DB::connection()->getpdo()->exec($query);
     }
 }

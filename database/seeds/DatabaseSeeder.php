@@ -54,7 +54,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProgramaSeeder::class);
         $this->call(TipoProfesionSeeder::class);
         $this->call(ProfesionSeeder::class);
-        $this->call(NivelAcademicoSeeder::class);
         $this->call(FuenteSeeder::class);
         $this->call(CrSeeder::class);
         $this->call(ComprobanteSeeder::class);
