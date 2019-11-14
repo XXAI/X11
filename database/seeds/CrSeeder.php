@@ -11,7 +11,7 @@ class CrSeeder extends Seeder
      */
     public function run()
     {
-        $archivo_csv = storage_path().'\\app\\seeds\\cr.csv';
+        $archivo_csv = storage_path().'/app/seeds/cr.csv';
         $query = sprintf("
             LOAD DATA local INFILE '%s' 
             INTO TABLE catalogo_cr

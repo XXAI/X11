@@ -11,7 +11,7 @@ class NivelAcademicoSeeder extends Seeder
      */
     public function run()
     {
-        $archivo_csv = storage_path().'\\app\\seeds\\nivel_academico.csv';
+        $archivo_csv = storage_path().'/app/seeds/nivel_academico.csv';
         $query = sprintf("
             LOAD DATA local INFILE '%s' 
             INTO TABLE catalogo_nivel_academico

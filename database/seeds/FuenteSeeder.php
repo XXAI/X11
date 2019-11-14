@@ -11,7 +11,7 @@ class FuenteSeeder extends Seeder
      */
     public function run()
     {
-        $archivo_csv = storage_path().'\\app\\seeds\\fuente.csv';
+        $archivo_csv = storage_path().'/app/seeds/fuente.csv';
         $query = sprintf("
             LOAD DATA local INFILE '%s' 
             INTO TABLE catalogo_fuente

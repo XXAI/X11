@@ -11,7 +11,7 @@ class ProfesionSeeder extends Seeder
      */
     public function run()
     {
-        $archivo_csv = storage_path().'\\app\\seeds\\profesion.csv';
+        $archivo_csv = storage_path().'/app/seeds/profesion.csv';
         $query = sprintf("
             LOAD DATA local INFILE '%s' 
             INTO TABLE catalogo_profesion
