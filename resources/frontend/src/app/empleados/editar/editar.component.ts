@@ -117,7 +117,7 @@ export class EditarComponent implements OnInit {
     'cr_id': [''],
     'rama_id': [''],
     'area_servicio': [''],
-    
+
     'comision_sindical_id': [''],
     'escolaridad': this.fb.group({
       'secundaria':[''], 
@@ -139,18 +139,11 @@ export class EditarComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      //console.log(params.get('id'));
-      //this.loadEmpleadoData(params.get('id'));
-      //this.loadCatalogos();
-
       this.id_empleado = params.get('id');
       this.loadEmpleadoData(this.id_empleado);
 
-      //console.log(this.horarioEmpleado);
+      //TODO: Para mostrar el horario del empleado
       this.horarioEmpleado.forEach(element => {
-        //this.tablaHorario[element.de].push({id:element.id, start:element.he});
-        //this.tablaHorario[element.ds].push({id:element.id, end:element.hs});
-
         this.tablaHorarioDias[element.de-1].count++;
         this.tablaHorarioDias[element.ds-1].count++;
         
@@ -520,6 +513,7 @@ export class EditarComponent implements OnInit {
   }
 
   accionGuardar(validar:boolean = false){
+    this.isLoading = true;
     let formData = JSON.parse(JSON.stringify(this.empleadoForm.value));
     
     //Pasando de objeto fecha a cadena ISO
@@ -552,6 +546,7 @@ export class EditarComponent implements OnInit {
    
     this.empleadosService.actualizarEmpleado(this.id_empleado, formData).subscribe(
       respuesta => {
+        this.isLoading = false;
         this.sharedService.showSnackBar("Se ha guardado correctamente", "Correcto", 3000);
       },
       errorResponse =>{

@@ -59,7 +59,7 @@ class SearchCatalogsController extends Controller
 
         try{
             $parametros = Input::all();
-            $codigos = Codigo::select('codigo', 'descripcion')->with('grupoFuncion');
+            $codigos = Codigo::select('codigo', 'descripcion', 'grupo_funcion_id')->with('grupoFuncion');
             
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
