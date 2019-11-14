@@ -16,7 +16,7 @@ class CreateTableCatalogoClues extends Migration
         Schema::create('catalogo_clues', function (Blueprint $table) {
             $table->string('clues', 14)->primary()->index();
             $table->string('cve_jurisdiccion', 2);
-            $table->string('nombre_unidad', 256)->index();
+            $table->string('nombre_unidad', 255)->index();
             $table->string('estatus', 100);
             $table->unsignedTinyInteger('clave_estatus')->unsigned();
             $table->string('longitud',50);
