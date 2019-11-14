@@ -20,6 +20,7 @@ use App\Models\TipoNomina;
 use App\Models\TipoProfesion;
 use App\Models\NivelAcademico;
 use App\Models\Sindicato;
+use App\Models\Turno;
 
 class CatalogosController extends Controller
 {
@@ -48,8 +49,19 @@ class CatalogosController extends Controller
             $programa = Programa::orderBy("descripcion")->get();
             $rama = Rama::orderBy("descripcion")->get();
             $tipoNomina = TipoNomina::orderBy("descripcion")->get();
+            $turno = Turno::all();
             
-            return response()->json(["fuente"=>$fuente, "programa"=>$programa, "rama"=>$rama, "tipoNomina"=>$tipoNomina, 'nivel_academico'=>$nivelAcademico, 'sindicatos'=>$sindicatos],HttpResponse::HTTP_OK);
+            $catalogos = [
+                "fuente" => $fuente, 
+                "programa" => $programa, 
+                "rama" => $rama, 
+                "tipoNomina" => $tipoNomina, 
+                "nivel_academico" => $nivelAcademico, 
+                "sindicatos" => $sindicatos,
+                "turno" => $turno
+            ];
+
+            return response()->json($catalogos,HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

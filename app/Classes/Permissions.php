@@ -21,4 +21,8 @@ class Permissions{
     const EDITAR_ROL = 'v216XcAzgbt4mIjj6gZP2rdRTupXz0AO';
     const ELIMINAR_ROL = 'QpKVz00WUbZVJMPFu3iBNGBTdMFYubQ2';
     const VER_ROL = 'nrPqEhq2TX0mI7qT7glaOCJ7Iqx2QtPs';
+
+    //Permisos para Modulo de Personal Activo
+    const MODULO_PERSONAL_ACTIVO = '8QnE1cYkjjNAmM7qHSf1CSlPMJiQeqr5';
+    const ADMIN_PERSONAL_ACTIVO = 'dmcnXs5gK1qHzn30WvGXDzFimcrVJZ9Z';
 }

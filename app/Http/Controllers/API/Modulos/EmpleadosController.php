@@ -35,19 +35,27 @@ class EmpleadosController extends Controller
             $parametros = Input::all();
             $empleados = Empleado::select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
-                                $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1)->whereIn('cr_destino_id',$access->lista_cr);
+                                $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
+                                if(!$access->is_admin){
+                                    $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                                }
                             })->where('empleados.estatus','!=','3')->orderBy('nombre');
 
             //filtro de valores por permisos del usuario
             //$empleados = $empleados->->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
-            $empleados = $empleados->where(function($query)use($access){
-                $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr);
-            });
-
-            $empleados = $empleados->orWhere(function($query)use($access){
-                $query->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
-            });
-
+            if(!$access->is_admin){
+                $empleados = $empleados->where(function($query)use($access){
+                    $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
+                        ->orWhere(function($query2)use($access){
+                            $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                        });
+                });
+    
+                /*$empleados = $empleados->orWhere(function($query)use($access){
+                    $query->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                });*/
+            }
+            
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
                 $empleados = $empleados->where(function($query)use($parametros){
@@ -92,7 +100,7 @@ class EmpleadosController extends Controller
                 $empleados = $empleados->get();
             }
 
-            return response()->json(['data'=>$empleados],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$empleados,'params'=>$parametros,'access'=>$access],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
@@ -120,19 +128,27 @@ class EmpleadosController extends Controller
 
                 $real_index = ($per_page * $page_index) + $selected_index;
                 $empleados = Empleado::select('empleados.id')->leftJoin('permuta_adscripcion',function($join)use($access){
-                                            $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1)->whereIn('cr_destino_id',$access->lista_cr);
+                                            $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
+                                            if(!$access->is_admin){
+                                                $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                                            }
+                                            //$join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1)->whereIn('cr_destino_id',$access->lista_cr);
                                         })->where('empleados.estatus','!=','3')->orderBy('nombre');
 
                 //filtro de valores por permisos del usuario
-                //filtro de valores por permisos del usuario
                 //$empleados = $empleados->->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
-                $empleados = $empleados->where(function($query)use($access){
-                    $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr);
-                });
-
-                $empleados = $empleados->orWhere(function($query)use($access){
-                    $query->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
-                });
+                if(!$access->is_admin){
+                    $empleados = $empleados->where(function($query)use($access){
+                        $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
+                                ->orWhere(function($query2)use($access){
+                                    $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                                });
+                    });
+    
+                    /*$empleados = $empleados->orWhere(function($query)use($access){
+                        $query->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                    });*/
+                }
 
                 if($real_index == 0){
                     $limit_index = 0;
@@ -225,7 +241,7 @@ class EmpleadosController extends Controller
             return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
         }
 
-        $inputs = Input::only("codigo_id", "comision_sindical_id", "cr_id","curp", "figf", "fissa", "fuente_id", "horario", "nombre", "programa_id", "rama_id", "rfc", "tipo_nomina_id", "validado", "escolaridad_json");
+        $inputs = Input::all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {
@@ -247,6 +263,7 @@ class EmpleadosController extends Controller
             $object->fissa                  = $inputs['fissa'];
             $object->fuente_id              = $inputs['fuente_id'];
             $object->horario                = $inputs['horario'];
+            $object->turno_id               = $inputs['turno_id'];
             $object->nombre                 = $inputs['nombre'];
             $object->programa_id            = $inputs['programa_id'];
             $object->rama_id                = $inputs['rama_id'];
@@ -394,9 +411,17 @@ class EmpleadosController extends Controller
         try{
             $access = $this->getUserAccessData();
 
+            $catalogo_clues = Clues::orderBy('nombre_unidad');
+            $catalogo_cr = Cr::orderBy("descripcion");
+
+            if(!$access->is_admin){
+                $catalogo_clues = $catalogo_clues->whereIn('clues',$access->lista_clues);
+                $catalogo_cr = $catalogo_cr->whereIn('cr',$access->lista_cr);
+            }
+
             $catalogos = [
-                'clues'     => Clues::whereIn('clues',$access->lista_clues)->orderBy('nombre_unidad')->get(),
-                'cr'        => Cr::whereIn('cr',$access->lista_cr)->orderBy("descripcion")->get(),
+                'clues'     => $catalogo_clues->get(),
+                'cr'        => $catalogo_cr->get(),
                 //'profesion' => Profesion::all(),
                 'rama'      => Rama::all(),
                 'estatus'   => [
@@ -427,9 +452,17 @@ class EmpleadosController extends Controller
         $lista_clues = array_values($lista_relacion);
         $lista_cr = array_keys($lista_relacion);
 
+        //dmcnXs5gK1qHzn30WvGXDzFimcrVJZ9Z
+
         $accessData = (object)[];
         $accessData->lista_clues = $lista_clues;
         $accessData->lista_cr = $lista_cr;
+
+        if (\Gate::allows('has-permission', \Permissions::ADMIN_PERSONAL_ACTIVO)){
+            $accessData->is_admin = true;
+        }else{
+            $accessData->is_admin = false;
+        }
 
         return $accessData;
         //return ['userData'=>$loggedUser,'access'=>['clues'=>$lista_clues, 'cr'=>$lista_cr]];

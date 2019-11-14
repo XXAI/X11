@@ -82,19 +82,28 @@
                                     <mat-tab label="Datos Laborales">
                                         <br>
                                         <div fxLayout="row" fxLayout.xs="column">
-                                            <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                                <input matInput [matDatepicker]="picker2" placeholder="Fecha Ingreso al Gobierno Federal"  formControlName="figf">
+                                            <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                                <input matInput [matDatepicker]="picker2" placeholder="Ingreso al Gob. Fed."  formControlName="figf">
                                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker2></mat-datepicker>
                                             </mat-form-field>
                                             <mat-form-field fxFlex="20" fxFlex.xs="100">
-                                                <input matInput [matDatepicker]="picker" placeholder="Fecha Ingreso a la SSA"  formControlName="fissa">
+                                                <input matInput [matDatepicker]="picker" placeholder="Ingreso a la SSA"  formControlName="fissa">
                                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker></mat-datepicker>
                                             </mat-form-field>
+
+                                            <mat-form-field fxFlex="30" fxFlex.xs="100">
+                                                <mat-label>Turno</mat-label>
+                                                <mat-select formControlName="turno_id">
+                                                    <mat-option *ngFor="let item of catalogos['turno']" [value]="item.id">
+                                                        {{item.descripcion}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
             
-                                            <mat-form-field fxFlex fxFlex.xs="100">
-                                                <input matInput id="horario" formControlName="horario" placeholder="Horario" required>
+                                            <mat-form-field fxFlex="30" fxFlex.xs="100">
+                                                <input matInput id="horario" formControlName="horario" placeholder="Horario">
                                                 <mat-error *ngIf="empleadoForm.get('horario').invalid && (empleadoForm.get('horario').dirty || empleadoForm.get('horario').touched)">
                                                     <span *ngIf="empleadoForm.get('horario').errors.required">El Nombre es obligatorio</span>
                                                 </mat-error>

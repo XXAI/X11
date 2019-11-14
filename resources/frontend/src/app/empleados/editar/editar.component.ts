@@ -100,6 +100,7 @@ export class EditarComponent implements OnInit {
     //'clues': [''],
     //'clues_desc': [''],
 
+    'turno_id':[''],
     'horario':[''],
     'tipo_nomina_id': [''],
     'programa_id': [''],
@@ -537,8 +538,5 @@ export class EditarComponent implements OnInit {
         this.isLoadingCredential = false;
       }
     );
-    console.log('--------------------------- Guardando --------------------------------------');
-    console.log(formData);
-    console.log('--------------------------- Termino Guardando --------------------------------------');
   }
 }
