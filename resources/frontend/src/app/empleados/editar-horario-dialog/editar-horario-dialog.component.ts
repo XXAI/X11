@@ -41,6 +41,10 @@ export class EditarHorarioDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  agregar(): void{
+    console.log('agregar hora');
+  }
+
   aceptar(): void {
     this.dialogRef.close(true);
   }
