@@ -221,12 +221,12 @@ class EmpleadosController extends Controller
             'curp'              => 'required',
             'figf'            => 'required',
             'fissa'            => 'required',
-            'fuente_id'            => 'required',
+            //'fuente_id'            => 'required',
             'nombre'            => 'required',
-            'programa_id'            => 'required',
+            //'programa_id'            => 'required',
             'rama_id'            => 'required',
             'rfc'            => 'required',
-            'tipo_nomina_id'            => 'required'
+            //'tipo_nomina_id'            => 'required'
         ];
 
         
@@ -251,15 +251,15 @@ class EmpleadosController extends Controller
             $object->curp                   = $inputs['curp'];
             $object->figf                   = $inputs['figf'];
             $object->fissa                  = $inputs['fissa'];
-            $object->fuente_id              = $inputs['fuente_id'];
+            //$object->fuente_id              = $inputs['fuente_id'];
             $object->hora_entrada           = $inputs['hora_entrada'];
             $object->hora_salida            = $inputs['hora_salida'];
             $object->turno_id               = $inputs['turno_id'];
             $object->nombre                 = $inputs['nombre'];
-            $object->programa_id            = $inputs['programa_id'];
+            //$object->programa_id            = $inputs['programa_id'];
             $object->rama_id                = $inputs['rama_id'];
             $object->rfc                    = $inputs['rfc'];
-            $object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
+            //$object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
             $object->area_servicio          = $inputs['area_servicio'];
             $object->observaciones          = $inputs['observaciones'];
 
