@@ -58,7 +58,7 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => 'InnoDB',
-            'options' => array(PDO::MYSQL_ATTR_LOCAL_INFILE => true),
+            'options' => array(PDO::MYSQL_ATTR_LOCAL_INFILE => true, PDO::ATTR_EMULATE_PREPARES => false),
             /*extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],*/
