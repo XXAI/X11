@@ -4,9 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MaterialModule } from '../material/material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { IfHasPermissionDirective } from './if-has-permission.directive';
 
 @NgModule({
-  declarations: [],
+  declarations: [IfHasPermissionDirective],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     MaterialModule,
     ReactiveFormsModule,
     HttpClientModule,
+    IfHasPermissionDirective
   ],
 })
 export class SharedModule { }

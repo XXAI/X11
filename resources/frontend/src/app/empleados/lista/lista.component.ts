@@ -11,6 +11,7 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { AgregarEmpleadoDialogComponent } from '../agregar-empleado-dialog/agregar-empleado-dialog.component';
+import { PermissionsList } from '../../auth/models/permissions-list';
 
 @Component({
   selector: 'app-lista',
@@ -72,8 +73,6 @@ export class ListaComponent implements OnInit {
   @ViewChild(MatExpansionPanel, {static:false}) advancedFilter: MatExpansionPanel;
 
   ngOnInit() {
-    console.log('initial');
-
     let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','paginator','filter']);
     console.log(appStoredData);
 
@@ -305,7 +304,7 @@ export class ListaComponent implements OnInit {
 
   showAddEmployeDialog(){
     const dialogRef = this.dialog.open(AgregarEmpleadoDialogComponent, {
-      width: '80%'
+      width: '95%'
     });
 
     dialogRef.afterClosed().subscribe(valid => {
