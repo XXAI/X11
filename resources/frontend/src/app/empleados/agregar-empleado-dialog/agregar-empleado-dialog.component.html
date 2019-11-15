@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Agregar Empleado</h1>
+<div mat-dialog-content>
+    <div fxLayout="row" fxLayout.xs="column">
+        Agregar Empleado
+    </div>
+</div>
+<div mat-dialog-actions>
+    <span fxFlex></span>
+    <button mat-button (click)='cancelar()'>Cancelar</button>
+    <button mat-raised-button (click)="aceptar()" color="info"><mat-icon>check</mat-icon> Aceptar</button>
+</div>

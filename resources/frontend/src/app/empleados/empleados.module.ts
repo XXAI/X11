@@ -12,9 +12,10 @@ import { EstudiosDialogComponent } from './estudios-dialog/estudios-dialog.compo
 import { TransferenciaEmpleadoDialogComponent } from './transferencia-empleado-dialog/transferencia-empleado-dialog.component';
 import { ConfirmarTransferenciaDialogComponent } from './confirmar-transferencia-dialog/confirmar-transferencia-dialog.component';
 import { EditarHorarioDialogComponent } from './editar-horario-dialog/editar-horario-dialog.component';
+import { AgregarEmpleadoDialogComponent } from './agregar-empleado-dialog/agregar-empleado-dialog.component';
 
 @NgModule({
-  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent],
+  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent],
   imports: [
     CommonModule,
     EmpleadosRoutingModule,
@@ -26,6 +27,7 @@ import { EditarHorarioDialogComponent } from './editar-horario-dialog/editar-hor
     EstudiosDialogComponent,
     TransferenciaEmpleadoDialogComponent,
     ConfirmarTransferenciaDialogComponent,
+    AgregarEmpleadoDialogComponent,
     EditarHorarioDialogComponent
   ],
   providers:[

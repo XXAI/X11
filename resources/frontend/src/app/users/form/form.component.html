@@ -57,7 +57,7 @@
                         </div>
                         
                         <br>
-                        <mat-tab-group #metaData [color]="'primary'" [backgroundColor]="'accent'" [selectedIndex]="(usuarioForm.get('is_superuser').value)?(2):(0)">
+                        <mat-tab-group #metaData [color]="'primary'" [backgroundColor]="'accent'" [selectedIndex]="(usuarioForm.get('is_superuser').value)?(2):(0)" dynamicHeight >
                             <mat-tab [disabled]="(usuarioForm.get('is_superuser').value == true)">
                                 <ng-template mat-tab-label>
                                     <span matBadge="{{selectedRoles.length}}" matBadgeSize="medium" matBadgeColor="primary" matBadgePosition="above after" matBadgeOverlap="false" [matBadgeHidden]="selectedRoles.length <= 0">Roles</span>

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
+import { debounceTime, switchMap, tap, finalize, startWith, map } from 'rxjs/operators';
 import { EmpleadosService } from '../empleados.service';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
@@ -41,6 +41,8 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
   cluesLoading: boolean = false;
   filteredClues: Observable<any[]>;
 
+  filteredCluesCR: Observable<any[]>;
+
   ngOnInit() {
     if(this.data.id){
       this.id = this.data.id;
@@ -58,19 +60,40 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
         )
       ),
     ).subscribe(items => this.filteredClues = items);
+
+    this.filteredCluesCR = this.cluesForm.controls['cr'].valueChanges.pipe(startWith(''),map(value => this._filterCr(value)));
+  }
+
+  getDisplayFn(label: string){
+    return (val) => this.displayFn(val,label);
+  }
+
+  displayFn(value: any, valueLabel: string){
+    return value ? value[valueLabel] : value;
+  }
+
+  private _filterCr(value: any): string[] {
+    let filterValue = '';
+    if(value){
+      if(typeof(value) == 'object'){
+        filterValue = value.descripcion.toLowerCase();
+      }else{
+        filterValue = value.toLowerCase();
+      }
+    }
+    return this.cluesCR.filter(option => option.descripcion.toLowerCase().includes(filterValue));
   }
 
   mostrarCR(clues){
     this.cluesCR = clues.cr;
     if(this.cluesCR.length == 1){
-      this.cluesForm.get('cr').patchValue(this.cluesCR[0].cr);
+      this.cluesForm.get('cr').patchValue(this.cluesCR[0]);
     }else{
       this.cluesForm.get('cr').reset();
     }
   }
 
   isValid(){
-    console.log(this.cluesForm.get('cr').value);
     if(this.cluesForm.valid){
       if(this.cluesForm.get('cr').value != this.crActual){ //this.cluesForm.get('clues').value.clues != this.cluesActual && 
         return true;
@@ -89,7 +112,7 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
       if(valid){
         let params = {
           clues: this.cluesForm.get('clues').value.clues,
-          cr: this.cluesForm.get('cr').value,
+          cr: this.cluesForm.get('cr').value.cr,
           observaciones: this.cluesForm.get('observaciones').value
         }
         this.empleadosService.transferirEmpleado(this.id,params).subscribe(
@@ -102,10 +125,6 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
         console.log('cancelado');
       }
     });
-  }
-
-  displayFn(item: any) {
-    if (item) { return item.nombre_unidad; }
   }
 
   cancelar(): void {

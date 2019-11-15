@@ -88,14 +88,14 @@
                                                 <mat-datepicker #picker2 [disabled]="false"></mat-datepicker>
                                             </mat-form-field>
                                             <mat-form-field fxFlex="20" fxFlex.xs="100">
-                                                <input matInput [matDatepicker]="picker" placeholder="Ingreso a la SSA"  formControlName="fissa" readonly>
+                                                <input matInput [matDatepicker]="picker" placeholder="Ingreso a la SSA"  formControlName="fissa" readonly required>
                                                 <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
                                                 <mat-datepicker #picker [disabled]="false"></mat-datepicker>
                                             </mat-form-field>
 
                                             <mat-form-field fxFlex="30" fxFlex.xs="100">
                                                 <mat-label>Turno</mat-label>
-                                                <mat-select formControlName="turno_id">
+                                                <mat-select formControlName="turno_id" required>
                                                     <mat-option *ngFor="let item of catalogos['turno']" [value]="item.id">
                                                         {{item.descripcion}}
                                                     </mat-option>
@@ -212,7 +212,7 @@
                                         <div fxLayout="row" fxLayout.xs="column">
                                             <mat-form-field fxFlex="20" fxFlex.xs="100">
                                                 <mat-label>Rama</mat-label>
-                                                <mat-select formControlName="rama_id">
+                                                <mat-select formControlName="rama_id" required>
                                                     <mat-option *ngFor="let item of catalogos['rama']" [value]="item.id">
                                                         {{item.descripcion}}
                                                     </mat-option>
@@ -220,7 +220,7 @@
                                             </mat-form-field>
             
                                             <mat-form-field fxFlex="60" fxFlex.xs="100">
-                                                <input matInput formControlName="area_servicio" placeholder="Área de Servicio">
+                                                <input matInput formControlName="area_servicio" placeholder="Área de Servicio" required>
                                                 <mat-error *ngIf="empleadoForm.get('area_servicio').invalid && (empleadoForm.get('area_servicio').dirty || empleadoForm.get('area_servicio').touched)">
                                                     <span *ngIf="empleadoForm.get('area_servicio').errors.required">El Nombre es obligatorio</span>
                                                 </mat-error>
@@ -228,14 +228,14 @@
             
                                             <mat-form-field fxFlex="20" fxFlex.xs="100">
                                                 <mat-label>¿Comisionado Sindical?</mat-label>
-                                                <mat-select formControlName="comision_sindical_id">
+                                                <mat-select formControlName="comision_sindical_id" required>
                                                     <mat-option *ngFor="let item of catalogos['sindicatos']" [value]="item.id">{{item.descripcion}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
                                         <div fxLayout="row" fxLayout.xs="column">
                                             <mat-form-field fxFlex="40" fxFlex.xs="100">
-                                                <input matInput placeholder="Codigo" [matAutocomplete]="codigoAutocomplete" formControlName='codigo'>
+                                                <input matInput placeholder="Codigo" [matAutocomplete]="codigoAutocomplete" formControlName='codigo' required>
                                                 <mat-autocomplete #codigoAutocomplete="matAutocomplete" [displayWith]="displayCodigoFn" [panelWidth]="'auto'">
                                                     <mat-option *ngIf="codigosIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                                                     <ng-container *ngIf="!codigosIsLoading">
@@ -249,7 +249,7 @@
                                                 <mat-hint align="end" *ngIf="empleadoForm.get('codigo').value">[{{empleadoForm.get('codigo').value.codigo}}]</mat-hint>
                                             </mat-form-field>
                                             <mat-form-field fxFlex="60" fxFlex.xs="100">
-                                                <input matInput placeholder="Profesión" [matAutocomplete]="profesionAutocomplete" formControlName='profesion'>
+                                                <input matInput placeholder="Profesión" [matAutocomplete]="profesionAutocomplete" formControlName='profesion' required>
                                                 <mat-autocomplete #profesionAutocomplete="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
                                                     <mat-option *ngIf="profesionIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                                                     <ng-container *ngIf="!profesionIsLoading">

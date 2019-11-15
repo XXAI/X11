@@ -10,6 +10,7 @@ import { ConfirmarTransferenciaDialogComponent } from '../confirmar-transferenci
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
+import { AgregarEmpleadoDialogComponent } from '../agregar-empleado-dialog/agregar-empleado-dialog.component';
 
 @Component({
   selector: 'app-lista',
@@ -302,11 +303,25 @@ export class ListaComponent implements OnInit {
     }
   }
 
-  confirmTransferEmploye(id:number){
+  showAddEmployeDialog(){
+    const dialogRef = this.dialog.open(AgregarEmpleadoDialogComponent, {
+      width: '80%'
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log(valid);
+      }
+    });
+  }
+
+  confirmTransferEmploye(id:number,i:number){
     const dialogRef = this.dialog.open(ConfirmarTransferenciaDialogComponent, {
       width: '80%',
       data:{id:id}
     });
+
+    this.selectedItemIndex = i;
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){

@@ -8,7 +8,7 @@
 
 .edit-table-container {
     position: relative;
-    max-height: 400px;
+    max-height: 350px;
     overflow: auto;
 }
 
@@ -44,12 +44,12 @@ input.eit-right-align {
 
 .roles-list{
     overflow: auto;
-    height: 350px;
+    height: 300px;
 }
 
 .permissions-list{
     overflow: auto;
-    height: 350px;
+    height: 300px;
     /*background-color: #e1dddd;*/
 }
 
