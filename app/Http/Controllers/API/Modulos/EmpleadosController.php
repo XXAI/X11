@@ -365,6 +365,7 @@ class EmpleadosController extends Controller
             $object->turno_id               = $inputs['turno_id'];
             $object->nombre                 = $inputs['nombre'];
             //$object->programa_id            = $inputs['programa_id'];
+            $object->profesion_id            = $inputs['profesion_id'];
             $object->rama_id                = $inputs['rama_id'];
             $object->rfc                    = $inputs['rfc'];
             //$object->tipo_nomina_id         = $inputs['tipo_nomina_id'];

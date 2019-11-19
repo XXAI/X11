@@ -339,7 +339,17 @@ export class EditarComponent implements OnInit {
           this.datos_empleado.escolaridad = {};
         }
 
+        this.datos_empleado.figf = new Date(this.datos_empleado.figf.substring(0,4),(this.datos_empleado.figf.substring(5,7)-1), this.datos_empleado.figf.substring(8,10),12,0,0,0);
+        this.datos_empleado.fissa = new Date(this.datos_empleado.fissa.substring(0,4),this.datos_empleado.fissa.substring(5,7)-1, this.datos_empleado.fissa.substring(8,10),12,0,0,0);
+
         this.empleadoForm.patchValue(this.datos_empleado);
+
+        /*console.log('NATIVE JS DATE TIME', this.datos_empleado.figf);
+        console.log('STRINGIFIED TIME', JSON.stringify(this.datos_empleado.figf));
+        console.log(this.datos_empleado.figf.substring(0,4)+'<++>'+this.datos_empleado.figf.substring(5,7)+'<++>'+this.datos_empleado.figf.substring(8,10));
+        console.log(new Date(this.datos_empleado.figf.substring(0,4),this.datos_empleado.figf.substring(5,7), this.datos_empleado.figf.substring(8,10),12,0,0,0));*/
+        //console.log('FORMATTED TIME', `${this.datos_empleado.figf.getHours()}:${this.datos_empleado.figf.getMinutes()}:${this.datos_empleado.figf.getSeconds()}`);
+
         //this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
         //this.empleadoForm.patchValue({ "clues_desc": this.datos_empleado.clues.nombre_unidad});
         this.empleadoForm.patchValue({ "tipo_profesion_id": this.catalogos['consulta_tipo_profesion'] });
@@ -515,6 +525,7 @@ export class EditarComponent implements OnInit {
   accionGuardar(validar:boolean = false){
     this.isLoading = true;
     let formData = JSON.parse(JSON.stringify(this.empleadoForm.value));
+    console.log(formData);
     
     //Pasando de objeto fecha a cadena ISO
     let fissa = formData.fissa;
@@ -539,10 +550,17 @@ export class EditarComponent implements OnInit {
     formData['escolaridad_json'] = JSON.stringify(escolaridad);
     delete formData.escolaridad;
 
+    if(formData.profesion){
+      formData.profesion_id = formData.profesion.id;
+    }
+    delete formData.profesion;
+
     if(validar){
       formData.validado = true;
     }
 
+    //this.isLoading = false;
+    //return false;
    
     this.empleadosService.actualizarEmpleado(this.id_empleado, formData).subscribe(
       respuesta => {
