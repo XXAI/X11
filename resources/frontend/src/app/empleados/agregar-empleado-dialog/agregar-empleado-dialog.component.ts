@@ -2,95 +2,16 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  description: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    position: 1,
-    name: 'Hydrogen',
-    weight: 1.0079,
-    symbol: 'H',
-    description: `Hydrogen is a chemical element with symbol H and atomic number 1. With a standard
-        atomic weight of 1.008, hydrogen is the lightest element on the periodic table.`
-  }, {
-    position: 2,
-    name: 'Helium',
-    weight: 4.0026,
-    symbol: 'He',
-    description: `Helium is a chemical element with symbol He and atomic number 2. It is a
-        colorless, odorless, tasteless, non-toxic, inert, monatomic gas, the first in the noble gas
-        group in the periodic table. Its boiling point is the lowest among all the elements.`
-  }, {
-    position: 3,
-    name: 'Lithium',
-    weight: 6.941,
-    symbol: 'Li',
-    description: `Lithium is a chemical element with symbol Li and atomic number 3. It is a soft,
-        silvery-white alkali metal. Under standard conditions, it is the lightest metal and the
-        lightest solid element.`
-  }, {
-    position: 4,
-    name: 'Beryllium',
-    weight: 9.0122,
-    symbol: 'Be',
-    description: `Beryllium is a chemical element with symbol Be and atomic number 4. It is a
-        relatively rare element in the universe, usually occurring as a product of the spallation of
-        larger atomic nuclei that have collided with cosmic rays.`
-  }, {
-    position: 5,
-    name: 'Boron',
-    weight: 10.811,
-    symbol: 'B',
-    description: `Boron is a chemical element with symbol B and atomic number 5. Produced entirely
-        by cosmic ray spallation and supernovae and not by stellar nucleosynthesis, it is a
-        low-abundance element in the Solar system and in the Earth's crust.`
-  }, {
-    position: 6,
-    name: 'Carbon',
-    weight: 12.0107,
-    symbol: 'C',
-    description: `Carbon is a chemical element with symbol C and atomic number 6. It is nonmetallic
-        and tetravalent—making four electrons available to form covalent chemical bonds. It belongs
-        to group 14 of the periodic table.`
-  }, {
-    position: 7,
-    name: 'Nitrogen',
-    weight: 14.0067,
-    symbol: 'N',
-    description: `Nitrogen is a chemical element with symbol N and atomic number 7. It was first
-        discovered and isolated by Scottish physician Daniel Rutherford in 1772.`
-  }, {
-    position: 8,
-    name: 'Oxygen',
-    weight: 15.9994,
-    symbol: 'O',
-    description: `Oxygen is a chemical element with symbol O and atomic number 8. It is a member of
-         the chalcogen group on the periodic table, a highly reactive nonmetal, and an oxidizing
-         agent that readily forms oxides with most elements as well as with other compounds.`
-  }, {
-    position: 9,
-    name: 'Fluorine',
-    weight: 18.9984,
-    symbol: 'F',
-    description: `Fluorine is a chemical element with symbol F and atomic number 9. It is the
-        lightest halogen and exists as a highly toxic pale yellow diatomic gas at standard
-        conditions.`
-  }, {
-    position: 10,
-    name: 'Neon',
-    weight: 20.1797,
-    symbol: 'Ne',
-    description: `Neon is a chemical element with symbol Ne and atomic number 10. It is a noble gas.
-        Neon is a colorless, odorless, inert monatomic gas under standard conditions, with about
-        two-thirds the density of air.`
-  },
-];
+import { EmpleadosService } from '../empleados.service';
+import { SharedService } from '../../shared/shared.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { environment } from 'src/environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTable, MatExpansionPanel } from '@angular/material';
+import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
+import { ConfirmarTransferenciaDialogComponent } from '../confirmar-transferencia-dialog/confirmar-transferencia-dialog.component';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'agregar-empleado-dialog',
@@ -106,15 +27,31 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class AgregarEmpleadoDialogComponent implements OnInit {
 
+  search:string = "";
+  isLoading: boolean = false;
+
+  searchQuery: string = '';
+
+  pageEvent: PageEvent;
+  resultsLength: number = 0;
+  currentPage: number = 0;
+  pageSize: number = 20;
+  selectedItemIndex: number = -1;
+  dataSource: any = [];
+  columnsToDisplay = ['nombre', 'rfc', 'clues','actions'];
+  //expandedElement: PeriodicElement | null;
+
+  
   constructor(
-    public dialogRef: MatDialogRef<AgregarEmpleadoDialogComponent>
+    public dialogRef: MatDialogRef<AgregarEmpleadoDialogComponent>,
+    private sharedService: SharedService, 
+    private empleadosService: EmpleadosService, 
+    public dialog: MatDialog, private fb: FormBuilder
   ) { }
 
-  dataSource = ELEMENT_DATA;
-  columnsToDisplay = ['name', 'weight', 'symbol', 'position'];
-  expandedElement: PeriodicElement | null;
-
+  
   ngOnInit() {
+    
   }
 
   cancelar(): void {
@@ -123,5 +60,30 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
 
   aceptar(): void {
     this.dialogRef.close(true);
+  }
+
+  buscarEmpleados():void{
+    let params:any;
+    params = { page: 1, per_page: this.pageSize, busqueda_empleado: this.search }
+    
+    this.empleadosService.buscarEmpleados(params).subscribe(
+      response => {
+        //console.log(response);
+        this.dataSource = [];
+        this.resultsLength = 0;
+        //console.log(response);
+        if(response.total > 0){
+          this.dataSource = response.data;
+          this.resultsLength = response.total;
+        }
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+      }
+    );
   }
 }

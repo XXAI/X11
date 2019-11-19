@@ -42,6 +42,9 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('busqueda-clues',             'API\Modulos\SearchCatalogsController@getCluesAutocomplete');
     Route::get('busqueda-codigos',           'API\Modulos\SearchCatalogsController@getCodigoAutocomplete');
     Route::get('busqueda-profesiones',       'API\Modulos\SearchCatalogsController@getProfesionAutocomplete');
+    Route::get('busqueda-empleados',         'API\Modulos\EmpleadosController@getEmpleadosComplete');
+    Route::get('busqueda-cr-adscripcion',         'API\Modulos\EmpleadosController@getCrAdscripcionComplete');
+    Route::get('busqueda-cr',                'API\Modulos\EmpleadosController@getCrComplete');
 
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
 });

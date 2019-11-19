@@ -22,6 +22,9 @@ export class EmpleadosService {
   url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
   url_codigos_catalogo = `${environment.base_url}/busqueda-codigos`;
   url_profesion_catalogo = `${environment.base_url}/busqueda-profesiones`;
+  url_cr = `${environment.base_url}/busqueda-cr`;
+  url_cr_adscripcion = `${environment.base_url}/busqueda-cr-adscripcion`;
+  url_empleados = `${environment.base_url}/busqueda-empleados`;
   /*url_role = `${environment.base_url}/role`;
   url_permission = `${environment.base_url}/permission`;
   url_avatars = `${environment.base_url}/avatar-images`;*/
@@ -46,6 +49,22 @@ export class EmpleadosService {
 
   buscarProfesion(payload):Observable<any>{
     return this.http.get<any>(this.url_profesion_catalogo,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
+
+  buscarCr(payload):Observable<any>{
+    return this.http.get<any>(this.url_cr,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
+
+  buscarCrAsdcripcion(payload):Observable<any>{
+    return this.http.get<any>(this.url_cr_adscripcion,{params:payload}).pipe(
       map( response => {
         return response.data;
       })
@@ -108,6 +127,14 @@ export class EmpleadosService {
     ));
   }
 
+  guardarEmpleado(payload) {
+    return this.http.post<any>(this.url,payload).pipe(
+      map( (response) => {
+        return response;
+      }
+    ));
+  }
+
   getDatosCredencial(clave_credencial:string):Observable<any> {
     return this.http.get<any>(this.url_credencial+clave_credencial, {}).pipe(
       map( (response: any) => {
@@ -131,4 +158,20 @@ export class EmpleadosService {
       })
     );
   }
+
+  getCatalogos():Observable<any> {
+    return this.http.get<any>(this.url_catalogos,{params:{}}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
+
+  buscarEmpleados(payload):Observable<any>{
+    return this.http.get<any>(this.url_empleados,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
 }

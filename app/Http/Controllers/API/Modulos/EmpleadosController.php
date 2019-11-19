@@ -199,6 +199,114 @@ class EmpleadosController extends Controller
     }
 
     /**
+     * sTORE the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function STORE(Request $request)
+    {
+        $mensajes = [
+            
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+
+        $reglas = [
+            'codigo_id'             => 'required',
+            'comision_sindical_id'  => 'required',
+            'cr_id'                 => 'required',
+            'cr_adscripcion_id'     => 'required',
+            'curp'                  => 'required',
+            'figf'                  => 'required',
+            'fissa'                 => 'required',
+            //'fuente_id'           => 'required',
+            'nombre'                => 'required',
+            'programa_id'           => 'required',
+            'rama_id'               => 'required',
+            'rfc'                   => 'required',
+            'tipo_nomina_id'        => 'required'
+        ];
+
+        $inputs = Input::all();
+        $object = Empleado::where("rfc", "=", $inputs['rfc'])->first();
+        if($object){
+            return response()->json(['error' => "Existe en empleado con el mismo rfc, por favor verificar"], HttpResponse::HTTP_NOT_FOUND);
+        }
+        
+        $v = Validator::make($inputs, $reglas, $mensajes);
+
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios."], HttpResponse::HTTP_NOT_FOUND);
+        }
+
+        DB::beginTransaction();
+        try {
+            
+            $clues_fisico       = Cr::where("cr", "=", $inputs['cr_id'])->first();
+            $clues_adscripcion  = Cr::where("cr", "=", $inputs['cr_adscripcion_id'])->first();
+            
+            $empleado  = new Empleado();
+            $empleado->codigo_id              = $inputs['codigo_id'];
+            $empleado->comision_sindical_id   = $inputs['comision_sindical_id'];
+            $empleado->cr_id                  = $inputs['cr_id'];
+            $empleado->clues                  = $clues_fisico->clues;
+            $empleado->cr_adscripcion_id      = $inputs['cr_adscripcion_id'];
+            $empleado->clues_adscripcion      = $clues_adscripcion->clues;
+            $empleado->curp                   = $inputs['curp'];
+            $empleado->figf                   = $inputs['figf'];
+            $empleado->fissa                  = $inputs['fissa'];
+            //$empleado->fuente_id              = $inputs['fuente_id'];
+            $empleado->crespdes               = "";
+            $empleado->hora_entrada           = $inputs['hora_entrada'];
+            $empleado->hora_salida            = $inputs['hora_salida'];
+            $empleado->turno_id               = $inputs['turno_id'];
+            $empleado->nombre                 = $inputs['nombre'];
+            $empleado->programa_id            = $inputs['programa_id'];
+            $empleado->rama_id                = $inputs['rama_id'];
+            $empleado->rfc                    = $inputs['rfc'];
+            $empleado->tipo_nomina_id         = $inputs['tipo_nomina_id'];
+            $empleado->profesion_id           = $inputs['profesion_id'];
+            $empleado->area_servicio          = $inputs['area_servicio'];
+            $empleado->estatus                = 1;
+            $empleado->proporcionado_por      = "SISTEMA";
+            $empleado->observaciones          = $inputs['observaciones'];
+
+            if(isset($inputs['validado']))
+                $empleado->validado           = true;
+            else    
+                $empleado->validado           = false;
+
+            $empleado->save();
+
+            $escolaridad = json_decode($inputs['escolaridad_json']);
+
+            $objeto_escolaridad = EmpleadoEscolaridad::where("empleado_id", "=", $empleado->id)->first();
+            $arreglo_escolaridad = array("empleado_id" => $empleado->id, "secundaria"=>0, "preparatoria"=>0, "tecnica"=>0, "carrera"=>0, "titulo"=>0, "maestria"=>0, "doctorado"=>0, "cursos"=>0, "especialidad"=>0, "diplomado"=>0, "poliglota"=>0);
+            foreach ($escolaridad as $key => $value) {
+                $arreglo_escolaridad[$key] = 1;
+            }
+            
+            if($objeto_escolaridad)
+                $objeto_escolaridad->update($arreglo_escolaridad);
+            else{
+                EmpleadoEscolaridad::create($arreglo_escolaridad);
+            } 
+                
+            DB::commit();
+            
+            return response()->json($empleado,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -460,5 +568,60 @@ class EmpleadosController extends Controller
 
         return $accessData;
         //return ['userData'=>$loggedUser,'access'=>['clues'=>$lista_clues, 'cr'=>$lista_cr]];
+    }
+
+    public function getEmpleadosComplete()
+    {
+        try{
+            $parametros = Input::all();
+            
+            $empleado = Empleado::with("clues", "cr")->where(function($query)use($parametros){
+                return $query->where('nombre','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                            ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%');
+            });
+
+            if(isset($parametros['page'])){
+                $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
+    
+                $empleado = $empleado->paginate($resultadosPorPagina);
+            } else {
+
+                $empleado = $empleado->get();
+            }
+
+            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function getCrComplete()
+    {
+        try{
+            $parametros = Input::all();
+            
+            $access = $this->getUserAccessData();
+            if($access->is_admin)
+                $cr = Cr::with("clues")->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->get();
+            else
+            {
+                $cr = Cr::with("clues")->whereIn("cr", array_values($access->lista_cr))->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->get();
+            }    
+
+            return response()->json(['data'=>$cr],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function getCrAdscripcionComplete()
+    {
+        try{
+            $parametros = Input::all();
+            $cr = Cr::with("clues")->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->get();
+            return response()->json(['data'=>$cr],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
     }
 }
