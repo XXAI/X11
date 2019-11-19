@@ -344,12 +344,6 @@ export class EditarComponent implements OnInit {
 
         this.empleadoForm.patchValue(this.datos_empleado);
 
-        /*console.log('NATIVE JS DATE TIME', this.datos_empleado.figf);
-        console.log('STRINGIFIED TIME', JSON.stringify(this.datos_empleado.figf));
-        console.log(this.datos_empleado.figf.substring(0,4)+'<++>'+this.datos_empleado.figf.substring(5,7)+'<++>'+this.datos_empleado.figf.substring(8,10));
-        console.log(new Date(this.datos_empleado.figf.substring(0,4),this.datos_empleado.figf.substring(5,7), this.datos_empleado.figf.substring(8,10),12,0,0,0));*/
-        //console.log('FORMATTED TIME', `${this.datos_empleado.figf.getHours()}:${this.datos_empleado.figf.getMinutes()}:${this.datos_empleado.figf.getSeconds()}`);
-
         //this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
         //this.empleadoForm.patchValue({ "clues_desc": this.datos_empleado.clues.nombre_unidad});
         this.empleadoForm.patchValue({ "tipo_profesion_id": this.catalogos['consulta_tipo_profesion'] });
@@ -562,7 +556,7 @@ export class EditarComponent implements OnInit {
     //this.isLoading = false;
     //return false;
    
-    this.empleadosService.actualizarEmpleado(this.id_empleado, formData).subscribe(
+    this.empleadosService.actualizarEmpleado(this.datos_empleado.id, formData).subscribe(
       respuesta => {
         this.isLoading = false;
         this.sharedService.showSnackBar("Se ha guardado correctamente", "Correcto", 3000);

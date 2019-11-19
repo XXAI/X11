@@ -5,12 +5,14 @@
             <mat-icon aria-hidden="false" aria-label="Estatus Empleado">{{statusIcon}}</mat-icon>
             &nbsp;
             <span>{{statusLabel}}&nbsp;</span>
-            <span *ngIf="datos_empleado && datos_empleado.permuta_adscripcion_activa" matTooltip="{{datos_empleado.permuta_adscripcion_activa.clues_destino.nombre_unidad}}">[{{datos_empleado.permuta_adscripcion_activa.clues_destino.clues}}]</span>
+            <span *ngIf="datos_empleado && datos_empleado.permuta_adscripcion_activa" matTooltip="{{datos_empleado.permuta_adscripcion_activa.clues_destino.nombre_unidad}}: {{datos_empleado.permuta_adscripcion_activa.cr_destino.descripcion}}">
+                <small>[{{datos_empleado.permuta_adscripcion_activa.clues_destino.clues}}: {{datos_empleado.permuta_adscripcion_activa.cr_destino.cr}}]</small>
+            </span>
             <span class="spacer"></span>
             <section *ngIf="miniPagination">
                 <button mat-raised-button [disabled]="miniPagination.previous == 0" (click)="loadPrevious()"><mat-icon>navigate_before</mat-icon> Anterior</button>
                 &nbsp;
-                <span>{{miniPagination.current}}/{{miniPagination.total}}</span>
+                <span><small>{{miniPagination.current}}/{{miniPagination.total}}</small></span>
                 &nbsp;
                 <button mat-raised-button [disabled]="miniPagination.next == 0" (click)="loadNext()">Siguiente <mat-icon>navigate_next</mat-icon></button>
             </section>
