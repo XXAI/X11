@@ -146,9 +146,9 @@
                                                 </tr>
                                                 <tr><th class="titulo-largo">CR:</th><th class="titulo-largo">Área</th></tr>
                                                 <tr>
-                                                    <td class="descripcion">{{datos_empleado.adscripcion_activa.cr.cr}}</td>
+                                                    <td class="descripcion">{{(datos_empleado.adscripcion_activa.cr)?datos_empleado.adscripcion_activa.cr.cr:'Sin CR Asignado'}}</td>
                                                     <td class="descripcion">
-                                                        {{datos_empleado.adscripcion_activa.cr.descripcion}}
+                                                        {{(datos_empleado.adscripcion_activa.cr)?datos_empleado.adscripcion_activa.cr.descripcion:'Sin CR Asignado'}}
                                                     </td>
                                                 </tr>
                                                 <!--tr>
@@ -193,6 +193,7 @@
                                                 </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
+
                                             <mat-form-field fxFlex fxFlex.xs="100">
                                                 <mat-label>Programa</mat-label>
                                                 <mat-select formControlName="programa_id">
@@ -200,6 +201,10 @@
                                                     {{item.descripcion}}
                                                 </mat-option>
                                                 </mat-select>
+                                            </mat-form-field>
+
+                                            <mat-form-field fxFlex="10" fxFlex.xs="100">
+                                                <input matInput formControlName="ur" placeholder="UR" >
                                             </mat-form-field>
                                             <!--<mat-form-field fxFlex fxFlex.xs="100">
                                                 <mat-label>Fuente</mat-label>
@@ -365,9 +370,10 @@
                     </mat-card-content>
                     <mat-card-actions>
                         <ng-container *ngIf="puedeTransferir">
-                            <button mat-raised-button color="primary" (click)="confirmUnlinkEmploye()"><mat-icon>undo</mat-icon></button>
+                            <button mat-raised-button color="primary" (click)="confirmUnlinkEmployee()"><mat-icon>undo</mat-icon></button>
                             <button mat-raised-button color="primary" (click)="showTransferenciaEmpleadoDialog(datos_empleado.id)"><mat-icon>swap_horiz</mat-icon></button>
                         </ng-container>
+                        <button *ngIf="necesitaActivarse" mat-raised-button color="primary" (click)="activateEmployee(datos_empleado.id)"><mat-icon>redo</mat-icon></button>
                         <span fxFlex></span>
                         <button mat-raised-button routerLink="/empleados">Cancelar</button>
                         <ng-container *ngIf="puedeGuardar">

@@ -39,12 +39,12 @@ class EmpleadosController extends Controller
                                 if(!$access->is_admin){
                                     $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                 }
-                            })->where('empleados.estatus','!=','3')->orderBy('nombre');
+                            })->orderBy('nombre');
 
             //filtro de valores por permisos del usuario
             //$empleados = $empleados->->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
             if(!$access->is_admin){
-                $empleados = $empleados->where(function($query)use($access){
+                $empleados = $empleados->where('empleados.estatus','!=','3')->where(function($query)use($access){
                     $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
                         ->orWhere(function($query2)use($access){
                             $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
@@ -132,11 +132,11 @@ class EmpleadosController extends Controller
                                             if(!$access->is_admin){
                                                 $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                             }
-                                        })->where('empleados.estatus','!=','3')->orderBy('nombre');
+                                        })->orderBy('nombre');
 
                 //filtro de valores por permisos del usuario
                 if(!$access->is_admin){
-                    $empleados = $empleados->where(function($query)use($access){
+                    $empleados = $empleados->where('empleados.estatus','!=','3')->where(function($query)use($access){
                         $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
                                 ->orWhere(function($query2)use($access){
                                     $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
@@ -205,7 +205,7 @@ class EmpleadosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function STORE(Request $request)
+    public function store(Request $request)
     {
         $mensajes = [
             
@@ -219,27 +219,29 @@ class EmpleadosController extends Controller
             'comision_sindical_id'  => 'required',
             'cr_id'                 => 'required',
             'cr_adscripcion_id'     => 'required',
-            'curp'                  => 'required',
+            'curp'                  => 'required|unique:empleados',
             'figf'                  => 'required',
             'fissa'                 => 'required',
             //'fuente_id'           => 'required',
             'nombre'                => 'required',
             'programa_id'           => 'required',
             'rama_id'               => 'required',
-            'rfc'                   => 'required',
+            'rfc'                   => 'required|unique:empleados',
             'tipo_nomina_id'        => 'required'
         ];
 
         $inputs = Input::all();
         $object = Empleado::where("rfc", "=", $inputs['rfc'])->first();
         if($object){
-            return response()->json(['error' => "Existe en empleado con el mismo rfc, por favor verificar"], HttpResponse::HTTP_NOT_FOUND);
+            throw new \Exception("Existe en empleado con el mismo rfc, por favor verificar", 1);
+            //return response()->json(['error' => "Existe en empleado con el mismo rfc, por favor verificar"], HttpResponse::HTTP_CONFLICT);
         }
         
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {
-            return response()->json(['error' => "Hace falta campos obligatorios."], HttpResponse::HTTP_NOT_FOUND);
+            throw new \Exception("Hacen falta campos obligatorios", 1);
+            //return response()->json(['error' => "Hace falta campos obligatorios."], HttpResponse::HTTP_CONFLICT);
         }
 
         DB::beginTransaction();
@@ -267,6 +269,7 @@ class EmpleadosController extends Controller
             $empleado->programa_id            = $inputs['programa_id'];
             $empleado->rama_id                = $inputs['rama_id'];
             $empleado->rfc                    = $inputs['rfc'];
+            $empleado->ur                     = $inputs['ur'];
             $empleado->tipo_nomina_id         = $inputs['tipo_nomina_id'];
             $empleado->profesion_id           = $inputs['profesion_id'];
             $empleado->area_servicio          = $inputs['area_servicio'];
@@ -510,6 +513,22 @@ class EmpleadosController extends Controller
         }
     }
 
+    public function activateEmployee($id){
+        try{
+            $empleado = Empleado::find($id);
+            $loggedUser = auth()->userOrFail();
+
+            $empleado->estatus = 1;
+            //$empleado->clues = null;
+            //$empleado->cr = null;
+            $empleado->save();
+
+            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function getFilterCatalogs(){
         try{
             $access = $this->getUserAccessData();
@@ -531,11 +550,17 @@ class EmpleadosController extends Controller
                                     ['id'=>'1','descripcion'=>'Activos'],
                                     ['id'=>'1-0','descripcion'=>'Activos - Sin Validar'],
                                     ['id'=>'1-1','descripcion'=>'Activos - Validados'],
+                                    ['id'=>'4','descripcion'=>'En Transferencia']
                                     //['id'=>'2','descripcion'=>'Baja'],
                                     //['id'=>'3','descripcion'=>'Indefinidos'],
-                                    ['id'=>'4','descripcion'=>'En Transferencia']
+                                    
                             ]
             ];
+
+            if($access->is_admin){
+                $catalogos['estatus'][] = ['id'=>'2','descripcion'=>'Baja'];
+                $catalogos['estatus'][] = ['id'=>'3','descripcion'=>'Indefinidos'];
+            }
 
             return response()->json(['data'=>$catalogos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
@@ -578,7 +603,8 @@ class EmpleadosController extends Controller
             
             $empleado = Empleado::with("clues", "cr")->where(function($query)use($parametros){
                 return $query->where('nombre','LIKE','%'.$parametros['busqueda_empleado'].'%')
-                            ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%');
+                            ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                            ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
             });
 
             if(isset($parametros['page'])){

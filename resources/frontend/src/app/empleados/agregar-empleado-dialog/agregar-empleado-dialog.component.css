@@ -53,3 +53,10 @@
   .example-element-description-attribution {
     opacity: 0.5;
   }
+  .not-results-found{
+    text-align: center;
+    font-style: italic;
+  }
+  .hide{
+    display: none;
+  }

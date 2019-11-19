@@ -108,7 +108,7 @@ export class NuevoComponent implements OnInit {
     'programa_id': [''],
     'fuente_id': [''],
 
-
+    'ur':[''],
     'codigo_id': [''],
     'codigo': [''],
     'profesion_id': [''],

@@ -38,9 +38,16 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
   pageSize: number = 20;
   selectedItemIndex: number = -1;
   dataSource: any = [];
-  columnsToDisplay = ['nombre', 'rfc', 'clues','actions'];
+  columnsToDisplay = ['estatus','nombre', 'clues'];//,'actions'
   //expandedElement: PeriodicElement | null;
 
+  statusIcon:any = {
+    '1-0':'help', //activo
+    '1-1':'verified_user', //activo verificado 
+    '2':'remove_circle', //baja
+    '3':'warning', // No identificado
+    '4':'swap_horizontal_circle' //en transferencia
+  };
   
   constructor(
     public dialogRef: MatDialogRef<AgregarEmpleadoDialogComponent>,
@@ -60,6 +67,10 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
 
   aceptar(): void {
     this.dialogRef.close(true);
+  }
+
+  asignarEmpleado(id:number){
+    console.log(id);
   }
 
   buscarEmpleados():void{

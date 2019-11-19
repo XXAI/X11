@@ -28,6 +28,7 @@ export class EditarComponent implements OnInit {
   puedeGuardar: boolean = true;
   puedeValidar: boolean = true;
   puedeTransferir: boolean = true;
+  necesitaActivarse: boolean = false;
   statusLabel: string;
   statusIcon: string;
 
@@ -108,6 +109,7 @@ export class EditarComponent implements OnInit {
     'tipo_nomina_id': [''],
     'programa_id': [''],
     'fuente_id': [''],
+    'ur':[''],
 
 
     'codigo_id': [''],
@@ -233,12 +235,14 @@ export class EditarComponent implements OnInit {
 
           this.puedeTransferir = true;
           this.puedeGuardar = true;
+          this.necesitaActivarse = false
           this.statusIcon = 'help';
           this.statusLabel = 'Por Validar';
 
           if(this.datos_empleado.estatus == 3){
             this.puedeTransferir = false;
             this.puedeGuardar = false;
+            this.necesitaActivarse = true;
             this.statusLabel = 'Sin Identificar';
             this.statusIcon = 'warning';
           }else if(this.datos_empleado.estatus == 4 && this.datos_empleado.permuta_adscripcion_activa){ //empelado estatus = 4
@@ -445,7 +449,40 @@ export class EditarComponent implements OnInit {
     });
   }
 
-  confirmUnlinkEmploye(){
+  activateEmployee(id:number){
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Activar Empleado',dialogMessage:'¿Realmente desea activar al trabajador? Escriba ACTIVAR a continuación para realizar el proceso.',validationString:'ACTIVAR',btnColor:'primary',btnText:'Activar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.empleadosService.activarEmpleado(id).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+              this.isLoading = false;
+            } else {
+              console.log(response);
+              this.loadEmpleadoData(id);
+            }
+            
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }
+    });
+  }
+
+  confirmUnlinkEmployee(){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
       data:{dialogTitle:'Liberar Empleado',dialogMessage:'¿Realmente desea liberar el trabajador de su clues? Escriba LIBERAR a continuación para realizar el proceso.',validationString:'LIBERAR',btnColor:'primary',btnText:'Liberar'}
