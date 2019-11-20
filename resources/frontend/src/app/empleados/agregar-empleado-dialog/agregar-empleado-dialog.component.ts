@@ -74,6 +74,8 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
   }
 
   buscarEmpleados():void{
+    this.isLoading = true;
+    this.dataSource = [];
     let params:any;
     params = { page: 1, per_page: this.pageSize, busqueda_empleado: this.search }
     
@@ -87,6 +89,7 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
           this.dataSource = response.data;
           this.resultsLength = response.total;
         }
+        this.isLoading = false;
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -94,6 +97,7 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
           errorMessage = errorResponse.error.message;
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
       }
     );
   }

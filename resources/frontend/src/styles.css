@@ -12,6 +12,10 @@ body { margin: 0; font-family: 'Roboto', sans-serif; }
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
 
+a.link-route-item-collapsed div.mat-list-item-content{
+/*.mat-list-base .mat-list-item .mat-list-item-content{*/
+    padding: 0px !important;
+}
 
 .mat-success {
     color: #fff !important;

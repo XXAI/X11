@@ -14,9 +14,10 @@ import { ConfirmarTransferenciaDialogComponent } from './confirmar-transferencia
 import { EditarHorarioDialogComponent } from './editar-horario-dialog/editar-horario-dialog.component';
 import { AgregarEmpleadoDialogComponent } from './agregar-empleado-dialog/agregar-empleado-dialog.component';
 import { NuevoComponent } from './nuevo/nuevo.component';
+import { ReportesComponent } from './reportes/reportes.component';
 
 @NgModule({
-  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent, NuevoComponent],
+  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent, NuevoComponent, ReportesComponent],
   imports: [
     CommonModule,
     EmpleadosRoutingModule,

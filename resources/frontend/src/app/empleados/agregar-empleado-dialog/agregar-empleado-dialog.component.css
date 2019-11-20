@@ -9,6 +9,14 @@
   table {
     width: 100%;
   }
+
+  table.employees-table mat-spinner{
+    margin: 0 auto;
+  }
+
+  table.employees-table th{
+    text-align: center;
+  }
   
   tr.example-detail-row {
     height: 0;
@@ -53,10 +61,12 @@
   .example-element-description-attribution {
     opacity: 0.5;
   }
+
   .not-results-found{
     text-align: center;
     font-style: italic;
   }
+
   .hide{
     display: none;
   }

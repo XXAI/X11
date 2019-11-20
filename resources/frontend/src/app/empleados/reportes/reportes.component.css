@@ -1,0 +1,8 @@
+.results-table-container table{ 
+    width: 100%;
+}
+
+.not-results-found{
+    text-align: center;
+    font-style: italic;
+}
