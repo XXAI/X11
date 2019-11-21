@@ -50,7 +50,7 @@
                         </ng-container>
                         
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                        <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+                        <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
                         <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
                     </table>
                 </div>

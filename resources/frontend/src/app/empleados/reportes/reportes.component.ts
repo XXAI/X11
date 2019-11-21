@@ -11,6 +11,10 @@ export class ReportesComponent implements OnInit {
 
   constructor(private empleadosService: EmpleadosService) { }
 
+  isLoading:boolean;
+  totalResults:number =  0;
+  totalColumns:number = 0;
+
   execQuery:string;
   dataSource:any[] = [];
   displayedColumns:string[] = [];
