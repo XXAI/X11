@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { EmpleadosService } from '../empleados.service';
 
 @Component({
   selector: 'app-reportes',
@@ -8,11 +9,12 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 })
 export class ReportesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private empleadosService: EmpleadosService) { }
 
+  execQuery:string;
   dataSource:any[] = [];
   displayedColumns:string[] = [];
-  pageSize:number = 0;
+  pageSize:number = 20;
   currentPage:number = 0;
   resultsLength:number = 0;
 
@@ -23,6 +25,19 @@ export class ReportesComponent implements OnInit {
 
   loadResultsData(event?:PageEvent){
     //
+  }
+
+  executeQuery(){
+    this.empleadosService.ejecutarReporte({query: this.execQuery}).subscribe(
+      response => {
+        console.log(response);
+        this.displayedColumns = response.columns;
+      }
+    );
+  }
+
+  downloadReport(){
+    console.log(this.execQuery);
   }
 
 }

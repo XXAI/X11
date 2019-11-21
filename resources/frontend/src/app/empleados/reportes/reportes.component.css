@@ -1,5 +1,19 @@
+.results-table-container{
+    overflow: auto;
+}
+
 .results-table-container table{ 
     width: 100%;
+}
+
+.results-table th {
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+
+.info-results .item{
+    padding:10px;
 }
 
 .not-results-found{

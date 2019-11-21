@@ -14,7 +14,6 @@ class AlterEmpleados extends Migration
     public function up()
     {
         Schema::table('empleados', function (Blueprint $table) {
-            
             $table->string('cr_adscripcion_id', 15)->nullable()->after('cr_id');
             $table->string('clues_adscripcion', 14)->nullable()->after('clues');
         });

@@ -497,6 +497,61 @@ class EmpleadosController extends Controller
         }
     }
 
+    public function requestTransferEmployee($id){
+        try{
+            $parametros = Input::all();
+            
+            //$datos_transferencia = PermutaAdscripcion::where('empleado_id',$id)->first();
+            $empleado = Empleado::find($id);
+
+            $clues_origen = $empleado->clues;
+            $cr_origen = $empleado->cr_id;
+            $clues_destino = $parametros['clues'];
+            $cr_destino = $parametros['cr'];
+            $fecha_transferencia = date('Y-m-d');
+
+            DB::beginTransaction();
+
+            if(true){ //aceptado por ahora
+                $loggedUser = auth()->userOrFail();
+
+                $empleado->permutasAdscripcion()->create([
+                    'clues_origen'=>$clues_origen,
+                    'cr_origen_id'=>$cr_origen,
+                    'clues_destino'=>$clues_destino,
+                    'cr_destino_id'=>$cr_destino,
+                    'estatus' => 2,
+                    'user_origen_id'=>$loggedUser->id,
+                    'user_destino_id'=>$loggedUser->id,
+                    'user_id'=>$loggedUser->id
+                    //'observacion'=>(isset($parametros['observaciones']))?$parametros['observaciones']:''
+                ]);
+
+                $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$clues_origen)->where('cr',$cr_origen)->whereNull('fecha_fin')->first();
+
+                if($clues_empleado){
+                    $clues_empleado->fecha_fin = $fecha_transferencia;
+                    $clues_empleado->save();
+                }
+
+                $empleado->adscripcionHistorial()->create(['clues'=>$clues_destino, 'cr'=>$cr_destino, 'fecha_inicio'=>$fecha_transferencia]);
+
+                $empleado->estatus = 1;
+                $empleado->clues = $clues_destino;
+                $empleado->cr_id = $cr_destino; 
+                $empleado->save();
+
+            }
+
+            DB::commit();
+
+            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function unlinkEmployee($id){
         try{
             $empleado = Empleado::find($id);
@@ -532,6 +587,12 @@ class EmpleadosController extends Controller
     public function getFilterCatalogs(){
         try{
             $access = $this->getUserAccessData();
+            
+            /*
+                $posts = App\Post::whereHas('comments', function (Builder $query) {
+                    $query->where('content', 'like', 'foo%');
+                })->get();
+            */
 
             $catalogo_clues = Clues::orderBy('nombre_unidad');
             $catalogo_cr = Cr::orderBy("descripcion");
@@ -539,6 +600,12 @@ class EmpleadosController extends Controller
             if(!$access->is_admin){
                 $catalogo_clues = $catalogo_clues->whereIn('clues',$access->lista_clues);
                 $catalogo_cr = $catalogo_cr->whereIn('cr',$access->lista_cr);
+
+                $catalogo_clues = $catalogo_clues->with(['cr'=>function($query)use($access){
+                    $query->whereIn('cr',$access->lista_cr);
+                }]);
+            }else{
+                $catalogo_clues = $catalogo_clues->with('cr');
             }
 
             $catalogos = [
@@ -600,23 +667,35 @@ class EmpleadosController extends Controller
     {
         try{
             $parametros = Input::all();
+
+            $access = $this->getUserAccessData();
             
-            $empleado = Empleado::with("clues", "cr")->where(function($query)use($parametros){
+            $empleados = Empleado::with("clues", "cr")->where(function($query)use($parametros){
                 return $query->where('nombre','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
             });
 
+            if(!$access->is_admin){
+                $empleados = $empleados->select('id','clues','cr_id','nombre','rfc','curp','estatus','validado',DB::raw('IF(cr_id IN ('.implode(',',$access->lista_cr).'),1,0) as empleado_propio'));
+            }else{
+                $empleados = $empleados->select('id','clues','cr_id','nombre','rfc','curp','estatus','validado',DB::raw('1 as empleado_propio'));
+            }
+            
             if(isset($parametros['page'])){
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
-                $empleado = $empleado->paginate($resultadosPorPagina);
+                $empleados = $empleados->paginate($resultadosPorPagina);
             } else {
 
-                $empleado = $empleado->get();
+                $empleados = $empleados->get();
             }
 
-            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+            $empleados->map(function($empleado){
+                return $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
+            });
+
+            return response()->json(['data'=>$empleados],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

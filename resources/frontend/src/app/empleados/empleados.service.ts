@@ -26,6 +26,10 @@ export class EmpleadosService {
   url_cr = `${environment.base_url}/busqueda-cr`;
   url_cr_adscripcion = `${environment.base_url}/busqueda-cr-adscripcion`;
   url_empleados = `${environment.base_url}/busqueda-empleados`;
+
+  url_solicitar_transfer = `${environment.base_url}/solicitar-transferencia/`;
+
+  url_execute_reporter = `${environment.base_url}/ejecutar-query`;
   /*url_role = `${environment.base_url}/role`;
   url_permission = `${environment.base_url}/permission`;
   url_avatars = `${environment.base_url}/avatar-images`;*/
@@ -180,6 +184,22 @@ export class EmpleadosService {
     return this.http.get<any>(this.url_empleados,{params:payload}).pipe(
       map( response => {
         return response.data;
+      })
+    );
+  };
+
+  solicitarTransfer(id:any, payload:any):Observable<any> {
+    return this.http.put<any>(this.url_solicitar_transfer + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  ejecutarReporte(payload):Observable<any>{
+    return this.http.get<any>(this.url_execute_reporter,{params:payload}).pipe(
+      map( response => {
+        return response;
       })
     );
   };

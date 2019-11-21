@@ -37,6 +37,10 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::put('liberar-empleado/{id}',             'API\Modulos\EmpleadosController@unlinkEmployee');
     Route::put('activar-empleado/{id}',             'API\Modulos\EmpleadosController@activateEmployee');
 
+    Route::put('solicitar-transferencia/{id}',      'API\Modulos\EmpleadosController@requestTransferEmployee');
+
+    Route::get('ejecutar-query',                    'API\Admin\DevReporterController@executeQuery');
+
     Route::get('catalogos-filtro-empleados', 'API\Modulos\EmpleadosController@getFilterCatalogs');
 
     Route::apiResource('catalogos',          'API\Modulos\CatalogosController');

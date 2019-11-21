@@ -370,7 +370,7 @@
                     </mat-card-content>
                     <mat-card-actions>
                         <ng-container *ngIf="puedeTransferir">
-                            <button mat-raised-button color="primary" (click)="confirmUnlinkEmployee()"><mat-icon>undo</mat-icon></button>
+                            <button mat-raised-button color="warn" (click)="confirmUnlinkEmployee()"><mat-icon>link_off</mat-icon></button>
                             <button mat-raised-button color="primary" (click)="showTransferenciaEmpleadoDialog(datos_empleado.id)"><mat-icon>swap_horiz</mat-icon></button>
                         </ng-container>
                         <button *ngIf="necesitaActivarse" mat-raised-button color="primary" (click)="activateEmployee(datos_empleado.id)"><mat-icon>redo</mat-icon></button>

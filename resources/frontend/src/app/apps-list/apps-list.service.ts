@@ -37,7 +37,7 @@ export class AppsListService {
         }
       }
 
-      if((app.permission && !permissions[app.permission]) || (app.children && app.children.length == 0)){
+      if((app.permission && !permissions[app.permission]) || (app.isHub && app.children && app.children.length == 0)){
         userApps.splice(i,1);
         i -= 1;
       }
