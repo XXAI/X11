@@ -40,6 +40,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::put('solicitar-transferencia/{id}',      'API\Modulos\EmpleadosController@requestTransferEmployee');
 
     Route::get('ejecutar-query',                    'API\Admin\DevReporterController@executeQuery');
+    Route::get('exportar-query',                    'API\Admin\DevReporterController@exportExcel');
 
     Route::get('catalogos-filtro-empleados', 'API\Modulos\EmpleadosController@getFilterCatalogs');
 

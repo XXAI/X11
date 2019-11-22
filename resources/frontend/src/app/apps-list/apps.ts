@@ -16,6 +16,11 @@ export const APPS:App [] = [
         {name:'Reportes',route:'empleados/reportes',icon:'insert_drive_file', permission:"dmcnXs5gK1qHzn30WvGXDzFimcrVJZ9Z"} //permiso de admin-personal-activo
       ]
     },
+    { name:'Herramientas Dev', route: "dev-tools/reportes",  icon: "assets/icons/toolbox.svg", isHub:true, 
+      children:[
+        {name:'Reportes MySQL',route:'dev-tools/reportes', icon:'insert_drive_file', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"}
+      ],
+    },
     /*
     { name: "Seguridad", route: "seguridad", icon: "assets/icons/security-shield.svg", 
         children: [

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { EmpleadosService } from '../empleados.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-reportes',
@@ -24,16 +25,19 @@ export class ReportesComponent implements OnInit {
   constructor(private empleadosService: EmpleadosService) { }
 
   isLoading:boolean;
+  isLoadingExcel:boolean = false;
   totalResults:number =  0;
   totalColumns:number = 0;
   execTime:number = 0;
   hideQuery:boolean = false;
 
   savedQueryLoaded:boolean = false;
-  
+
   errorMessage:string;
 
   execQuery:string;
+  limitQuery:number = 100;
+
   dataSource:any[] = [];
   displayedColumns:string[] = [];
   pageSize:number = 20;
@@ -68,7 +72,7 @@ export class ReportesComponent implements OnInit {
 
     this.clearResults(this.hideQuery);
     
-    this.empleadosService.ejecutarReporte({query: this.execQuery}).subscribe(
+    this.empleadosService.ejecutarReporte({query: this.execQuery, limit: this.limitQuery}).subscribe(
       response => {
         console.log(response);
         this.displayedColumns = response.columns;
@@ -94,6 +98,18 @@ export class ReportesComponent implements OnInit {
   }
 
   downloadReport(){
+    this.isLoadingExcel = true;
+    this.empleadosService.exportarReporte({query: this.execQuery}).subscribe(
+      response => {
+        //FileSaver.saveAs(response);
+        FileSaver.saveAs(response,'reporte');
+        this.isLoadingExcel = false;
+      },
+      errorResponse =>{
+        this.errorMessage = 'Ocurrio un error al intentar descargar el archivo';
+        this.isLoadingExcel = false;
+      }
+    );
     console.log(this.execQuery);
   }
 

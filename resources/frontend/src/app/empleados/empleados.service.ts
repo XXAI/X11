@@ -30,6 +30,7 @@ export class EmpleadosService {
   url_solicitar_transfer = `${environment.base_url}/solicitar-transferencia/`;
 
   url_execute_reporter = `${environment.base_url}/ejecutar-query`;
+  url_export_reporter =  `${environment.base_url}/exportar-query`;
   /*url_role = `${environment.base_url}/role`;
   url_permission = `${environment.base_url}/permission`;
   url_avatars = `${environment.base_url}/avatar-images`;*/
@@ -202,5 +203,9 @@ export class EmpleadosService {
         return response;
       })
     );
-  };
+  }
+
+  exportarReporte(payload):Observable<any>{
+    return this.http.get<any>(this.url_export_reporter, {params:payload, responseType: 'blob' as 'json'});
+  }
 }

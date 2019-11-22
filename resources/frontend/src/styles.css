@@ -39,6 +39,10 @@ a.item-mini-side-menu div.mat-list-item-content{
     max-height: 33px;
 }
 
+.dense-form-field .mat-form-field-wrapper{
+    padding-bottom: 0px;
+}
+
 .mat-success {
     color: #fff !important;
     background-color: #28a745 !important;
@@ -61,4 +65,24 @@ a.item-mini-side-menu div.mat-list-item-content{
 }
 .mat-info[disabled] {
     background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}
+   
+.button-spinner:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    border-top-color: #000000;
+    animation: spinner .8s linear infinite;
 }

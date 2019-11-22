@@ -3,12 +3,18 @@
         <section fxFill fxLayout="column" fxLayoutAlign="center">
             <mat-card fxFlex.xs="100%" fxFlex>
                 <div fxLayout="column">
-                    <div fxFlex fxLayout="row wrap" *ngIf="!hideQuery">
-                        <div fxFlex>
-                            <mat-form-field fxFill appearance="outline">
+                    <div fxFlex fxLayout="row" *ngIf="!hideQuery" >
+                        <div fxFlex fxLayout="column">
+                            <mat-form-field fxFlex appearance="outline" class="dense-form-field">
                                 <mat-label>Query</mat-label>
                                 <textarea matInput [(ngModel)]="execQuery" placeholder="Query a ejecutar" rows="5"></textarea>
                             </mat-form-field>
+                            <section fxFlex fxLayout="row">
+                                <mat-form-field fxFlex="50">
+                                    <input matInput [(ngModel)]="limitQuery" placeholder="Limit">
+                                    <mat-hint>*Aplica solo para la ejecución del query en el navegador</mat-hint>
+                                </mat-form-field>
+                            </section>
                         </div>
                         <div fxFlex="none">
                             <mat-nav-list class="mini-side-menu">
@@ -42,8 +48,8 @@
                         <button fxFlex="20" mat-raised-button color="accent" (click)="executeQuery()" [disabled]="!execQuery">
                             <mat-icon>{{(hideQuery)?'refresh':'play_arrow'}}</mat-icon> {{(hideQuery)?'Recargar':'Ejecutar'}}
                         </button>
-                        <button fxFlex="20" mat-raised-button color="primary" (click)="downloadReport()" [disabled]="!execQuery">
-                            <mat-icon>archive</mat-icon> Descargar
+                        <button fxFlex="20" mat-raised-button color="primary" [class.button-spinner]="isLoadingExcel" (click)="downloadReport()" [disabled]="!execQuery || isLoadingExcel">
+                            <mat-icon *ngIf="!isLoadingExcel">archive</mat-icon> {{(isLoadingExcel)?'Generando...':'Descargar'}}
                         </button>
                     </div>
                 </div>
@@ -53,7 +59,7 @@
                 <section class="item" fxFlex>Total Resultados: {{totalResults}}</section>
                 <section class="item" fxFlex>No de Columnas: {{totalColumns}}</section>
                 <section class="item" fxFlex>Tiempo de Ejecución: {{execTime}}</section>
-                <section class="item" fxFlex="none"><button mat-raised-button [disabled]="dataSource.length == 0 && totalColumns == 0" (click)="clearResults()"><mat-icon>backspace</mat-icon> Limpiar Resultados</button></section>
+                <section class="item" fxFlex="none"><button mat-raised-button [disabled]="(dataSource.length == 0 && totalColumns == 0)" (click)="clearResults()"><mat-icon>backspace</mat-icon> Limpiar Resultados</button></section>
             </section>
             
             <div class="results-container mat-elevation-z1" fxFill>
