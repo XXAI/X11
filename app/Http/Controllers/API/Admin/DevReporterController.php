@@ -17,6 +17,7 @@ class DevReporterController extends Controller
 
         try{
             //$nombre_archivo = $request->get('nombre_archivo');
+            DB::enableQueryLog();
 
             $query = $request->get('query');
 
@@ -28,7 +29,9 @@ class DevReporterController extends Controller
 
             $columnas = array_keys(collect($resultado[0])->toArray());
 
-            return response()->json(['data'=>$resultado, 'columns'=>$columnas],HttpResponse::HTTP_OK);
+            $query_log = DB::getQueryLog();
+
+            return response()->json(['data'=>$resultado, 'columns'=>$columnas, 'exec_time'=>$query_log[0]['time']],HttpResponse::HTTP_OK);
 
             //var_dump($columnas);
             //return response()->json(['data' => '------'], HttpResponse::HTTP_OK);

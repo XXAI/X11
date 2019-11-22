@@ -1,11 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { EmpleadosService } from '../empleados.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
-  styleUrls: ['./reportes.component.css']
+  styleUrls: ['./reportes.component.css'],
+  animations: [
+    trigger('buttonInOut', [
+        transition('void => *', [
+            style({opacity: 0}),
+            animate(300, style({opacity: 1}))
+        ]),
+        transition('* => void', [
+            animate(300, style({opacity: 0}))
+        ])
+    ])
+  ]
 })
 export class ReportesComponent implements OnInit {
 
@@ -14,6 +26,12 @@ export class ReportesComponent implements OnInit {
   isLoading:boolean;
   totalResults:number =  0;
   totalColumns:number = 0;
+  execTime:number = 0;
+  hideQuery:boolean = false;
+
+  savedQueryLoaded:boolean = false;
+  
+  errorMessage:string;
 
   execQuery:string;
   dataSource:any[] = [];
@@ -25,17 +43,52 @@ export class ReportesComponent implements OnInit {
   paginarResultados:boolean = false;
 
   ngOnInit() {
+    this.isLoading = false;
   }
 
   loadResultsData(event?:PageEvent){
     //
   }
 
+  clearResults(refresh:boolean = false){
+    this.errorMessage = undefined;
+    this.dataSource = [];
+    this.displayedColumns = [];
+    this.totalColumns = 0;
+    this.totalResults = 0;
+    this.execTime = 0;
+
+    if(!refresh){
+      this.hideQuery = false;
+    }
+  }
+
   executeQuery(){
+    this.isLoading = true;
+
+    this.clearResults(this.hideQuery);
+    
     this.empleadosService.ejecutarReporte({query: this.execQuery}).subscribe(
       response => {
         console.log(response);
         this.displayedColumns = response.columns;
+        this.totalColumns = response.columns.length;
+        this.totalResults = response.data.length;
+        this.execTime = response.exec_time;
+
+        if(response.data.length <= 500){
+          this.dataSource = response.data;
+          this.hideQuery = true;
+        }else{
+          this.errorMessage = 'Son demasiados resultados para mostrarlos en el navegador';
+        }
+        
+
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        this.errorMessage = errorResponse.error.error;
+        this.isLoading = false;
       }
     );
   }

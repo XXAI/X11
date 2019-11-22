@@ -1,41 +1,63 @@
-<br>
-<section class="profile" >
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-        <section fxFlex="95" fxLayout="column" fxLayoutAlign="center">
-            <div class="users-loading-shade" *ngIf="isLoading"><mat-spinner></mat-spinner></div>
-            <mat-card fxFlex.xs="100%" fxFlex="90%">
+<section class="profile" fxFill style="overflow: auto;">
+    <div fxLayout="row" style="padding:10px;">
+        <section fxFill fxLayout="column" fxLayoutAlign="center">
+            <mat-card fxFlex.xs="100%" fxFlex>
                 <div fxLayout="column">
-                    <div fxFlex fxLayout="row wrap">
-                        <mat-form-field fxFill appearance="outline">
-                            <mat-label>Query</mat-label>
-                            <textarea matInput [(ngModel)]="execQuery" placeholder="Query a ejecutar" rows="5"></textarea>
-                        </mat-form-field>
+                    <div fxFlex fxLayout="row wrap" *ngIf="!hideQuery">
+                        <div fxFlex>
+                            <mat-form-field fxFill appearance="outline">
+                                <mat-label>Query</mat-label>
+                                <textarea matInput [(ngModel)]="execQuery" placeholder="Query a ejecutar" rows="5"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="none">
+                            <mat-nav-list class="mini-side-menu">
+                                <a mat-list-item class="item-mini-side-menu">
+                                    <mat-icon matListIcon >open_in_new</mat-icon>
+                                </a>
+                                <a mat-list-item class="item-mini-side-menu" *ngIf="execQuery" [@buttonInOut]>
+                                    <mat-icon matListIcon color="primary">save</mat-icon>
+                                </a>
+                                <a mat-list-item class="item-mini-side-menu" *ngIf="savedQueryLoaded" [@buttonInOut]> 
+                                    <mat-icon matListIcon color="accent" fontSet="material-icons-outlined">save</mat-icon>
+                                </a>
+                                <a mat-list-item class="item-mini-side-menu" *ngIf="savedQueryLoaded" [@buttonInOut]> 
+                                    <mat-icon matListIcon color="warn">delete</mat-icon>
+                                </a>
+                            </mat-nav-list>
+                        </div>
                     </div>
                     <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
                         <section fxFlex="55">
-                            <button [disabled]="!execQuery" mat-raised-button (click)="execQuery = ''" [attr.aria-label]="'Clean Query'" [attr.aria-pressed]="'cleanQuery'">
-                                Limpiar
+                            <button [disabled]="!execQuery" mat-raised-button (click)="execQuery = ''" [attr.aria-label]="'Clean Query'" [attr.aria-pressed]="'cleanQuery'" *ngIf="!hideQuery">
+                                Limpiar Query
+                            </button>
+                            <button [disabled]="!execQuery" mat-button (click)="hideQuery = true" [attr.aria-label]="'Hide Query'" [attr.aria-pressed]="'hideQuery'" *ngIf="!hideQuery && dataSource.length > 0">
+                                <mat-icon>remove_red_eye</mat-icon> Ocultar Query
+                            </button>
+                            <button [disabled]="!execQuery" mat-raised-button (click)="hideQuery = false" [attr.aria-label]="'Edit Query'" [attr.aria-pressed]="'editQuery'" *ngIf="hideQuery" color="info">
+                                <mat-icon>edit</mat-icon> Editar Query
                             </button>
                         </section>
-                        <button fxFlex="20" mat-raised-button color="accent" (click)="executeQuery()">
-                            <mat-icon>play_arrow</mat-icon> Ejecutar
+                        <button fxFlex="20" mat-raised-button color="accent" (click)="executeQuery()" [disabled]="!execQuery">
+                            <mat-icon>{{(hideQuery)?'refresh':'play_arrow'}}</mat-icon> {{(hideQuery)?'Recargar':'Ejecutar'}}
                         </button>
-                        <button fxFlex="20" mat-raised-button color="primary" (click)="downloadReport()">
+                        <button fxFlex="20" mat-raised-button color="primary" (click)="downloadReport()" [disabled]="!execQuery">
                             <mat-icon>archive</mat-icon> Descargar
                         </button>
                     </div>
                 </div>
             </mat-card>
 
-            <section fxLayout="row" class="info-results">
+            <section fxLayout="row" class="info-results" fxFlex>
                 <section class="item" fxFlex>Total Resultados: {{totalResults}}</section>
                 <section class="item" fxFlex>No de Columnas: {{totalColumns}}</section>
-                <section class="item" fxFlex>Tiempo de Ejecución: ---</section>
+                <section class="item" fxFlex>Tiempo de Ejecución: {{execTime}}</section>
+                <section class="item" fxFlex="none"><button mat-raised-button [disabled]="dataSource.length == 0 && totalColumns == 0" (click)="clearResults()"><mat-icon>backspace</mat-icon> Limpiar Resultados</button></section>
             </section>
             
-            
-            <div class="results-container mat-elevation-z1">
-                <div class="results-table-container">
+            <div class="results-container mat-elevation-z1" fxFill>
+                <div class="results-table-container" style="overflow: auto;">
                     <table #reultsTable mat-table [dataSource]="dataSource" class="results-table">
 
                         <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
@@ -48,15 +70,29 @@
                                 No se encontraron registros 
                             </td>
                         </ng-container>
+
+                        <ng-container matColumnDef="loadingResults">
+                            <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                <mat-spinner diameter="30"></mat-spinner> Cargando
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="executionError">
+                            <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                {{errorMessage}}
+                            </td>
+                        </ng-container>
                         
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                         <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
-                        <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
+
+                        <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0) || isLoading || errorMessage}"></tr>
+                        <tr mat-footer-row *matFooterRowDef="['loadingResults']" class="not-results-found" [ngClass]="{'hide':!isLoading}"></tr>
+                        <tr mat-footer-row *matFooterRowDef="['executionError']" class="execution-error"   [ngClass]="{'hide':!errorMessage}"></tr>
                     </table>
                 </div>
                 <!--mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadResultsData($event)"></mat-paginator-->
             </div>
-            
         </section>
     </div>
 </section>

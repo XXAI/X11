@@ -13,8 +13,30 @@ html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
 
 a.link-route-item-collapsed div.mat-list-item-content{
-/*.mat-list-base .mat-list-item .mat-list-item-content{*/
     padding: 0px !important;
+}
+
+.mini-side-menu{
+    min-width: 33px;
+    max-width: 33px;
+    min-height: 33px;
+    max-height: 33px;
+    padding: 0px;
+}
+
+a.item-mini-side-menu{
+    min-width: 33px;
+    max-width: 33px;
+    min-height: 33px;
+    max-height: 33px;
+}
+
+a.item-mini-side-menu div.mat-list-item-content{
+    padding: 0px !important;
+    min-width: 33px;
+    max-width: 33px;
+    min-height: 33px;
+    max-height: 33px;
 }
 
 .mat-success {
