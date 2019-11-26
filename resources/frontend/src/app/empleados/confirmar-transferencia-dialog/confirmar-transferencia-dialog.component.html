@@ -8,10 +8,10 @@
         <section fxFlex class="mat-elevation-z2">
             <table class="tabla-info-transferencia">
                 <tr>
-                    <th>CLUES</th><td>{{cluesOrigen.nombre_unidad}}</td><td width="1">{{cluesOrigen.clues}}</td>
+                    <th width="1">CLUES</th><td>{{cluesOrigen.nombre_unidad}}</td><td fxHide.xs="true" width="1">{{cluesOrigen.clues}}</td>
                 </tr>
                 <tr>
-                    <th>CR</th><td>{{crOrigen.descripcion}}</td><td>{{crOrigen.cr}}</td>
+                    <th>CR</th><td>{{crOrigen.descripcion}}</td><td fxHide.xs="true">{{crOrigen.cr}}</td>
                 </tr>
             </table>
         </section>
@@ -21,10 +21,10 @@
         <section fxFlex class="mat-elevation-z2">
             <table class="tabla-info-transferencia">
                 <tr>
-                    <th>CLUES</th><td>{{cluesDestino.nombre_unidad}}</td><td width="1">{{cluesDestino.clues}}</td>
+                    <th width="1">CLUES</th><td>{{cluesDestino.nombre_unidad}}</td><td fxHide.xs="true" width="1">{{cluesDestino.clues}}</td>
                 </tr>
                 <tr>
-                    <th>CR</th><td>{{crDestino.descripcion}}</td><td>{{crDestino.cr}}</td>
+                    <th>CR</th><td>{{crDestino.descripcion}}</td><td fxHide.xs="true">{{crDestino.cr}}</td>
                 </tr>
             </table>
             <!--mat-form-field fxFlex appearance="fill">
@@ -39,18 +39,18 @@
             </mat-form-field-->
         </section>
         <br>
-        <section fxFlex fxLayout="row" *ngIf="observaciones">
+        <section fxFlex fxLayout.xs="column" *ngIf="observaciones">
             <mat-form-field fxFlex appearance="outline" color="primary">
                 <mat-label><mat-icon>message</mat-icon></mat-label>
                 <textarea matInput value="{{observaciones}}" readonly></textarea>
             </mat-form-field>
         </section>
-        <section fxFlex fxLayout="row" fxLayoutAlign="space-evenly start">
-            <mat-form-field fxFlex="70" appearance="outline">
+        <section fxFlex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="70" fxFlex.xs="100" appearance="outline">
                 <mat-label>Observaciones</mat-label>
                 <textarea matInput formControlName="observaciones" ></textarea>
             </mat-form-field>
-
+            <div fxFlex fxHide.xs="true"></div>
             <mat-form-field fxFlex="25" fxFlex.xs="100">
                 <input matInput [matDatepicker]="fechaPicker" placeholder="Fecha Transferencia"  formControlName="fecha_transferencia" readonly required>
                 <mat-datepicker-toggle matSuffix [for]="fechaPicker"></mat-datepicker-toggle>
@@ -63,6 +63,6 @@
 <div mat-dialog-actions>
     <span fxFlex></span>
     <button mat-button (click)='cancelar()'>Cancelar</button>
-    <button mat-raised-button (click)="rechazar()" color="warn"><mat-icon>cancel</mat-icon> Rechazar</button>
-    <button mat-raised-button (click)="aceptar()" color="primary" [disabled]="!permutaForm.valid"><mat-icon>check</mat-icon> Aceptar</button>
+    <button mat-raised-button (click)="rechazar()" color="warn"><mat-icon>clear</mat-icon><span fxHide.xs="true">&nbsp;Rechazar</span></button>
+    <button mat-raised-button (click)="aceptar()" color="primary" [disabled]="!permutaForm.valid"><mat-icon>check</mat-icon><span fxHide.xs="true">&nbsp;Aceptar</span></button>
 </div>

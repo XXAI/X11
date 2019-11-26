@@ -59,4 +59,10 @@ export class ConfirmActionDialogComponent implements OnInit{
     this.dialogRef.close();
   }
 
+  confirm():void {
+    if(this.confirmForm.valid){
+      this.dialogRef.close(true);
+    }
+  }
+
 }

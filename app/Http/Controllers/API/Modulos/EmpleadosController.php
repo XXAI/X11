@@ -568,6 +568,44 @@ class EmpleadosController extends Controller
         }
     }
 
+    public function shutDownEmployee($id){
+        try{
+            //$loggedUser = auth()->userOrFail();
+            $parametros = Input::all();
+
+            $empleado = Empleado::with('adscripcionActiva','permutaAdscripcionActiva')->find($id);
+
+            DB::beginTransaction();
+
+            if($empleado->permutaAdscripcionActiva){
+                throw new Exception("El empleado se encuentra en estado de transferencia", 1);
+            }
+
+            $access = $this->getUserAccessData();
+
+
+            if($empleado->adscripcionActiva){
+                $empleado->adscripcionActiva->fecha_fin = date('Y-m-d');
+                $empleado->adscripcionActiva->save();
+            }
+
+            $empleado->baja()->create([
+                'baja_id'=>$parametros['tipo_baja_id'],
+                'fecha_baja'=>$parametros['fecha'],
+                'observaciones'=>$parametros['observaciones']
+            ]);
+            $empleado->estatus = 2;
+            $empleado->save();
+
+            DB::commit();
+
+            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function activateEmployee($id){
         try{
             $empleado = Empleado::find($id);

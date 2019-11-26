@@ -21,6 +21,7 @@ use App\Models\TipoProfesion;
 use App\Models\NivelAcademico;
 use App\Models\Sindicato;
 use App\Models\Turno;
+use App\Models\TipoBaja;
 
 class CatalogosController extends Controller
 {
@@ -62,6 +63,16 @@ class CatalogosController extends Controller
             ];
 
             return response()->json($catalogos,HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function catalogoTipoBaja(){
+        try{
+            $tipos_baja = TipoBaja::all();
+            
+            return response()->json(['data'=>$tipos_baja], HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

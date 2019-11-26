@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReportesComponent } from './reportes.component';
+import { MysqlReporterComponent } from './mysql-reporter.component';
 
-describe('ReportesComponent', () => {
-  let component: ReportesComponent;
-  let fixture: ComponentFixture<ReportesComponent>;
+describe('MysqlReporterComponent', () => {
+  let component: MysqlReporterComponent;
+  let fixture: ComponentFixture<MysqlReporterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReportesComponent ]
+      declarations: [ MysqlReporterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReportesComponent);
+    fixture = TestBed.createComponent(MysqlReporterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

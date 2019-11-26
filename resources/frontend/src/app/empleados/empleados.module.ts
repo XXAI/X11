@@ -14,10 +14,10 @@ import { ConfirmarTransferenciaDialogComponent } from './confirmar-transferencia
 import { EditarHorarioDialogComponent } from './editar-horario-dialog/editar-horario-dialog.component';
 import { AgregarEmpleadoDialogComponent } from './agregar-empleado-dialog/agregar-empleado-dialog.component';
 import { NuevoComponent } from './nuevo/nuevo.component';
-import { ReportesComponent } from './reportes/reportes.component';
+import { BajaDialogComponent } from './baja-dialog/baja-dialog.component';
 
 @NgModule({
-  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent, NuevoComponent, ReportesComponent],
+  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent, NuevoComponent, BajaDialogComponent],
   imports: [
     CommonModule,
     EmpleadosRoutingModule,
@@ -30,7 +30,8 @@ import { ReportesComponent } from './reportes/reportes.component';
     TransferenciaEmpleadoDialogComponent,
     ConfirmarTransferenciaDialogComponent,
     AgregarEmpleadoDialogComponent,
-    EditarHorarioDialogComponent
+    EditarHorarioDialogComponent,
+    BajaDialogComponent,
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

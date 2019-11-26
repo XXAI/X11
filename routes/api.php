@@ -36,6 +36,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::put('finalizar-transferencia/{id}',      'API\Modulos\EmpleadosController@finishTransferEmployee');
     Route::put('liberar-empleado/{id}',             'API\Modulos\EmpleadosController@unlinkEmployee');
     Route::put('activar-empleado/{id}',             'API\Modulos\EmpleadosController@activateEmployee');
+    Route::put('baja-empleado/{id}',                'API\Modulos\EmpleadosController@shutDownEmployee');
 
     Route::put('solicitar-transferencia/{id}',      'API\Modulos\EmpleadosController@requestTransferEmployee');
 
@@ -45,11 +46,13 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('catalogos-filtro-empleados', 'API\Modulos\EmpleadosController@getFilterCatalogs');
 
     Route::apiResource('catalogos',          'API\Modulos\CatalogosController');
+    Route::get('catalogo-tipo-baja',         'API\Modulos\CatalogosController@catalogoTipoBaja');
+
     Route::get('busqueda-clues',             'API\Modulos\SearchCatalogsController@getCluesAutocomplete');
     Route::get('busqueda-codigos',           'API\Modulos\SearchCatalogsController@getCodigoAutocomplete');
     Route::get('busqueda-profesiones',       'API\Modulos\SearchCatalogsController@getProfesionAutocomplete');
     Route::get('busqueda-empleados',         'API\Modulos\EmpleadosController@getEmpleadosComplete');
-    Route::get('busqueda-cr-adscripcion',         'API\Modulos\EmpleadosController@getCrAdscripcionComplete');
+    Route::get('busqueda-cr-adscripcion',    'API\Modulos\EmpleadosController@getCrAdscripcionComplete');
     Route::get('busqueda-cr',                'API\Modulos\EmpleadosController@getCrComplete');
 
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);

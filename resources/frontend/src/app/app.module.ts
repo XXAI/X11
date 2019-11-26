@@ -25,10 +25,11 @@ import { SharedService } from './shared/shared.service';
 import { TokenInterceptor, ErrorInterceptor } from './token.service';
 import { MAT_STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 
 import { SecurityModule } from './security/security.module';
 import { ProfileModule } from './profile/profile.module';
-import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { DevToolsModule } from './dev-tools/dev-tools.module';
 
 //Modulos del Sistema
 import { EmpleadosModule } from './empleados/empleados.module';
@@ -54,6 +55,7 @@ import { EmpleadosModule } from './empleados/empleados.module';
     UsersModule,
     EmpleadosModule,
     SecurityModule,
+    DevToolsModule,
     ProfileModule,
     AppRoutingModule,
     WildcardRoutingModule,

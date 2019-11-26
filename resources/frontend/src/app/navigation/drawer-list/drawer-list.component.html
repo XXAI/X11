@@ -2,7 +2,7 @@
     <span fxFlex *ngIf="expandDrawer"></span> <button (click)="expandDrawer = !expandDrawer" mat-button [class.toggle-drawer-collapsed]="!expandDrawer"> <mat-icon>{{expandDrawer?'chevron_left':'chevron_right'}}</mat-icon></button>
 </div>
 <mat-nav-list *ngIf="selectedApp && selectedApp.children && selectedApp.children.length > 0">
-    <a mat-list-item routerLink="{{ selectedApp.route }}" [class.link-route-item-collapsed]="!expandDrawer"> 
+    <a mat-list-item routerLink="{{ selectedApp.route }}" [class.link-route-item-collapsed]="!expandDrawer" *ngIf="!selectedApp.hideHome"> 
         <mat-icon matListIcon>home</mat-icon> <h3 matLine *ngIf="expandDrawer"> {{ selectedApp.name }} </h3> 
     </a>
     <mat-divider></mat-divider>

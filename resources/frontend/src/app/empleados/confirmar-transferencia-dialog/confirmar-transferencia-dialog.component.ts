@@ -9,7 +9,7 @@ export interface ConfirmarTransferenciaDialogData {
 }
 
 @Component({
-  selector: 'app-confirmar-transferencia-dialog',
+  selector: 'confirmar-transferencia-dialog',
   templateUrl: './confirmar-transferencia-dialog.component.html',
   styleUrls: ['./confirmar-transferencia-dialog.component.css']
 })

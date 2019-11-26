@@ -1,16 +1,16 @@
-.users-container {
+.data-container {
     position: relative;
     min-height: 200px;
 }
 
-.users-table-container {
+.data-table-container {
     position: relative;
     max-height: 400px;
     min-height:200px;
     overflow: auto;
 }
 
-.users-loading-shade {
+.data-loading-shade {
     position: absolute;
     top: 0;
     left: 0;

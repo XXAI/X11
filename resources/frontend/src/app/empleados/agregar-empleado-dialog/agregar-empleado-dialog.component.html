@@ -1,27 +1,27 @@
 <!--h1 mat-dialog-title>Buscar Empleado</h1-->
-<div mat-dialog-content>
-    <section>
+<div mat-dialog-content [class.mat-dialog-content-fullscreen]="mediaSize=='xs'">
+    <section >
         <mat-tab-group [selectedIndex]="selectedTab" (selectedIndexChange)="selectedTab = $event" [color]="'accent'" [backgroundColor]="'primary'" animationDuration="0ms">
             <mat-tab label="Buscar Empleado" [disabled]="(selectedTab != 0)">
                 <ng-template matTabContent>
                     <br>
                     <div fxLayout="column" fxLayout.xs="column">
-                        <section fxFlex fxLayout="row">
+                        <section fxFlex fxLayout="row" fxLayout.xs="column">
                             <mat-form-field fxFlex fxFlex.xs="100" appearance="outline">
                                 <mat-label>Buscar Empleado</mat-label>
-                                <input matInput #busquedaEmpleado [(ngModel)]="search" (keyup.escape)="search = ''"  (keyup.enter)="buscarEmpleados()" [readonly]="isLoading" autofocus>
+                                <input matInput #busquedaEmpleado cdkFocusInitial [(ngModel)]="search" (keyup.escape)="search = ''"  (keyup.enter)="buscarEmpleados()" [readonly]="isLoading" autofocus>
                             </mat-form-field>
-                            <div fxFlex="none">
+                            <div fxFlex="none" fxFlex.xs="100">
                                 <section class="search-button">
-                                    <button mat-raised-button color="accent" (click)="buscarEmpleados()" [disabled]="isLoading">
-                                        <mat-icon>search</mat-icon>
+                                    <button mat-raised-button color="accent" (click)="buscarEmpleados()" [disabled]="isLoading" fxFlex.xs="100">
+                                        <mat-icon>search</mat-icon> <span fxHide fxShow.xs="true">&nbsp;Buscar</span>
                                     </button>
                                 </section>
                             </div>
                         </section>
                 
-                        <div fxFlex ><!--class="mat-elevation-z8"-->
-                            <div style="padding-bottom:5px; max-height: 300px; overflow: auto;">
+                        <div fxFlex><!--class="mat-elevation-z8" max-height: 300px;  -->
+                            <div style="padding-bottom:5px; overflow: auto;">
                                 <table #usersTable mat-table [dataSource]="dataSource" class="employees-table" matSort>
                                     <ng-container matColumnDef="estatus">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </th>
@@ -40,8 +40,8 @@
                                     </ng-container-->
                 
                                     <ng-container matColumnDef="clues">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> CLUES / CR </th>
-                                        <td mat-cell *matCellDef="let row"> 
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> CLUES / CR </th>
+                                        <td mat-cell *matCellDef="let row" fxHide.xs="true"> 
                                             {{row.clues.nombre_unidad}}<br> <small>{{ (row.cr)?row.cr.descripcion:'Sin CR asignado'}}</small> 
                                         </td>
                                     </ng-container>
@@ -90,7 +90,7 @@
 
             <mat-tab label="{{actionLabel}}" [disabled]="(selectedTab != 1)">
                 <ng-template matTabContent >
-                    <section fxLayout="row">
+                    <section fxLayout="row" fxLayout.xs="column">
                         <section fxFlex="30" style="padding-top:10px; padding-right:10px;">
                             <div class="credential-loading-shade" *ngIf="isLoadingCredential">
                                 <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
@@ -115,13 +115,13 @@
                             <section fxFlex class="mat-elevation-z2">
                                 <table class="tabla-info-transferencia">
                                     <tr *ngIf="itemSelected">
-                                        <th>Nombre</th><td>{{itemSelected.nombre}}</td><td width="1">{{itemSelected.rfc}}</td>
+                                        <th>Nombre</th><td>{{itemSelected.nombre}}</td><td width="1" fxHide.xs="true">{{itemSelected.rfc}}</td>
                                     </tr>
                                     <tr>
-                                        <th>CLUES</th><td>{{cluesOrigen.nombre_unidad}}</td><td width="1">{{cluesOrigen.clues}}</td>
+                                        <th>CLUES</th><td>{{cluesOrigen.nombre_unidad}}</td><td width="1" fxHide.xs="true">{{cluesOrigen.clues}}</td>
                                     </tr>
                                     <tr>
-                                        <th>CR</th><td>{{crOrigen.descripcion}}</td><td>{{crOrigen.cr}}</td>
+                                        <th>CR</th><td>{{crOrigen.descripcion}}</td><td fxHide.xs="true">{{crOrigen.cr}}</td>
                                     </tr>
                                 </table>
                             </section>
@@ -158,9 +158,8 @@
             </mat-tab>
         </mat-tab-group>
     </section>
-    
-</div>
-<div mat-dialog-actions>    
+</div> <!-- mat-tab-dialog-content -->
+<div mat-dialog-actions>
     <button *ngIf="selectedTab == 0" mat-raised-button color="info"  routerLink="/empleados/nuevo" (click)="dialogRef.close()" [disabled]="isLoading">
         <mat-icon>add_circle</mat-icon>
         Empleado Nuevo

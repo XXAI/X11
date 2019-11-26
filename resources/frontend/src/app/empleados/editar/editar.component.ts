@@ -8,6 +8,7 @@ import { Observable, combineLatest, of, forkJoin } from 'rxjs';
 import { startWith, map, throwIfEmpty, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.component';
+import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
 import { TransferenciaEmpleadoDialogComponent } from '../transferencia-empleado-dialog/transferencia-empleado-dialog.component';
 import { EditarHorarioDialogComponent } from '../editar-horario-dialog/editar-horario-dialog.component';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
@@ -417,6 +418,20 @@ export class EditarComponent implements OnInit {
     });
   }
 
+  showBajaDialog(){
+    const dialogRef = this.dialog.open(BajaDialogComponent, {
+      width: '80%',
+      data: {id:this.datos_empleado.id}
+    });
+
+    dialogRef.afterClosed().subscribe(response => {
+      if(response){
+        this.loadEmpleadoData(this.datos_empleado.id);
+        console.log(response);
+      }
+    });
+  }
+
   showHorarioDialog(){
     const dialogRef = this.dialog.open(EditarHorarioDialogComponent, {
       width: '80%',
@@ -556,7 +571,7 @@ export class EditarComponent implements OnInit {
   accionGuardar(validar:boolean = false){
     this.isLoading = true;
     let formData = JSON.parse(JSON.stringify(this.empleadoForm.value));
-    console.log(formData);
+    //console.log(formData);
     
     //Pasando de objeto fecha a cadena ISO
     let fissa = formData.fissa;

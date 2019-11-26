@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-
 import { EmpleadosService } from '../empleados.service';
 import { SharedService } from '../../shared/shared.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -13,6 +12,10 @@ import { ConfirmarTransferenciaDialogComponent } from '../confirmar-transferenci
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+
+export interface AgregarEmpleadoDialogData {
+  scSize?: string;
+}
 
 @Component({
   selector: 'agregar-empleado-dialog',
@@ -27,7 +30,7 @@ import { Observable } from 'rxjs';
   ],
 })
 export class AgregarEmpleadoDialogComponent implements OnInit {
-
+  mediaSize:string;
   search:string = "";
   isLoading: boolean = false;
   isLoadingCredential: boolean = false;
@@ -77,6 +80,7 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
   
   constructor(
     public dialogRef: MatDialogRef<AgregarEmpleadoDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AgregarEmpleadoDialogData,
     private sharedService: SharedService, 
     private empleadosService: EmpleadosService, 
     public dialog: MatDialog, private fb: FormBuilder
@@ -84,6 +88,10 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
 
   ngOnInit() {
     this.cluesCatalogo = [];
+
+    if(this.data.scSize){
+      this.mediaSize = this.data.scSize;
+    }
 
     this.empleadosService.getFilterCatalogs().subscribe(
       response => {

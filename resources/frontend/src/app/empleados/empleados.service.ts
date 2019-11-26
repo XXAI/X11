@@ -15,8 +15,10 @@ export class EmpleadosService {
   url_finish_transfer = `${environment.base_url}/finalizar-transferencia/`;
   url_unlink = `${environment.base_url}/liberar-empleado/`;
   url_activate = `${environment.base_url}/activar-empleado/`;
+  url_shut_down = `${environment.base_url}/baja-empleado/`;
 
   url_catalogos = `${environment.base_url}/catalogos`;
+  url_catalogo_tipo_baja =  `${environment.base_url}/catalogo-tipo-baja`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
 
@@ -28,9 +30,6 @@ export class EmpleadosService {
   url_empleados = `${environment.base_url}/busqueda-empleados`;
 
   url_solicitar_transfer = `${environment.base_url}/solicitar-transferencia/`;
-
-  url_execute_reporter = `${environment.base_url}/ejecutar-query`;
-  url_export_reporter =  `${environment.base_url}/exportar-query`;
   /*url_role = `${environment.base_url}/role`;
   url_permission = `${environment.base_url}/permission`;
   url_avatars = `${environment.base_url}/avatar-images`;*/
@@ -109,6 +108,14 @@ export class EmpleadosService {
     ));
   }
 
+  bajaEmpleado(id:any, payload:any):Observable<any> {
+    return this.http.put<any>(this.url_shut_down + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
   obtenerDatosEmpleado(id:any, payload:any):Observable<any> {
     return this.http.get<any>(this.url +"/"+ id, {params:payload}).pipe(
       map( (response: any) => {        
@@ -181,6 +188,14 @@ export class EmpleadosService {
     );
   }
 
+  getCatalogoTiposBaja():Observable<any> {
+    return this.http.get<any>(this.url_catalogo_tipo_baja,{}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
+
   buscarEmpleados(payload):Observable<any>{
     return this.http.get<any>(this.url_empleados,{params:payload}).pipe(
       map( response => {
@@ -195,17 +210,5 @@ export class EmpleadosService {
         return response;
       }
     ));
-  }
-
-  ejecutarReporte(payload):Observable<any>{
-    return this.http.get<any>(this.url_execute_reporter,{params:payload}).pipe(
-      map( response => {
-        return response;
-      })
-    );
-  }
-
-  exportarReporte(payload):Observable<any>{
-    return this.http.get<any>(this.url_export_reporter, {params:payload, responseType: 'blob' as 'json'});
   }
 }

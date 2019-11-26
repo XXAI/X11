@@ -62,3 +62,7 @@
 .loading-shade mat-spinner{
     margin:0 auto;
 }
+
+.mat-dialog-content-fullscreen{
+  max-height: none;
+}

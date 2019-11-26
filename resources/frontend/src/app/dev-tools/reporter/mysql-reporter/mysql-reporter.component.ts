@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { EmpleadosService } from '../empleados.service';
+import { ReporterService } from '../reporter.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import * as FileSaver from 'file-saver';
 
 @Component({
-  selector: 'app-reportes',
-  templateUrl: './reportes.component.html',
-  styleUrls: ['./reportes.component.css'],
+  selector: 'mysql-reporter',
+  templateUrl: './mysql-reporter.component.html',
+  styleUrls: ['./mysql-reporter.component.css'],
   animations: [
     trigger('buttonInOut', [
         transition('void => *', [
@@ -20,9 +20,9 @@ import * as FileSaver from 'file-saver';
     ])
   ]
 })
-export class ReportesComponent implements OnInit {
+export class MysqlReporterComponent implements OnInit {
 
-  constructor(private empleadosService: EmpleadosService) { }
+  constructor(private reporterService: ReporterService) { }
 
   isLoading:boolean;
   isLoadingExcel:boolean = false;
@@ -72,7 +72,7 @@ export class ReportesComponent implements OnInit {
 
     this.clearResults(this.hideQuery);
     
-    this.empleadosService.ejecutarReporte({query: this.execQuery, limit: this.limitQuery}).subscribe(
+    this.reporterService.ejecutarReporte({query: this.execQuery, limit: this.limitQuery}).subscribe(
       response => {
         console.log(response);
         this.displayedColumns = response.columns;
@@ -99,7 +99,7 @@ export class ReportesComponent implements OnInit {
 
   downloadReport(){
     this.isLoadingExcel = true;
-    this.empleadosService.exportarReporte({query: this.execQuery}).subscribe(
+    this.reporterService.exportarReporte({query: this.execQuery}).subscribe(
       response => {
         //FileSaver.saveAs(response);
         FileSaver.saveAs(response,'reporte');

@@ -12,6 +12,8 @@ import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { AgregarEmpleadoDialogComponent } from '../agregar-empleado-dialog/agregar-empleado-dialog.component';
 import { PermissionsList } from '../../auth/models/permissions-list';
+import { MediaObserver } from '@angular/flex-layout';
+import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 
 @Component({
   selector: 'app-lista',
@@ -32,6 +34,7 @@ import { PermissionsList } from '../../auth/models/permissions-list';
 
 export class ListaComponent implements OnInit {
   isLoading: boolean = false;
+  mediaSize: string;
 
   searchQuery: string = '';
 
@@ -66,13 +69,18 @@ export class ListaComponent implements OnInit {
 
   //showAdvancedFilter:boolean = false;
   
-  constructor(private sharedService: SharedService, private empleadosService: EmpleadosService, public dialog: MatDialog, private fb: FormBuilder) { }
+  constructor(private sharedService: SharedService, private empleadosService: EmpleadosService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatTable, {static:false}) usersTable: MatTable<any>;
   @ViewChild(MatExpansionPanel, {static:false}) advancedFilter: MatExpansionPanel;
 
   ngOnInit() {
+    this.mediaObserver.media$.subscribe(
+      response => {
+        this.mediaSize = response.mqAlias;
+    });
+
     let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','paginator','filter']);
     console.log(appStoredData);
 
@@ -303,9 +311,22 @@ export class ListaComponent implements OnInit {
   }
 
   showAddEmployeDialog(){
-    const dialogRef = this.dialog.open(AgregarEmpleadoDialogComponent, {
-      width: '95%'
-    });
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+        data:{}
+      }
+    }
+    const dialogRef = this.dialog.open(AgregarEmpleadoDialogComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
@@ -315,10 +336,24 @@ export class ListaComponent implements OnInit {
   }
 
   confirmTransferEmploye(id:number,i:number){
-    const dialogRef = this.dialog.open(ConfirmarTransferenciaDialogComponent, {
-      width: '80%',
-      data:{id:id}
-    });
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+      }
+    }
+    configDialog['data'] = {id:id};
+    /*width: '80%',
+      data:{id:id}*/
+
+    const dialogRef = this.dialog.open(ConfirmarTransferenciaDialogComponent, configDialog);
 
     this.selectedItemIndex = i;
 
