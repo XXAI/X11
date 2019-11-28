@@ -26,6 +26,8 @@ export class EmpleadosService {
   url_cr = `${environment.base_url}/busqueda-cr`;
   url_cr_adscripcion = `${environment.base_url}/busqueda-cr-adscripcion`;
   url_empleados = `${environment.base_url}/busqueda-empleados`;
+  
+  url_reporte = `${environment.base_url}/reporte-empleados-validados`;
 
   url_solicitar_transfer = `${environment.base_url}/solicitar-transferencia/`;
 
@@ -183,6 +185,14 @@ export class EmpleadosService {
 
   buscarEmpleados(payload):Observable<any>{
     return this.http.get<any>(this.url_empleados,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
+
+  reporteEmpleados():Observable<any>{
+    return this.http.get<any>(this.url_reporte,{}).pipe(
       map( response => {
         return response.data;
       })

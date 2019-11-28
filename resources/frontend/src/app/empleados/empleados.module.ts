@@ -16,6 +16,8 @@ import { AgregarEmpleadoDialogComponent } from './agregar-empleado-dialog/agrega
 import { NuevoComponent } from './nuevo/nuevo.component';
 import { ReportesComponent } from './reportes/reportes.component';
 
+
+
 @NgModule({
   declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent, NuevoComponent, ReportesComponent],
   imports: [

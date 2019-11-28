@@ -62,6 +62,10 @@ class User extends Authenticatable implements JWTSubject{
         return $this->belongsToMany('App\Models\Cr', 'rel_usuario_clues_cr', 'user_id', 'cr_id')->withPivot('clues');
     }
 
+    public function relUsuarioCluesCr(){
+        return $this->hasMany('App\Models\RelUsuarioCluesCr');
+    }
+
     //Funciones para validación y obtención de permisos del usuario.
 
     //Aplica sobre un objeto usuario

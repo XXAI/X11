@@ -50,4 +50,8 @@ class Empleado extends Model
     public function cr(){
         return $this->hasOne('App\Models\Cr','cr','cr_id');
     }
+
+    public function turno(){
+        return $this->hasOne('App\Models\Turno', "id", "turno_id");
+    }
 }
