@@ -54,4 +54,8 @@ class Empleado extends Model
     public function baja(){
         return $this->hasMany('App\Models\EmpleadoBaja','empleado_id','id');
     }
+    
+    public function turno(){
+        return $this->hasOne('App\Models\Turno', "id", "turno_id");
+    }
 }

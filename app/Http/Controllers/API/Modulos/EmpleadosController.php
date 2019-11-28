@@ -20,6 +20,7 @@ use App\Models\Profesion;
 use App\Models\Rama;
 use App\Models\PermutaAdscripcion;
 use App\Models\CluesEmpleado;
+use App\Models\User;
 
 class EmpleadosController extends Controller
 {
@@ -764,6 +765,21 @@ class EmpleadosController extends Controller
             $parametros = Input::all();
             $cr = Cr::with("clues")->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->get();
             return response()->json(['data'=>$cr],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function reporteValidados()
+    {
+        
+        try{
+            $loggedUser = auth()->userOrFail();
+            $usuario = User::with(["relUsuarioCluesCr.clues", "relUsuarioCluesCr.empleados.profesion" ,"relUsuarioCluesCr.empleados.turno","relUsuarioCluesCr.empleados.codigo.grupoFuncion", "relUsuarioCluesCr.cr","relUsuarioCluesCr.empleados" => function($query)
+            {
+                $query->where('validado', 1)->where("estatus", 1)->orderBy("rfc", "asc");
+            }])->find($loggedUser->id);
+            return response()->json(['data'=>$usuario],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

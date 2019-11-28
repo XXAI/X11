@@ -54,6 +54,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('busqueda-empleados',         'API\Modulos\EmpleadosController@getEmpleadosComplete');
     Route::get('busqueda-cr-adscripcion',    'API\Modulos\EmpleadosController@getCrAdscripcionComplete');
     Route::get('busqueda-cr',                'API\Modulos\EmpleadosController@getCrComplete');
+    Route::get('reporte-empleados-validados',   'API\Modulos\EmpleadosController@reporteValidados');
 
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
 });
