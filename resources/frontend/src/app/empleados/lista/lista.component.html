@@ -104,7 +104,42 @@
                         </mat-chip-list>
                     </div>
                     <button mat-raised-button color="info" (click)="showAddEmployeDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>keyboard</mat-icon> Buscar Empleado</button>
-                    &nbsp;<button mat-raised-button color="accent" (click)="generatePdf()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF"><mat-icon>help</mat-icon></button>
+                    &nbsp;<button mat-raised-button color="accent" (click)="reportePersonalACtivo()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF"><mat-icon>insert_drive_file</mat-icon></button>
+                </div>
+
+                <div>
+                    <div class="my-stepper" *ngIf="showMyStepper">
+                        <div class="my-step my-step-done">
+                            <mat-icon>settings_remote</mat-icon>
+                            <div class="my-step-label">
+                                Cargando Datos
+                            </div>
+                            <mat-icon>done</mat-icon>
+                        </div>
+                        <div class="my-step-separator"></div>
+                        <div class="my-step my-step-active">
+                            <mat-icon>settings_applications</mat-icon>
+                            <div class="my-step-label">
+                                Generando PDF <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </div>
+                        </div>
+                        <div class="my-step-separator"></div>
+                        <div class="my-step">
+                            <mat-icon>save_alt</mat-icon>
+                            <div class="my-step-label">
+                                Preparar Archivo
+                            </div>
+                        </div>
+                        <div class="my-step-separator"></div>
+                        <div class="my-step my-step-error">
+                            <mat-icon>save_alt</mat-icon>
+                            <div class="my-step-label">
+                                Preparar Archivo
+                                <small class="my-step-error-message">Error al preparar el archivo</small>
+                            </div>
+                            <mat-icon>error</mat-icon>
+                        </div>
+                    </div>
                 </div>
 
                 <mat-divider [inset]="true"></mat-divider>

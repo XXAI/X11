@@ -40,10 +40,9 @@ class EmpleadosController extends Controller
                                 if(!$access->is_admin){
                                     $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                 }
-                            })->orderBy('nombre');
+                            });
 
             //filtro de valores por permisos del usuario
-            //$empleados = $empleados->->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
             if(!$access->is_admin){
                 $empleados = $empleados->where('empleados.estatus','!=','3')->where(function($query)use($access){
                     $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
@@ -51,10 +50,6 @@ class EmpleadosController extends Controller
                             $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                         });
                 });
-    
-                /*$empleados = $empleados->orWhere(function($query)use($access){
-                    $query->orWhereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
-                });*/
             }
             
             //Filtros, busquedas, ordenamiento
@@ -68,18 +63,18 @@ class EmpleadosController extends Controller
 
             if(isset($parametros['active_filter']) && $parametros['active_filter']){
                 if(isset($parametros['clues']) && $parametros['clues']){
-                    $empleados = $empleados->where('clues',$parametros['clues']);
+                    $empleados = $empleados->where('empleados.clues',$parametros['clues']);
                 }
 
                 if(isset($parametros['cr']) && $parametros['cr']){
-                    $empleados = $empleados->where('cr_id',$parametros['cr']);
+                    $empleados = $empleados->where('empleados.cr_id',$parametros['cr']);
                 }
 
                 if(isset($parametros['estatus']) && $parametros['estatus']){
                     $estatus = explode('-',$parametros['estatus']);
                     $empleados = $empleados->where('empleados.estatus',$estatus[0]);
                     if(isset($estatus[1])){
-                        $empleados = $empleados->where('validado',$estatus[1]);
+                        $empleados = $empleados->where('empleados.validado',$estatus[1]);
                     }
                 }
 
@@ -93,15 +88,29 @@ class EmpleadosController extends Controller
             }
 
             if(isset($parametros['page'])){
+                $empleados = $empleados->orderBy('nombre');
+
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
                 $empleados = $empleados->paginate($resultadosPorPagina);
             } else {
-
+                if(isset($parametros['reporte'])){
+                    //Reporte Personal Activo
+                    $empleados = $empleados->select('empleados.*','profesiones.descripcion as profesion','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion')
+                                        ->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
+                                        ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
+                                        ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
+                                        ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
+                                        ->leftjoin('catalogo_clues as clues','clues.clues','empleados.clues')
+                                        ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
+                                        ->orderBy('clues','asc')
+                                        ->orderBy('cr_id','asc')
+                                        ;
+                }
                 $empleados = $empleados->get();
             }
 
-            return response()->json(['data'=>$empleados,'params'=>$parametros,'access'=>$access],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$empleados],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

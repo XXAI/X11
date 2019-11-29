@@ -19,6 +19,7 @@ import * as FileSaver from 'file-saver';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -36,6 +37,9 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
             animate(200, style({opacity: '0'}))
         ])
     ])
+  ],
+  providers:[
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false, showError: true } }
   ]
 })
 
@@ -43,6 +47,8 @@ export class ListaComponent implements OnInit {
   isLoading: boolean = false;
   isLoadingPDF: boolean = false;
   mediaSize: string;
+
+  showMyStepper:boolean = false;
 
   searchQuery: string = '';
 
@@ -403,20 +409,80 @@ export class ListaComponent implements OnInit {
     });
   }
 
-  generatePdf(){
+  reportePersonalACtivo(){
+    //this.showMyStepper = true;
     this.isLoadingPDF = true;
+    let params:any = {};
+    let countFilter = 0;
 
-    this.empleadosService.reporteEmpleados().subscribe(
+    let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','filter']);
+    console.log(appStoredData);
+
+    params.reporte = 'personal-activo';
+
+    if(appStoredData['searchQuery']){
+      params.query = appStoredData['searchQuery'];
+    }
+
+    for(let i in appStoredData['filter']){
+      if(appStoredData['filter'][i]){
+        if(i == 'clues'){
+          params[i] = appStoredData['filter'][i].clues;
+        }else if(i == 'cr'){
+          params[i] = appStoredData['filter'][i].cr;
+        }else{ //profesion y rama
+          params[i] = appStoredData['filter'][i].id;
+        }
+        countFilter++;
+      }
+    }
+
+    if(countFilter > 0){
+      params.active_filter = true;
+    }
+
+    this.empleadosService.getEmpleadosList(params).subscribe(
       response =>{
-        /*const documentDefinition = this.getDocumentDefinition(response);
-        console.log(documentDefinition);
-        var win = window.open('', '_blank');
-        pdfMake.createPdf(documentDefinition).open({}, win);*/
+        if(response.error) {
+          let errorMessage = response.error.message;
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+        } else {
+            console.log(response);
+            const reportWorker = new ReportWorker();
+            reportWorker.onmessage().subscribe(
+              data => {
+                this.isLoadingPDF = false;
+                console.log(data);
+                FileSaver.saveAs(data.data,'PersonalActivo');
+                reportWorker.terminate();
+            });
+            reportWorker.onerror().subscribe(
+              (data) => {
+                this.sharedService.showSnackBar('Error: ' + data.message,null, 3000);
+                this.isLoadingPDF = false;
+                console.log(data);
+              }
+            );
+            reportWorker.postMessage({data:{items: response.data},reporte:'empleados/personal-activo'});
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+      }
+    );
 
+
+    /*this.empleadosService.reporteEmpleados().subscribe(
+      response =>{
         const reportWorker = new ReportWorker();
         reportWorker.onmessage().subscribe(
           data => {
-            console.log('OnMessage Web-Worker =====================================================');
             this.isLoadingPDF = false;
             console.log(data);
             FileSaver.saveAs(data.data,'PersonalActivo');
@@ -431,21 +497,6 @@ export class ListaComponent implements OnInit {
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
       }
-    );
+    );*/
   }
-
-  /*generarReporte(){
-    this.isLoadingPDF = true;
-
-    const reportWorker = new ReportWorker('reporte');
-    reportWorker.onmessage().subscribe(
-      data => {
-        console.log('OnMessage Web-Worker =====================================================');
-        this.isLoadingPDF = false;
-        console.log(data);
-        FileSaver.saveAs(data.data,'ReportePDF');
-    });
-    reportWorker.postMessage('helloMoto');
-  }*/
-  
 }

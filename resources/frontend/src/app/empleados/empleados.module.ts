@@ -17,7 +17,6 @@ import { NuevoComponent } from './nuevo/nuevo.component';
 import { BajaDialogComponent } from './baja-dialog/baja-dialog.component';
 
 
-
 @NgModule({
   declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent, NuevoComponent, BajaDialogComponent],
   imports: [
