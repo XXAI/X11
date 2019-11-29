@@ -32,9 +32,6 @@ export class EmpleadosService {
   url_reporte = `${environment.base_url}/reporte-empleados-validados`;
 
   url_solicitar_transfer = `${environment.base_url}/solicitar-transferencia/`;
-  /*url_role = `${environment.base_url}/role`;
-  url_permission = `${environment.base_url}/permission`;
-  url_avatars = `${environment.base_url}/avatar-images`;*/
 
   constructor(private http: HttpClient) { }
 

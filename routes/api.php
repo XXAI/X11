@@ -30,6 +30,9 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('role',          'API\Admin\RoleController');
     
     //Modulos del Sistema
+    /**
+     * Rutas para el Modulo de Empleados
+     */
     Route::apiResource('empleados',                 'API\Modulos\EmpleadosController');
     Route::put('transferir-empleado/{id}',          'API\Modulos\EmpleadosController@transferEmployee');
     Route::get('obtener-datos-transferencia/{id}',  'API\Modulos\EmpleadosController@getEmployeeTransferData');

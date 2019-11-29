@@ -777,7 +777,7 @@ class EmpleadosController extends Controller
             $loggedUser = auth()->userOrFail();
             $usuario = User::with(["relUsuarioCluesCr.clues", "relUsuarioCluesCr.empleados.profesion" ,"relUsuarioCluesCr.empleados.turno","relUsuarioCluesCr.empleados.codigo.grupoFuncion", "relUsuarioCluesCr.cr","relUsuarioCluesCr.empleados" => function($query)
             {
-                $query->where('validado', 1)->where("estatus", 1)->orderBy("rfc", "asc");
+                //$query->where('validado', 1)->where("estatus", 1)->orderBy("rfc", "asc");
             }])->find($loggedUser->id);
             return response()->json(['data'=>$usuario],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
