@@ -49,6 +49,10 @@ export class ListaComponent implements OnInit {
   mediaSize: string;
 
   showMyStepper:boolean = false;
+  showReportForm:boolean = false;
+  stepperConfig:any = {};
+  reportTitle:string;
+  reportIncludeSigns:boolean = false;
 
   searchQuery: string = '';
 
@@ -409,9 +413,47 @@ export class ListaComponent implements OnInit {
     });
   }
 
-  reportePersonalACtivo(){
+  toggleReportPanel(){
+    this.reportIncludeSigns = false;
+    this.reportTitle = 'Listado de Personal Activo';
+
+    this.stepperConfig = {
+      steps:[
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Cargar Datos', active: 'Cargando Datos', done: 'Datos Cargados' },
+          icon: 'settings_remote',
+          errorMessage: '',
+        },
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Generar PDF', active: 'Generando PDF', done: 'PDF Generado' },
+          icon: 'settings_applications',
+          errorMessage: '',
+        },
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Descargar Archivo', active: 'Descargando Archivo', done: 'Archivo Descargado' },
+          icon: 'save_alt',
+          errorMessage: '',
+        },
+      ],
+      currentIndex: 0
+    }
+
+    this.showReportForm = !this.showReportForm;
+    if(this.showReportForm){
+      this.showMyStepper = false;
+    }
+    //this.showMyStepper = !this.showMyStepper;
+  }
+
+  reportePersonalActivo(){
     //this.showMyStepper = true;
     this.isLoadingPDF = true;
+    this.showMyStepper = true;
+    this.showReportForm = false;
+
     let params:any = {};
     let countFilter = 0;
 
@@ -440,30 +482,55 @@ export class ListaComponent implements OnInit {
     if(countFilter > 0){
       params.active_filter = true;
     }
+    
+    this.stepperConfig.steps[0].status = 2;
 
     this.empleadosService.getEmpleadosList(params).subscribe(
       response =>{
         if(response.error) {
           let errorMessage = response.error.message;
-          this.sharedService.showSnackBar(errorMessage, null, 3000);
+          this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+          this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+          //this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
             console.log(response);
+            
+            this.stepperConfig.steps[0].status = 3;
+            this.stepperConfig.steps[1].status = 2;
+            this.stepperConfig.currentIndex = 1;
+
             const reportWorker = new ReportWorker();
             reportWorker.onmessage().subscribe(
               data => {
-                this.isLoadingPDF = false;
+                this.stepperConfig.steps[1].status = 3;
+                this.stepperConfig.steps[2].status = 2;
+                this.stepperConfig.currentIndex = 2;
+
                 console.log(data);
                 FileSaver.saveAs(data.data,'PersonalActivo');
                 reportWorker.terminate();
+
+                this.stepperConfig.steps[2].status = 3;
+                this.isLoadingPDF = false;
+                this.showMyStepper = false;
             });
+
             reportWorker.onerror().subscribe(
               (data) => {
-                this.sharedService.showSnackBar('Error: ' + data.message,null, 3000);
+                //this.sharedService.showSnackBar('Error: ' + data.message,null, 3000);
+                this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+                this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = data.message;
                 this.isLoadingPDF = false;
                 console.log(data);
               }
             );
-            reportWorker.postMessage({data:{items: response.data},reporte:'empleados/personal-activo'});
+            
+            let config = {
+              title: this.reportTitle,
+              showSigns: this.reportIncludeSigns,
+            };
+
+            reportWorker.postMessage({data:{items: response.data, config:config},reporte:'empleados/personal-activo'});
         }
         this.isLoading = false;
       },
@@ -472,7 +539,9 @@ export class ListaComponent implements OnInit {
         if(errorResponse.status == 409){
           errorMessage = errorResponse.error.error.message;
         }
-        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+        this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+        //this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
       }
     );

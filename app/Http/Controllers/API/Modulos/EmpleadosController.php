@@ -688,12 +688,23 @@ class EmpleadosController extends Controller
             $loggedUser = auth()->userOrFail();
         }
         
-        $loggedUser->load('perfilCr');
+        //$loggedUser->load('perfilCr');
+        $loggedUser->load('gruposUnidades.listaCR');
+        
+        $lista_cr = [];
+        $lista_clues = [];
+        
+        foreach ($loggedUser->gruposUnidades as $grupo) {
+            $lista_unidades = $grupo->listaCR->pluck('clues','cr')->toArray();
+            
+            $lista_clues += $lista_clues + array_values($lista_unidades);
+            $lista_cr += $lista_cr + array_keys($lista_unidades);
+        }
 
-        $lista_relacion = $loggedUser->perfilCr->pluck('clues','cr')->toArray();
+        //$lista_relacion = $loggedUser->perfilCr->pluck('clues','cr')->toArray();
 
-        $lista_clues = array_values($lista_relacion);
-        $lista_cr = array_keys($lista_relacion);
+        //$lista_clues = array_values($lista_relacion);
+        //$lista_cr = array_keys($lista_relacion);
 
         //dmcnXs5gK1qHzn30WvGXDzFimcrVJZ9Z
 

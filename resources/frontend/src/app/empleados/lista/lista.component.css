@@ -86,6 +86,14 @@ table {
   margin: 0 10px;
 }
 
+.check-box {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+  margin: 0 10px;
+}
+
 .my-stepper{
   white-space: nowrap;
   display: flex;

@@ -21,7 +21,7 @@ export class ReportePersonalActivo{
                 },
                 {
                     margin: [10, 0, 0, 0],
-                    text: 'SECRETARÍA DE SALUD\nLISTA DE PERSONAL - ESTATUS',
+                    text: 'SECRETARÍA DE SALUD\n'+reportData.config.title,
                     bold: true,
                     fontSize: 12,
                     alignment: 'center'
@@ -38,7 +38,7 @@ export class ReportePersonalActivo{
               margin: [30, 20, 30, 0],
               columns: [
                   {
-                      text:'SIRH-2019',
+                      text:'http://sirh.saludchiapas.gob.mx/',
                       alignment:'left',
                       fontSize: 8,
                   },
@@ -106,7 +106,6 @@ export class ReportePersonalActivo{
               }
             }
         };
-        console.log(datos);
       
         //console.log(datos.content[0].table.body);
         //console.log(data);
@@ -119,10 +118,8 @@ export class ReportePersonalActivo{
           let empleado = reportData.items[i];
 
           if(cr != empleado.cr_id){
-            console.log('cambio cr: '+empleado.cr_id);
             cr = empleado.cr_id;
             if(clues != empleado.clues){
-              console.log('cambio clues: ' + empleado.clues);
               clues = empleado.clues;
               
               datos.content.push({
@@ -153,7 +150,6 @@ export class ReportePersonalActivo{
               });
 
               indice_actual = datos.content.length -1;
-              console.log('nuevo indice: ' + indice_actual);
             }
             datos.content[indice_actual].table.body.push(
               [{text: "["+empleado.cr_id+"] "+empleado.cr_descripcion, colSpan: 13, style: 'subcabecera'},{},{},{},{},{},{},{},{},{},{},{},{}],
@@ -176,94 +172,35 @@ export class ReportePersonalActivo{
             { text: empleado.observaciones , style: 'tabla_datos'}
           ]);
         }
+
+        if(reportData.config.showSigns){
+          datos.content.push(
+            {
+              table: {
+                  dontBreakRows: true,
+                  widths: ["*","*","*"],
+                  body: [
+                      ["RECIBE\n\n\n\n",{text: "",rowSpan: 2},"ENTREGA\n\n\n\n"],
+                      [{text: "Nombre y Firma"},"",{text: "Nombre y Firma"}]
+                  ]
+              },
+              layout: {
+                  hLineWidth: function(i, node) {
+                      if (i === 0 || i == 2){
+                          return 0;
+                      }
+                      return 0.5;
+                  },
+                  vLineWidth: function(i, node) { 
+                    return 0;
+                  },
+              },
+              margin: [0,20,0,0], ///left-top-right-bottom
+              alignment: "center"
+            }
+          );
+        }
+
         return datos;
       }
-      
-          /*for(let i = 0; i< data.rel_usuario_clues_cr.length; i++)
-          {
-            let clues = data.rel_usuario_clues_cr[i].clues;
-            let cr = data.rel_usuario_clues_cr[i].cr;
-            
-            datos.content.push(
-              {
-                alignment: 'center',
-                columns: [
-                  {
-                    text: clues.clues+" "+clues.nombre_unidad+"\n"+cr.cr+" "+cr.descripcion+"\n"
-                  }
-                ]
-              }
-            );
-            
-            datos.content.push(
-              {
-                table: {
-                  widths: [ 43, 60, 110, 30,'*', 40, 30, 50, 35, 29,'*', 80,'*' ],
-                  margin: [0,0,0,0],
-                  body: [
-                    [{text: "RFC", style: 'cabecera'},
-                      {text: "CURP", style: 'cabecera'},
-                      {text: "NOMBRE", style: 'cabecera'},
-                      {text: "CODIGO", style: 'cabecera'},
-                      {text: "PROFESIÓN", style: 'cabecera'},
-                      {text: "CLUE FÍSICA", style: 'cabecera'},
-                      {text: "CR FÍSICO", style: 'cabecera'},
-                      {text: "TURNO", style: 'cabecera'},
-                      {text: "H / ENTRADA", style: 'cabecera'},
-                      {text: "H / SALIDA", style: 'cabecera'},
-                      {text: "ÁREA DE SERVICIO", style: 'cabecera'},
-                      {text: "FUNCIÓN", style: 'cabecera'},
-                      {text: "OBSERVACIONES", style: 'cabecera'}]
-                  ]
-                }
-              }
-            );
-            
-            let indice_actual = (datos.content.length -1);
-            //datos.content[indice_actual].table.body.push(
-      
-            if(data.rel_usuario_clues_cr[i].empleados.length == 0)
-            {
-              datos.content[indice_actual].table.body.push(
-                [{text: "Sin empleados Validados", colSpan: 13, style: 'tabla_datos'},{},{},{},{},{},{},{},{},{},{},{},{}]
-              );
-            }
-            for(let j = 0; j< data.rel_usuario_clues_cr[i].empleados.length; j++)
-            {
-              let empleado = data.rel_usuario_clues_cr[i].empleados[j];
-              let profesion = "S/D";
-              let turno = "S/D";
-              let funcion = "S/D";
-      
-              if(empleado.profesion)
-                profesion = empleado.profesion.descripcion;
-              
-              if(empleado.turno)
-                turno = empleado.turno.descripcion;  
-      
-              if(empleado.codigo)
-                if(empleado.codigo.grupo_funcion)
-                  funcion = empleado.codigo.grupo_funcion.grupo;  
-
-              datos.content[indice_actual].table.body.push(
-                [
-                    { text: empleado.rfc, style: 'tabla_datos' },
-                    { text: empleado.curp , style: 'tabla_datos'},
-                    { text: empleado.nombre , style: 'tabla_datos'},
-                    { text: empleado.codigo_id , style: 'tabla_datos'},
-                    { text: profesion , style: 'tabla_datos'},
-                    { text: empleado.clues , style: 'tabla_datos'},
-                    { text: empleado.cr_id , style: 'tabla_datos'},
-                    { text: turno , style: 'tabla_datos'},
-                    { text: empleado.hora_entrada , style: 'tabla_datos'},
-                    { text: empleado.hora_salida , style: 'tabla_datos'},
-                    { text: empleado.area_servicio , style: 'tabla_datos'},
-                    { text: funcion , style: 'tabla_datos'},
-                    { text: empleado.observaciones , style: 'tabla_datos'}
-                ]
-              );
-            }
-        }*/
-        //return datos;
-    //}
 }

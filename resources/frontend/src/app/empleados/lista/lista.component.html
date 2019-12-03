@@ -104,11 +104,36 @@
                         </mat-chip-list>
                     </div>
                     <button mat-raised-button color="info" (click)="showAddEmployeDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>keyboard</mat-icon> Buscar Empleado</button>
-                    &nbsp;<button mat-raised-button color="accent" (click)="reportePersonalACtivo()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF"><mat-icon>insert_drive_file</mat-icon></button>
+                    &nbsp;<button mat-flat-button (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF"><mat-icon>insert_drive_file</mat-icon> <mat-icon>{{(showReportForm)?'arrow_drop_up':'arrow_drop_down'}}</mat-icon></button>
                 </div>
 
-                <div>
+                <div *ngIf="showReportForm || showMyStepper">
+                    <div *ngIf="showReportForm">
+                        <section fxLayout="row">
+                            <mat-form-field fxFlex>
+                                <input matInput [(ngModel)]="reportTitle" type="text" placeholder="Titulo del Reporte">
+                            </mat-form-field>
+                            <section fxFlex="none">
+                                <mat-checkbox [(ngModel)]="reportIncludeSigns" class="check-box">Incluir Firmas</mat-checkbox>
+                            </section>
+                            <button mat-stroked-button (click)="reportePersonalActivo()" color="primary"><mat-icon fontSet="material-icons-outlined">insert_drive_file</mat-icon> Generar Reporte</button>
+                        </section>
+                    </div>
                     <div class="my-stepper" *ngIf="showMyStepper">
+                        <ng-container *ngFor="let step of stepperConfig.steps; let i = index">
+                            <div class="my-step" [class.my-step-active]="step.status == 2" [class.my-step-done]="step.status == 3" [class.my-step-error]="step.status == 0">
+                                <mat-icon>{{step.icon}}</mat-icon>
+                                <div class="my-step-label">
+                                    {{(step.status < 2)?step.label.standBy:((step.status == 2)?step.label.active:step.label.done)}} <mat-progress-bar *ngIf="step.status == 2" mode="indeterminate"></mat-progress-bar>
+                                    <small *ngIf="step.status == 0" class="my-step-error-message">{{step.errorMessage}}</small>
+                                </div>
+                                <mat-icon *ngIf="step.status == 3">done</mat-icon>
+                                <mat-icon *ngIf="step.status == 0">error</mat-icon>
+                            </div>
+                            <div *ngIf="(i+1) < stepperConfig.steps.length" class="my-step-separator"></div>
+                        </ng-container>
+                    </div>
+                    <!--div class="my-stepper" *ngIf="showMyStepper">
                         <div class="my-step my-step-done">
                             <mat-icon>settings_remote</mat-icon>
                             <div class="my-step-label">
@@ -139,7 +164,7 @@
                             </div>
                             <mat-icon>error</mat-icon>
                         </div>
-                    </div>
+                    </div-->
                 </div>
 
                 <mat-divider [inset]="true"></mat-divider>

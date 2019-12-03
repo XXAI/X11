@@ -13,43 +13,38 @@ class CreateAlterTableRelUsuarioCluesCr extends Migration
      */
     public function up()
     {
-        Schema::create('grupo_usuarios', function (Blueprint $table) {
+        Schema::create('grupos_unidades', function (Blueprint $table) {
             $table->smallIncrements('id')->unsigned();
             $table->string('descripcion');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('rel_usuario_grupo', function (Blueprint $table) {
-            $table->smallInteger('grupo_id')->unsigned();
-            $table->smallInteger("users_id")->unsigned();
+        Schema::create('rel_clues_grupo_unidades', function (Blueprint $table) {
+            $table->smallInteger('grupo_unidades_id')->unsigned();
+            $table->string('clues', 14)->index();
+            $table->string('cr_id', 15)->index();
+            
+            $table->primary(array('grupo_unidades_id', 'clues', "cr_id"));
 
+            $table->foreign('grupo_unidades_id')->references('id')->on('grupos_unidades');
+            $table->foreign('clues')->references('clues')->on('catalogo_clues');
+            $table->foreign('cr_id')->references('cr')->on('catalogo_cr');
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('grupo_id')
-                  ->references('id')->on('grupo_usuarios')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade'); 
-
-            $table->foreign('users_id')
-                  ->references('id')->on('users')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade'); 
         });
 
-        Schema::table('rel_usuario_clues_cr', function (Blueprint $table) {
-            $table->smallInteger("grupo_id")->unsigned()->after('users_id')->nullable();
-        });
+        Schema::create('rel_grupo_unidades_usuario', function (Blueprint $table) {
+            $table->smallInteger('grupo_unidades_id')->unsigned();
+            $table->smallInteger('user_id')->unsigned();
 
-        Schema::table('rel_usuario_clues_cr', function (Blueprint $table) {
-            $table->foreign('grupo_id')
-                  ->references('id')->on('grupo_usuarios')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
+            $table->primary(array('grupo_unidades_id', 'user_id'));
+            
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('grupo_unidades_id')->references('id')->on('grupos_unidades');
+            $table->timestamps();
+            $table->softDeletes();
         });
-
-        Schema::rename('rel_usuario_clues_cr', 'rel_grupo_clues_cr');
     }
 
     /**
@@ -59,18 +54,8 @@ class CreateAlterTableRelUsuarioCluesCr extends Migration
      */
     public function down()
     {
-
-        Schema::rename('rel_grupo_clues_cr', 'rel_usuario_clues_cr');
-
-        Schema::table('rel_usuario_clues_cr', function (Blueprint $table) {
-            $table->dropForeign('rel_usuario_clues_cr_grupo_id_foreign');
-        });
-
-        Schema::table('rel_usuario_clues_cr', function (Blueprint $table) {
-            $table->dropColumn('grupo_id');
-        });
-
-        Schema::dropIfExists('rel_usuario_grupo');
-        Schema::dropIfExists('grupo_usuarios');
+        Schema::dropIfExists('rel_grupo_unidades_usuario');
+        Schema::dropIfExists('rel_clues_grupo_unidades');
+        Schema::dropIfExists('grupos_unidades');
     }
 }
