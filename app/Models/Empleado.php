@@ -51,6 +51,10 @@ class Empleado extends Model
         return $this->hasOne('App\Models\Cr','cr','cr_id');
     }
 
+    public function ur(){
+        return $this->hasOne('App\Models\UR','llave','ur');
+    }
+
     public function baja(){
         return $this->hasMany('App\Models\EmpleadoBaja','empleado_id','id');
     }

@@ -180,7 +180,7 @@ export class ReportePersonalActivo{
                   dontBreakRows: true,
                   widths: ["*","*","*"],
                   body: [
-                      ["RECIBE\n\n\n\n",{text: "",rowSpan: 2},"ENTREGA\n\n\n\n"],
+                      [" \n\n\n\n",{text: "",rowSpan: 2}," \n\n\n\n"],
                       [{text: "Nombre y Firma"},"",{text: "Nombre y Firma"}]
                   ]
               },
