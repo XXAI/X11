@@ -120,7 +120,7 @@
                                     <tr>
                                         <th>CLUES</th><td>{{cluesOrigen.nombre_unidad}}</td><td width="1" fxHide.xs="true">{{cluesOrigen.clues}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="crOrigen">
                                         <th>CR</th><td>{{crOrigen.descripcion}}</td><td fxHide.xs="true">{{crOrigen.cr}}</td>
                                     </tr>
                                 </table>

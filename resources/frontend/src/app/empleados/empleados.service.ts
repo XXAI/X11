@@ -171,8 +171,8 @@ export class EmpleadosService {
     );
   }
 
-  getCatalogosList(obj_empleado):Observable<any> {
-    return this.http.get<any>(this.url_catalogos,{params: {"profesion_id": obj_empleado.profesion_id }}).pipe(
+  getCatalogosList():Observable<any> {
+    return this.http.get<any>(this.url_catalogos,{}).pipe(
       map( response => {
         return response;
       })

@@ -1,6 +1,6 @@
 <section class="profile">
     <!--div fxFill-->
-    <mat-toolbar class="employee-status-bar" [class.mat-elevation-z2]="true">
+    <mat-toolbar class="employee-status-bar" [class.mat-elevation-z2]="true" *ngIf="!esNuevoEmpleado">
         <mat-toolbar-row>
             <mat-icon fxHide.xs="true" aria-hidden="false" aria-label="Estatus Empleado">{{statusIcon}}</mat-icon>
             <span fxHide.xs="true">&nbsp; {{statusLabel}}&nbsp;</span>
@@ -24,7 +24,7 @@
     <mat-icon aria-hidden="false" aria-label="Empleado verificado">warning</mat-icon-->
     
     <section fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly start" style="padding-top:5px;">
-        <section  fxFlex="25">
+        <section  fxFlex="25" fxFlex.xs="100" *ngIf="!esNuevoEmpleado">
             <mat-card>
                 <mat-card-header fxShow.xs="true" fxHide="true">
                     <div mat-card-avatar>
@@ -81,14 +81,14 @@
                 </mat-card-content>
             </mat-card>
         </section>
-        <section fxFlex="70" fxLayout="column" [formGroup]="empleadoForm">
+        <section fxFlex="73" fxLayout="column" [formGroup]="empleadoForm">
             <div class="loading-shade" *ngIf="isLoading">
                 <mat-spinner *ngIf="isLoading"></mat-spinner>
             </div>
             <mat-card fxFlex>
                 <mat-card-content>
                     <div class="edit-container">
-                        <div class="loading-shade" *ngIf="!isLoading && !empleado">No se encontraron los datos del empleado</div>
+                        <div class="loading-shade" *ngIf="!isLoading && !empleado && !esNuevoEmpleado">No se encontraron los datos del empleado</div>
                         <section>
                             <mat-tab-group dynamicHeight animationDuration="0ms">
                                 <mat-tab label="Datos Laborales">
@@ -143,7 +143,7 @@
                                         </section-->
                                     </div>
 
-                                    <section fxLayout="column" >
+                                    <section fxLayout="column" *ngIf="!esNuevoEmpleado">
                                         <table class="info-adscripcion-activa mat-elevation-z1" *ngIf="(datos_empleado && datos_empleado.adscripcion_activa)">
                                             <tr><th class="titulo-largo" width="1">CLUES</th><th class="titulo-largo">Nombre</th></tr>
                                             <tr>
@@ -170,8 +170,42 @@
                                                 <td>{{datos_empleado.adscripcion_activa.clues.estatus}}</td>
                                             </tr-->
                                         </table>
+                                        <br>
                                     </section>
-                                    <br>
+
+                                    <section *ngIf="esNuevoEmpleado"  fxLayout="column" fxLayout.xs="column">
+                                        <mat-form-field fxFlex="100" fxFlex.xs="100">
+                                            <input matInput placeholder="Cr Adscripcion" [matAutocomplete]="crAdscripcionAutocomplete" formControlName='cr_adscripcion' required>
+                                            <mat-autocomplete #crAdscripcionAutocomplete="matAutocomplete" [displayWith]="displayCrFn" [panelWidth]="'auto'">
+                                                <mat-option *ngIf="crAdscripcionIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                <ng-container *ngIf="!crAdscripcionIsLoading">
+                                                    <mat-option *ngFor="let item of filteredCrAdscripcion" [value]="item">
+                                                        [{{item.cr}}] {{ item.descripcion }}
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-autocomplete>
+                                            <input type="hidden" formControlName='cr_adscripcion_id'>
+                                            
+                                            <mat-hint align="start" *ngIf="(empleadoForm.get('cr_adscripcion').value && empleadoForm.get('cr_adscripcion').value.grupo_funcion)">[{{empleadoForm.get('cr_adscripcion').value.grupo_funcion.grupo}}]</mat-hint>
+                                            <mat-hint align="end" *ngIf="empleadoForm.get('cr_adscripcion').value">[{{empleadoForm.get('cr_adscripcion').value.cr}}]</mat-hint>
+                                        </mat-form-field>
+
+                                        <mat-form-field fxFlex="100" fxFlex.xs="100">
+                                            <input matInput placeholder="Cr Físico" [matAutocomplete]="crAutocomplete" formControlName='cr' required>
+                                            <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="displayCrFn" [panelWidth]="'auto'">
+                                                <mat-option *ngIf="crIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                <ng-container *ngIf="!crIsLoading">
+                                                    <mat-option *ngFor="let item of filteredCr" [value]="item">
+                                                        [{{item.cr}}] {{ item.descripcion }} 
+                                                    </mat-option>
+                                                </ng-container>
+                                            </mat-autocomplete>
+                                            <input type="hidden" formControlName='cr_id'>
+                                            <mat-hint align="start" *ngIf="(empleadoForm.get('cr').value && empleadoForm.get('cr').value.grupo_funcion)">[{{empleadoForm.get('cr').value.grupo_funcion.grupo}}]</mat-hint>
+                                            <mat-hint align="end" *ngIf="empleadoForm.get('cr').value">[{{empleadoForm.get('cr').value.cr}}]</mat-hint>
+                                        </mat-form-field>
+                                    </section>
+
                                     <div fxLayout="row" fxLayout.xs="column">
                                         <mat-form-field fxFlex="25" fxFlex.xs="100">
                                             <input matInput id="rfc" formControlName="rfc" placeholder="RFC" required>
@@ -195,7 +229,7 @@
                                         </mat-form-field>
                                     </div>
                                     <div fxLayout="row" fxLayout.xs="column">
-                                        <mat-form-field fxFlex="23" fxFlex.xs="100">
+                                        <mat-form-field fxFlex="30" fxFlex.xs="100">
                                             <mat-label>Tipo de Nomina</mat-label>
                                             <mat-select formControlName="tipo_nomina_id">
                                             <mat-option *ngFor="let item of catalogos['tipoNomina']" [value]="item.id">
@@ -204,17 +238,20 @@
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field fxFlex fxFlex.xs="100">
-                                            <mat-label>Programa</mat-label>
-                                            <mat-select formControlName="programa_id">
-                                            <mat-option *ngFor="let item of catalogos['programa']" [value]="item.id">
-                                                {{item.descripcion}}
-                                            </mat-option>
+                                        <mat-form-field fxFlex="45" fxFlex.xs="100">
+                                            <mat-label>UR</mat-label>
+                                            <mat-select formControlName="ur" required>
+                                                <mat-option *ngFor="let item of catalogos['ur']" [value]="item.llave">
+                                                    {{item.descripcion}}
+                                                </mat-option>
                                             </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field fxFlex="10" fxFlex.xs="100">
-                                            <input matInput formControlName="ur" placeholder="UR" >
+                                        <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                            <mat-label>¿Comisionado Sindical?</mat-label>
+                                            <mat-select formControlName="comision_sindical_id" required>
+                                                <mat-option *ngFor="let item of catalogos['sindicatos']" [value]="item.id">{{item.descripcion}}</mat-option>
+                                            </mat-select>
                                         </mat-form-field>
                                         <!--<mat-form-field fxFlex fxFlex.xs="100">
                                             <mat-label>Fuente</mat-label>
@@ -225,9 +262,18 @@
                                             </mat-select>
                                         </mat-form-field>-->
                                     </div>    
-                                    
                                     <div fxLayout="row" fxLayout.xs="column">
-                                        <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                        <mat-form-field fxFlex fxFlex.xs="100">
+                                            <mat-label>Programa</mat-label>
+                                            <mat-select formControlName="programa_id">
+                                            <mat-option *ngFor="let item of catalogos['programa']" [value]="item.id">
+                                                {{item.descripcion}}
+                                            </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayout.xs="column">
+                                        <mat-form-field fxFlex="25" fxFlex.xs="100">
                                             <mat-label>Rama</mat-label>
                                             <mat-select formControlName="rama_id" required>
                                                 <mat-option *ngFor="let item of catalogos['rama']" [value]="item.id">
@@ -236,18 +282,11 @@
                                             </mat-select>
                                         </mat-form-field>
         
-                                        <mat-form-field fxFlex="60" fxFlex.xs="100">
+                                        <mat-form-field fxFlex="75" fxFlex.xs="100">
                                             <input matInput formControlName="area_servicio" placeholder="Área de Servicio" required>
                                             <mat-error *ngIf="empleadoForm.get('area_servicio').invalid && (empleadoForm.get('area_servicio').dirty || empleadoForm.get('area_servicio').touched)">
                                                 <span *ngIf="empleadoForm.get('area_servicio').errors.required">El Nombre es obligatorio</span>
                                             </mat-error>
-                                        </mat-form-field>
-        
-                                        <mat-form-field fxFlex="20" fxFlex.xs="100">
-                                            <mat-label>¿Comisionado Sindical?</mat-label>
-                                            <mat-select formControlName="comision_sindical_id" required>
-                                                <mat-option *ngFor="let item of catalogos['sindicatos']" [value]="item.id">{{item.descripcion}}</mat-option>
-                                            </mat-select>
                                         </mat-form-field>
                                     </div>
                                     <div fxLayout="row" fxLayout.xs="column">
@@ -386,7 +425,7 @@
                     </ng-container>
                     <button *ngIf="necesitaActivarse" mat-raised-button color="primary" (click)="activateEmployee(datos_empleado.id)"><mat-icon>redo</mat-icon></button>
                     <span fxFlex></span>
-                    <button mat-raised-button routerLink="/empleados">Cancelar</button>
+                    <button mat-raised-button routerLink="/empleados">Volver a la lista</button>
                     <ng-container *ngIf="puedeGuardar">
                         <button mat-raised-button (click)="accionGuardar()" color="success" [disabled]="!empleadoForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
                         <button mat-raised-button (click)="confirmGuardarValidar()" color="success" [disabled]="!empleadoForm.valid || isLoading" *ngIf="puedeValidar"><mat-icon>verified_user</mat-icon> Guardar y Validar</button>

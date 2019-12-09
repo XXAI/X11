@@ -104,7 +104,10 @@
                         </mat-chip-list>
                     </div>
                     <button mat-raised-button color="info" (click)="showAddEmployeDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>keyboard</mat-icon> Buscar Empleado</button>
-                    &nbsp;<button mat-flat-button (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF"><mat-icon>insert_drive_file</mat-icon> <mat-icon>{{(showReportForm)?'arrow_drop_up':'arrow_drop_down'}}</mat-icon></button>
+                    &nbsp;
+                    <button mat-icon-button (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF">
+                        <mat-icon>{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon>
+                    </button>
                 </div>
 
                 <div *ngIf="showReportForm || showMyStepper">

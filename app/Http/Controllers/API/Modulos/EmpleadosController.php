@@ -230,7 +230,7 @@ class EmpleadosController extends Controller
             'cr_id'                 => 'required',
             'cr_adscripcion_id'     => 'required',
             'curp'                  => 'required|unique:empleados',
-            'figf'                  => 'required',
+            //'figf'                  => 'required',
             'fissa'                 => 'required',
             //'fuente_id'           => 'required',
             'nombre'                => 'required',
@@ -306,7 +306,9 @@ class EmpleadosController extends Controller
                 $objeto_escolaridad->update($arreglo_escolaridad);
             else{
                 EmpleadoEscolaridad::create($arreglo_escolaridad);
-            } 
+            }
+
+            $empleado->adscripcionHistorial()->create(['clues'=>$clues_fisico->clues, 'cr'=>$inputs['cr_id'], 'fecha_inicio'=>$inputs['fissa']]); 
                 
             DB::commit();
             
@@ -340,7 +342,7 @@ class EmpleadosController extends Controller
             'comision_sindical_id'                => 'required',
             'cr_id'             => 'required',
             'curp'              => 'required',
-            'figf'            => 'required',
+            //'figf'            => 'required',
             'fissa'            => 'required',
             //'fuente_id'            => 'required',
             'nombre'            => 'required',

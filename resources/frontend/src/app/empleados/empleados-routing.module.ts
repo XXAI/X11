@@ -10,7 +10,7 @@ import { NuevoComponent } from './nuevo/nuevo.component';
 const routes: Routes = [
   { path: 'empleados', component: ListaComponent, canActivate: [AuthGuard] },
   { path: 'empleados/editar/:id', component: EditarComponent, canActivate: [AuthGuard] },
-  { path: 'empleados/nuevo', component: NuevoComponent, canActivate: [AuthGuard] },
+  { path: 'empleados/nuevo', component: EditarComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

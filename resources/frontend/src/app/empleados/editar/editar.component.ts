@@ -33,6 +33,8 @@ export class EditarComponent implements OnInit {
   statusLabel: string;
   statusIcon: string;
 
+  esNuevoEmpleado: boolean = false;
+
   //Botones Anterior-Siguiente
   miniPagination:any = {
     previous: 0,
@@ -43,8 +45,12 @@ export class EditarComponent implements OnInit {
 
   codigosIsLoading: boolean = false;
   profesionIsLoading: boolean = false;
+  crIsLoading: boolean = false;
+  crAdscripcionIsLoading: boolean = false;
   filteredCodigos: Observable<any[]>;
   filteredProfesiones: Observable<any[]>;
+  filteredCr: Observable<any[]>;
+  filteredCrAdscripcion: Observable<any[]>;
 
   displayedColumns: string[] = ['Grado','Estudios','Fecha','actions'];
   tablaEscolaridad: any = [{id:1,grado:'123',estudios:'12312',fecha:'123'}];
@@ -118,6 +124,7 @@ export class EditarComponent implements OnInit {
     'profesion_id': [''],
     'profesion': [''],
     'cr_id': [''],
+    'cr_adscripcion_id':[''],
     'rama_id': [''],
     'area_servicio': [''],
 
@@ -143,16 +150,65 @@ export class EditarComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.id_empleado = params.get('id');
-      this.loadEmpleadoData(this.id_empleado);
 
-      //TODO: Para mostrar el horario del empleado
-      this.horarioEmpleado.forEach(element => {
-        this.tablaHorarioDias[element.de-1].count++;
-        this.tablaHorarioDias[element.ds-1].count++;
-        
-        this.tablaHorarioHoras.push({dia:element.de,hora:element.he,tipo:'start'});
-        this.tablaHorarioHoras.push({dia:element.ds,hora:element.hs,tipo:'end'});
-      });
+      if(this.id_empleado){
+        this.loadEmpleadoData(this.id_empleado);
+
+        //TODO: Para mostrar el horario del empleado
+        this.horarioEmpleado.forEach(element => {
+          this.tablaHorarioDias[element.de-1].count++;
+          this.tablaHorarioDias[element.ds-1].count++;
+          
+          this.tablaHorarioHoras.push({dia:element.de,hora:element.he,tipo:'start'});
+          this.tablaHorarioHoras.push({dia:element.ds,hora:element.hs,tipo:'end'});
+        });
+      }else{
+        this.empleadoForm.addControl('cr_adscripcion', new FormControl('', Validators.required));
+        this.empleadoForm.addControl('cr', new FormControl('', Validators.required));
+
+        this.puedeTransferir = false;
+        this.esNuevoEmpleado = true;
+        this.isLoading = true;
+        this.loadCatalogos();
+
+        this.empleadoForm.get('cr').valueChanges
+        .pipe(
+          debounceTime(300),
+          tap( () => {
+            this.crIsLoading = true;
+          } ),
+          switchMap(value => {
+              if(!(typeof value === 'object')){
+                return this.empleadosService.buscarCr({query:value}).pipe(
+                  finalize(() => this.crIsLoading = false )
+                );
+              }else{
+                this.crIsLoading = false;
+                return [];
+              }
+            }
+          ),
+        ).subscribe(items => this.filteredCr = items);
+
+        this.empleadoForm.get('cr_adscripcion').valueChanges
+        .pipe(
+          debounceTime(300),
+          tap( () => {
+            this.crAdscripcionIsLoading = true;
+          } ),
+          switchMap(value => {
+              if(!(typeof value === 'object')){
+                return this.empleadosService.buscarCrAsdcripcion({query:value}).pipe(
+                  finalize(() => this.crAdscripcionIsLoading = false )
+                );
+              }else{
+                this.crAdscripcionIsLoading = false;
+                return [];
+              }
+            }
+          ),
+        ).subscribe(items => this.filteredCrAdscripcion = items);
+      }
 
       this.empleadoForm.get('codigo').valueChanges
       .pipe(
@@ -287,7 +343,7 @@ export class EditarComponent implements OnInit {
             this.miniPagination.current = (paginator.pageSize*paginator.pageIndex)+paginator.selectedIndex+1;
           }
 
-          this.loadCatalogos(this.datos_empleado);
+          this.loadCatalogos();
 
           if(this.datos_empleado.clave_credencial){
             this.empleadosService.getDatosCredencial(this.datos_empleado.clave_credencial).subscribe(
@@ -334,25 +390,29 @@ export class EditarComponent implements OnInit {
     );
   }
 
-  loadCatalogos(obj_empleado:any){
-    this.empleadosService.getCatalogosList(obj_empleado).subscribe(
+  loadCatalogos(){
+    this.empleadosService.getCatalogosList().subscribe(
       response =>{
         //console.log(response);
         this.catalogos = response;
 
-        if(!this.datos_empleado.escolaridad){
-          this.datos_empleado.escolaridad = {};
+        if(!this.esNuevoEmpleado){
+          if(!this.datos_empleado.escolaridad){
+            this.datos_empleado.escolaridad = {};
+          }
+          
+          if(this.datos_empleado.figf){
+            this.datos_empleado.figf = new Date(this.datos_empleado.figf.substring(0,4),(this.datos_empleado.figf.substring(5,7)-1), this.datos_empleado.figf.substring(8,10),12,0,0,0);
+          }
+          this.datos_empleado.fissa = new Date(this.datos_empleado.fissa.substring(0,4),this.datos_empleado.fissa.substring(5,7)-1, this.datos_empleado.fissa.substring(8,10),12,0,0,0);
+  
+          this.empleadoForm.patchValue(this.datos_empleado);
+  
+          //this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
+          //this.empleadoForm.patchValue({ "clues_desc": this.datos_empleado.clues.nombre_unidad});
+          this.empleadoForm.patchValue({ "tipo_profesion_id": this.catalogos['consulta_tipo_profesion'] });
         }
-
-        this.datos_empleado.figf = new Date(this.datos_empleado.figf.substring(0,4),(this.datos_empleado.figf.substring(5,7)-1), this.datos_empleado.figf.substring(8,10),12,0,0,0);
-        this.datos_empleado.fissa = new Date(this.datos_empleado.fissa.substring(0,4),this.datos_empleado.fissa.substring(5,7)-1, this.datos_empleado.fissa.substring(8,10),12,0,0,0);
-
-        this.empleadoForm.patchValue(this.datos_empleado);
-
-        //this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
-        //this.empleadoForm.patchValue({ "clues_desc": this.datos_empleado.clues.nombre_unidad});
-        this.empleadoForm.patchValue({ "tipo_profesion_id": this.catalogos['consulta_tipo_profesion'] });
-
+        
         this.isLoading = false;
       },
       errorResponse =>{
@@ -365,6 +425,10 @@ export class EditarComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  displayCrFn(item: any) {
+    if (item) { return item.descripcion; }
   }
 
   displayCodigoFn(item: any) {
@@ -607,22 +671,55 @@ export class EditarComponent implements OnInit {
 
     //this.isLoading = false;
     //return false;
-   
-    this.empleadosService.actualizarEmpleado(this.datos_empleado.id, formData).subscribe(
-      respuesta => {
-        this.isLoading = false;
-        this.sharedService.showSnackBar("Se ha guardado correctamente", "Correcto", 3000);
-      },
-      errorResponse =>{
-        console.log(errorResponse);
-        var errorMessage = "Ocurrió un error.";
-        if(errorResponse.status == 409){
-          errorMessage = errorResponse.error.error.message;
-        }
-        this.sharedService.showSnackBar(errorMessage, null, 3000);
-        this.isLoading = false;
-        this.isLoadingCredential = false;
+    
+    if(this.esNuevoEmpleado){
+      if(formData.cr){
+        formData.cr_id = formData.cr.cr;
       }
-    );
+      delete formData.cr;
+
+      if(formData.cr_adscripcion){
+        formData.cr_adscripcion_id = formData.cr_adscripcion.cr;
+      }
+      delete formData.cr_adscripcion;
+
+      this.empleadosService.guardarEmpleado(formData).subscribe(
+        respuesta => {
+          this.isLoading = false;
+          this.sharedService.showSnackBar("Se ha guardado correctamente", "Correcto", 3000);
+        },
+        errorResponse =>{
+          console.log(errorResponse);
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }else{
+            errorMessage += ': ' + errorResponse.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+          this.isLoading = false;
+          this.isLoadingCredential = false;
+        }
+      );
+    }else{
+      this.empleadosService.actualizarEmpleado(this.datos_empleado.id, formData).subscribe(
+        respuesta => {
+          this.isLoading = false;
+          this.sharedService.showSnackBar("Se ha guardado correctamente", "Correcto", 3000);
+        },
+        errorResponse =>{
+          console.log(errorResponse);
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }else{
+            errorMessage += ': ' + errorResponse.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+          this.isLoading = false;
+          this.isLoadingCredential = false;
+        }
+      );
+    }
   }
 }

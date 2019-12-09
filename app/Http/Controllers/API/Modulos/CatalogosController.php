@@ -22,6 +22,7 @@ use App\Models\NivelAcademico;
 use App\Models\Sindicato;
 use App\Models\Turno;
 use App\Models\TipoBaja;
+use App\Models\UR;
 
 class CatalogosController extends Controller
 {
@@ -51,6 +52,7 @@ class CatalogosController extends Controller
             $rama = Rama::orderBy("descripcion")->get();
             $tipoNomina = TipoNomina::orderBy("descripcion")->get();
             $turno = Turno::all();
+            $ur = UR::all();
             
             $catalogos = [
                 "fuente" => $fuente, 
@@ -59,7 +61,8 @@ class CatalogosController extends Controller
                 "tipoNomina" => $tipoNomina, 
                 "nivel_academico" => $nivelAcademico, 
                 "sindicatos" => $sindicatos,
-                "turno" => $turno
+                "turno" => $turno,
+                "ur" => $ur
             ];
 
             return response()->json($catalogos,HttpResponse::HTTP_OK);
