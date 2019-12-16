@@ -417,34 +417,6 @@ class EmpleadosController extends Controller
 
     }
 
-    public function transferEmployee($id){
-        try{
-            //['empleado_id', 'user_origen_id', 'clues_origen', 'user_destino_id', 'clues_destino', 'observacion', 'estatus', 'user_id']
-            $parametros = Input::all();
-            $empleado = Empleado::find($id);
-            $loggedUser = auth()->userOrFail();
-
-            $empleado->permutasAdscripcion()->create([
-                'clues_origen'=>$empleado->clues,
-                'cr_origen_id'=>$empleado->cr_id,
-                'clues_destino'=>$parametros['clues'],
-                'cr_destino_id'=>$parametros['cr'],
-                'estatus' => 1,
-                'user_origen_id'=>$loggedUser->id,
-                'user_destino_id'=>$loggedUser->id,
-                'user_id'=>$loggedUser->id,
-                'observacion'=>$parametros['observaciones']
-            ]);
-
-            $empleado->estatus = 4;
-            $empleado->save();
-
-            return response()->json(['data'=>$parametros],HttpResponse::HTTP_OK);
-        }catch(\Exception $e){
-            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
-        }
-    }
-
     public function getEmployeeTransferData($id){
         try{
             $parametros = Input::all();
@@ -457,10 +429,65 @@ class EmpleadosController extends Controller
         }
     }
 
+    public function transferEmployee($id){
+        try{
+            //['empleado_id', 'user_origen_id', 'clues_origen', 'user_destino_id', 'clues_destino', 'observacion', 'estatus', 'user_id']
+            $parametros = Input::all();
+            $empleado = Empleado::find($id);
+            $loggedUser = auth()->userOrFail();
+            $access = $this->getUserAccessData();
+
+            $responsable = array_search($parametros['cr'], $access->lista_cr);
+
+            if($responsable === false){
+                $estatus = 1;
+                $user_destino = null;
+            }else{
+                $estatus = 2;
+                $user_destino = $loggedUser->id;
+            }
+
+            $empleado->permutasAdscripcion()->create([
+                'clues_origen'=>$empleado->clues,
+                'cr_origen_id'=>$empleado->cr_id,
+                'clues_destino'=>$parametros['clues'],
+                'cr_destino_id'=>$parametros['cr'],
+                'estatus' => $estatus,
+                'user_origen_id'=>$loggedUser->id,
+                'user_destino_id'=>$user_destino,
+                'observacion'=>$parametros['observaciones']
+            ]);
+
+            if($estatus == 1){
+                $empleado->estatus = 4;
+            }else{
+                $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$empleado->clues)->where('cr',$empleado->cr_id)->whereNull('fecha_fin')->first();
+
+                if(!$clues_empleado){
+                    throw new Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
+                }
+
+                $clues_empleado->fecha_fin = date('Y-m-d');
+                $clues_empleado->save();
+
+                $empleado->adscripcionHistorial()->create(['clues'=>$parametros['clues'], 'cr'=>$parametros['cr'], 'fecha_inicio'=>date('Y-m-d')]);
+                
+                $empleado->estatus = 1;
+            }
+            $empleado->save();
+
+            return response()->json(['data'=>$parametros],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+    
     public function finishTransferEmployee($id){
         try{
             $parametros = Input::all();
-            
+            $loggedUser = auth()->userOrFail();
+            $access = $this->getUserAccessData();
+
             $datos_transferencia = PermutaAdscripcion::where('empleado_id',$id)->where('estatus',1)->first();
             $empleado = Empleado::find($id);
 
@@ -468,12 +495,13 @@ class EmpleadosController extends Controller
 
             if($parametros['estatus'] == 2){ //aceptado
                 $datos_transferencia->estatus = 2;
+                $datos_transferencia->user_destino_id = $loggedUser->id;
                 if($parametros['observaciones']){
                     $datos_transferencia->observacion .=  "\nACEPTADO: \n".$parametros['observaciones'];
                 }
                 $datos_transferencia->save();
 
-                $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$datos_transferencia->clues_origen)->whereNull('fecha_fin')->first();
+                $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$datos_transferencia->clues_origen)->where('cr',$datos_transferencia->cr_origen_id)->whereNull('fecha_fin')->first();
 
                 if(!$clues_empleado){
                     throw new Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
@@ -489,7 +517,7 @@ class EmpleadosController extends Controller
                 $empleado->cr_id = $datos_transferencia->cr_destino_id; 
                 $empleado->save();
 
-            }else{ //3 => cancelado
+            }else{ //3 => rechazado
                 $datos_transferencia->estatus = 3;
                 if($parametros['observaciones']){
                     $datos_transferencia->observacion .=  "\nRECHAZADO: \n".$parametros['observaciones'];
