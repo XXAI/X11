@@ -23,6 +23,7 @@ use App\Models\Sindicato;
 use App\Models\Turno;
 use App\Models\TipoBaja;
 use App\Models\UR;
+use App\Models\FuenteFinanciamiento;
 
 class CatalogosController extends Controller
 {
@@ -52,10 +53,12 @@ class CatalogosController extends Controller
             $rama = Rama::orderBy("descripcion")->get();
             $tipoNomina = TipoNomina::orderBy("descripcion")->get();
             $turno = Turno::all();
+            $fuente_finan = FuenteFinanciamiento::orderBy("descripcion")->get();
             $ur = UR::all();
             
             $catalogos = [
-                "fuente" => $fuente, 
+                "fuente" => $fuente,
+                "fuente_financiamiento" => $fuente_finan,
                 "programa" => $programa, 
                 "rama" => $rama, 
                 "tipoNomina" => $tipoNomina, 

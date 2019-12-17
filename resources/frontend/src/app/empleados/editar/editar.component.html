@@ -253,20 +253,20 @@
                                                 <mat-option *ngFor="let item of catalogos['sindicatos']" [value]="item.id">{{item.descripcion}}</mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                        <!--<mat-form-field fxFlex fxFlex.xs="100">
-                                            <mat-label>Fuente</mat-label>
-                                            <mat-select formControlName="fuente_id">
-                                            <mat-option *ngFor="let item of catalogos['fuente']" [value]="item.id">
-                                                {{item.descripcion}}
-                                            </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>-->
                                     </div>    
                                     <div fxLayout="row" fxLayout.xs="column">
                                         <mat-form-field fxFlex fxFlex.xs="100">
                                             <mat-label>Programa</mat-label>
                                             <mat-select formControlName="programa_id">
                                             <mat-option *ngFor="let item of catalogos['programa']" [value]="item.id">
+                                                {{item.descripcion}}
+                                            </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex fxFlex.xs="100">
+                                            <mat-label>Fuente</mat-label>
+                                            <mat-select >
+                                            <mat-option *ngFor="let item of catalogos['fuente_financiamiento']" [value]="item.id">
                                                 {{item.descripcion}}
                                             </mat-option>
                                             </mat-select>
