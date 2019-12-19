@@ -29,7 +29,8 @@ class EmpleadosController extends Controller
         /*if (\Gate::denies('has-permission', \Permissions::VER_ROL) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_ROL)){
             return response()->json(['message'=>'No esta autorizado para ver este contenido'],HttpResponse::HTTP_FORBIDDEN);
         }*/
-
+        $firmantes = array();
+        $responsable_clues = array();
         try{
             $access = $this->getUserAccessData();
             
@@ -108,9 +109,15 @@ class EmpleadosController extends Controller
                                         ;
                 }
                 $empleados = $empleados->get();
+
+                $loggedUser = auth()->userOrFail();
+                $loggedUser->load('gruposUnidades.listaFirmantes.empleado',"gruposUnidades.listaCR.clues.responsable");
+                $firmantes = $loggedUser->gruposUnidades[0]->listaFirmantes;
+                $responsable_clues = $loggedUser->gruposUnidades[0]->listaCR;
+
             }
 
-            return response()->json(['data'=>$empleados],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$empleados, 'firmantes'=> $firmantes, 'responsables'=>$responsable_clues],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
@@ -719,7 +726,7 @@ class EmpleadosController extends Controller
         }
         
         //$loggedUser->load('perfilCr');
-        $loggedUser->load('gruposUnidades.listaCR');
+        $loggedUser->load('gruposUnidades.listaCR', 'gruposUnidades.listaFirmantes');
         
         $lista_cr = [];
         $lista_clues = [];
@@ -790,6 +797,40 @@ class EmpleadosController extends Controller
         }
     }
 
+    public function getResponsableComplete()
+    {
+        try{
+            $parametros = Input::all();
+
+            $access = $this->getUserAccessData();
+            
+            $empleados = Empleado::where(function($query)use($parametros){
+                return $query->where('nombre','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                            ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                            ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
+            })->limit(20);
+
+            if(!$access->is_admin){
+                $empleados = $empleados->whereIn("cr_id", $access->lista_cr);
+            }else{
+                $empleados = $empleados->limit(100);
+            }
+            
+            if(isset($parametros['page'])){
+                $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
+    
+                $empleados = $empleados->paginate($resultadosPorPagina);
+            } else {
+
+                $empleados = $empleados->get();
+            }
+
+            return response()->json(['data'=>$empleados],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function getCrComplete()
     {
         try{
@@ -834,4 +875,6 @@ class EmpleadosController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    
 }

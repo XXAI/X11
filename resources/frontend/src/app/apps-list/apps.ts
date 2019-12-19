@@ -18,6 +18,11 @@ export const APPS:App [] = [
         {name:'Reportes MySQL',route:'dev-tools/mysql-reportes', icon:'insert_drive_file', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"}
       ],
     },
+    { name:'Catálogos', route: "catalogos",  icon: "assets/icons/catalogos.svg", isHub:true, hideHome:true, 
+      children:[
+        {name:'Clues',route:'catalogos/clues', icon:'insert_drive_file', permission:"55sHMIb36J8r9Dgr3uvfxO3wX1ZvudbL"}
+      ],
+    },
     /*
     { name: "Seguridad", route: "seguridad", icon: "assets/icons/security-shield.svg", 
         children: [

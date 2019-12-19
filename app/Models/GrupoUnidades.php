@@ -18,4 +18,8 @@ class GrupoUnidades extends Model
     public function listaUsuarios(){
         return $this->belongsToMany('App\Models\User', 'rel_grupo_unidades_usuario', 'grupo_unidades_id', 'user_id');
     }
+
+    public function listaFirmantes(){
+        return $this->hasMany('App\Models\Firmantes', 'grupo_unidades_id');
+    }
 }
