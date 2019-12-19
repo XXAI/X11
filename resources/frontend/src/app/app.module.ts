@@ -30,6 +30,7 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { SecurityModule } from './security/security.module';
 import { ProfileModule } from './profile/profile.module';
 import { DevToolsModule } from './dev-tools/dev-tools.module';
+import { CatalogosModule } from './catalogos/catalogos.module';
 
 //Modulos del Sistema
 import { EmpleadosModule } from './empleados/empleados.module';
@@ -56,6 +57,7 @@ import { EmpleadosModule } from './empleados/empleados.module';
     EmpleadosModule,
     SecurityModule,
     DevToolsModule,
+    CatalogosModule,
     ProfileModule,
     AppRoutingModule,
     WildcardRoutingModule,

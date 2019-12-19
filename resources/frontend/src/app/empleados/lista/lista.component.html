@@ -103,6 +103,8 @@
                             </mat-chip>
                         </mat-chip-list>
                     </div>
+                    <button mat-raised-button color="info" (click)="showAddFirmanteDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>people</mat-icon> Agregar Firmantes</button>
+                    &nbsp;
                     <button mat-raised-button color="info" (click)="showAddEmployeDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>keyboard</mat-icon> Buscar Empleado</button>
                     &nbsp;
                     <button mat-icon-button (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF">

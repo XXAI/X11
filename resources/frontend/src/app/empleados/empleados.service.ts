@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 export class EmpleadosService {
 
   url = `${environment.base_url}/empleados`;
+  url_firmantes = `${environment.base_url}/firmantes`;
   url_transfer = `${environment.base_url}/transferir-empleado/`;
   url_transfer_data = `${environment.base_url}/obtener-datos-transferencia/`;
   url_finish_transfer = `${environment.base_url}/finalizar-transferencia/`;
@@ -28,6 +29,7 @@ export class EmpleadosService {
   url_cr = `${environment.base_url}/busqueda-cr`;
   url_cr_adscripcion = `${environment.base_url}/busqueda-cr-adscripcion`;
   url_empleados = `${environment.base_url}/busqueda-empleados`;
+  url_responsable = `${environment.base_url}/busqueda-responsable`;
   
   url_reporte = `${environment.base_url}/reporte-empleados-validados`;
 
@@ -77,6 +79,14 @@ export class EmpleadosService {
 
   getEmpleadosList(payload):Observable<any> {
     return this.http.get<any>(this.url,{params: payload}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
+  
+  getFirmantesList():Observable<any> {
+    return this.http.get<any>(this.url_firmantes,{}).pipe(
       map( response => {
         return response;
       })
@@ -218,4 +228,29 @@ export class EmpleadosService {
       }
     ));
   }
+
+  buscarResponsable(payload):Observable<any>{
+    return this.http.get<any>(this.url_responsable,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
+
+  agregarFirmante(payload) {
+    return this.http.post<any>(this.url_firmantes,payload).pipe(
+      map( (response) => {
+        return response;
+      }
+    ));
+  }
+
+  deleteFirmante(id){
+    return this.http.delete<any>(this.url_firmantes+'/'+id,{}).pipe(
+      map( (response: any) => {
+        return response;
+      }
+    ));
+  }
+  
 }

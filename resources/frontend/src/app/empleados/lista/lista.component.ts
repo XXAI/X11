@@ -11,6 +11,7 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { AgregarEmpleadoDialogComponent } from '../agregar-empleado-dialog/agregar-empleado-dialog.component';
+import { AgregarFirmantesDialogComponent } from '../agregar-firmantes-dialog/agregar-firmantes-dialog.component';
 import { PermissionsList } from '../../auth/models/permissions-list';
 import { MediaObserver } from '@angular/flex-layout';
 import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
@@ -352,6 +353,31 @@ export class ListaComponent implements OnInit {
     });
   }
 
+  showAddFirmanteDialog(){
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+        data:{}
+      }
+    }
+    const dialogRef = this.dialog.open(AgregarFirmantesDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log(valid);
+      }
+    });
+  }
+
   confirmTransferEmploye(id:number,i:number){
     let configDialog = {};
     if(this.mediaSize == 'xs'){
@@ -493,8 +519,6 @@ export class ListaComponent implements OnInit {
           this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
           //this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
-            console.log(response);
-            
             this.stepperConfig.steps[0].status = 3;
             this.stepperConfig.steps[1].status = 2;
             this.stepperConfig.currentIndex = 1;
@@ -527,10 +551,10 @@ export class ListaComponent implements OnInit {
             
             let config = {
               title: this.reportTitle,
-              showSigns: this.reportIncludeSigns,
+              showSigns: this.reportIncludeSigns, 
             };
 
-            reportWorker.postMessage({data:{items: response.data, config:config},reporte:'empleados/personal-activo'});
+            reportWorker.postMessage({data:{items: response.data, config:config, firmantes: response.firmantes, responsables: response.responsables},reporte:'empleados/personal-activo'});
         }
         this.isLoading = false;
       },

@@ -15,10 +15,11 @@ import { EditarHorarioDialogComponent } from './editar-horario-dialog/editar-hor
 import { AgregarEmpleadoDialogComponent } from './agregar-empleado-dialog/agregar-empleado-dialog.component';
 import { NuevoComponent } from './nuevo/nuevo.component';
 import { BajaDialogComponent } from './baja-dialog/baja-dialog.component';
+import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog/agregar-firmantes-dialog.component';
 
 
 @NgModule({
-  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent, NuevoComponent, BajaDialogComponent],
+  declarations: [ListaComponent, EditarComponent, EstudiosDialogComponent, TransferenciaEmpleadoDialogComponent, EditarHorarioDialogComponent, ConfirmarTransferenciaDialogComponent, AgregarEmpleadoDialogComponent, NuevoComponent, BajaDialogComponent, AgregarFirmantesDialogComponent],
   imports: [
     CommonModule,
     EmpleadosRoutingModule,
@@ -33,6 +34,7 @@ import { BajaDialogComponent } from './baja-dialog/baja-dialog.component';
     AgregarEmpleadoDialogComponent,
     EditarHorarioDialogComponent,
     BajaDialogComponent,
+    AgregarFirmantesDialogComponent
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},
