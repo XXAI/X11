@@ -569,8 +569,7 @@ class EmpleadosController extends Controller
                     'cr_destino_id'=>$cr_destino,
                     'estatus' => 2,
                     'user_origen_id'=>$loggedUser->id,
-                    'user_destino_id'=>$loggedUser->id,
-                    'user_id'=>$loggedUser->id
+                    'user_destino_id'=>$loggedUser->id
                     //'observacion'=>(isset($parametros['observaciones']))?$parametros['observaciones']:''
                 ]);
 

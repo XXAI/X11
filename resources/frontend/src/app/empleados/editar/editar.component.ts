@@ -47,10 +47,12 @@ export class EditarComponent implements OnInit {
   profesionIsLoading: boolean = false;
   crIsLoading: boolean = false;
   crAdscripcionIsLoading: boolean = false;
+  crComisionIsLoading: boolean = false;
   filteredCodigos: Observable<any[]>;
   filteredProfesiones: Observable<any[]>;
   filteredCr: Observable<any[]>;
   filteredCrAdscripcion: Observable<any[]>;
+  filteredCrComision: Observable<any[]>;
 
   displayedColumns: string[] = ['Grado','Estudios','Fecha','actions'];
   tablaEscolaridad: any = [{id:1,grado:'123',estudios:'12312',fecha:'123'}];
@@ -113,9 +115,10 @@ export class EditarComponent implements OnInit {
     'turno_id':[''],
     'hora_entrada':[''],
     'hora_salida':[''],
-    'tipo_nomina_id': [''],
+    'tipo_trabajador_id': [''],
     'programa_id': [''],
     'fuente_id': [''],
+    'fuente_finan_id': [''],
     'ur':[''],
 
 
@@ -129,6 +132,18 @@ export class EditarComponent implements OnInit {
     'area_servicio': [''],
 
     'comision_sindical_id': [''],
+    'sindicato_id': [''],
+    'tipo_comision': [''],
+
+    //Datos Comision
+    'cr_comision': [''],
+    'cr_comision_id': [''],
+    'fecha_inicio': [''],
+    'fecha_fin': [''],
+    'no_oficio': [''],
+    'recurrente':[''],
+    'total_acumulado_meses':[''],
+
     'escolaridad': this.fb.group({
       'secundaria':[''], 
       'preparatoria':[''], 
@@ -210,6 +225,25 @@ export class EditarComponent implements OnInit {
         ).subscribe(items => this.filteredCrAdscripcion = items);
       }
 
+      this.empleadoForm.get('cr_comision').valueChanges
+        .pipe(
+          debounceTime(300),
+          tap( () => {
+            this.crComisionIsLoading = true;
+          } ),
+          switchMap(value => {
+              if(!(typeof value === 'object')){
+                return this.empleadosService.buscarCrAsdcripcion({query:value}).pipe(
+                  finalize(() => this.crComisionIsLoading = false )
+                );
+              }else{
+                this.crComisionIsLoading = false;
+                return [];
+              }
+            }
+          ),
+        ).subscribe(items => this.filteredCrComision = items);
+
       this.empleadoForm.get('codigo').valueChanges
       .pipe(
         debounceTime(300),
@@ -253,6 +287,15 @@ export class EditarComponent implements OnInit {
       //console.log(this.tablaHorarioDias);
       //console.log(this.tablaHorarioHoras);
     });
+  }
+
+  checkSelectedValue(field_name) {
+    console.log(field_name);
+    setTimeout(() => {
+      if (typeof(this.empleadoForm.get(field_name).value) != 'object') {
+        this.empleadoForm.get(field_name).setValue(null);
+      } 
+    }, 300);
   }
 
   loadEmpleadoData(id:any)

@@ -230,9 +230,9 @@
                                     </div>
                                     <div fxLayout="row" fxLayout.xs="column">
                                         <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                            <mat-label>Tipo de Nomina</mat-label>
-                                            <mat-select formControlName="tipo_nomina_id">
-                                            <mat-option *ngFor="let item of catalogos['tipoNomina']" [value]="item.id">
+                                            <mat-label>Tipo Trabajador</mat-label>
+                                            <mat-select formControlName="tipo_trabajador_id">
+                                            <mat-option *ngFor="let item of catalogos['tipo_trabajador']" [value]="item.id">
                                                 {{item.descripcion}}
                                             </mat-option>
                                             </mat-select>
@@ -248,8 +248,8 @@
                                         </mat-form-field>
 
                                         <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                            <mat-label>¿Comisionado Sindical?</mat-label>
-                                            <mat-select formControlName="comision_sindical_id" required>
+                                            <mat-label>Sindicato</mat-label>
+                                            <mat-select formControlName="sindicato_id" required>
                                                 <mat-option *ngFor="let item of catalogos['sindicatos']" [value]="item.id">{{item.descripcion}}</mat-option>
                                             </mat-select>
                                         </mat-form-field>
@@ -265,7 +265,7 @@
                                         </mat-form-field>
                                         <mat-form-field fxFlex fxFlex.xs="100">
                                             <mat-label>Fuente</mat-label>
-                                            <mat-select >
+                                            <mat-select formControlName="fuente_finan_id">
                                             <mat-option *ngFor="let item of catalogos['fuente_financiamiento']" [value]="item.id">
                                                 {{item.descripcion}}
                                             </mat-option>
@@ -322,6 +322,96 @@
                                             <mat-label>Observaciones</mat-label>
                                             <textarea matInput formControlName="observaciones" ></textarea>
                                         </mat-form-field>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Datos Comisión">
+                                    <br>
+                                    <div fxLayout="row" fxLayout.xs="column">
+                                        <mat-form-field fxFlex="40" fxFlex.xs="50">
+                                            <mat-label>Tipo Comisión</mat-label>
+                                            <mat-select formControlName="tipo_comision">
+                                                <mat-option [value]="">Sin Comisión</mat-option>
+                                                <mat-option [value]="'CI'">Comisión Interna</mat-option>
+                                                <mat-option [value]="'CS'">Comisión Sindical</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <section fxFlex="60" fxFlex.xs="50" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Editar Comisión" [matTooltipPosition]="'below'" color="accent"><mat-icon>edit</mat-icon> Editar</button>
+                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Renovar Comisión" [matTooltipPosition]="'below'" color="info"><mat-icon>refresh</mat-icon> Renovar</button>
+                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Nueva Comisión" [matTooltipPosition]="'below'" color="primary"><mat-icon>add_circle</mat-icon> Nueva</button>
+                                            <!--&nbsp;<button mat-raised-button color="accent"><mat-icon>add</mat-icon> Agregar</button>-->
+                                            <!--&nbsp;<button mat-raised-button><mat-icon>list</mat-icon> Ver Historial</button>-->
+                                        </section>
+
+                                    </div>
+                                    <div fxLayout="row">
+                                        <section fxFlex>
+                                            <table class="info-adscripcion-activa mat-elevation-z1">
+                                                <tr><th class="titulo-largo">Ultima Comisión Asignada [Activa | Vencida] <span>(6 Meses)</span></th></tr>
+                                                <tr><td class="descripcion">No Comisionado</td></tr>
+                                                <tr><td class="descripcion">Sin Comisión Asignada</td></tr>
+                                                <tr><td>
+                                                    <section fxFlex fxLayout="row wrap">
+                                                        <div fxFlex="25"><strong>CLUES: </strong> CSSSA00099</div>
+                                                        <div fxFlex="75"><strong>Nombre Unidad: </strong> Nombre de la Unidad Medica</div>
+                                                        <div fxFlex="25"><strong>CR: </strong> 0756485489564</div>
+                                                        <div fxFlex="75"><strong>Descripción CR: </strong> Descripción del CR</div>
+                                                        <div fxFlex="33"><strong>Fecha Inicio: </strong> 15-08-2019</div>
+                                                        <div fxFlex="33"><strong>Fecha Fin: </strong> 15-08-2019</div>
+                                                        <div fxFlex="33"><strong>No. Oficio: </strong> 15-08-2019-545</div>
+                                                    </section>
+                                                </td></tr>
+                                            </table>
+                                        </section>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex fxLayout="row">
+                                            <section fxFlex fxLayout="row wrap">
+                                                <mat-form-field fxFlex="100">
+                                                    <input matInput placeholder="CR Comision" [matAutocomplete]="crComisionAutocomplete" formControlName='cr_comision' required (blur)="checkSelectedValue('cr_comision')">
+                                                    <mat-autocomplete #crComisionAutocomplete="matAutocomplete" [displayWith]="displayCrFn" [panelWidth]="'auto'" (onSelectionChange)="selectedOption(item,'cr_comision')">
+                                                        <mat-option *ngIf="crComisionIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                        <ng-container *ngIf="!crComisionIsLoading">
+                                                            <mat-option *ngFor="let item of filteredCrComision" [value]="item">
+                                                                <!--[{{item.clues}}] {{ item.nombre_unidad }}<br>-->
+                                                                [{{item.cr}}] {{ item.descripcion }}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-autocomplete>
+                                                    <mat-hint align="end" *ngIf="empleadoForm.get('cr_comision').value">[{{empleadoForm.get('cr_comision').value.cr}}]</mat-hint>
+                                                    <input type="hidden" formControlName='cr_comision_id'>
+                                                </mat-form-field>
+                                                <mat-form-field fxFlex="33">
+                                                    <input matInput type="text" placeholder="No. de Oficio" formControlName="no_oficio">
+                                                </mat-form-field>
+                                                <mat-form-field fxFlex="33">
+                                                    <input matInput [matDatepicker]="fechaInicioPicker" placeholder="Fecha Inicio"  formControlName="fecha_inicio" readonly required>
+                                                    <mat-datepicker-toggle matSuffix [for]="fechaInicioPicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #fechaInicioPicker disabled="false"></mat-datepicker>
+                                                    <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
+                                                </mat-form-field>
+                                                <mat-form-field fxFlex="33">
+                                                    <input matInput [matDatepicker]="fechaFinPicker" placeholder="Fecha Fin"  formControlName="fecha_fin" readonly required>
+                                                    <mat-datepicker-toggle matSuffix [for]="fechaFinPicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #fechaFinPicker disabled="false"></mat-datepicker>
+                                                    <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
+                                                </mat-form-field>
+                                                <section fxFlex="20" style="margin-top:5px; margin-bottom:5px;">
+                                                    <mat-checkbox formControlName="recurrente" value="true">Recurrente</mat-checkbox>
+                                                </section>
+                                                <mat-form-field fxFlex="25">
+                                                    <input matInput type="text" placeholder="Meses Acumulados" formControlName="total_acumulado_meses">
+                                                </mat-form-field>
+                                                <section fxFlex="100" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end start">
+                                                    <button fxFlex="none" mat-raised-button>Cancelar</button>
+                                                    <button fxFlex="none" mat-raised-button color="primary">Guardar</button>
+                                                </section>
+                                            </section>
+                                        </div>
+                                        <!--<div fxFlex="none" fxLayout="column">
+                                            <button mat-raised-button matTooltip="Renovar Comisión" [matTooltipPosition]="'after'" color="info"><mat-icon>refresh</mat-icon></button>
+                                            <button mat-raised-button matTooltip="Nueva Comisión" [matTooltipPosition]="'after'" color="primary"><mat-icon>add_circle</mat-icon></button>
+                                        </div>-->
                                     </div>
                                 </mat-tab>
                                 <mat-tab label="Estudios">

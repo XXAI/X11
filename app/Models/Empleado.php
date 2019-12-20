@@ -27,6 +27,10 @@ class Empleado extends Model
         return $this->hasOne('App\Models\Profesion','id','profesion_id');
     }
 
+    public function comision(){
+        return $this->hasOne('App\Models\ComisionEmpleado','id','ultima_comision_id');
+    }
+
     public function adscripcionActiva(){
         return $this->hasOne('App\Models\CluesEmpleado', 'empleado_id', "id")->whereNull('fecha_fin');
     }
