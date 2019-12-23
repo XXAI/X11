@@ -54,6 +54,8 @@ export class EditarComponent implements OnInit {
   filteredCrAdscripcion: Observable<any[]>;
   filteredCrComision: Observable<any[]>;
 
+  mostrarComisionForm: boolean = false;
+
   displayedColumns: string[] = ['Grado','Estudios','Fecha','actions'];
   tablaEscolaridad: any = [{id:1,grado:'123',estudios:'12312',fecha:'123'}];
 
@@ -134,16 +136,19 @@ export class EditarComponent implements OnInit {
     'comision_sindical_id': [''],
     'sindicato_id': [''],
     'tipo_comision': [''],
+    'ultima_comision_id': [''],
 
-    //Datos Comision
-    'cr_comision': [''],
-    'cr_comision_id': [''],
-    'fecha_inicio': [''],
-    'fecha_fin': [''],
-    'no_oficio': [''],
-    'recurrente':[''],
-    'total_acumulado_meses':[''],
-
+    'comision': this.fb.group({
+      //Datos Comision
+      'cr_comision': [''],
+      'cr_comision_id': [''],
+      'fecha_inicio': [''],
+      'fecha_fin': [''],
+      'no_oficio': [''],
+      'recurrente':[''],
+      'total_acumulado_meses':[''],
+    }),
+    
     'escolaridad': this.fb.group({
       'secundaria':[''], 
       'preparatoria':[''], 
@@ -225,7 +230,7 @@ export class EditarComponent implements OnInit {
         ).subscribe(items => this.filteredCrAdscripcion = items);
       }
 
-      this.empleadoForm.get('cr_comision').valueChanges
+      this.empleadoForm.get('comision').get('cr_comision').valueChanges
         .pipe(
           debounceTime(300),
           tap( () => {

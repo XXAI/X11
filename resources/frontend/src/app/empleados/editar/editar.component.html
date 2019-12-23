@@ -335,22 +335,22 @@
                                                 <mat-option [value]="'CS'">Comisión Sindical</mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                        <section fxFlex="60" fxFlex.xs="50" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Editar Comisión" [matTooltipPosition]="'below'" color="accent"><mat-icon>edit</mat-icon> Editar</button>
-                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Renovar Comisión" [matTooltipPosition]="'below'" color="info"><mat-icon>refresh</mat-icon> Renovar</button>
-                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Nueva Comisión" [matTooltipPosition]="'below'" color="primary"><mat-icon>add_circle</mat-icon> Nueva</button>
+                                        <section fxFlex="60" fxFlex.xs="50" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center" *ngIf="empleadoForm.get('tipo_comision').value == 'CI' && !mostrarComisionForm">
+                                            &nbsp;
+                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Editar Comisión" [matTooltipPosition]="'below'" color="accent" (click)="mostrarComisionForm = true" *ngIf="empleadoForm.get('ultima_comision_id').value"><mat-icon>edit</mat-icon> Editar</button>
+                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Renovar Comisión" [matTooltipPosition]="'below'" color="info" (click)="mostrarComisionForm = true" *ngIf="empleadoForm.get('ultima_comision_id').value"><mat-icon>refresh</mat-icon> Renovar</button>
+                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Nueva Comisión" [matTooltipPosition]="'below'" color="primary" (click)="mostrarComisionForm = true" ><mat-icon>add_circle</mat-icon> Nueva</button>
                                             <!--&nbsp;<button mat-raised-button color="accent"><mat-icon>add</mat-icon> Agregar</button>-->
                                             <!--&nbsp;<button mat-raised-button><mat-icon>list</mat-icon> Ver Historial</button>-->
                                         </section>
-
                                     </div>
-                                    <div fxLayout="row">
-                                        <section fxFlex>
+                                    <div fxLayout="column" *ngIf="empleadoForm.get('tipo_comision').value == 'CI'">
+                                        <section fxFlex *ngIf="!mostrarComisionForm">
                                             <table class="info-adscripcion-activa mat-elevation-z1">
-                                                <tr><th class="titulo-largo">Ultima Comisión Asignada [Activa | Vencida] <span>(6 Meses)</span></th></tr>
-                                                <tr><td class="descripcion">No Comisionado</td></tr>
-                                                <tr><td class="descripcion">Sin Comisión Asignada</td></tr>
-                                                <tr><td>
+                                                <tr><th class="titulo-largo">Ultima Comisión Asignada</th></tr>
+                                                <!--<tr><td class="descripcion">No Comisionado</td></tr>-->
+                                                <tr *ngIf="!empleadoForm.get('ultima_comision_id').value"><td class="descripcion">Sin Comisión Asignada</td></tr>
+                                                <tr *ngIf="empleadoForm.get('ultima_comision_id').value"><td>
                                                     <section fxFlex fxLayout="row wrap">
                                                         <div fxFlex="25"><strong>CLUES: </strong> CSSSA00099</div>
                                                         <div fxFlex="75"><strong>Nombre Unidad: </strong> Nombre de la Unidad Medica</div>
@@ -363,55 +363,56 @@
                                                 </td></tr>
                                             </table>
                                         </section>
-                                    </div>
-                                    <div fxLayout="row">
-                                        <div fxFlex fxLayout="row">
-                                            <section fxFlex fxLayout="row wrap">
-                                                <mat-form-field fxFlex="100">
-                                                    <input matInput placeholder="CR Comision" [matAutocomplete]="crComisionAutocomplete" formControlName='cr_comision' required (blur)="checkSelectedValue('cr_comision')">
-                                                    <mat-autocomplete #crComisionAutocomplete="matAutocomplete" [displayWith]="displayCrFn" [panelWidth]="'auto'" (onSelectionChange)="selectedOption(item,'cr_comision')">
-                                                        <mat-option *ngIf="crComisionIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
-                                                        <ng-container *ngIf="!crComisionIsLoading">
-                                                            <mat-option *ngFor="let item of filteredCrComision" [value]="item">
-                                                                <!--[{{item.clues}}] {{ item.nombre_unidad }}<br>-->
-                                                                [{{item.cr}}] {{ item.descripcion }}
-                                                            </mat-option>
-                                                        </ng-container>
-                                                    </mat-autocomplete>
-                                                    <mat-hint align="end" *ngIf="empleadoForm.get('cr_comision').value">[{{empleadoForm.get('cr_comision').value.cr}}]</mat-hint>
-                                                    <input type="hidden" formControlName='cr_comision_id'>
-                                                </mat-form-field>
-                                                <mat-form-field fxFlex="33">
-                                                    <input matInput type="text" placeholder="No. de Oficio" formControlName="no_oficio">
-                                                </mat-form-field>
-                                                <mat-form-field fxFlex="33">
-                                                    <input matInput [matDatepicker]="fechaInicioPicker" placeholder="Fecha Inicio"  formControlName="fecha_inicio" readonly required>
-                                                    <mat-datepicker-toggle matSuffix [for]="fechaInicioPicker"></mat-datepicker-toggle>
-                                                    <mat-datepicker #fechaInicioPicker disabled="false"></mat-datepicker>
-                                                    <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
-                                                </mat-form-field>
-                                                <mat-form-field fxFlex="33">
-                                                    <input matInput [matDatepicker]="fechaFinPicker" placeholder="Fecha Fin"  formControlName="fecha_fin" readonly required>
-                                                    <mat-datepicker-toggle matSuffix [for]="fechaFinPicker"></mat-datepicker-toggle>
-                                                    <mat-datepicker #fechaFinPicker disabled="false"></mat-datepicker>
-                                                    <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
-                                                </mat-form-field>
-                                                <section fxFlex="20" style="margin-top:5px; margin-bottom:5px;">
-                                                    <mat-checkbox formControlName="recurrente" value="true">Recurrente</mat-checkbox>
+                                        <div fxFlex fxLayout="row" *ngIf="mostrarComisionForm"> 
+                                            <div fxFlex fxLayout="row" formGroupName="comision">
+                                                <section fxFlex fxLayout="row wrap">
+                                                    <mat-form-field fxFlex="100">
+                                                        <input matInput placeholder="CR Comision" [matAutocomplete]="crComisionAutocomplete" formControlName='cr_comision' required (blur)="checkSelectedValue('comision.cr_comision')">
+                                                        <mat-autocomplete #crComisionAutocomplete="matAutocomplete" [displayWith]="displayCrFn" [panelWidth]="'auto'" (onSelectionChange)="selectedOption(item,'cr_comision')">
+                                                            <mat-option *ngIf="crComisionIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                            <ng-container *ngIf="!crComisionIsLoading">
+                                                                <mat-option *ngFor="let item of filteredCrComision" [value]="item">
+                                                                    <!--[{{item.clues}}] {{ item.nombre_unidad }}<br>-->
+                                                                    [{{item.cr}}] {{ item.descripcion }}
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-autocomplete>
+                                                        <mat-hint align="end" *ngIf="empleadoForm.get('comision').get('cr_comision').value">[{{empleadoForm.get('comision').get('cr_comision').value.cr}}]</mat-hint>
+                                                        <input type="hidden" formControlName='cr_comision_id'>
+                                                    </mat-form-field>
+                                                    <mat-form-field fxFlex="33">
+                                                        <input matInput type="text" placeholder="No. de Oficio" formControlName="no_oficio">
+                                                    </mat-form-field>
+                                                    <mat-form-field fxFlex="33">
+                                                        <input matInput [matDatepicker]="fechaInicioPicker" placeholder="Fecha Inicio"  formControlName="fecha_inicio" readonly required>
+                                                        <mat-datepicker-toggle matSuffix [for]="fechaInicioPicker"></mat-datepicker-toggle>
+                                                        <mat-datepicker #fechaInicioPicker disabled="false"></mat-datepicker>
+                                                        <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
+                                                    </mat-form-field>
+                                                    <mat-form-field fxFlex="33">
+                                                        <input matInput [matDatepicker]="fechaFinPicker" placeholder="Fecha Fin"  formControlName="fecha_fin" readonly required>
+                                                        <mat-datepicker-toggle matSuffix [for]="fechaFinPicker"></mat-datepicker-toggle>
+                                                        <mat-datepicker #fechaFinPicker disabled="false"></mat-datepicker>
+                                                        <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
+                                                    </mat-form-field>
+                                                    <section fxFlex="20" style="margin-top:5px; margin-bottom:5px;">
+                                                        <mat-checkbox formControlName="recurrente" value="true">Recurrente</mat-checkbox>
+                                                    </section>
+                                                    <mat-form-field fxFlex="25">
+                                                        <input matInput type="text" placeholder="Meses Acumulados" formControlName="total_acumulado_meses">
+                                                    </mat-form-field>
+                                                    <section fxFlex="100" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end start">
+                                                        <button fxFlex="none" mat-raised-button (click)="mostrarComisionForm = false">Cancelar</button>
+                                                        <button fxFlex="none" mat-raised-button color="primary">Guardar</button>
+                                                    </section>
                                                 </section>
-                                                <mat-form-field fxFlex="25">
-                                                    <input matInput type="text" placeholder="Meses Acumulados" formControlName="total_acumulado_meses">
-                                                </mat-form-field>
-                                                <section fxFlex="100" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end start">
-                                                    <button fxFlex="none" mat-raised-button>Cancelar</button>
-                                                    <button fxFlex="none" mat-raised-button color="primary">Guardar</button>
-                                                </section>
-                                            </section>
-                                        </div>
-                                        <!--<div fxFlex="none" fxLayout="column">
-                                            <button mat-raised-button matTooltip="Renovar Comisión" [matTooltipPosition]="'after'" color="info"><mat-icon>refresh</mat-icon></button>
-                                            <button mat-raised-button matTooltip="Nueva Comisión" [matTooltipPosition]="'after'" color="primary"><mat-icon>add_circle</mat-icon></button>
-                                        </div>-->
+                                            </div>
+                                            <!--<div fxFlex="none" fxLayout="column">
+                                                <button mat-raised-button matTooltip="Renovar Comisión" [matTooltipPosition]="'after'" color="info"><mat-icon>refresh</mat-icon></button>
+                                                <button mat-raised-button matTooltip="Nueva Comisión" [matTooltipPosition]="'after'" color="primary"><mat-icon>add_circle</mat-icon></button>
+                                            </div>-->
+                                        </div> 
+                                        <br>
                                     </div>
                                 </mat-tab>
                                 <mat-tab label="Estudios">
