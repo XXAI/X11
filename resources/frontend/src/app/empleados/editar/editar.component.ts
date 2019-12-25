@@ -108,6 +108,7 @@ export class EditarComponent implements OnInit {
     'rfc': ['',Validators.required],
     'curp': ['',[Validators.required]],
     'nombre': ['',[Validators.required]],
+    'sexo': ['',[Validators.required]],
     'fissa': ['',[Validators.required]],
     'figf': [''],
 
@@ -137,16 +138,35 @@ export class EditarComponent implements OnInit {
     'sindicato_id': [''],
     'tipo_comision': [''],
     'ultima_comision_id': [''],
+    //direccion
+    'calle': ['', [Validators.required]],
+    'no_exterior': ['', [Validators.required]],
+    'no_interior': [''],
+    'colonia': ['', [Validators.required]],
+    'cp': ['', [Validators.required]],
+
+    //Datos personales
+    'telefono_fijo': ['', [Validators.required]],
+    'telefono_celular': ['', [Validators.required]],
+    'correo_personal': ['', [Validators.required]],
+    
+    //escolaridad
+    'escolaridad_id': ['', [Validators.required]],
+    'no_cedula': [''],
+
+    'nacionalidad': ['', [Validators.required]],
+    'estado_nacimiento': ['', [Validators.required]],
 
     'comision': this.fb.group({
       //Datos Comision
       'cr_comision': [''],
       'cr_comision_id': [''],
-      'fecha_inicio': [''],
+      'fecha_inicio': ['', [Validators.required]],
       'fecha_fin': [''],
       'no_oficio': [''],
       'recurrente':[''],
       'total_acumulado_meses':[''],
+      'sindicato_id':[''],
     }),
     
     'escolaridad': this.fb.group({
@@ -769,5 +789,55 @@ export class EditarComponent implements OnInit {
         }
       );
     }
+  }
+
+  accionGuardarComision(validar:boolean = false){
+    //this.isLoading = true;
+    let formDataCompleto = JSON.parse(JSON.stringify(this.empleadoForm.value));
+    let formData = JSON.parse(JSON.stringify(this.empleadoForm.value.comision));
+    //console.log(formData);
+    
+    //Pasando de objeto fecha a cadena ISO
+    let finicio = formData.fecha_inicio;
+    formData.fecha_inicio = finicio.substring(0,10);
+
+    //Pasando de objeto fecha a cadena ISO
+    let ffin = formData.fecha_fin;
+    formData.fecha_fin = ffin.substring(0,10);
+
+
+    if(formData.cr_comision){
+      formData.cr_comision_id = formData.cr_comision.cr;
+    }
+    delete formData.cr_comision;
+    
+    //formData.empleado_id = this.empleadoForm.value.id;
+    //console.log(formDataCompleto);
+    formData.tipo_comision = formDataCompleto.tipo_comision;
+    console.log(formData);
+    
+    this.empleadosService.guardarComision(this.datos_empleado.id, formData).subscribe(
+      respuesta => {
+        this.isLoading = false;
+        this.sharedService.showSnackBar("Se ha guardado correctamente", "Correcto", 3000);
+        this.mostrarComisionForm = false;
+
+        console.log(respuesta);
+        this.datos_empleado.empleado_comision = respuesta.data.empleado_comision; 
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }else{
+          errorMessage += ': ' + errorResponse.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+        this.isLoadingCredential = false;
+      }
+    );
+    
   }
 }

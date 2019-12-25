@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Empleado extends Model
 {
     use SoftDeletes;
-    protected $fillable = ["codigo_id", "comision_sindical_id", "cr_id","curp", "figf", "fissa", "fuente_id", "horario", "nombre", "programa_id", "rama_id", "rfc", "tipo_nomina_id", "validado",'estatus','observaciones'];
+    protected $fillable = ["codigo_id", "comision_sindical_id", "cr_id","curp", "figf", "fissa", "fuente_id", "horario", "nombre", "sexo", "programa_id", "rama_id", "rfc", "tipo_nomina_id", "validado",'estatus' ,'observaciones', 'tipo_trabajador_id', 'calle', 'no_exterior', 'no_interior', 'colonia', 'cp', 'nacionalidad', 'estado_nacimiento' ,'escolaridad_id', 'no_cedula', 'telefono_fijo', 'telefono_celular', 'correo_personal'];
     protected $table = 'empleados';
 
     public function sindicato(){
@@ -65,5 +65,9 @@ class Empleado extends Model
     
     public function turno(){
         return $this->hasOne('App\Models\Turno', "id", "turno_id");
+    }
+
+    public function empleado_comision(){
+        return $this->hasMany('App\Models\ComisionEmpleado')->where("estatus", "=", "A");
     }
 }

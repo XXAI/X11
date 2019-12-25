@@ -22,4 +22,16 @@ class ComisionEmpleado extends Model
     public function empleado(){
         return $this->hasOne('App\Models\Empleado','id','empleado_id');
     }
+
+    public function clues(){
+        return $this->hasOne('App\Models\Clues', 'clues', "clues");
+    }
+
+    public function cr(){
+        return $this->hasOne('App\Models\Cr', 'cr', "cr");
+    }
+
+    public function sindicato(){
+        return $this->belongsto('App\Models\Sindicato');
+    }
 }

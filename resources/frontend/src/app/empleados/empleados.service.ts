@@ -11,6 +11,7 @@ export class EmpleadosService {
 
   url = `${environment.base_url}/empleados`;
   url_firmantes = `${environment.base_url}/firmantes`;
+  url_comision = `${environment.base_url}/comision-empleado/`;
   url_transfer = `${environment.base_url}/transferir-empleado/`;
   url_transfer_data = `${environment.base_url}/obtener-datos-transferencia/`;
   url_finish_transfer = `${environment.base_url}/finalizar-transferencia/`;
@@ -248,6 +249,14 @@ export class EmpleadosService {
   deleteFirmante(id){
     return this.http.delete<any>(this.url_firmantes+'/'+id,{}).pipe(
       map( (response: any) => {
+        return response;
+      }
+    ));
+  }
+
+  guardarComision(id:any, payload:any) {
+    return this.http.put<any>(this.url_comision + id, payload).pipe(
+      map( (response) => {
         return response;
       }
     ));

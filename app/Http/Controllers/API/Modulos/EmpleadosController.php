@@ -21,6 +21,8 @@ use App\Models\Rama;
 use App\Models\PermutaAdscripcion;
 use App\Models\CluesEmpleado;
 use App\Models\User;
+use App\Models\ComisionEmpleado;
+use App\Models\ComisionDetalle;
 
 class EmpleadosController extends Controller
 {
@@ -130,7 +132,7 @@ class EmpleadosController extends Controller
 
             $params = Input::all();
 
-            $empleado = Empleado::with('escolaridad', 'clues','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr')->find($id);
+            $empleado = Empleado::with('escolaridad', 'clues','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr', 'empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato')->find($id);
 
             if($empleado){
                 $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
@@ -244,7 +246,14 @@ class EmpleadosController extends Controller
             'programa_id'           => 'required',
             'rama_id'               => 'required',
             'rfc'                   => 'required|unique:empleados',
-            'tipo_nomina_id'        => 'required'
+            'tipo_nomina_id'        => 'required',
+            'calle'                 => 'required',
+            'no_exterior'           => 'required',
+            'colonia'               => 'required',
+            'cp'                    => 'required',
+            'correo_personal'       => 'required',
+            'escolaridad_id'        => 'required'
+
         ];
 
         $inputs = Input::all();
@@ -277,6 +286,12 @@ class EmpleadosController extends Controller
             $empleado->curp                   = $inputs['curp'];
             $empleado->figf                   = $inputs['figf'];
             $empleado->fissa                  = $inputs['fissa'];
+
+            $empleado->telefono_fijo          = $inputs['telefono_fijo'];
+            $empleado->telefono_celular       = $inputs['telefono_celular'];
+            $empleado->correo_personal        = $inputs['correo_personal'];
+            $empleado->nacionalidad           = $inputs['nacionalidad'];
+            $empleado->estado_nacimiento      = $inputs['estado_nacimiento'];
             //$empleado->fuente_id              = $inputs['fuente_id'];
             $empleado->crespdes               = "";
             $empleado->hora_entrada           = $inputs['hora_entrada'];
@@ -289,6 +304,15 @@ class EmpleadosController extends Controller
             $empleado->ur                     = $inputs['ur'];
             $empleado->tipo_nomina_id         = $inputs['tipo_nomina_id'];
             $empleado->profesion_id           = $inputs['profesion_id'];
+            
+            $empleado->escolaridad_id         = $inputs['escolaridad_id'];
+            $empleado->no_cedula              = $inputs['no_cedula'];
+            $empleado->calle                  = $inputs['calle'];
+            $empleado->no_exterior            = $inputs['no_exterior'];
+            $empleado->no_interior            = $inputs['no_interior'];
+            $empleado->colonia                = $inputs['colonia'];
+            $empleado->cp                     = $inputs['cp'];
+
             $empleado->area_servicio          = $inputs['area_servicio'];
             $empleado->estatus                = 1;
             $empleado->proporcionado_por      = "SISTEMA";
@@ -353,10 +377,18 @@ class EmpleadosController extends Controller
             'fissa'            => 'required',
             //'fuente_id'            => 'required',
             'nombre'            => 'required',
+            'sexo'            => 'required',
             //'programa_id'            => 'required',
             'rama_id'            => 'required',
-            'rfc'            => 'required',
+            'rfc'               => 'required',
             //'tipo_nomina_id'            => 'required'
+            'tipo_trabajador_id'            => 'required',
+            'calle'                 => 'required',
+            'no_exterior'           => 'required',
+            'colonia'               => 'required',
+            'cp'                    => 'required',
+            'correo_personal'       => 'required',
+            'escolaridad_id'        => 'required'
         ];
 
         
@@ -385,13 +417,35 @@ class EmpleadosController extends Controller
             $object->hora_entrada           = $inputs['hora_entrada'];
             $object->hora_salida            = $inputs['hora_salida'];
             $object->turno_id               = $inputs['turno_id'];
-            $object->nombre                 = $inputs['nombre'];
-            //$object->programa_id            = $inputs['programa_id'];
-            $object->profesion_id            = $inputs['profesion_id'];
+            $object->nombre                 = strtoupper($inputs['nombre']);
+            $object->sexo                 = $inputs['sexo'];
+            //$object->programa_id          = $inputs['programa_id'];
+            $object->profesion_id           = $inputs['profesion_id'];
             $object->rama_id                = $inputs['rama_id'];
             $object->rfc                    = $inputs['rfc'];
             //$object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
+            $object->tipo_trabajador_id         = $inputs['tipo_trabajador_id'];
             $object->area_servicio          = $inputs['area_servicio'];
+
+            //$object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
+            $object->tipo_nomina_id         = 1;
+            $object->profesion_id           = $inputs['profesion_id'];
+            
+            $object->escolaridad_id         = $inputs['escolaridad_id'];
+            $object->no_cedula              = $inputs['no_cedula'];
+            $object->calle                  = strtoupper($inputs['calle']);
+            $object->no_exterior            = $inputs['no_exterior'];
+            $object->no_interior            = $inputs['no_interior'];
+            $object->colonia                = strtoupper($inputs['colonia']);
+            $object->cp                     = $inputs['cp'];
+
+            $object->telefono_fijo          = $inputs['telefono_fijo'];
+            $object->telefono_celular       = $inputs['telefono_celular'];
+            $object->correo_personal        = $inputs['correo_personal'];
+            $object->nacionalidad           = strtoupper($inputs['nacionalidad']);
+            $object->estado_nacimiento      = strtoupper($inputs['estado_nacimiento']);
+
+
             $object->observaciones          = $inputs['observaciones'];
 
             if(isset($inputs['validado']))
@@ -661,6 +715,63 @@ class EmpleadosController extends Controller
             //$empleado->clues = null;
             //$empleado->cr = null;
             $empleado->save();
+
+            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+    
+    public function comisionEmployee($id){
+        try{
+            $parametros = Input::all();
+            $empleado = Empleado::find($id);
+
+            DB::beginTransaction();
+
+            $access = $this->getUserAccessData();
+            
+            $buscarComision = ComisionEmpleado::where("empleado_id", "=", $id)->first();
+            $buscarComision = ComisionEmpleado::where("empleado_id", "=", $id)->update(['estatus' => "V"]);
+            
+            $comision = new ComisionEmpleado();
+
+            $comision->empleado_id = $id;
+            $comision->tipo_comision = $parametros['tipo_comision'];
+            
+            if($parametros['tipo_comision'] == 'CI')
+            {
+                $comision->cr = $parametros['cr_comision_id'];
+                $cr = Cr::where("cr", "=", $parametros['cr_comision_id'])->first();
+                $comision->clues = $cr->clues;
+                $empleado->cr_id = $parametros['cr_comision_id'];
+                $empleado->clues = $cr->clues;
+            }else{
+                $comision->sindicato_id = $parametros['sindicato_id'];
+            }
+            
+            $empleado->tipo_comision = $parametros['tipo_comision'];
+            $empleado->save();
+            $comision->estatus = 'A';
+
+            $comision->save();
+
+            $detalles = new ComisionDetalle();
+            $detalles->comision_empleado_id = $comision->id;
+            $detalles->fecha_inicio = $parametros['fecha_inicio'];
+            $detalles->fecha_fin    = $parametros['fecha_fin'];
+            $detalles->no_oficio    = $parametros['no_oficio'];
+            $detalles->save();
+            
+            $comision->comision_detalle_id = $detalles->id;
+            $comision->save();
+
+            
+            DB::commit();
+
+
+            $empleado = Empleado::with('empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato')->find($id);
+
 
             return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
