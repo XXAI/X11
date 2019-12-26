@@ -238,9 +238,7 @@
                                     <div fxLayout="row" fxLayout.xs="column">
                                         <mat-form-field fxFlex="15" fxFlex.xs="100">
                                             <input matInput id="telefono_fijo" formControlName="telefono_fijo" placeholder="Teléfono Fijo">
-                                            <mat-error *ngIf="empleadoForm.get('telefono_fijo').invalid && (empleadoForm.get('telefono_fijo').dirty || empleadoForm.get('telefono_fijo').touched)">
-                                                <span *ngIf="empleadoForm.get('telefono_fijo').errors.required">El Teléfono Fijo es obligatorio</span>
-                                            </mat-error>
+                                            
                                         </mat-form-field>
                                         <mat-form-field fxFlex="15" fxFlex.xs="100">
                                             <input matInput id="telefono_celular" formControlName="telefono_celular" placeholder="Teléfono Celular">

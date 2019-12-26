@@ -118,7 +118,7 @@ export class EditarComponent implements OnInit {
     'turno_id':[''],
     'hora_entrada':[''],
     'hora_salida':[''],
-    'tipo_trabajador_id': [''],
+    'tipo_trabajador_id': ['', [Validators.required]],
     'programa_id': [''],
     'fuente_id': [''],
     'fuente_finan_id': [''],
@@ -146,7 +146,7 @@ export class EditarComponent implements OnInit {
     'cp': ['', [Validators.required]],
 
     //Datos personales
-    'telefono_fijo': ['', [Validators.required]],
+    'telefono_fijo': [''],
     'telefono_celular': ['', [Validators.required]],
     'correo_personal': ['', [Validators.required]],
     
@@ -161,7 +161,7 @@ export class EditarComponent implements OnInit {
       //Datos Comision
       'cr_comision': [''],
       'cr_comision_id': [''],
-      'fecha_inicio': ['', [Validators.required]],
+      'fecha_inicio': [''],
       'fecha_fin': [''],
       'no_oficio': [''],
       'recurrente':[''],

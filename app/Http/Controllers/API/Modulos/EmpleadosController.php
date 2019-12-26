@@ -372,23 +372,29 @@ class EmpleadosController extends Controller
             'codigo_id'                => 'required',
             'comision_sindical_id'                => 'required',
             'cr_id'             => 'required',
+            'rfc'               => 'required',
             'curp'              => 'required',
+            'nombre'            => 'required',
+            'sexo'            => 'required',
             //'figf'            => 'required',
             'fissa'            => 'required',
             //'fuente_id'            => 'required',
-            'nombre'            => 'required',
-            'sexo'            => 'required',
+            'tipo_trabajador_id'    => 'required',
             //'programa_id'            => 'required',
             'rama_id'            => 'required',
-            'rfc'               => 'required',
+            
             //'tipo_nomina_id'            => 'required'
-            'tipo_trabajador_id'            => 'required',
-            'calle'                 => 'required',
-            'no_exterior'           => 'required',
-            'colonia'               => 'required',
-            'cp'                    => 'required',
-            'correo_personal'       => 'required',
-            'escolaridad_id'        => 'required'
+            
+            'calle'                     => 'required',
+            'no_exterior'               => 'required',
+            'colonia'                   => 'required',
+            'cp'                        => 'required',
+            'correo_personal'           => 'required|email',
+            'escolaridad_id'            => 'required',
+            'telefono_celular'          => 'required',
+            'escolaridad_id'            => 'required',
+            'nacionalidad'              => 'required',
+            'estado_nacimiento'         => 'required'
         ];
 
         
