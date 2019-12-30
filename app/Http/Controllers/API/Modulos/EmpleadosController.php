@@ -234,25 +234,31 @@ class EmpleadosController extends Controller
         ];
 
         $reglas = [
-            'codigo_id'             => 'required',
-            'comision_sindical_id'  => 'required',
-            'cr_id'                 => 'required',
-            'cr_adscripcion_id'     => 'required',
-            'curp'                  => 'required|unique:empleados',
-            //'figf'                  => 'required',
-            'fissa'                 => 'required',
-            //'fuente_id'           => 'required',
-            'nombre'                => 'required',
-            'programa_id'           => 'required',
-            'rama_id'               => 'required',
-            'rfc'                   => 'required|unique:empleados',
-            'tipo_nomina_id'        => 'required',
-            'calle'                 => 'required',
-            'no_exterior'           => 'required',
-            'colonia'               => 'required',
-            'cp'                    => 'required',
-            'correo_personal'       => 'required',
-            'escolaridad_id'        => 'required'
+            'codigo_id'                => 'required',
+            //'comision_sindical_id'                => 'required',
+            'cr_id'             => 'required',
+            'rfc'               => 'required',
+            'curp'              => 'required',
+            'nombre'            => 'required',
+            'sexo'            => 'required',
+            //'figf'            => 'required',
+            'fissa'            => 'required',
+            //'fuente_id'            => 'required',
+            'tipo_trabajador_id'    => 'required',
+            //'programa_id'            => 'required',
+            'rama_id'            => 'required',
+            
+            //'tipo_nomina_id'            => 'required'
+            
+            'calle'                     => 'required',
+            'no_exterior'               => 'required',
+            'colonia'                   => 'required',
+            'cp'                        => 'required',
+            'correo_personal'           => 'required|email',
+            'escolaridad_id'            => 'required',
+            'telefono_celular'          => 'required',
+            'nacionalidad'              => 'required',
+            'estado_nacimiento'         => 'required'
 
         ];
 
@@ -369,21 +375,15 @@ class EmpleadosController extends Controller
         ];
 
         $reglas = [
-            'codigo_id'                => 'required',
-            'comision_sindical_id'                => 'required',
-            'cr_id'             => 'required',
             'rfc'               => 'required',
             'curp'              => 'required',
             'nombre'            => 'required',
             'sexo'            => 'required',
-            //'figf'            => 'required',
             'fissa'            => 'required',
-            //'fuente_id'            => 'required',
             'tipo_trabajador_id'    => 'required',
-            //'programa_id'            => 'required',
             'rama_id'            => 'required',
-            
-            //'tipo_nomina_id'            => 'required'
+            'codigo_id'                => 'required',
+            'cr_id'             => 'required',
             
             'calle'                     => 'required',
             'no_exterior'               => 'required',
@@ -392,7 +392,6 @@ class EmpleadosController extends Controller
             'correo_personal'           => 'required|email',
             'escolaridad_id'            => 'required',
             'telefono_celular'          => 'required',
-            'escolaridad_id'            => 'required',
             'nacionalidad'              => 'required',
             'estado_nacimiento'         => 'required'
         ];
@@ -407,7 +406,8 @@ class EmpleadosController extends Controller
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {
-            return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
+            return response()->json(['error' => "Hace falta campos obligatorios. " ], HttpResponse::HTTP_CONFLICT);
+            //return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
         }
 
         DB::beginTransaction();

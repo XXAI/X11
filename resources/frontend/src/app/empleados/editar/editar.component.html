@@ -241,7 +241,7 @@
                                             
                                         </mat-form-field>
                                         <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                            <input matInput id="telefono_celular" formControlName="telefono_celular" placeholder="Teléfono Celular">
+                                            <input matInput id="telefono_celular" formControlName="telefono_celular" placeholder="Teléfono Celular" required>
                                             <mat-error *ngIf="empleadoForm.get('telefono_celular').invalid && (empleadoForm.get('telefono_celular').dirty || empleadoForm.get('telefono_celular').touched)">
                                                 <span *ngIf="empleadoForm.get('telefono_celular').errors.required">El Teléfono Celular es obligatorio</span>
                                             </mat-error>
@@ -354,8 +354,8 @@
                                         <mat-form-field fxFlex="30" fxFlex.xs="100">
                                             <mat-label>Máximo Grado de Estudios</mat-label>
                                             <mat-select formControlName="escolaridad_id" required>
-                                                <mat-option *ngFor="let item of catalogos['nivel_academico']" [value]="item.id">
-                                                    {{item.descripcion}}
+                                                <mat-option *ngFor="let item of nivel_escolaridad" [value]="item.id">
+                                                    {{item.label}}
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>

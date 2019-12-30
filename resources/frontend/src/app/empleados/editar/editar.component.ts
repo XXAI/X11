@@ -94,14 +94,24 @@ export class EditarComponent implements OnInit {
     { id: 'secundaria',     label:'Secundaria' },
     { id: 'preparatoria',   label:'Preparatoria' },
     { id: 'tecnica',        label:'Técnica' },
-    { id: 'carrera',        label:'Carrera' },
-    { id: 'titulo',         label:'Titulo' },
+    { id: 'carrera',        label:'Pasante de Licenciatura' },
+    { id: 'titulo',         label:'Titulo de Licenciatura' },
     { id: 'maestria',       label:'Maestria' },
     { id: 'doctorado',      label:'Doctorado' },
     { id: 'cursos',         label:'Cursos' },
     { id: 'especialidad',   label:'Especialidad' },
     { id: 'diplomado',      label:'Diplomado' },
-    { id: 'poliglota',      label:'Inglés' },
+    { id: 'poliglota',      label:'Inglés (TOEFL)' },
+  ];
+
+  nivel_escolaridad:any = [
+    { id: 1,     label:'SECUNDARIA' },
+    { id: 2,     label:'PREPARATORIA' },
+    { id: 3,     label:'TÉNICA' },
+    { id: 4,     label:'PASANTE DE LICENCIATURA' },
+    { id: 5,     label:'TITULO DE LICENCIATURA' },
+    { id: 6,     label:'MAESTRÍA' },
+    { id: 7,     label:'DOCTORADO' }
   ];
 
   empleadoForm = this.fb.group({
