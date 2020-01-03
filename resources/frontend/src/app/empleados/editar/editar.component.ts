@@ -96,11 +96,11 @@ export class EditarComponent implements OnInit {
     { id: 'tecnica',        label:'Técnica' },
     { id: 'carrera',        label:'Pasante de Licenciatura' },
     { id: 'titulo',         label:'Titulo de Licenciatura' },
-    { id: 'maestria',       label:'Maestria' },
+    { id: 'maestria',       label:'Maestria (Para acreditar el perfil del código según el profesiograma)' },
     { id: 'doctorado',      label:'Doctorado' },
-    { id: 'cursos',         label:'Cursos' },
+    { id: 'cursos',         label:'Cursos (Para acreditar el perfil del código según el profesiograma)' },
     { id: 'especialidad',   label:'Especialidad' },
-    { id: 'diplomado',      label:'Diplomado' },
+    { id: 'diplomado',      label:'Diplomado (Para acreditar el perfil del código según el profesiograma)' },
     { id: 'poliglota',      label:'Inglés (TOEFL)' },
   ];
 
@@ -164,8 +164,8 @@ export class EditarComponent implements OnInit {
     'escolaridad_id': ['', [Validators.required]],
     'no_cedula': [''],
 
-    'nacionalidad': ['', [Validators.required]],
-    'estado_nacimiento': ['', [Validators.required]],
+    'nacionalidad': ['MEXICANA', [Validators.required]],
+    'estado_nacimiento': ['CHIAPAS', [Validators.required]],
 
     'comision': this.fb.group({
       //Datos Comision
