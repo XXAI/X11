@@ -107,7 +107,7 @@ export class EditarComponent implements OnInit {
   nivel_escolaridad:any = [
     { id: 1,     label:'SECUNDARIA' },
     { id: 2,     label:'PREPARATORIA' },
-    { id: 3,     label:'TÉNICA' },
+    { id: 3,     label:'TÉCNICA' },
     { id: 4,     label:'PASANTE DE LICENCIATURA' },
     { id: 5,     label:'TITULO DE LICENCIATURA' },
     { id: 6,     label:'MAESTRÍA' },
