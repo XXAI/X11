@@ -54,6 +54,9 @@ export class EditarComponent implements OnInit {
   filteredCrAdscripcion: Observable<any[]>;
   filteredCrComision: Observable<any[]>;
 
+  estudiosLoading: any = {};
+  filteredEstudios: any = {};
+
   mostrarComisionForm: boolean = false;
 
   displayedColumns: string[] = ['Grado','Estudios','Fecha','actions'];
@@ -178,7 +181,16 @@ export class EditarComponent implements OnInit {
       'total_acumulado_meses':[''],
       'sindicato_id':[''],
     }),
-    
+
+    'estudios': this.fb.group({
+      'licenciatura':[''], 
+      'maestria':[''], 
+      'doctorado':[''], 
+      'cursos':[''], 
+      'diplomado':[''],
+      'ingles':['']
+    }),
+
     'escolaridad': this.fb.group({
       'secundaria':[''], 
       'preparatoria':[''], 
