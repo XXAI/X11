@@ -118,6 +118,8 @@ export class EditarComponent implements OnInit {
     'rfc': ['',Validators.required],
     'curp': ['',[Validators.required]],
     'nombre': ['',[Validators.required]],
+    'apellido_paterno': ['',[Validators.required]],
+    'apellido_materno': ['',[Validators.required]],
     'sexo': ['',[Validators.required]],
     'fissa': ['',[Validators.required]],
     'figf': [''],

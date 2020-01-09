@@ -132,7 +132,7 @@ class EmpleadosController extends Controller
 
             $params = Input::all();
 
-            $empleado = Empleado::with('escolaridad', 'clues','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr', 'empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato')->find($id);
+            $empleado = Empleado::with('escolaridad', 'clues','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr', 'empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato', 'cr')->find($id);
 
             if($empleado){
                 $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
@@ -240,6 +240,8 @@ class EmpleadosController extends Controller
             'rfc'               => 'required',
             'curp'              => 'required',
             'nombre'            => 'required',
+            'apellido_paterno'            => 'required',
+            'apellido_materno'            => 'required',
             'sexo'            => 'required',
             //'figf'            => 'required',
             'fissa'            => 'required',
@@ -304,6 +306,8 @@ class EmpleadosController extends Controller
             $empleado->hora_salida            = $inputs['hora_salida'];
             $empleado->turno_id               = $inputs['turno_id'];
             $empleado->nombre                 = $inputs['nombre'];
+            $empleado->apellido_paterno                 = $inputs['apellido_paterno'];
+            $empleado->apellido_materno                 = $inputs['apellido_materno'];
             $empleado->programa_id            = $inputs['programa_id'];
             $empleado->rama_id                = $inputs['rama_id'];
             $empleado->rfc                    = $inputs['rfc'];
@@ -378,6 +382,8 @@ class EmpleadosController extends Controller
             'rfc'               => 'required',
             'curp'              => 'required',
             'nombre'            => 'required',
+            'apellido_paterno'            => 'required',
+            'apellido_materno'            => 'required',
             'sexo'            => 'required',
             'fissa'            => 'required',
             'tipo_trabajador_id'    => 'required',
@@ -424,6 +430,8 @@ class EmpleadosController extends Controller
             $object->hora_salida            = $inputs['hora_salida'];
             $object->turno_id               = $inputs['turno_id'];
             $object->nombre                 = strtoupper($inputs['nombre']);
+            $object->apellido_paterno                 = strtoupper($inputs['apellido_paterno']);
+            $object->apellido_materno                 = strtoupper($inputs['apellido_materno']);
             $object->sexo                 = $inputs['sexo'];
             //$object->programa_id          = $inputs['programa_id'];
             $object->profesion_id           = $inputs['profesion_id'];
@@ -971,7 +979,8 @@ class EmpleadosController extends Controller
         try{
             $parametros = Input::all();
             $cr = Cr::with("clues")->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->get();
-            return response()->json(['data'=>$cr],HttpResponse::HTTP_OK);
+            $cr_nuevo = Cr::whereNull("deleted_at")->get();
+            return response()->json(['data'=>$cr, 'datos'=>$cr_nuevo],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

@@ -65,6 +65,7 @@ export class EmpleadosService {
   buscarCr(payload):Observable<any>{
     return this.http.get<any>(this.url_cr,{params:payload}).pipe(
       map( response => {
+        console.log(response);
         return response.data;
       })
     );

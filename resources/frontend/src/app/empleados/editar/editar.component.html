@@ -156,9 +156,9 @@
                                             </tr>
                                             <tr><th class="titulo-largo">CR:</th><th class="titulo-largo">Área</th></tr>
                                             <tr>
-                                                <td class="descripcion">{{(datos_empleado.adscripcion_activa.cr)?datos_empleado.adscripcion_activa.cr.cr:'Sin CR Asignado'}}</td>
+                                                <td class="descripcion">{{(datos_empleado.cr)?datos_empleado.cr.cr:'Sin CR Asignado'}}</td>
                                                 <td class="descripcion">
-                                                    {{(datos_empleado.adscripcion_activa.cr)?datos_empleado.adscripcion_activa.cr.descripcion:'Sin CR Asignado'}}
+                                                    {{(datos_empleado.cr)?datos_empleado.cr.descripcion:'Sin CR Asignado'}}
                                                 </td>
                                             </tr>
                                             <!--tr>
@@ -225,6 +225,18 @@
                                             <input matInput id="nombre" formControlName="nombre" placeholder="Nombre del empleado" required>
                                             <mat-error *ngIf="empleadoForm.get('nombre').invalid && (empleadoForm.get('nombre').dirty || empleadoForm.get('nombre').touched)">
                                                 <span *ngIf="empleadoForm.get('nombre').errors.required">El Nombre es obligatorio</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex="40" fxFlex.xs="100">
+                                            <input matInput id="apellido_paterno" formControlName="apellido_paterno" placeholder="Apellido Paeterno" required>
+                                            <mat-error *ngIf="empleadoForm.get('apellido_paterno').invalid && (empleadoForm.get('apellido_paterno').dirty || empleadoForm.get('apellido_paterno').touched)">
+                                                <span *ngIf="empleadoForm.get('apellido_paterno').errors.required">El Apellido Paterno es obligatorio</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex="40" fxFlex.xs="100">
+                                            <input matInput id="apellido_materno" formControlName="apellido_materno" placeholder="Nombre del empleado" required>
+                                            <mat-error *ngIf="empleadoForm.get('apellido_materno').invalid && (empleadoForm.get('apellido_materno').dirty || empleadoForm.get('apellido_materno').touched)">
+                                                <span *ngIf="empleadoForm.get('apellido_materno').errors.required">El Apellido Materno es obligatorio</span>
                                             </mat-error>
                                         </mat-form-field>
                                         <mat-form-field fxFlex="10" fxFlex.xs="100">

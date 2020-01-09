@@ -11,6 +11,7 @@ class Cr extends Model
     protected $fillable = [''];
     protected $table = 'catalogo_cr';
     protected $primaryKey = 'cr';
+    public $incrementing = false;
 
     public function clues(){
         return $this->hasOne('App\Models\Clues', 'clues', "clues");
