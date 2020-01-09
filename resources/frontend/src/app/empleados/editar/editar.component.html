@@ -531,13 +531,155 @@
                                     </div>
                                 </mat-tab>
                                 <mat-tab label="Detalle de Estudios">
+                                    <!--br>
+                                    <div fxLayout="row" fxLayout.xs="column">
+                                        <mat-form-field fxFlex="40" fxFlex.xs="50">
+                                            <mat-label>Estudios</mat-label>
+                                            <mat-select>
+                                                <mat-option [value]="'LIC'">Licenciatura</mat-option>
+                                                <mat-option [value]="'MAE'">Maestria</mat-option>
+                                                <mat-option [value]="'DOC'">Doctorado</mat-option>
+                                                <mat-option [value]="'DIP'">Diplomado</mat-option>
+                                                <mat-option [value]="'CUR'">Cursos</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <section fxFlex="60" fxFlex.xs="50" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+                                            &nbsp;
+                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Nueva Comisión" [matTooltipPosition]="'below'" color="primary" ><mat-icon>add_circle</mat-icon> Nueva</button>
+                                        </section>
+                                    </div-->
                                     <br>
-                                    <fieldset>
+                                    <!--table class="info-adscripcion-activa mat-elevation-z1">
+                                        <thead>
+                                            <tr>
+                                                <th width="1">Tipo</th>
+                                                <th>Descripción</th>
+                                                <th width="1">Cédula</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>sd</td>
+                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
+                                                <td>452564654</td>
+                                            </tr>
+                                            <tr>
+                                                <td>sd</td>
+                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
+                                                <td>452564654</td>
+                                            </tr>
+                                            <tr>
+                                                <td>sd</td>
+                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
+                                                <td>452564654</td>
+                                            </tr>
+                                            <tr>
+                                                <td>sd</td>
+                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
+                                                <td>452564654</td>
+                                            </tr>
+                                            <tr>
+                                                <td>sd</td>
+                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
+                                                <td>452564654</td>
+                                            </tr>
+                                        </tbody>
+                                    </table-->
+                                    <div fxLayout="column">
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <mat-label>Licencitura/Ingenieria</mat-label>
+                                                    <input matInput>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
+                                                <section fxFlex="none" style="margin-top:5px; margin-bottom:5px; padding-top: .84375em;">
+                                                    &nbsp;
+                                                    <mat-checkbox value="true">Titulo</mat-checkbox>
+                                                </section>
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Cédula">
+                                                </mat-form-field>
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Descripción">
+                                                </mat-form-field>
+                                            </div>
+                                        </fieldset>
+                                        
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <mat-label>Maestria</mat-label>
+                                                    <input matInput>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
+                                                <section fxFlex="none" style="margin-top:5px; margin-bottom:5px; padding-top: .84375em;">
+                                                    &nbsp;
+                                                    <mat-checkbox value="true">Titulo</mat-checkbox>
+                                                </section>
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Cédula">
+                                                </mat-form-field>
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Descripción">
+                                                </mat-form-field>
+                                            </div>
+                                        </fieldset>
+                                        
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <mat-label>Doctorado</mat-label>
+                                                    <input matInput>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Cédula">
+                                                </mat-form-field>
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Descripción">
+                                                </mat-form-field>
+                                            </div>
+                                        </fieldset>
+
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <mat-label>Diplomado</mat-label>
+                                                    <input matInput>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Descripción">
+                                                </mat-form-field>
+                                            </div>
+                                        </fieldset>
+
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <textarea matInput placeholder="Cursos" ></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </fieldset>
+
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                &nbsp;&nbsp;
+                                                <mat-checkbox value="true">Inglés</mat-checkbox>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <!--fieldset>
                                         <legend>Grado de Estudios</legend>
                                         <div fxLayout="row wrap" formGroupName="escolaridad">
                                             <mat-checkbox formControlName="{{item.id}}" fxFlex="33" fxFlex.xs="50" style="margin-top:5px; margin-bottom:5px;" *ngFor="let item of escolaridad" value="true">{{item.label}}</mat-checkbox>
                                         </div>
-                                    </fieldset>
+                                    </fieldset-->
                                 </mat-tab>
                             </mat-tab-group>
                         </section>
