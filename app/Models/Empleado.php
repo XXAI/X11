@@ -51,6 +51,10 @@ class Empleado extends Model
         return $this->hasOne('App\Models\EmpleadoEscolaridad', 'empleado_id', "id");
     }
 
+    public function escolaridadDetalle(){
+        return $this->hasMany('App\Models\EmpleadoEscolaridadDetalle', 'empleado_id', "id");
+    }
+
     public function cr(){
         return $this->hasOne('App\Models\Cr','cr','cr_id');
     }

@@ -161,3 +161,7 @@
 .mobile-toolbar-spacer {
     flex: 1 1 auto;
 }
+
+.lista-escolaridad-detalle > fieldset:not(:last-child){
+    border-bottom:hidden;
+}

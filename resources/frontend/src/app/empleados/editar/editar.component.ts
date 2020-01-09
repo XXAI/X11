@@ -186,10 +186,22 @@ export class EditarComponent implements OnInit {
 
     'estudios': this.fb.group({
       'licenciatura':[''], 
+      'datos_licenciatura': this.fb.group({
+        'titulo':[''],'cedula':[''],'descripcion':['']
+      }),
       'maestria':[''], 
+      'datos_maestria': this.fb.group({
+        'titulo':[''],'cedula':[''],'descripcion':['']
+      }),
       'doctorado':[''], 
-      'cursos':[''], 
+      'datos_doctorado': this.fb.group({
+        'cedula':[''],'descripcion':['']
+      }),
       'diplomado':[''],
+      'datos_diplomado': this.fb.group({
+        'descripcion':['']
+      }),
+      'cursos':[''], 
       'ingles':['']
     }),
 
@@ -312,7 +324,38 @@ export class EditarComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredCodigos = items);
 
-      this.empleadoForm.get('profesion').valueChanges
+      this.estudiosLoading = {'LIC':false,'MA':false,'DOC':false,'DIP':false};
+      this.filteredEstudios = {'LIC':null,'MA':null,'DOC':null,'DIP':null};
+        
+      let estudios = {
+        'LIC':'licenciatura', 
+        'MA':'maestria', 
+        'DOC':'doctorado', 
+        'DIP':'diplomado'
+      };
+      
+      for(let i in estudios){
+        this.empleadoForm.get('estudios.'+estudios[i]).valueChanges
+        .pipe(
+          debounceTime(300),
+          tap( () => {
+            this.estudiosLoading[i] = true;
+          } ),
+          switchMap(value => {
+              if(!(typeof value === 'object')){
+                return this.empleadosService.buscarProfesion({query:value,filter:i}).pipe(
+                  finalize(() => this.estudiosLoading[i] = false )
+                );
+              }else{
+                this.estudiosLoading[i] = false;
+                return [];
+              }
+            }
+          ),
+        ).subscribe(items => this.filteredEstudios[i] = items);
+      }
+
+      /*this.empleadoForm.get('profesion').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -329,7 +372,7 @@ export class EditarComponent implements OnInit {
             }
           }
         ),
-      ).subscribe(items => this.filteredProfesiones = items);
+      ).subscribe(items => this.filteredProfesiones = items);*/
 
       this.tablaHorarioHoras.sort((a,b)=>(a.dia > b.dia)?1:((a.dia == b.dia)?((a.hora > b.hora)?1:-1):-1));
 
@@ -339,7 +382,6 @@ export class EditarComponent implements OnInit {
   }
 
   checkSelectedValue(field_name) {
-    console.log(field_name);
     setTimeout(() => {
       if (typeof(this.empleadoForm.get(field_name).value) != 'object') {
         this.empleadoForm.get(field_name).setValue(null);

@@ -37,6 +37,26 @@ class SearchCatalogsController extends Controller
                     return $query->where('descripcion','LIKE','%'.$parametros['query'].'%');
                 });
             }
+
+            if(isset($parametros['filter']) && $parametros['filter']){
+                switch ($parametros['filter']) {
+                    case 'LIC':
+                        $profesiones = $profesiones->whereIn('tipo_profesion_id',[1,2,8]);
+                        break;
+                    case 'MA':
+                        $profesiones = $profesiones->whereIn('tipo_profesion_id',[3]);
+                        break;
+                    case 'DOC':
+                        $profesiones = $profesiones->whereIn('tipo_profesion_id',[6]);
+                        break;
+                    case 'DIP':
+                        $profesiones = $profesiones->whereIn('tipo_profesion_id',[4]);
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+            }
             
             if(isset($parametros['page'])){
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;

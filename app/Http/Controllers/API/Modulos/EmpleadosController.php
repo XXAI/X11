@@ -23,6 +23,7 @@ use App\Models\CluesEmpleado;
 use App\Models\User;
 use App\Models\ComisionEmpleado;
 use App\Models\ComisionDetalle;
+use App\Models\EmpleadoEscolaridadDetalle;
 
 class EmpleadosController extends Controller
 {
@@ -132,7 +133,7 @@ class EmpleadosController extends Controller
 
             $params = Input::all();
 
-            $empleado = Empleado::with('escolaridad', 'clues','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr', 'empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato', 'cr')->find($id);
+            $empleado = Empleado::with('escolaridad','escolaridadDetalle.profesion', 'clues','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr', 'empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato', 'cr')->find($id);
 
             if($empleado){
                 $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
@@ -480,7 +481,127 @@ class EmpleadosController extends Controller
             else{
                 EmpleadoEscolaridad::create($arreglo_escolaridad);
             } 
-                
+
+            $estudios_guardados = $object->escolaridadDetalle;
+            $estudios_ids = $object->escolaridadDetalle()->withTrashed()->pluck('id','tipo_estudio');
+            $crear_estudios = [];
+            $editar_estudios = [];
+            $borrar_estudios = [];
+            $estudios = $inputs['estudios'];
+
+            $estudio_form = false;
+            if($estudios['licenciatura']){
+                $estudio_form = ['profesion_id'=>$estudios['licenciatura']['id'], 'titulado'=>$estudios['datos_licenciatura']['titulo'], 'cedula'=>$estudios['datos_licenciatura']['cedula'], 'tipo_estudio'=>'LIC'];
+            }
+
+            if(isset($estudios_ids['LIC'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['LIC'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['LIC'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['maestria']){
+                $estudio_form = ['profesion_id'=>$estudios['maestria']['id'], 'titulado'=>$estudios['datos_maestria']['titulo'], 'cedula'=>$estudios['datos_maestria']['cedula'], 'tipo_estudio'=>'MA'];
+            }
+            if(isset($estudios_ids['MA'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['MA'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['MA'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['doctorado']){
+                $estudio_form = ['profesion_id'=>$estudios['doctorado']['id'], 'cedula'=>$estudios['datos_doctorado']['cedula'], 'tipo_estudio'=>'DOC'];
+            }
+            if(isset($estudios_ids['DOC'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['DOC'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['DOC'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['diplomado']){
+                $estudio_form = ['profesion_id'=>$estudios['diplomado']['id'], 'tipo_estudio'=>'DIP'];
+            }
+            if(isset($estudios_ids['DIP'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['DIP'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['DIP'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['cursos']){
+                $estudio_form = ['descripcion'=>$estudios['cursos'], 'tipo_estudio'=>'CUR'];
+            }
+            if(isset($estudios_ids['CUR'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['CUR'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['CUR'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['ingles']){
+                $estudio_form = ['descripcion'=>'Inglés TOEFL', 'tipo_estudio'=>'POLI'];
+            }
+            if(isset($estudios_ids['POLI'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['POLI'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['POLI'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            if(count($crear_estudios)){
+                $object->escolaridadDetalle()->createMany($crear_estudios);
+            }
+
+            if(count($borrar_estudios)){
+                EmpleadoEscolaridadDetalle::whereIn('id',$borrar_estudios)->delete();
+            }
+            
+            if(count($editar_estudios)){
+                //Editar
+            }
+
+            $object->estudios = ['crear'=>$crear_estudios, 'editar'=>$editar_estudios, 'borrar'=>$borrar_estudios];
+            $object->estudios_db = $estudios_ids;
+
+
             DB::commit();
             
             return response()->json($object,HttpResponse::HTTP_OK);

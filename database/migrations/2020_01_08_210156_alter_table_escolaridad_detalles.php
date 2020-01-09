@@ -25,8 +25,7 @@ class AlterTableEscolaridadDetalles extends Migration
             $table->smallinteger('nivel_academico_id')->unsigned()->nullable()->change();
             $table->smallinteger('empleado_id')->unsigned()->change();
             
-            $table->foreign('empleado_id')
-            ->references('id')->on('empleados');
+            $table->foreign('empleado_id')->references('id')->on('empleados');
 
             $table->string('cedula', 15)->after('nivel_academico_id')->nullable();
             $table->smallInteger('profesion_id')->after('nivel_academico_id')->unsigned()->nullable();

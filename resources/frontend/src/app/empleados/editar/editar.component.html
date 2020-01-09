@@ -221,24 +221,6 @@
                                             </mat-error>
                                         </mat-form-field>
 
-                                        <mat-form-field fxFlex="40" fxFlex.xs="100">
-                                            <input matInput id="nombre" formControlName="nombre" placeholder="Nombre del empleado" required>
-                                            <mat-error *ngIf="empleadoForm.get('nombre').invalid && (empleadoForm.get('nombre').dirty || empleadoForm.get('nombre').touched)">
-                                                <span *ngIf="empleadoForm.get('nombre').errors.required">El Nombre es obligatorio</span>
-                                            </mat-error>
-                                        </mat-form-field>
-                                        <mat-form-field fxFlex="40" fxFlex.xs="100">
-                                            <input matInput id="apellido_paterno" formControlName="apellido_paterno" placeholder="Apellido Paeterno" required>
-                                            <mat-error *ngIf="empleadoForm.get('apellido_paterno').invalid && (empleadoForm.get('apellido_paterno').dirty || empleadoForm.get('apellido_paterno').touched)">
-                                                <span *ngIf="empleadoForm.get('apellido_paterno').errors.required">El Apellido Paterno es obligatorio</span>
-                                            </mat-error>
-                                        </mat-form-field>
-                                        <mat-form-field fxFlex="40" fxFlex.xs="100">
-                                            <input matInput id="apellido_materno" formControlName="apellido_materno" placeholder="Nombre del empleado" required>
-                                            <mat-error *ngIf="empleadoForm.get('apellido_materno').invalid && (empleadoForm.get('apellido_materno').dirty || empleadoForm.get('apellido_materno').touched)">
-                                                <span *ngIf="empleadoForm.get('apellido_materno').errors.required">El Apellido Materno es obligatorio</span>
-                                            </mat-error>
-                                        </mat-form-field>
                                         <mat-form-field fxFlex="10" fxFlex.xs="100">
                                             <mat-label>Sexo</mat-label>
                                             <mat-select formControlName="sexo" required>
@@ -246,34 +228,56 @@
                                             <mat-option  [value]="2">Mujer</mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                    </div>
-                                    <div fxLayout="row" fxLayout.xs="column">
-                                        <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                            <input matInput id="telefono_fijo" formControlName="telefono_fijo" placeholder="Teléfono Fijo">
-                                            
-                                        </mat-form-field>
-                                        <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                            <input matInput id="telefono_celular" formControlName="telefono_celular" placeholder="Teléfono Celular" required>
-                                            <mat-error *ngIf="empleadoForm.get('telefono_celular').invalid && (empleadoForm.get('telefono_celular').dirty || empleadoForm.get('telefono_celular').touched)">
-                                                <span *ngIf="empleadoForm.get('telefono_celular').errors.required">El Teléfono Celular es obligatorio</span>
-                                            </mat-error>
-                                        </mat-form-field>
-                                        <mat-form-field fxFlex="40" fxFlex.xs="100">
-                                            <input matInput id="correo_personal" formControlName="correo_personal" placeholder="Correo Personal" required>
-                                            <mat-error *ngIf="empleadoForm.get('correo_personal').invalid && (empleadoForm.get('correo_personal').dirty || empleadoForm.get('correo_personal').touched)">
-                                                <span *ngIf="empleadoForm.get('correo_personal').errors.required">El Correo Personal es obligatorio</span>
-                                            </mat-error>
-                                        </mat-form-field>
+
                                         <mat-form-field fxFlex="15" fxFlex.xs="100">
                                             <input matInput id="nacionalidad" formControlName="nacionalidad" placeholder="Nacionalidad" required>
                                             <mat-error *ngIf="empleadoForm.get('nacionalidad').invalid && (empleadoForm.get('nacionalidad').dirty || empleadoForm.get('nacionalidad').touched)">
                                                 <span *ngIf="empleadoForm.get('nacionalidad').errors.required">La Nacionalidad es obligatorio</span>
                                             </mat-error>
                                         </mat-form-field>
-                                        <mat-form-field fxFlex="15" fxFlex.xs="100">
+
+                                        <mat-form-field fxFlex="25" fxFlex.xs="100">
                                             <input matInput id="estado_nacimiento" formControlName="estado_nacimiento" placeholder="Estado de Nacimiento" required>
                                             <mat-error *ngIf="empleadoForm.get('estado_nacimiento').invalid && (empleadoForm.get('estado_nacimiento').dirty || empleadoForm.get('estado_nacimiento').touched)">
-                                                <span *ngIf="empleadoForm.get('estado_nacimiento').errors.required">La Nacionalidad es obligatorio</span>
+                                                <span *ngIf="empleadoForm.get('estado_nacimiento').errors.required">El estado de nacimiento es obligatorio</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayout.xs="column">
+                                        <mat-form-field fxFlex="33" fxFlex.xs="100">
+                                            <input matInput id="nombre" formControlName="nombre" placeholder="Nombre(s)" required>
+                                            <mat-error *ngIf="empleadoForm.get('nombre').invalid && (empleadoForm.get('nombre').dirty || empleadoForm.get('nombre').touched)">
+                                                <span *ngIf="empleadoForm.get('nombre').errors.required">El Nombre es obligatorio</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex="33" fxFlex.xs="100">
+                                            <input matInput id="apellido_paterno" formControlName="apellido_paterno" placeholder="Apellido Paterno" required>
+                                            <mat-error *ngIf="empleadoForm.get('apellido_paterno').invalid && (empleadoForm.get('apellido_paterno').dirty || empleadoForm.get('apellido_paterno').touched)">
+                                                <span *ngIf="empleadoForm.get('apellido_paterno').errors.required">El Apellido Paterno es obligatorio</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex="33" fxFlex.xs="100">
+                                            <input matInput id="apellido_materno" formControlName="apellido_materno" placeholder="Apellido Materno" required>
+                                            <mat-error *ngIf="empleadoForm.get('apellido_materno').invalid && (empleadoForm.get('apellido_materno').dirty || empleadoForm.get('apellido_materno').touched)">
+                                                <span *ngIf="empleadoForm.get('apellido_materno').errors.required">El Apellido Materno es obligatorio</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayout.xs="column">
+                                        <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                            <input matInput id="telefono_fijo" formControlName="telefono_fijo" placeholder="Teléfono Fijo">
+                                            
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                            <input matInput id="telefono_celular" formControlName="telefono_celular" placeholder="Teléfono Celular" required>
+                                            <mat-error *ngIf="empleadoForm.get('telefono_celular').invalid && (empleadoForm.get('telefono_celular').dirty || empleadoForm.get('telefono_celular').touched)">
+                                                <span *ngIf="empleadoForm.get('telefono_celular').errors.required">El Teléfono Celular es obligatorio</span>
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                            <input matInput id="correo_personal" formControlName="correo_personal" placeholder="Correo Personal" required>
+                                            <mat-error *ngIf="empleadoForm.get('correo_personal').invalid && (empleadoForm.get('correo_personal').dirty || empleadoForm.get('correo_personal').touched)">
+                                                <span *ngIf="empleadoForm.get('correo_personal').errors.required">El Correo Personal es obligatorio</span>
                                             </mat-error>
                                         </mat-form-field>
                                     </div>    
@@ -337,7 +341,7 @@
                                         </mat-form-field>
                                     </div>
                                     <div fxLayout="row" fxLayout.xs="column">
-                                        <mat-form-field fxFlex="40" fxFlex.xs="100">
+                                        <mat-form-field fxFlex="65" fxFlex.xs="100">
                                             <input matInput placeholder="Codigo" [matAutocomplete]="codigoAutocomplete" formControlName='codigo' required>
                                             <mat-autocomplete #codigoAutocomplete="matAutocomplete" [displayWith]="displayCodigoFn" [panelWidth]="'auto'">
                                                 <mat-option *ngIf="codigosIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
@@ -351,7 +355,7 @@
                                             <mat-hint align="start" *ngIf="(empleadoForm.get('codigo').value && empleadoForm.get('codigo').value.grupo_funcion)">[{{empleadoForm.get('codigo').value.grupo_funcion.grupo}}]</mat-hint>
                                             <mat-hint align="end" *ngIf="empleadoForm.get('codigo').value">[{{empleadoForm.get('codigo').value.codigo}}]</mat-hint>
                                         </mat-form-field>
-                                        <mat-form-field fxFlex="60" fxFlex.xs="100">
+                                        <!--mat-form-field fxFlex="60" fxFlex.xs="100">
                                             <input matInput placeholder="Profesión" [matAutocomplete]="profesionAutocomplete" formControlName='profesion' required>
                                             <mat-autocomplete #profesionAutocomplete="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
                                                 <mat-option *ngIf="profesionIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
@@ -362,8 +366,8 @@
                                                 </ng-container>
                                             </mat-autocomplete>
                                             <input type="hidden" formControlName='profesion_id'>
-                                        </mat-form-field>
-                                        <mat-form-field fxFlex="30" fxFlex.xs="100">
+                                        </mat-form-field-->
+                                        <mat-form-field fxFlex="35" fxFlex.xs="100">
                                             <mat-label>Máximo Grado de Estudios</mat-label>
                                             <mat-select formControlName="escolaridad_id" required>
                                                 <mat-option *ngFor="let item of nivel_escolaridad" [value]="item.id">
@@ -371,15 +375,15 @@
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                        <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                        <!--mat-form-field fxFlex="15" fxFlex.xs="100">
                                             <input matInput id="no_cedula" formControlName="no_cedula" placeholder="Cedula Profesional">
                                             <mat-error *ngIf="empleadoForm.get('no_cedula').invalid && (empleadoForm.get('no_cedula').dirty || empleadoForm.get('no_cedula').touched)">
                                                 <span *ngIf="empleadoForm.get('no_cedula').errors.required">La Cédula Profesional es obligatorio</span>
                                             </mat-error>
-                                        </mat-form-field>
+                                        </mat-form-field-->
                                     </div>
                                     <div fxLayout="row" fxLayout.xs="column">
-                                        <mat-form-field fxFlex="55" fxFlex.xs="100">
+                                        <mat-form-field fxFlex="40" fxFlex.xs="100">
                                             <input matInput formControlName="calle" placeholder="Calle (Dirección)" required>
                                             <mat-error *ngIf="empleadoForm.get('calle').invalid && (empleadoForm.get('calle').dirty || empleadoForm.get('calle').touched)">
                                                 <span *ngIf="empleadoForm.get('calle').errors.required">La Calle es obligatoria</span>
@@ -393,9 +397,8 @@
                                         </mat-form-field>
                                         <mat-form-field fxFlex="10" fxFlex.xs="100">
                                             <input matInput formControlName="no_interior" placeholder="No Int.">
-                                            
                                         </mat-form-field>
-                                        <mat-form-field fxFlex="10" fxFlex.xs="100">
+                                        <mat-form-field fxFlex="25" fxFlex.xs="100">
                                             <input matInput formControlName="colonia" placeholder="colonia" required>
                                             <mat-error *ngIf="empleadoForm.get('colonia').invalid && (empleadoForm.get('colonia').dirty || empleadoForm.get('colonia').touched)">
                                                 <span *ngIf="empleadoForm.get('colonia').errors.required">La Colonia es obligatorio</span>
@@ -414,6 +417,133 @@
                                             <textarea matInput formControlName="observaciones" ></textarea>
                                         </mat-form-field>
                                     </div>
+                                </mat-tab>
+                                <mat-tab label="Detalle de Estudios">
+                                    <br>
+                                    <div fxLayout="column" class="lista-escolaridad-detalle" formGroupName="estudios">
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Licencitura/Ingenieria" [matAutocomplete]="estudiosLicenciaturaAuto" formControlName='licenciatura' (blur)="checkSelectedValue('estudios.licenciatura')">
+                                                    <mat-autocomplete #estudiosLicenciaturaAuto="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
+                                                        <mat-option *ngIf="estudiosLoading.LIC" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                        <ng-container *ngIf="!estudiosLoading.LIC">
+                                                            <mat-option *ngFor="let item of filteredEstudios.LIC" [value]="item">
+                                                                {{ item.descripcion }}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px" formGroupName="datos_licenciatura" *ngIf="empleadoForm.get('estudios.licenciatura').value">
+                                                <section fxFlex="none" style="margin-top:5px; margin-bottom:5px; padding-top: .84375em;">
+                                                    &nbsp;
+                                                    <mat-checkbox formControlName="titulo" value="true">Titulo</mat-checkbox>
+                                                </section>
+                                                <mat-form-field fxFlex>
+                                                    <input matInput formControlName="cedula" placeholder="Cédula">
+                                                </mat-form-field>
+                                                <!--mat-form-field fxFlex>
+                                                    <input matInput formControlName="descripcion" placeholder="Descripción">
+                                                </mat-form-field-->
+                                            </div>
+                                        </fieldset>
+                                        
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Maestria (Para acreditar el perfil del código según el profesiograma)" [matAutocomplete]="estudiosMaestriaAuto" formControlName='maestria' (blur)="checkSelectedValue('estudios.maestria')">
+                                                    <mat-autocomplete #estudiosMaestriaAuto="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
+                                                        <mat-option *ngIf="estudiosLoading.MA" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                        <ng-container *ngIf="!estudiosLoading.MA">
+                                                            <mat-option *ngFor="let item of filteredEstudios.MA" [value]="item">
+                                                                {{ item.descripcion }}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px"  formGroupName="datos_maestria" *ngIf="empleadoForm.get('estudios.maestria').value">
+                                                <section fxFlex="none" style="margin-top:5px; margin-bottom:5px; padding-top: .84375em;">
+                                                    &nbsp;
+                                                    <mat-checkbox formControlName="titulo" value="true">Titulo</mat-checkbox>
+                                                </section>
+                                                <mat-form-field fxFlex>
+                                                    <input matInput formControlName="cedula" placeholder="Cédula">
+                                                </mat-form-field>
+                                                <!--mat-form-field fxFlex>
+                                                    <input matInput formControlName="descripcion" placeholder="Descripción">
+                                                </mat-form-field-->
+                                            </div>
+                                        </fieldset>
+                                        
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Doctorado" [matAutocomplete]="estudiosDoctoradoAuto" formControlName='doctorado' (blur)="checkSelectedValue('estudios.doctorado')">
+                                                    <mat-autocomplete #estudiosDoctoradoAuto="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
+                                                        <mat-option *ngIf="estudiosLoading.DOC" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                        <ng-container *ngIf="!estudiosLoading.DOC">
+                                                            <mat-option *ngFor="let item of filteredEstudios.DOC" [value]="item">
+                                                                {{ item.descripcion }}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px" formGroupName="datos_doctorado" *ngIf="empleadoForm.get('estudios.doctorado').value">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput formControlName="cedula" placeholder="Cédula">
+                                                </mat-form-field>
+                                                <!--mat-form-field fxFlex>
+                                                    <input matInput formControlName="descripcion" placeholder="Descripción">
+                                                </mat-form-field-->
+                                            </div>
+                                        </fieldset>
+
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Diplomado (Para acreditar el perfil del código según el profesiograma)" [matAutocomplete]="estudiosDiplomadoAuto" formControlName='diplomado' (blur)="checkSelectedValue('estudios.diplomado')">
+                                                    <mat-autocomplete #estudiosDiplomadoAuto="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
+                                                        <mat-option *ngIf="estudiosLoading.DIP" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                        <ng-container *ngIf="!estudiosLoading.DIP">
+                                                            <mat-option *ngFor="let item of filteredEstudios.DIP" [value]="item">
+                                                                {{ item.descripcion }}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
+                                            <!--div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px"  formGroupName="datos_diplomado">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput formControlName="descripcion" placeholder="Descripción">
+                                                </mat-form-field>
+                                            </div-->
+                                        </fieldset>
+
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <textarea matInput formControlName="cursos" placeholder="Cursos (Para acreditar el perfil del código según el profesiograma)" maxLength="254" ></textarea>
+                                                    <mat-hint align="end">{{(empleadoForm.get('estudios.cursos').value)?empleadoForm.get('estudios.cursos').value.length : 0}}/254</mat-hint>
+                                                </mat-form-field>
+                                            </div>
+                                        </fieldset>
+
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                &nbsp;&nbsp;
+                                                <mat-checkbox formControlName="ingles" value="true">Inglés (TOEFL)</mat-checkbox>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <!--fieldset>
+                                        <legend>Grado de Estudios</legend>
+                                        <div fxLayout="row wrap" formGroupName="escolaridad">
+                                            <mat-checkbox formControlName="{{item.id}}" fxFlex="33" fxFlex.xs="50" style="margin-top:5px; margin-bottom:5px;" *ngFor="let item of escolaridad" value="true">{{item.label}}</mat-checkbox>
+                                        </div>
+                                    </fieldset-->
                                 </mat-tab>
                                 <mat-tab label="Datos Comisión" *ngIf="!esNuevoEmpleado">
                                     <br>
@@ -529,157 +659,6 @@
                                         </div> 
                                         <br>
                                     </div>
-                                </mat-tab>
-                                <mat-tab label="Detalle de Estudios">
-                                    <!--br>
-                                    <div fxLayout="row" fxLayout.xs="column">
-                                        <mat-form-field fxFlex="40" fxFlex.xs="50">
-                                            <mat-label>Estudios</mat-label>
-                                            <mat-select>
-                                                <mat-option [value]="'LIC'">Licenciatura</mat-option>
-                                                <mat-option [value]="'MAE'">Maestria</mat-option>
-                                                <mat-option [value]="'DOC'">Doctorado</mat-option>
-                                                <mat-option [value]="'DIP'">Diplomado</mat-option>
-                                                <mat-option [value]="'CUR'">Cursos</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                        <section fxFlex="60" fxFlex.xs="50" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-                                            &nbsp;
-                                            <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Nueva Comisión" [matTooltipPosition]="'below'" color="primary" ><mat-icon>add_circle</mat-icon> Nueva</button>
-                                        </section>
-                                    </div-->
-                                    <br>
-                                    <!--table class="info-adscripcion-activa mat-elevation-z1">
-                                        <thead>
-                                            <tr>
-                                                <th width="1">Tipo</th>
-                                                <th>Descripción</th>
-                                                <th width="1">Cédula</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>sd</td>
-                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
-                                                <td>452564654</td>
-                                            </tr>
-                                            <tr>
-                                                <td>sd</td>
-                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
-                                                <td>452564654</td>
-                                            </tr>
-                                            <tr>
-                                                <td>sd</td>
-                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
-                                                <td>452564654</td>
-                                            </tr>
-                                            <tr>
-                                                <td>sd</td>
-                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
-                                                <td>452564654</td>
-                                            </tr>
-                                            <tr>
-                                                <td>sd</td>
-                                                <td>asdf asfasdf adsf adsfdsafasdfasdf</td>
-                                                <td>452564654</td>
-                                            </tr>
-                                        </tbody>
-                                    </table-->
-                                    <div fxLayout="column">
-                                        <fieldset fxFlex fxLayout="column">
-                                            <div fxFlex fxLayout="row">
-                                                <mat-form-field fxFlex>
-                                                    <mat-label>Licencitura/Ingenieria</mat-label>
-                                                    <input matInput>
-                                                </mat-form-field>
-                                            </div>
-                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
-                                                <section fxFlex="none" style="margin-top:5px; margin-bottom:5px; padding-top: .84375em;">
-                                                    &nbsp;
-                                                    <mat-checkbox value="true">Titulo</mat-checkbox>
-                                                </section>
-                                                <mat-form-field fxFlex>
-                                                    <input matInput placeholder="Cédula">
-                                                </mat-form-field>
-                                                <mat-form-field fxFlex>
-                                                    <input matInput placeholder="Descripción">
-                                                </mat-form-field>
-                                            </div>
-                                        </fieldset>
-                                        
-                                        <fieldset fxFlex fxLayout="column">
-                                            <div fxFlex fxLayout="row">
-                                                <mat-form-field fxFlex>
-                                                    <mat-label>Maestria</mat-label>
-                                                    <input matInput>
-                                                </mat-form-field>
-                                            </div>
-                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
-                                                <section fxFlex="none" style="margin-top:5px; margin-bottom:5px; padding-top: .84375em;">
-                                                    &nbsp;
-                                                    <mat-checkbox value="true">Titulo</mat-checkbox>
-                                                </section>
-                                                <mat-form-field fxFlex>
-                                                    <input matInput placeholder="Cédula">
-                                                </mat-form-field>
-                                                <mat-form-field fxFlex>
-                                                    <input matInput placeholder="Descripción">
-                                                </mat-form-field>
-                                            </div>
-                                        </fieldset>
-                                        
-                                        <fieldset fxFlex fxLayout="column">
-                                            <div fxFlex fxLayout="row">
-                                                <mat-form-field fxFlex>
-                                                    <mat-label>Doctorado</mat-label>
-                                                    <input matInput>
-                                                </mat-form-field>
-                                            </div>
-                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
-                                                <mat-form-field fxFlex>
-                                                    <input matInput placeholder="Cédula">
-                                                </mat-form-field>
-                                                <mat-form-field fxFlex>
-                                                    <input matInput placeholder="Descripción">
-                                                </mat-form-field>
-                                            </div>
-                                        </fieldset>
-
-                                        <fieldset fxFlex fxLayout="column">
-                                            <div fxFlex fxLayout="row">
-                                                <mat-form-field fxFlex>
-                                                    <mat-label>Diplomado</mat-label>
-                                                    <input matInput>
-                                                </mat-form-field>
-                                            </div>
-                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
-                                                <mat-form-field fxFlex>
-                                                    <input matInput placeholder="Descripción">
-                                                </mat-form-field>
-                                            </div>
-                                        </fieldset>
-
-                                        <fieldset fxFlex fxLayout="column">
-                                            <div fxFlex fxLayout="row">
-                                                <mat-form-field fxFlex>
-                                                    <textarea matInput placeholder="Cursos" ></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                        </fieldset>
-
-                                        <fieldset fxFlex fxLayout="column">
-                                            <div fxFlex fxLayout="row">
-                                                &nbsp;&nbsp;
-                                                <mat-checkbox value="true">Inglés</mat-checkbox>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <!--fieldset>
-                                        <legend>Grado de Estudios</legend>
-                                        <div fxLayout="row wrap" formGroupName="escolaridad">
-                                            <mat-checkbox formControlName="{{item.id}}" fxFlex="33" fxFlex.xs="50" style="margin-top:5px; margin-bottom:5px;" *ngFor="let item of escolaridad" value="true">{{item.label}}</mat-checkbox>
-                                        </div>
-                                    </fieldset-->
                                 </mat-tab>
                             </mat-tab-group>
                         </section>
