@@ -59,7 +59,8 @@ class EmpleadosController extends Controller
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
                 $empleados = $empleados->where(function($query)use($parametros){
-                    return $query->where('nombre','LIKE','%'.$parametros['query'].'%')
+                    return $query//->where('nombre','LIKE','%'.$parametros['query'].'%')
+                                ->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
                                 ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
                                 ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
                 });
@@ -133,7 +134,7 @@ class EmpleadosController extends Controller
 
             $params = Input::all();
 
-            $empleado = Empleado::with('escolaridad','escolaridadDetalle.profesion', 'clues','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr', 'empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato', 'cr')->find($id);
+            $empleado = Empleado::with('escolaridad','escolaridadDetalle.profesion', 'clues', 'cluesAdscripcion','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr', 'empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato', 'cr', 'crAdscripcion')->find($id);
 
             if($empleado){
                 $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
@@ -488,10 +489,11 @@ class EmpleadosController extends Controller
             $editar_estudios = [];
             $borrar_estudios = [];
             $estudios = $inputs['estudios'];
+            
 
             $estudio_form = false;
             if($estudios['licenciatura']){
-                $estudio_form = ['profesion_id'=>$estudios['licenciatura']['id'], 'titulado'=>$estudios['datos_licenciatura']['titulo'], 'cedula'=>$estudios['datos_licenciatura']['cedula'], 'tipo_estudio'=>'LIC'];
+                $estudio_form = ['profesion_id'=>$estudios['licenciatura']['id'], 'titulado'=>$estudios['datos_licenciatura']['titulo'], 'cedula'=>$estudios['datos_licenciatura']['cedula'], 'tipo_estudio'=>'LIC', 'descripcion' => $estudios['datos_licenciatura']['descripcion']];
             }
 
             if(isset($estudios_ids['LIC'])){
@@ -506,9 +508,10 @@ class EmpleadosController extends Controller
                 $crear_estudios[] = $estudio_form;
             }
 
+            
             $estudio_form = false;
             if($estudios['maestria']){
-                $estudio_form = ['profesion_id'=>$estudios['maestria']['id'], 'titulado'=>$estudios['datos_maestria']['titulo'], 'cedula'=>$estudios['datos_maestria']['cedula'], 'tipo_estudio'=>'MA'];
+                $estudio_form = ['profesion_id'=>$estudios['maestria']['id'], 'titulado'=>$estudios['datos_maestria']['titulo'], 'cedula'=>$estudios['datos_maestria']['cedula'], 'tipo_estudio'=>'MA', 'descripcion' => $estudios['datos_maestria']['descripcion']];
             }
             if(isset($estudios_ids['MA'])){
                 if($estudio_form === false){
@@ -524,7 +527,7 @@ class EmpleadosController extends Controller
 
             $estudio_form = false;
             if($estudios['doctorado']){
-                $estudio_form = ['profesion_id'=>$estudios['doctorado']['id'], 'cedula'=>$estudios['datos_doctorado']['cedula'], 'tipo_estudio'=>'DOC'];
+                $estudio_form = ['profesion_id'=>$estudios['doctorado']['id'], 'titulado'=>1, 'cedula'=>$estudios['datos_doctorado']['cedula'], 'tipo_estudio'=>'DOC', 'descripcion' => $estudios['datos_doctorado']['descripcion']];
             }
             if(isset($estudios_ids['DOC'])){
                 if($estudio_form === false){
@@ -540,7 +543,7 @@ class EmpleadosController extends Controller
 
             $estudio_form = false;
             if($estudios['diplomado']){
-                $estudio_form = ['profesion_id'=>$estudios['diplomado']['id'], 'tipo_estudio'=>'DIP'];
+                $estudio_form = ['profesion_id'=>$estudios['diplomado']['id'], 'tipo_estudio'=>'DIP', 'titulado'=>null, 'cedula'=>null, 'descripcion' => $estudios['datos_diplomado']['descripcion']];
             }
             if(isset($estudios_ids['DIP'])){
                 if($estudio_form === false){
@@ -556,7 +559,7 @@ class EmpleadosController extends Controller
 
             $estudio_form = false;
             if($estudios['cursos']){
-                $estudio_form = ['descripcion'=>$estudios['cursos'], 'tipo_estudio'=>'CUR'];
+                $estudio_form = ['descripcion'=>$estudios['cursos'], 'tipo_estudio'=>'CUR', 'titulado'=>null, 'cedula'=>null, 'profesion_id'=>null];
             }
             if(isset($estudios_ids['CUR'])){
                 if($estudio_form === false){
@@ -572,7 +575,7 @@ class EmpleadosController extends Controller
 
             $estudio_form = false;
             if($estudios['ingles']){
-                $estudio_form = ['descripcion'=>'Inglés TOEFL', 'tipo_estudio'=>'POLI'];
+                $estudio_form = ['descripcion'=>'Inglés TOEFL', 'tipo_estudio'=>'POLI', 'titulado'=>null, 'cedula'=>null, 'profesion_id'=>null];
             }
             if(isset($estudios_ids['POLI'])){
                 if($estudio_form === false){
@@ -595,7 +598,23 @@ class EmpleadosController extends Controller
             }
             
             if(count($editar_estudios)){
-                //Editar
+                foreach ($editar_estudios as $key => $value) {
+                    
+                    $id = $value['id'];
+                    //unset($value['id']);
+                    //return response()->json($value,HttpResponse::HTTP_OK);
+                    $detalles = EmpleadoEscolaridadDetalle::withTrashed()->where("id", "=", $id)->first();//->save($value);
+                    $detalles->restore();
+
+                    $detalles->profesion_id  = $value['profesion_id'];
+                    $detalles->cedula       = $value['cedula'];
+                    $detalles->titulado  = $value['titulado'];
+                    $detalles->descripcion  = $value['descripcion'];
+                    $detalles->save();
+                    
+                    //return response()->json($detalles,HttpResponse::HTTP_OK);
+                    
+                }
             }
 
             $object->estudios = ['crear'=>$crear_estudios, 'editar'=>$editar_estudios, 'borrar'=>$borrar_estudios];

@@ -22,6 +22,11 @@ class Empleado extends Model
     public function clues(){
         return $this->hasOne('App\Models\Clues', 'clues', "clues");
     }
+    
+    public function cluesAdscripcion(){
+        return $this->hasOne('App\Models\Clues', 'clues', "clues_adscripcion");
+    }
+
 
     public function profesion(){
         return $this->hasOne('App\Models\Profesion','id','profesion_id');
@@ -57,6 +62,10 @@ class Empleado extends Model
 
     public function cr(){
         return $this->hasOne('App\Models\Cr','cr','cr_id');
+    }
+
+    public function crAdscripcion(){
+        return $this->hasOne('App\Models\Cr','cr','cr_adscripcion_id');
     }
 
     public function ur(){

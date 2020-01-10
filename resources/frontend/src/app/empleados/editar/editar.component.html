@@ -547,6 +547,28 @@
                                 </mat-tab>
                                 <mat-tab label="Datos Comisión" *ngIf="!esNuevoEmpleado">
                                     <br>
+                                    <table class="info-adscripcion-activa mat-elevation-z1" *ngIf="(datos_empleado && datos_empleado.adscripcion_activa)">
+                                        <thead>
+                                            <th class="titulo-largo" colspan="2">Unidad de Adscripción</th>
+                                        </thead>
+                                        <tr><th class="titulo-largo" width="1">CLUES</th><th class="titulo-largo">Nombre</th></tr>
+                                        <tr>
+                                            <td class="descripcion">
+                                                {{datos_empleado.clues_adscripcion.clues}}
+                                            </td>
+                                            <td class="descripcion">
+                                                {{datos_empleado.clues_adscripcion.nombre_unidad}}
+                                            </td>
+                                        </tr>
+                                        <tr><th class="titulo-largo">CR:</th><th class="titulo-largo">Área</th></tr>
+                                        <tr>
+                                            <td class="descripcion">{{(datos_empleado.cr_adscripcion)?datos_empleado.cr_adscripcion.cr:'Sin CR Asignado'}}</td>
+                                            <td class="descripcion">
+                                                {{(datos_empleado.cr_adscripcion)?datos_empleado.cr_adscripcion.descripcion:'Sin CR Asignado'}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br>
                                     <div fxLayout="row" fxLayout.xs="column">
                                         <mat-form-field fxFlex="40" fxFlex.xs="50">
                                             <mat-label>Tipo Comisión</mat-label>

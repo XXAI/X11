@@ -12,6 +12,7 @@ import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
 import { TransferenciaEmpleadoDialogComponent } from '../transferencia-empleado-dialog/transferencia-empleado-dialog.component';
 import { EditarHorarioDialogComponent } from '../editar-horario-dialog/editar-horario-dialog.component';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
+import { BREAKPOINT } from '@angular/flex-layout';
 
 
 @Component({
@@ -418,8 +419,11 @@ export class EditarComponent implements OnInit {
 
     this.empleadosService.obtenerDatosEmpleado(id,params).subscribe(
       response =>{
+        /*console.log("-------entra");
         console.log(response);
+        console.log("-------entra");*/
         this.empleadoForm.reset();
+
 
         if(typeof response === 'object'){
           this.datos_empleado = response.data;
@@ -540,6 +544,46 @@ export class EditarComponent implements OnInit {
           }
           this.datos_empleado.fissa = new Date(this.datos_empleado.fissa.substring(0,4),this.datos_empleado.fissa.substring(5,7)-1, this.datos_empleado.fissa.substring(8,10),12,0,0,0);
   
+          //console.log("----------x------------");
+          //console.log(this.datos_empleado);
+          let escolaridad = this.datos_empleado.escolaridad_detalle;
+          this.datos_empleado.estudios = {'licenciatura':'', 'datos_licenciatura': '', 'maestria': '', 'datos_maestria': '', 'doctorado': '', 'datos_doctorado': '', 'diplomado': '', 'datos_diplomado': '', 'cursos': '', 'ingles':''};
+          for(let i in escolaridad ){
+              
+            switch(escolaridad[i].tipo_estudio)
+            {
+              case 'LIC':
+                let obj_lic = {'cedula':  escolaridad[i].cedula, 'titulo': escolaridad[i].titulado, 'descripcion': escolaridad[i].descripcion };
+                escolaridad.datos_licenciatura = obj_lic;
+                this.datos_empleado.estudios.licenciatura = escolaridad[i].profesion ;
+                this.datos_empleado.estudios.datos_licenciatura = obj_lic;
+              break;
+              case 'MA':
+                let obj_ma = {'cedula':  escolaridad[i].cedula, 'titulo': escolaridad[i].titulado, 'descripcion': escolaridad[i].descripcion };
+                this.datos_empleado.estudios.maestria = escolaridad[i].profesion;
+                this.datos_empleado.estudios.datos_maestria = obj_ma;
+              break;
+              case 'DOC':
+                let obj_doc = {'cedula':  escolaridad[i].cedula, 'titulo': escolaridad[i].titulado, 'descripcion': escolaridad[i].descripcion };
+                this.datos_empleado.estudios.doctorado = escolaridad[i].profesion;
+                this.datos_empleado.estudios.datos_doctorado = obj_doc ;
+              break;
+              case 'DIP':
+                let obj_dip = {'cedula':  escolaridad[i].cedula, 'titulo': escolaridad[i].titulado, 'descripcion': escolaridad[i].descripcion };
+                this.datos_empleado.estudios.diplomado = escolaridad[i].profesion;
+                this.datos_empleado.estudios.datos_diplomado = obj_dip;
+              break;
+              case 'CUR':
+                this.datos_empleado.estudios.cursos = escolaridad[i].descripcion;
+              break;
+              case 'POLI':
+                this.datos_empleado.estudios.ingles = 1;
+              break;
+            }
+          }
+
+          
+          
           this.empleadoForm.patchValue(this.datos_empleado);
   
           //this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
