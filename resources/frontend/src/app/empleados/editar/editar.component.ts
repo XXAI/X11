@@ -149,6 +149,7 @@ export class EditarComponent implements OnInit {
     'cr_adscripcion_id':[''],
     'rama_id': [''],
     'area_servicio': [''],
+    'actividades': [''],
 
     'comision_sindical_id': [''],
     'sindicato_id': [''],

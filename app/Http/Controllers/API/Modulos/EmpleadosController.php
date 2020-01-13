@@ -310,11 +310,13 @@ class EmpleadosController extends Controller
             $empleado->nombre                 = $inputs['nombre'];
             $empleado->apellido_paterno                 = $inputs['apellido_paterno'];
             $empleado->apellido_materno                 = $inputs['apellido_materno'];
+            $empleado->sexo                 = $inputs['sexo'];
             $empleado->programa_id            = $inputs['programa_id'];
             $empleado->rama_id                = $inputs['rama_id'];
             $empleado->rfc                    = $inputs['rfc'];
             $empleado->ur                     = $inputs['ur'];
-            $empleado->tipo_nomina_id         = $inputs['tipo_nomina_id'];
+            $empleado->tipo_nomina_id       = 1;
+            $empleado->tipo_trabajador_id         = $inputs['tipo_trabajador_id'];
             $empleado->profesion_id           = $inputs['profesion_id'];
             
             $empleado->escolaridad_id         = $inputs['escolaridad_id'];
@@ -326,6 +328,8 @@ class EmpleadosController extends Controller
             $empleado->cp                     = $inputs['cp'];
 
             $empleado->area_servicio          = $inputs['area_servicio'];
+            $empleado->actividades            = $inputs['actividades'];
+            
             $empleado->estatus                = 1;
             $empleado->proporcionado_por      = "SISTEMA";
             $empleado->observaciones          = $inputs['observaciones'];
@@ -442,6 +446,7 @@ class EmpleadosController extends Controller
             //$object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
             $object->tipo_trabajador_id         = $inputs['tipo_trabajador_id'];
             $object->area_servicio          = $inputs['area_servicio'];
+            $object->actividades             = $inputs['actividades'];
 
             //$object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
             $object->tipo_nomina_id         = 1;
