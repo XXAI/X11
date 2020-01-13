@@ -203,6 +203,14 @@ export class EditarComponent implements OnInit {
       'datos_diplomado': this.fb.group({
         'descripcion':['']
       }),
+      'especialidad':[''],
+      'datos_especialidad': this.fb.group({
+        'titulo':[''],'cedula':[''],'descripcion':['']
+      }),
+      'tecnico':[''],
+      'datos_tecnico': this.fb.group({
+        'descripcion':['']
+      }),
       'cursos':[''], 
       'ingles':['']
     }),
@@ -326,14 +334,16 @@ export class EditarComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredCodigos = items);
 
-      this.estudiosLoading = {'LIC':false,'MA':false,'DOC':false,'DIP':false};
-      this.filteredEstudios = {'LIC':null,'MA':null,'DOC':null,'DIP':null};
+      this.estudiosLoading = {'LIC':false,'MA':false,'DOC':false,'DIP':false, 'ESP':false, 'TEC': false};
+      this.filteredEstudios = {'LIC':null,'MA':null,'DOC':null,'DIP':null, 'ESP':null, 'TEC': null};
         
       let estudios = {
         'LIC':'licenciatura', 
         'MA':'maestria', 
         'DOC':'doctorado', 
-        'DIP':'diplomado'
+        'DIP':'diplomado',
+        'ESP': 'especialidad',
+        'TEC': 'tecnico'
       };
       
       for(let i in estudios){
@@ -548,7 +558,7 @@ export class EditarComponent implements OnInit {
           //console.log("----------x------------");
           //console.log(this.datos_empleado);
           let escolaridad = this.datos_empleado.escolaridad_detalle;
-          this.datos_empleado.estudios = {'licenciatura':'', 'datos_licenciatura': '', 'maestria': '', 'datos_maestria': '', 'doctorado': '', 'datos_doctorado': '', 'diplomado': '', 'datos_diplomado': '', 'cursos': '', 'ingles':''};
+          this.datos_empleado.estudios = {'licenciatura':'', 'datos_licenciatura': '', 'maestria': '', 'datos_maestria': '', 'doctorado': '', 'datos_doctorado': '', 'diplomado': '', 'datos_diplomado': '', 'especialidad': '', 'datos_especialidad': '', 'tecnico': '', 'datos_tecnico': '', 'cursos': '', 'ingles':''};
           for(let i in escolaridad ){
               
             switch(escolaridad[i].tipo_estudio)
@@ -573,6 +583,16 @@ export class EditarComponent implements OnInit {
                 let obj_dip = {'cedula':  escolaridad[i].cedula, 'titulo': escolaridad[i].titulado, 'descripcion': escolaridad[i].descripcion };
                 this.datos_empleado.estudios.diplomado = escolaridad[i].profesion;
                 this.datos_empleado.estudios.datos_diplomado = obj_dip;
+              break;
+              case 'ESP':
+                let obj_esp = {'cedula':  escolaridad[i].cedula, 'titulo': escolaridad[i].titulado, 'descripcion': escolaridad[i].descripcion };
+                this.datos_empleado.estudios.especialidad = escolaridad[i].profesion;
+                this.datos_empleado.estudios.datos_especialidad = obj_esp;
+              break;
+              case 'TEC':
+                let obj_tec = {'cedula':  escolaridad[i].cedula, 'titulo': escolaridad[i].titulado, 'descripcion': escolaridad[i].descripcion };
+                this.datos_empleado.estudios.tecnico = escolaridad[i].profesion;
+                this.datos_empleado.estudios.datos_tecnico = obj_tec;
               break;
               case 'CUR':
                 this.datos_empleado.estudios.cursos = escolaridad[i].descripcion;

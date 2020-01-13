@@ -52,6 +52,12 @@ class SearchCatalogsController extends Controller
                     case 'DIP':
                         $profesiones = $profesiones->whereIn('tipo_profesion_id',[4]);
                         break;
+                    case 'ESP':
+                        $profesiones = $profesiones->whereIn('tipo_profesion_id',[5]);
+                        break;
+                    case 'TEC':
+                        $profesiones = $profesiones->whereIn('tipo_profesion_id',[8]);
+                        break;
                     default:
                         # code...
                         break;

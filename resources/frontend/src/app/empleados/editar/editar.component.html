@@ -527,6 +527,51 @@
                                                 </mat-form-field>
                                             </div-->
                                         </fieldset>
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Especialidad (Para acreditar el perfil del código según el profesiograma)" [matAutocomplete]="estudiosEspecialidadAuto" formControlName='especialidad' (blur)="checkSelectedValue('estudios.especialidad')">
+                                                    <mat-autocomplete #estudiosEspecialidadAuto="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
+                                                        <mat-option *ngIf="estudiosLoading.ESP" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                        <ng-container *ngIf="!estudiosLoading.ESP">
+                                                            <mat-option *ngFor="let item of filteredEstudios.ESP" [value]="item">
+                                                                {{ item.descripcion }}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px"  formGroupName="datos_especialidad" *ngIf="empleadoForm.get('estudios.especialidad').value">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput formControlName="cedula" placeholder="Cédula">
+                                                </mat-form-field>
+                                                <!--mat-form-field fxFlex>
+                                                    <input matInput formControlName="descripcion" placeholder="Descripción">
+                                                </mat-form-field-->
+                                            </div>
+                                            <!--div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px"  formGroupName="datos_diplomado">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput formControlName="descripcion" placeholder="Descripción">
+                                                </mat-form-field>
+                                            </div-->
+                                        </fieldset>
+
+                                        <fieldset fxFlex fxLayout="column">
+                                            <div fxFlex fxLayout="row">
+                                                <mat-form-field fxFlex>
+                                                    <input matInput placeholder="Técnico" [matAutocomplete]="estudiosTecnicoAuto" formControlName='tecnico' (blur)="checkSelectedValue('estudios.tecnico')">
+                                                    <mat-autocomplete #estudiosTecnicoAuto="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
+                                                        <mat-option *ngIf="estudiosLoading.DIP" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                        <ng-container *ngIf="!estudiosLoading.TEC">
+                                                            <mat-option *ngFor="let item of filteredEstudios.TEC" [value]="item">
+                                                                {{ item.descripcion }}
+                                                            </mat-option>
+                                                        </ng-container>
+                                                    </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
+                                        </fieldset>
+                                        
 
                                         <fieldset fxFlex fxLayout="column">
                                             <div fxFlex fxLayout="row">

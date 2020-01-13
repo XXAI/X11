@@ -563,6 +563,38 @@ class EmpleadosController extends Controller
             }
 
             $estudio_form = false;
+            if($estudios['especialidad']){
+                $estudio_form = ['profesion_id'=>$estudios['especialidad']['id'], 'titulado'=>1, 'cedula'=>$estudios['datos_especialidad']['cedula'], 'tipo_estudio'=>'ESP', 'descripcion' => $estudios['datos_especialidad']['descripcion']];
+            }
+            if(isset($estudios_ids['ESP'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['ESP'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['ESP'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['tecnico']){
+                $estudio_form = ['profesion_id'=>$estudios['tecnico']['id'], 'tipo_estudio'=>'TEC', 'titulado'=>null, 'cedula'=>null, 'descripcion' => $estudios['datos_tecnico']['descripcion']];
+            }
+            if(isset($estudios_ids['TEC'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['TEC'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['TEC'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
             if($estudios['cursos']){
                 $estudio_form = ['descripcion'=>$estudios['cursos'], 'tipo_estudio'=>'CUR', 'titulado'=>null, 'cedula'=>null, 'profesion_id'=>null];
             }
