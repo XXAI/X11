@@ -160,7 +160,7 @@ export class ReportePersonalActivo{
           datos.content[indice_actual].table.body.push([  
             { text: empleado.rfc, style: 'tabla_datos' },
             { text: empleado.curp , style: 'tabla_datos'},
-            { text: empleado.nombre , style: 'tabla_datos'},
+            { text: empleado.nombre + ' '+ empleado.apellido_paterno + ' '+ empleado.apellido_materno , style: 'tabla_datos'},
             { text: empleado.codigo_id , style: 'tabla_datos'},
             { text: empleado.profesion , style: 'tabla_datos'},
             { text: empleado.clues , style: 'tabla_datos'},

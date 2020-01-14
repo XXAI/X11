@@ -118,10 +118,10 @@ export class ReportePersonalActivoArea{
         datos.content.push({
           //layout: 'lightHorizontalLines',
           table: {
-            widths: [ '*', '*', 30, 30, 50, 50, 50, 100,'*' ],
+            widths: [ '*', '*', 30, 30, 50, 50, 50, 100,'*', '*', '*', '*', '*' ],
             margin: [0,0,0,0],
             body: [
-              [{text: "Número de Trabajadores "+ reportData.items.length, colSpan: 9, style: 'tabla_datos'},{},{},{},{},{},{},{},{}]
+              [{text: "Número de Trabajadores "+ reportData.items.length, colSpan: 13, style: 'tabla_datos'},{},{},{},{},{},{},{},{},{},{},{},{}]
             ]
           }
           
@@ -142,10 +142,10 @@ export class ReportePersonalActivoArea{
                   headerRows:2,
                   dontBreakRows: true,
                   keepWithHeaderRows: 1,
-                  widths: [ '*', '*', 30, 30, 50, 50, 50, 100,'*' ],
+                  widths: [ 100, 100, 30, 30, 50, 50, 50, '*',50, 50, 50, 50 , 60],
                   margin: [0,0,0,0],
                   body: [
-                    [{text: "["+empleado.clues+"] "+empleado.nombre_unidad, colSpan: 9, style: 'cabecera'},{},{},{},{},{},{},{},{}],
+                    [{text: "["+empleado.clues+"] "+empleado.nombre_unidad, colSpan: 13, style: 'cabecera'},{},{},{},{},{},{},{},{},{},{},{},{}],
                     [ {text: "NOMBRE", style: 'cabecera'},
                       {text: "AREA", style: 'cabecera'},
                       {text: "MEDICO", style: 'cabecera'},
@@ -154,7 +154,11 @@ export class ReportePersonalActivoArea{
                       {text: "ADMINISTRATIVOS", style: 'cabecera'},
                       {text: "FUNCIÓN", style: 'cabecera'},
                       {text: "ACTIVIDADES", style: 'cabecera'},
-                      {text: "TIPO DE CONTRATO (FUENTE)", style: 'cabecera'}]
+                      {text: "TIPO DE TRABAJADOR", style: 'cabecera'},
+                      {text: "UR", style: 'cabecera'},
+                      {text: "PROGRAMA", style: 'cabecera'},
+                      {text: "TIPO DE CONTRATO (FUENTE)", style: 'cabecera'},
+                      {text: "TURNO / HORARIO", style: 'cabecera'}]
                   ]
                 }
               });
@@ -162,12 +166,12 @@ export class ReportePersonalActivoArea{
               indice_actual = datos.content.length -1;
             }
             datos.content[indice_actual].table.body.push(
-              [{text: "["+empleado.cr_id+"] "+empleado.cr_descripcion, colSpan: 9, style: 'subcabecera'},{},{},{},{},{},{},{},{}],
+              [{text: "["+empleado.cr_id+"] "+empleado.cr_descripcion, colSpan: 13, style: 'subcabecera'},{},{},{},{},{},{},{},{},{},{},{},{}],
             );
           }
 
           datos.content[indice_actual].table.body.push([  
-            { text: empleado.nombre + empleado.apellido_paterno + empleado.apellido_materno , style: 'tabla_datos'},
+            { text: empleado.nombre + ' '+ empleado.apellido_paterno + ' '+ empleado.apellido_materno , style: 'tabla_datos'},
             { text: empleado.cr_descripcion , style: 'tabla_datos'},
             { text: empleado.medico , style: 'tabla_datos'},
             { text: empleado.enfermera , style: 'tabla_datos'},
@@ -175,7 +179,11 @@ export class ReportePersonalActivoArea{
             { text: empleado.administrativo , style: 'tabla_datos'},
             { text: empleado.grupo , style: 'tabla_datos'},
             { text: empleado.actividades , style: 'tabla_datos'},
+            { text: empleado.tipo_trabajador , style: 'tabla_datos'},
+            { text: empleado.ur , style: 'tabla_datos'},
+            { text: empleado.programa , style: 'tabla_datos'},
             { text: empleado.llave , style: 'tabla_datos'},
+            { text: empleado.turno+": "+empleado.hora_entrada.substr(0, 5)+" - "+empleado.hora_salida.substr(0, 5) , style: 'tabla_datos'},
             
           ]);
         }

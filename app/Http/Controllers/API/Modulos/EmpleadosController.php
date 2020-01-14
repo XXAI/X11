@@ -1203,15 +1203,20 @@ class EmpleadosController extends Controller
             }
                     //Reporte Personal Activo
             $empleados = $empleados->select('empleados.clues', 'clues.nombre_unidad', 'empleados.cr_id','empleados.nombre', 'empleados.apellido_paterno', 'empleados.apellido_materno', 'cr.descripcion as cr_descripcion', \DB::RAW("IF(codigos.tabulador_id = 1, 1, 0) as medico"), \DB::RAW("IF(codigos.tabulador_id = 2, 1, 0) as enfermera"), \DB::RAW("IF(codigos.tabulador_id = 3, 1, 0) as paramedico"), \DB::RAW("IF(codigos.tabulador_id = 5, 1, 0) as administrativo"),
-                                'funciones.grupo', 'empleados.actividades', 'fuente.llave')
+                                'funciones.grupo', 'empleados.actividades', 'tipo_trabajador.descripcion as tipo_trabajador', 'ur.descripcion as ur', 'programa.descripcion as programa', 'fuente.llave', 'turno.descripcion as turno', 'empleados.hora_entrada', 'empleados.hora_salida')
                                 
                                 ->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
+                                ->leftjoin('catalogo_tipo_trabajador as tipo_trabajador','tipo_trabajador.id','empleados.tipo_trabajador_id')
+                                ->leftjoin('catalogo_ur as ur','ur.llave','empleados.ur')
+                                ->leftjoin('catalogo_programa as programa','programa.id','empleados.programa_id')
+                                ->leftjoin('catalogo_turno as turno','turno.id','empleados.turno_id')
                                 ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
                                 ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
                                 ->leftjoin('catalogo_fuente as fuente','fuente.id','empleados.fuente_id')
                                 ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
                                 ->leftjoin('catalogo_clues as clues','clues.clues','empleados.clues')
                                 ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
+                                ->where("empleados.estatus", '=', 1)
                                 ->orderBy('clues','asc')
                                 ->orderBy('cr_id','asc');
             $empleados = $empleados->get();
