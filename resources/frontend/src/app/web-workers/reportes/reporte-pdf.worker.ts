@@ -2,11 +2,13 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ReportePersonalActivo } from './reporte-personal-activo';
+import { ReportePersonalActivoArea } from './reporte-personal-activo-area';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const reportes = {
-  'empleados/personal-activo': new ReportePersonalActivo()
+  'empleados/personal-activo': new ReportePersonalActivo(),
+  'empleados/personal-activo-area': new ReportePersonalActivoArea()
 };
 
 addEventListener('message', ({ data }) => {

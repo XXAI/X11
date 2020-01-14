@@ -41,7 +41,7 @@ class SearchCatalogsController extends Controller
             if(isset($parametros['filter']) && $parametros['filter']){
                 switch ($parametros['filter']) {
                     case 'LIC':
-                        $profesiones = $profesiones->whereIn('tipo_profesion_id',[1,2,8]);
+                        $profesiones = $profesiones->whereIn('tipo_profesion_id',[1,2]);
                         break;
                     case 'MA':
                         $profesiones = $profesiones->whereIn('tipo_profesion_id',[3]);

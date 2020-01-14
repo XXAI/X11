@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 export class EmpleadosService {
 
   url = `${environment.base_url}/empleados`;
+  url_area = `${environment.base_url}/empleados-area`;
   url_firmantes = `${environment.base_url}/firmantes`;
   url_comision = `${environment.base_url}/comision-empleado/`;
   url_transfer = `${environment.base_url}/transferir-empleado/`;
@@ -81,6 +82,14 @@ export class EmpleadosService {
 
   getEmpleadosList(payload):Observable<any> {
     return this.http.get<any>(this.url,{params: payload}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
+
+  getEmpleadosAreaList(payload):Observable<any> {
+    return this.http.get<any>(this.url_area,{params: payload}).pipe(
       map( response => {
         return response;
       })

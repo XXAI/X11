@@ -44,6 +44,8 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::put('activar-empleado/{id}',             'API\Modulos\EmpleadosController@activateEmployee');
     Route::put('baja-empleado/{id}',                'API\Modulos\EmpleadosController@shutDownEmployee');
     Route::put('comision-empleado/{id}',            'API\Modulos\EmpleadosController@comisionEmployee');
+    Route::get('empleados-area',                    'API\Modulos\EmpleadosController@getEmployeeAreaData');
+    
 
     Route::put('solicitar-transferencia/{id}',      'API\Modulos\EmpleadosController@requestTransferEmployee');
 

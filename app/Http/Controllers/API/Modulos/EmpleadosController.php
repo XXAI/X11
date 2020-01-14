@@ -1178,5 +1178,53 @@ class EmpleadosController extends Controller
         }
     }
 
-    
+    public function getEmployeeAreaData()
+    {
+        try{
+            $access = $this->getUserAccessData();
+            
+            $parametros = Input::all();
+            $empleados = Empleado::select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
+                            ->leftJoin('permuta_adscripcion',function($join)use($access){
+                                $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
+                                if(!$access->is_admin){
+                                    $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                                }
+                            });
+
+            //filtro de valores por permisos del usuario
+            if(!$access->is_admin){
+                $empleados = $empleados->where('empleados.estatus','!=','3')->where(function($query)use($access){
+                    $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
+                        ->orWhere(function($query2)use($access){
+                            $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                        });
+                });
+            }
+                    //Reporte Personal Activo
+            $empleados = $empleados->select('empleados.clues', 'clues.nombre_unidad', 'empleados.cr_id','empleados.nombre', 'empleados.apellido_paterno', 'empleados.apellido_materno', 'cr.descripcion as cr_descripcion', \DB::RAW("IF(codigos.tabulador_id = 1, 1, 0) as medico"), \DB::RAW("IF(codigos.tabulador_id = 2, 1, 0) as enfermera"), \DB::RAW("IF(codigos.tabulador_id = 3, 1, 0) as paramedico"), \DB::RAW("IF(codigos.tabulador_id = 5, 1, 0) as administrativo"),
+                                'funciones.grupo', 'empleados.actividades', 'fuente.llave')
+                                
+                                ->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
+                                ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
+                                ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
+                                ->leftjoin('catalogo_fuente as fuente','fuente.id','empleados.fuente_id')
+                                ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
+                                ->leftjoin('catalogo_clues as clues','clues.clues','empleados.clues')
+                                ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
+                                ->orderBy('clues','asc')
+                                ->orderBy('cr_id','asc');
+            $empleados = $empleados->get();
+
+            $loggedUser = auth()->userOrFail();
+            $loggedUser->load('gruposUnidades.listaFirmantes.empleado',"gruposUnidades.listaCR.clues.responsable");
+            $firmantes = $loggedUser->gruposUnidades[0]->listaFirmantes;
+            $responsable_clues = $loggedUser->gruposUnidades[0]->listaCR;
+
+            return response()->json(['data'=>$empleados, 'firmantes'=> $firmantes, 'responsables'=>$responsable_clues],HttpResponse::HTTP_OK);
+            //return response()->json(['data'=>1],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
 }
