@@ -1218,7 +1218,8 @@ class EmpleadosController extends Controller
                                 ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
                                 ->where("empleados.estatus", '=', 1)
                                 ->orderBy('clues','asc')
-                                ->orderBy('cr_id','asc');
+                                ->orderBy('cr_id','asc')
+                                ->orderBy('fuente.id','asc');
             $empleados = $empleados->get();
 
             $loggedUser = auth()->userOrFail();

@@ -546,7 +546,8 @@ export class ListaComponent implements OnInit {
                 this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
                 this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = data.message;
                 this.isLoadingPDF = false;
-                console.log(data);
+                //console.log(data);
+                reportWorker.terminate();
               }
             );
             
@@ -568,6 +569,7 @@ export class ListaComponent implements OnInit {
         this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
         //this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
+        
       }
     );
 
@@ -688,6 +690,7 @@ export class ListaComponent implements OnInit {
                 this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = data.message;
                 this.isLoadingPDFArea = false;
                 //console.log(data);
+                reportWorker.terminate();
               }
             );
             
