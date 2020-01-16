@@ -267,9 +267,9 @@ class EmpleadosController extends Controller
         ];
 
         $inputs = Input::all();
-        $object = Empleado::where("rfc", "=", $inputs['rfc'])->first();
+        $object = Empleado::where("rfc", "=", $inputs['rfc'])->orWhere("curp", "=",  $inputs['curp'])->first();
         if($object){
-            throw new \Exception("Existe en empleado con el mismo rfc, por favor verificar", 1);
+            throw new \Exception("Existe en empleado con el mismo rfc o curp, por favor verificar", 1);
             //return response()->json(['error' => "Existe en empleado con el mismo rfc, por favor verificar"], HttpResponse::HTTP_CONFLICT);
         }
         
@@ -356,7 +356,176 @@ class EmpleadosController extends Controller
             }
 
             $empleado->adscripcionHistorial()->create(['clues'=>$clues_fisico->clues, 'cr'=>$inputs['cr_id'], 'fecha_inicio'=>$inputs['fissa']]); 
-                
+            
+            $estudios_guardados = $empleado->escolaridadDetalle;
+            $estudios_ids = $empleado->escolaridadDetalle()->withTrashed()->pluck('id','tipo_estudio');
+            $crear_estudios = [];
+            $editar_estudios = [];
+            $borrar_estudios = [];
+            $estudios = $inputs['estudios'];
+            
+
+            $estudio_form = false;
+            if($estudios['licenciatura']){
+                $estudio_form = ['profesion_id'=>$estudios['licenciatura']['id'], 'titulado'=>$estudios['datos_licenciatura']['titulo'], 'cedula'=>$estudios['datos_licenciatura']['cedula'], 'tipo_estudio'=>'LIC', 'descripcion' => $estudios['datos_licenciatura']['descripcion']];
+            }
+
+            if(isset($estudios_ids['LIC'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['LIC'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['LIC'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            
+            $estudio_form = false;
+            if($estudios['maestria']){
+                $estudio_form = ['profesion_id'=>$estudios['maestria']['id'], 'titulado'=>$estudios['datos_maestria']['titulo'], 'cedula'=>$estudios['datos_maestria']['cedula'], 'tipo_estudio'=>'MA', 'descripcion' => $estudios['datos_maestria']['descripcion']];
+            }
+            if(isset($estudios_ids['MA'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['MA'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['MA'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['doctorado']){
+                $estudio_form = ['profesion_id'=>$estudios['doctorado']['id'], 'titulado'=>1, 'cedula'=>$estudios['datos_doctorado']['cedula'], 'tipo_estudio'=>'DOC', 'descripcion' => $estudios['datos_doctorado']['descripcion']];
+            }
+            if(isset($estudios_ids['DOC'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['DOC'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['DOC'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['diplomado']){
+                $estudio_form = ['profesion_id'=>$estudios['diplomado']['id'], 'tipo_estudio'=>'DIP', 'titulado'=>null, 'cedula'=>null, 'descripcion' => $estudios['datos_diplomado']['descripcion']];
+            }
+            if(isset($estudios_ids['DIP'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['DIP'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['DIP'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['especialidad']){
+                $estudio_form = ['profesion_id'=>$estudios['especialidad']['id'], 'titulado'=>1, 'cedula'=>$estudios['datos_especialidad']['cedula'], 'tipo_estudio'=>'ESP', 'descripcion' => $estudios['datos_especialidad']['descripcion']];
+            }
+            if(isset($estudios_ids['ESP'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['ESP'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['ESP'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['tecnico']){
+                $estudio_form = ['profesion_id'=>$estudios['tecnico']['id'], 'tipo_estudio'=>'TEC', 'titulado'=>null, 'cedula'=>null, 'descripcion' => $estudios['datos_tecnico']['descripcion']];
+            }
+            if(isset($estudios_ids['TEC'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['TEC'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['TEC'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['cursos']){
+                $estudio_form = ['descripcion'=>$estudios['cursos'], 'tipo_estudio'=>'CUR', 'titulado'=>null, 'cedula'=>null, 'profesion_id'=>null];
+            }
+            if(isset($estudios_ids['CUR'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['CUR'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['CUR'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            $estudio_form = false;
+            if($estudios['ingles']){
+                $estudio_form = ['descripcion'=>'Inglés TOEFL', 'tipo_estudio'=>'POLI', 'titulado'=>null, 'cedula'=>null, 'profesion_id'=>null];
+            }
+            if(isset($estudios_ids['POLI'])){
+                if($estudio_form === false){
+                    $borrar_estudios[] = $estudios_ids['POLI'];
+                }else{
+                    $estudio_form['id'] = $estudios_ids['POLI'];
+                    $estudio_form['deleted_at'] = null;
+                    $editar_estudios[] = $estudio_form;
+                }
+            }elseif($estudio_form){
+                $crear_estudios[] = $estudio_form;
+            }
+
+            if(count($crear_estudios)){
+                $empleado->escolaridadDetalle()->createMany($crear_estudios);
+            }
+
+            if(count($borrar_estudios)){
+                EmpleadoEscolaridadDetalle::whereIn('id',$borrar_estudios)->delete();
+            }
+            
+            if(count($editar_estudios)){
+                foreach ($editar_estudios as $key => $value) {
+                    
+                    $id = $value['id'];
+                    //unset($value['id']);
+                    //return response()->json($value,HttpResponse::HTTP_OK);
+                    $detalles = EmpleadoEscolaridadDetalle::withTrashed()->where("id", "=", $id)->first();//->save($value);
+                    $detalles->restore();
+
+                    $detalles->profesion_id  = $value['profesion_id'];
+                    $detalles->cedula       = $value['cedula'];
+                    $detalles->titulado  = $value['titulado'];
+                    $detalles->descripcion  = $value['descripcion'];
+                    $detalles->save();
+                    
+                    //return response()->json($detalles,HttpResponse::HTTP_OK);
+                    
+                }
+            }
+
+            $empleado->estudios = ['crear'=>$crear_estudios, 'editar'=>$editar_estudios, 'borrar'=>$borrar_estudios];
+            $empleado->estudios_db = $estudios_ids;
+
             DB::commit();
             
             return response()->json($empleado,HttpResponse::HTTP_OK);
@@ -425,7 +594,7 @@ class EmpleadosController extends Controller
         DB::beginTransaction();
         try {
             
-            $object->codigo_id              = $inputs['codigo_id'];
+            //$object->codigo_id              = $inputs['codigo_id'];
             $object->comision_sindical_id   = $inputs['comision_sindical_id'];
             $object->cr_id                  = $inputs['cr_id'];
             $object->curp                   = $inputs['curp'];
@@ -448,7 +617,6 @@ class EmpleadosController extends Controller
             $object->area_servicio          = $inputs['area_servicio'];
             $object->actividades             = $inputs['actividades'];
 
-            //$object->tipo_nomina_id         = $inputs['tipo_nomina_id'];
             $object->tipo_nomina_id         = 1;
             $object->profesion_id           = $inputs['profesion_id'];
             
@@ -1068,7 +1236,7 @@ class EmpleadosController extends Controller
             $access = $this->getUserAccessData();
             
             $empleados = Empleado::with("clues", "cr")->where(function($query)use($parametros){
-                return $query->where('nombre','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                return $query->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
                             ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
             });

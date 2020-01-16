@@ -626,37 +626,13 @@ export class ListaComponent implements OnInit {
       ],
       currentIndex: 0
     }
-    /*let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','filter']);
-    //console.log(appStoredData);
-
-    params.reporte = 'personal-activo';
-
-    if(appStoredData['searchQuery']){
-      params.query = appStoredData['searchQuery'];
-    }
-
-    for(let i in appStoredData['filter']){
-      if(appStoredData['filter'][i]){
-        if(i == 'clues'){
-          params[i] = appStoredData['filter'][i].clues;
-        }else if(i == 'cr'){
-          params[i] = appStoredData['filter'][i].cr;
-        }else{ //profesion y rama
-          params[i] = appStoredData['filter'][i].id;
-        }
-        countFilter++;
-      }
-    }
-
-    if(countFilter > 0){
-      params.active_filter = true;
-    }*/
-    
+   
     this.stepperConfig.steps[0].status = 2;
 
     this.empleadosService.getEmpleadosAreaList(params).subscribe(
       response =>{
-        console.log(response);
+        //console.log(response);
+        //console.log(response);
         if(response.error) {
           let errorMessage = response.error.message;
           this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
