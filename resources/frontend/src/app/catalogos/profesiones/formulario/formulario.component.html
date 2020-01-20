@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>{{tituloDialogo}} Profesión </h1>
+<div mat-dialog-content>
+    <div class="form-container" [formGroup]="profesionForm">
+        <div class="loading-shade" *ngIf="isLoading">
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column">
+            <mat-form-field  fxFlex>
+                <input matInput placeholder="Descrición" formControlName="descripcion" [type]="'text'" (keyup.enter)="guardar()" cdkFocusInitial required autocomplete="off">
+                <mat-error *ngIf="profesionForm.get('descripcion').invalid && (profesionForm.get('descripcion').dirty || profesionForm.get('descripcion').touched)">
+                    <span *ngIf="profesionForm.get('descripcion').errors.required">La descripción es obligatoria</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column">
+            <div fxFlex="50"></div>
+            <mat-form-field fxFlex="50" fxFlex.xs="100">
+                <mat-label>Tipo Profesion</mat-label>
+                <mat-select formControlName="tipo_profesion_id" required>
+                    <mat-option *ngFor="let item of tiposProfesiones" [value]="item.id">
+                        {{item.descripcion}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="profesionForm.get('tipo_profesion_id').invalid && (profesionForm.get('tipo_profesion_id').dirty || profesionForm.get('tipo_profesion_id').touched)">
+                    <span *ngIf="profesionForm.get('tipo_profesion_id').errors.required">El tipo de profesión es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <span fxFlex></span>
+    <button mat-button (click)='cancel()'>Cancelar</button>
+    <button mat-raised-button (click)='guardar()' [class.button-spinner]="isSaving" [disabled]="!profesionForm.valid" color="primary">Guardar</button>
+</div>

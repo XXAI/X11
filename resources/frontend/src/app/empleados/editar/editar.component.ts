@@ -109,6 +109,7 @@ export class EditarComponent implements OnInit {
   ];
 
   nivel_escolaridad:any = [
+    { id: 12,    label:'PRIMARIA' },
     { id: 1,     label:'SECUNDARIA' },
     { id: 2,     label:'PREPARATORIA' },
     { id: 3,     label:'TÉCNICA' },

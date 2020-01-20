@@ -287,7 +287,7 @@
                                     <div fxLayout="row" fxLayout.xs="column">
                                         <mat-form-field fxFlex="30" fxFlex.xs="100">
                                             <mat-label>Tipo Trabajador</mat-label>
-                                            <mat-select formControlName="tipo_trabajador_id">
+                                            <mat-select formControlName="tipo_trabajador_id" required>
                                             <mat-option *ngFor="let item of catalogos['tipo_trabajador']" [value]="item.id">
                                                 {{item.descripcion}}
                                             </mat-option>

@@ -31,6 +31,11 @@ Route::group(['middleware'=>'auth'],function($router){
     
     //Modulos del Sistema
     /**
+     * Rutas para el Modulo de Catalogos
+     */
+    Route::apiResource('profesiones',               'API\Modulos\ProfesionesController');
+
+    /**
      * Rutas para el Modulo de Empleados
      */
     Route::apiResource('empleados',                 'API\Modulos\EmpleadosController');
@@ -56,6 +61,7 @@ Route::group(['middleware'=>'auth'],function($router){
 
     Route::apiResource('catalogos',          'API\Modulos\CatalogosController');
     Route::get('catalogo-tipo-baja',         'API\Modulos\CatalogosController@catalogoTipoBaja');
+    Route::get('catalogo-tipo-profesion',    'API\Modulos\CatalogosController@catalogoTipoProfesion');
 
     Route::get('busqueda-clues',             'API\Modulos\SearchCatalogsController@getCluesAutocomplete');
     Route::get('busqueda-codigos',           'API\Modulos\SearchCatalogsController@getCodigoAutocomplete');
