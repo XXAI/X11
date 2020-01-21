@@ -394,14 +394,15 @@ export class EditarComponent implements OnInit {
     });
   }
 
-  addValidationDetallesEstudio(event){
-   let form_fields = ['maestria','doctorado', 'diplomado','especialidad','tecnico'];
+  addValidationDetallesEstudio(value){
+    //console.log(event);
+   let form_fields = ['maestria','doctorado', 'licenciatura','tecnico'];
    for(let i in form_fields){
     this._setValidator('estudios.'+form_fields[i],false);
    }
    this.empleadoForm.get('estudios').markAsPristine();
 
-    switch (event.value) {
+    switch (value) {
       case 7:
         this._setValidator('estudios.doctorado',true);
       case 6:
@@ -410,7 +411,7 @@ export class EditarComponent implements OnInit {
         this._setValidator('estudios.licenciatura',true);
       case 4:
         this._setValidator('estudios.licenciatura',true);
-        break
+        break;
       case 3:
         this._setValidator('estudios.tecnico',true);
         break;
@@ -442,8 +443,8 @@ export class EditarComponent implements OnInit {
     }, 300);
   }
 
-  loadEmpleadoData(id:any)
-  {
+  loadEmpleadoData(id:any){
+
     this.isLoading = true;
     this.isLoadingCredential = true;
     let params = {};
@@ -643,14 +644,14 @@ export class EditarComponent implements OnInit {
               break;
             }
           }
-
-          
           
           this.empleadoForm.patchValue(this.datos_empleado);
-  
-          //this.empleadoForm.patchValue({ "clues": this.datos_empleado.clues.clues });
-          //this.empleadoForm.patchValue({ "clues_desc": this.datos_empleado.clues.nombre_unidad});
+          
           this.empleadoForm.patchValue({ "tipo_profesion_id": this.catalogos['consulta_tipo_profesion'] });
+          
+          if(this.empleadoForm.get('escolaridad_id').value){
+            this.addValidationDetallesEstudio(this.empleadoForm.get('escolaridad_id').value);
+          }
         }
         
         this.isLoading = false;

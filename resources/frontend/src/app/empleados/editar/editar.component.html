@@ -375,7 +375,7 @@
                                         </mat-form-field-->
                                         <mat-form-field fxFlex="35" fxFlex.xs="100">
                                             <mat-label>Máximo Grado de Estudios</mat-label>
-                                            <mat-select formControlName="escolaridad_id" (selectionChange)="addValidationDetallesEstudio($event)" required>
+                                            <mat-select formControlName="escolaridad_id" (valueChange)="addValidationDetallesEstudio($event)" required>
                                                 <mat-option *ngFor="let item of nivel_escolaridad" [value]="item.id">
                                                     {{item.label}}
                                                 </mat-option>
