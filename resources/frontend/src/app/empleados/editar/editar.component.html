@@ -251,13 +251,13 @@
                                             </mat-error>
                                         </mat-form-field>
                                         <mat-form-field fxFlex="33" fxFlex.xs="100">
-                                            <input matInput id="apellido_paterno" formControlName="apellido_paterno" placeholder="Apellido Paterno" required>
+                                            <input matInput id="apellido_paterno" formControlName="apellido_paterno" placeholder="Apellido Paterno" >
                                             <mat-error *ngIf="empleadoForm.get('apellido_paterno').invalid && (empleadoForm.get('apellido_paterno').dirty || empleadoForm.get('apellido_paterno').touched)">
                                                 <span *ngIf="empleadoForm.get('apellido_paterno').errors.required">El Apellido Paterno es obligatorio</span>
                                             </mat-error>
                                         </mat-form-field>
                                         <mat-form-field fxFlex="33" fxFlex.xs="100">
-                                            <input matInput id="apellido_materno" formControlName="apellido_materno" placeholder="Apellido Materno" required>
+                                            <input matInput id="apellido_materno" formControlName="apellido_materno" placeholder="Apellido Materno" >
                                             <mat-error *ngIf="empleadoForm.get('apellido_materno').invalid && (empleadoForm.get('apellido_materno').dirty || empleadoForm.get('apellido_materno').touched)">
                                                 <span *ngIf="empleadoForm.get('apellido_materno').errors.required">El Apellido Materno es obligatorio</span>
                                             </mat-error>

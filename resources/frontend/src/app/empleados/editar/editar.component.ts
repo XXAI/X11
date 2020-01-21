@@ -110,7 +110,7 @@ export class EditarComponent implements OnInit {
 
   nivel_escolaridad:any = [
     { id: 1,     label:'SECUNDARIA' },
-    { id: 2,     label:'PREPARATORIA' },
+    { id: 2,     label:'PREPARATORIA / BACHILLERATO' },
     { id: 3,     label:'TÉCNICA' },
     { id: 4,     label:'PASANTE DE LICENCIATURA' },
     { id: 5,     label:'TITULO DE LICENCIATURA' },
@@ -122,8 +122,8 @@ export class EditarComponent implements OnInit {
     'rfc': ['',Validators.required],
     'curp': ['',[Validators.required]],
     'nombre': ['',[Validators.required]],
-    'apellido_paterno': ['',[Validators.required]],
-    'apellido_materno': ['',[Validators.required]],
+    'apellido_paterno': [''],
+    'apellido_materno': [''],
     'sexo': ['',[Validators.required]],
     'fissa': ['',[Validators.required]],
     'figf': [''],

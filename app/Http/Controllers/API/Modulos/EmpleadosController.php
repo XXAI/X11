@@ -242,8 +242,8 @@ class EmpleadosController extends Controller
             'rfc'               => 'required',
             'curp'              => 'required',
             'nombre'            => 'required',
-            'apellido_paterno'            => 'required',
-            'apellido_materno'            => 'required',
+            //'apellido_paterno'            => 'required',
+            //'apellido_materno'            => 'required',
             'sexo'            => 'required',
             //'figf'            => 'required',
             'fissa'            => 'required',
@@ -251,6 +251,7 @@ class EmpleadosController extends Controller
             'tipo_trabajador_id'    => 'required',
             //'programa_id'            => 'required',
             'rama_id'            => 'required',
+            'turno_id'          => 'required',
             
             //'tipo_nomina_id'            => 'required'
             
@@ -267,6 +268,12 @@ class EmpleadosController extends Controller
         ];
 
         $inputs = Input::all();
+
+        if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
+        {   
+            throw new \Exception("Debe de escribir al menos un apellido, por favor verificar", 1);
+        }
+        
         $object = Empleado::where("rfc", "=", $inputs['rfc'])->orWhere("curp", "=",  $inputs['curp'])->first();
         if($object){
             throw new \Exception("Existe en empleado con el mismo rfc o curp, por favor verificar", 1);
@@ -557,13 +564,14 @@ class EmpleadosController extends Controller
             'rfc'               => 'required',
             'curp'              => 'required',
             'nombre'            => 'required',
-            'apellido_paterno'            => 'required',
-            'apellido_materno'            => 'required',
+            //'apellido_paterno'            => 'required',
+            //'apellido_materno'            => 'required',
             'sexo'            => 'required',
             'fissa'            => 'required',
             'tipo_trabajador_id'    => 'required',
             'rama_id'            => 'required',
-            'codigo_id'                => 'required',
+            //'codigo_id'                => 'required',
+            'turno_id'          => 'required',
             'cr_id'             => 'required',
             
             'calle'                     => 'required',
@@ -586,9 +594,21 @@ class EmpleadosController extends Controller
         $inputs = Input::all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
+        if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
+        {   
+            throw new \Exception("Debe de escribir al menos un apellido, por favor verificar", 1);
+        }
+        
+        if($inputs['rfc'] != $object->rfc)
+        {
+            $object = Empleado::where("rfc", "=", $inputs['rfc'])->orWhere("curp", "=",  $inputs['curp'])->first();
+            if($object){
+                throw new \Exception("Existe en empleado con el mismo rfc o curp, por favor verificar", 1);
+            }
+        }
+
         if ($v->fails()) {
             return response()->json(['error' => "Hace falta campos obligatorios. " ], HttpResponse::HTTP_CONFLICT);
-            //return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
         }
 
         DB::beginTransaction();
@@ -618,7 +638,6 @@ class EmpleadosController extends Controller
             $object->actividades             = $inputs['actividades'];
 
             $object->tipo_nomina_id         = 1;
-            $object->profesion_id           = $inputs['profesion_id'];
             
             $object->escolaridad_id         = $inputs['escolaridad_id'];
             $object->no_cedula              = $inputs['no_cedula'];
