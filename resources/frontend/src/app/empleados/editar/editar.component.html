@@ -375,7 +375,7 @@
                                         </mat-form-field-->
                                         <mat-form-field fxFlex="35" fxFlex.xs="100">
                                             <mat-label>Máximo Grado de Estudios</mat-label>
-                                            <mat-select formControlName="escolaridad_id" required>
+                                            <mat-select formControlName="escolaridad_id" (selectionChange)="addValidationDetallesEstudio($event)" required>
                                                 <mat-option *ngFor="let item of nivel_escolaridad" [value]="item.id">
                                                     {{item.label}}
                                                 </mat-option>
@@ -424,7 +424,10 @@
                                         </mat-form-field>
                                     </div>
                                 </mat-tab>
-                                <mat-tab label="Detalle de Estudios">
+                                <mat-tab>
+                                    <ng-template mat-tab-label>
+                                        <mat-icon *ngIf="!this.empleadoForm.get('estudios').valid" color="warn" class="example-tab-icon">{{ (this.empleadoForm.get('estudios').valid)?'':'warning' }}</mat-icon> Detalle de Estudios
+                                    </ng-template>
                                     <br>
                                     <div fxLayout="column" class="lista-escolaridad-detalle" formGroupName="estudios">
                                         <fieldset fxFlex fxLayout="column">

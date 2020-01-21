@@ -337,7 +337,7 @@ export class EditarComponent implements OnInit {
 
       this.estudiosLoading = {'LIC':false,'MA':false,'DOC':false,'DIP':false, 'ESP':false, 'TEC': false};
       this.filteredEstudios = {'LIC':null,'MA':null,'DOC':null,'DIP':null, 'ESP':null, 'TEC': null};
-        
+      
       let estudios = {
         'LIC':'licenciatura', 
         'MA':'maestria', 
@@ -392,6 +392,46 @@ export class EditarComponent implements OnInit {
       //console.log(this.tablaHorarioDias);
       //console.log(this.tablaHorarioHoras);
     });
+  }
+
+  addValidationDetallesEstudio(event){
+   let form_fields = ['maestria','doctorado', 'diplomado','especialidad','tecnico'];
+   for(let i in form_fields){
+    this._setValidator('estudios.'+form_fields[i],false);
+   }
+   this.empleadoForm.get('estudios').markAsPristine();
+
+    switch (event.value) {
+      case 7:
+        this._setValidator('estudios.doctorado',true);
+      case 6:
+        this._setValidator('estudios.maestria',true);
+      case 5:
+        this._setValidator('estudios.licenciatura',true);
+      case 4:
+        this._setValidator('estudios.licenciatura',true);
+        break
+      case 3:
+        this._setValidator('estudios.tecnico',true);
+        break;
+      default:
+        //
+        break;
+    }
+
+    this.empleadoForm.get('estudios').markAllAsTouched();
+  }
+
+  private _setValidator(form_field,validate){
+    if(validate){
+      this.empleadoForm.get(form_field).setValidators([Validators.required]);
+    }else{
+      this.empleadoForm.get(form_field).setValidators([]);
+    }
+    
+    if(!this.empleadoForm.get(form_field).value){
+      this.empleadoForm.get(form_field).setValue(null);
+    }
   }
 
   checkSelectedValue(field_name) {
