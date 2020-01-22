@@ -903,14 +903,16 @@ class EmpleadosController extends Controller
                 $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$empleado->clues)->where('cr',$empleado->cr_id)->whereNull('fecha_fin')->first();
 
                 if(!$clues_empleado){
-                    throw new Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
+                    throw new \Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
                 }
 
                 $clues_empleado->fecha_fin = date('Y-m-d');
                 $clues_empleado->save();
 
                 $empleado->adscripcionHistorial()->create(['clues'=>$parametros['clues'], 'cr'=>$parametros['cr'], 'fecha_inicio'=>date('Y-m-d')]);
-                
+                $empleado->clues = $parametros['clues'];
+                $empleado->cr_id = $parametros['cr'];
+
                 $empleado->estatus = 1;
             }
             $empleado->save();
@@ -1037,7 +1039,7 @@ class EmpleadosController extends Controller
 
             $empleado->estatus = 3;
             //$empleado->clues = null;
-            //$empleado->cr = null;
+            $empleado->cr_id = null;
             $empleado->save();
 
             return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
@@ -1261,9 +1263,9 @@ class EmpleadosController extends Controller
             });
 
             if(!$access->is_admin){
-                $empleados = $empleados->select('id','clues','cr_id','nombre','rfc','curp','estatus','validado',DB::raw('IF(cr_id IN ('.implode(',',$access->lista_cr).'),1,0) as empleado_propio'));
+                $empleados = $empleados->select('id','clues','cr_id',DB::raw('concat(apellido_paterno, " ", apellido_materno," ",nombre ) as nombre'),'rfc','curp','estatus','validado',DB::raw('IF(cr_id IN ('.implode(',',$access->lista_cr).'),1,0) as empleado_propio'));
             }else{
-                $empleados = $empleados->select('id','clues','cr_id','nombre','rfc','curp','estatus','validado',DB::raw('1 as empleado_propio'));
+                $empleados = $empleados->select('id','clues','cr_id',DB::raw('concat(apellido_paterno, " ", apellido_materno," ",nombre ) as nombre'),'rfc','curp','estatus','validado',DB::raw('1 as empleado_propio'));
             }
             
             if(isset($parametros['page'])){
