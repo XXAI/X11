@@ -945,7 +945,7 @@ class EmpleadosController extends Controller
                 $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$datos_transferencia->clues_origen)->where('cr',$datos_transferencia->cr_origen_id)->whereNull('fecha_fin')->first();
 
                 if(!$clues_empleado){
-                    throw new Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
+                    throw new \Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
                 }
 
                 $clues_empleado->fecha_fin = $parametros['fecha_transferencia'];

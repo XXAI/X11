@@ -11,7 +11,7 @@
                     <th width="1">CLUES</th><td>{{cluesOrigen.nombre_unidad}}</td><td fxHide.xs="true" width="1">{{cluesOrigen.clues}}</td>
                 </tr>
                 <tr>
-                    <th>CR</th><td>{{crOrigen.descripcion}}</td><td fxHide.xs="true">{{crOrigen.cr}}</td>
+                    <th>CR</th><td>{{(crOrigen)?crOrigen.descripcion:'Sin CR Origen encontrado'}}</td><td fxHide.xs="true">{{(crOrigen)?crOrigen.cr:'---'}}</td>
                 </tr>
             </table>
         </section>
