@@ -220,8 +220,16 @@ export class ListaComponent implements OnInit {
       params.active_filter = true;
     }
 
+    let dummyPaginator;
     if(event){
       this.sharedService.setDataToCurrentApp('paginator',event);
+    }else{
+      dummyPaginator = {
+        length: 0,
+        pageIndex: this.paginator.pageIndex,
+        pageSize: this.paginator.pageSize,
+        previousPageIndex: this.paginator.previousPage //(this.currentPage > 0)?this.currentPage-1:0
+      };
     }
 
     this.sharedService.setDataToCurrentApp('searchQuery',this.searchQuery);
@@ -239,6 +247,14 @@ export class ListaComponent implements OnInit {
             this.dataSource = response.data.data;
             this.resultsLength = response.data.total;
           }
+          if(event){
+            event.length = this.resultsLength;
+            this.sharedService.setDataToCurrentApp('paginator',event);
+          }else{
+            dummyPaginator.length = this.resultsLength;
+            this.sharedService.setDataToCurrentApp('paginator',dummyPaginator);
+          }
+          
         }
         this.isLoading = false;
       },
