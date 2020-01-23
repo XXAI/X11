@@ -822,9 +822,9 @@
                 </mat-card-content>
                 <mat-card-actions fxHide.xs="true" fxLayout.xs="column">
                     <ng-container *ngIf="puedeTransferir">
-                        <button mat-raised-button color="warn" (click)="confirmUnlinkEmployee()"><mat-icon>link_off</mat-icon></button>
-                        <button mat-raised-button color="warn" (click)="showBajaDialog()"><mat-icon>remove_circle</mat-icon></button>
-                        <button mat-raised-button color="primary" (click)="showTransferenciaEmpleadoDialog(datos_empleado.id)"><mat-icon>swap_horiz</mat-icon></button>
+                        <button mat-raised-button color="warn" (click)="confirmUnlinkEmployee()" matTooltip="Desligar Empleado"   [matTooltipPosition]="'above'"><mat-icon>link_off</mat-icon></button>
+                        <button mat-raised-button color="warn" (click)="showBajaDialog()" matTooltip="Dar de Baja Empleado"   [matTooltipPosition]="'above'"><mat-icon>remove_circle</mat-icon></button>
+                        <button mat-raised-button color="primary" (click)="showTransferenciaEmpleadoDialog(datos_empleado.id)" matTooltip="Mover Empleado"   [matTooltipPosition]="'above'"><mat-icon>swap_horiz</mat-icon></button>
                     </ng-container>
                     <button *ngIf="necesitaActivarse" mat-raised-button color="primary" (click)="activateEmployee(datos_empleado.id)"><mat-icon>redo</mat-icon></button>
                     <span fxFlex></span>

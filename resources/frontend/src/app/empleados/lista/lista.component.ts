@@ -226,9 +226,9 @@ export class ListaComponent implements OnInit {
     }else{
       dummyPaginator = {
         length: 0,
-        pageIndex: this.paginator.pageIndex,
-        pageSize: this.paginator.pageSize,
-        previousPageIndex: this.paginator.previousPage //(this.currentPage > 0)?this.currentPage-1:0
+        pageIndex: (this.paginator)?this.paginator.pageIndex:this.currentPage,
+        pageSize: (this.paginator)?this.paginator.pageSize:this.pageSize,
+        previousPageIndex: (this.paginator)?this.paginator.previousPage:((this.currentPage > 0)?this.currentPage-1:0)
       };
     }
 
