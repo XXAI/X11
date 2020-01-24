@@ -102,7 +102,11 @@ class EmpleadosController extends Controller
                 if(isset($parametros['reporte'])){
                     //Reporte Personal Activo
                     $empleados = $empleados->select('empleados.*','profesiones.descripcion as profesion','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion')
-                                        ->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
+                                        ->leftjoin('empleado_escolaridad_detalles as escolaridad_detalle',function($join){
+                                            $join->on('escolaridad_detalle.empleado_id','empleados.id')->where('escolaridad_detalle.tipo_estudio','LIC');
+                                        })
+                                        //->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
+                                        ->leftjoin('catalogo_profesion as profesiones','profesiones.id','escolaridad_detalle.profesion_id')
                                         ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
                                         ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
                                         ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
