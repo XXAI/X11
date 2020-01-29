@@ -8,6 +8,20 @@ export class AppsListService {
 
   constructor() { }
 
+  defaultChildRoute(appRoute): string {
+    console.log('AppHelper ::: ' + appRoute);
+    let apps = JSON.parse(localStorage.getItem('userApps'));
+    for (let i = 0; i < apps.length; i++) {
+        let app = apps[i];
+        if(app.route == appRoute && app.hideHome){
+            if(app.children && app.children.length > 0){
+                return app.children[0].route;
+            }
+        }
+    }
+    return '...';
+  }
+
   getApps(): any[] {
     let userApps: App[] = [];
 

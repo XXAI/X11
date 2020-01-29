@@ -93,4 +93,33 @@ class CatalogosController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    public function obtenerCatalogos(){
+        try{
+            $catalogos = Input::all();
+
+            $result_catalogos = [];
+
+            foreach ($catalogos as $catalogo) {
+                switch ($catalogo) {
+                    case 'rama':
+                        $result_catalogos[$catalogo] = Rama::all();
+                        break;
+                    case 'tipo_profesion':
+                        $result_catalogos[$catalogo] = TipoProfesion::all();
+                        break;
+                    case 'tipo_baja':
+                        $result_catalogos[$catalogo] = TipoBaja::all();
+                        break;
+                    default:
+                        throw new \Exception("El catalogo ".$catalogo." no esta soportado en esta función", 1);
+                        break;
+                }
+            }
+
+            return response()->json(['data'=>$result_catalogos], HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
 }

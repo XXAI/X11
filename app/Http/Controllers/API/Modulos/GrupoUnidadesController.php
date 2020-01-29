@@ -12,35 +12,39 @@ use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 
-//use App\Models\Empleado;
-//use App\Models\EmpleadoEscolaridad;
-use App\Models\Profesion;
-/*use App\Models\Cr;
-use App\Models\Rama;
-use App\Models\PermutaAdscripcion;
-use App\Models\CluesEmpleado;
-use App\Models\User;*/
+use App\Models\GrupoUnidades;
 
-class ProfesionesController extends Controller
+class GrupoUnidadesController extends Controller
 {
     public function index()
     {
         try{
             $parametros = Input::all();
-            $profesiones = Profesion::with('tipoProfesion','rama')->orderBy('tipo_profesion_id')->orderBy('descripcion');
+            $grupos = GrupoUnidades::orderBy('descripcion');
+
+            $elementos_por_grupo = DB::table('rel_clues_grupo_unidades')
+                   ->select('*', DB::raw('count(distinct cr_id) as conteo_elementos'))
+                   ->whereNull('deleted_at')
+                   ->groupBy('grupo_unidades_id');
+
+            $grupos = $grupos->leftJoinSub($elementos_por_grupo, 'clues_grupo_unidades', function ($join) {
+                            $join->on('grupos_unidades.id', '=', 'clues_grupo_unidades.grupo_unidades_id');
+                        })->select('grupos_unidades.*','clues_grupo_unidades.conteo_elementos');
             
             if(isset($parametros['query'])){
-                $profesiones = $profesiones->where(function($query)use($parametros){
+                $grupos = $grupos->where(function($query)use($parametros){
                     return $query->where('descripcion','LIKE','%'.$parametros['query'].'%');
                 });
             }
 
             if(isset($parametros['page'])){
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
-                $profesiones = $profesiones->paginate($resultadosPorPagina);
+                $grupos = $grupos->paginate($resultadosPorPagina);
+            }else{
+                $grupos = $grupos->get();
             }
 
-            return response()->json(['data'=>$profesiones],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$grupos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
@@ -50,7 +54,7 @@ class ProfesionesController extends Controller
     public function show($id)
     {
         try{
-            $profesion = Profesion::find($id);
+            $profesion = GrupoUnidades::find($id);
             return response()->json(['data'=>$profesion],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
@@ -93,7 +97,6 @@ class ProfesionesController extends Controller
             
             $object->descripcion            = $inputs['descripcion'];
             $object->tipo_profesion_id      = $inputs['tipo_profesion_id'];
-            $object->rama_id                = $inputs['rama_id'];
 
             $object->save();
     
@@ -139,7 +142,6 @@ class ProfesionesController extends Controller
             
             $object->descripcion            = $inputs['descripcion'];
             $object->tipo_profesion_id      = $inputs['tipo_profesion_id'];
-            $object->rama_id                = $inputs['rama_id'];
 
             $object->save();
     

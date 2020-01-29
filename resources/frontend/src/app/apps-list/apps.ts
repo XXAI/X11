@@ -21,7 +21,8 @@ export const APPS:App [] = [
     { name:'Catálogos', route: "catalogos",  icon: "assets/icons/catalogos.svg", isHub:true, hideHome:true, 
       children:[
         { name:'Clues',route:'catalogos/clues', icon:'insert_drive_file', permission:"55sHMIb36J8r9Dgr3uvfxO3wX1ZvudbL" },
-        { name:'Profesiones',route:'catalogos/profesiones', icon:'school', permission:"NBhsLjYRsIJmDa9igB4sKBxd91thtxWr" }
+        { name:'Grupos',route:'catalogos/grupos', icon:'group_work', permission:"v5xfsLRdLaESqktB1HKQwwWXkfVP4jQe" },
+        { name:'Profesiones',route:'catalogos/profesiones', icon:'school', permission:"NBhsLjYRsIJmDa9igB4sKBxd91thtxWr" },
       ],
     },
     /*

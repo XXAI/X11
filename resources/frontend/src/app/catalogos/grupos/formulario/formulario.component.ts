@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ProfesionesService  } from '../profesiones.service';
+import { GruposService  } from '../grupos.service';
 import { SharedService } from '../../../shared/shared.service';
 
-export interface ProfesionDialogData {
+export interface GrupoDialogData {
   id?: number;
 }
 
@@ -17,81 +17,53 @@ export class FormularioComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<FormularioComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ProfesionDialogData,
+    @Inject(MAT_DIALOG_DATA) public data: GrupoDialogData,
     private fb: FormBuilder,
     private sharedService: SharedService,
-    private profesionesService: ProfesionesService
+    private gruposService: GruposService
   ) { }
 
   isSaving:boolean = false;
   isLoading:boolean = false;
 
-  tiposProfesiones = <any>[];
-  ramas = <any>[];
-
-  profesionId:number;
+  grupoId:number;
   tituloDialogo:string;
 
-  profesionForm = this.fb.group({
-    'tipo_profesion_id': ['',[Validators.required]],
-    'rama_id': ['',[]],
+  grupoForm = this.fb.group({
     'descripcion': ['',[Validators.required]]
   });
 
   ngOnInit() {
     this.isLoading = true;
 
-    this.profesionesService.obtenerCatalogos(['tipo_profesion','rama']).subscribe(
-      response =>{
-        console.log(response);
-        if(response.error) {
-          let errorMessage = response.error.message;
-          this.sharedService.showSnackBar(errorMessage, null, 3000);
-        } else {
-          this.tiposProfesiones = response.data['tipo_profesion'];
-          this.ramas = response.data['rama'];
-        }
+    if(this.data.id){
+      this.grupoId = this.data.id;
+      this.tituloDialogo = 'Editar';
 
-        if(this.data.id){
-          this.profesionId = this.data.id;
-          this.tituloDialogo = 'Editar';
-    
-          this.profesionesService.verDatosProfesion(this.profesionId).subscribe(
-            response => {
-              console.log(response);
-              if(response.error) {
-                let errorMessage = response.error.message;
-                this.sharedService.showSnackBar(errorMessage, null, 3000);
-              } else {
-                this.profesionForm.patchValue(response.data);
-              }
-              this.isLoading = false;
-            },
-            errorResponse =>{
-              var errorMessage = "Ocurrió un error.";
-              if(errorResponse.status == 409){
-                errorMessage = errorResponse.error.message;
-              }
-              this.sharedService.showSnackBar(errorMessage, null, 3000);
-              this.isLoading = false;
-            }
-          );
-        }else{
+      this.gruposService.verDatosGrupo(this.grupoId).subscribe(
+        response => {
+          console.log(response);
+          if(response.error) {
+            let errorMessage = response.error.message;
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+          } else {
+            this.grupoForm.patchValue(response.data);
+          }
           this.isLoading = false;
-          this.tituloDialogo = 'Nueva';
+        },
+        errorResponse =>{
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+          this.isLoading = false;
         }
-      },
-      errorResponse =>{
-        var errorMessage = "Ocurrió un error.";
-        if(errorResponse.status == 409){
-          errorMessage = errorResponse.error.message;
-        }
-        this.sharedService.showSnackBar(errorMessage, null, 3000);
-        this.isLoading = false;
-      }
-    );
-
-    
+      );
+    }else{
+      this.isLoading = false;
+      this.tituloDialogo = 'Nuevo';
+    }
   }
 
   cancel(): void {
@@ -99,10 +71,10 @@ export class FormularioComponent implements OnInit {
   }
 
   guardar():void {
-    if(this.profesionForm.valid){
+    if(this.grupoForm.valid){
       this.isSaving = true;
-      if(this.profesionId){
-        this.profesionesService.actualizarProfesion(this.profesionId,this.profesionForm.value).subscribe(
+      if(this.grupoId){
+        this.gruposService.actualizarGrupo(this.grupoId,this.grupoForm.value).subscribe(
           response => {
             console.log(response);
             this.isSaving = false;
@@ -110,7 +82,7 @@ export class FormularioComponent implements OnInit {
               let errorMessage = response.error.message;
               this.sharedService.showSnackBar(errorMessage, null, 3000);
             } else {
-              console.log('profesion editada');
+              console.log('Grupo editado');
               this.dialogRef.close(true);
             }
             //this.isLoading = false;
@@ -126,7 +98,7 @@ export class FormularioComponent implements OnInit {
           }
         );
       }else{
-        this.profesionesService.crearProfesion(this.profesionForm.value).subscribe(
+        this.gruposService.crearGrupo(this.grupoForm.value).subscribe(
           response => {
             console.log(response);
             this.isSaving = false;
@@ -134,7 +106,7 @@ export class FormularioComponent implements OnInit {
               let errorMessage = response.error.message;
               this.sharedService.showSnackBar(errorMessage, null, 3000);
             } else {
-              console.log('profesion creada');
+              console.log('Grupo creado');
               this.dialogRef.close(true);
             }
             //this.isLoading = false;
@@ -153,5 +125,4 @@ export class FormularioComponent implements OnInit {
       //this.dialogRef.close(true);
     }
   }
-
 }

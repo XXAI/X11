@@ -13,7 +13,6 @@
             </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.xs="column">
-            <div fxFlex="50"></div>
             <mat-form-field fxFlex="50" fxFlex.xs="100">
                 <mat-label>Tipo Profesion</mat-label>
                 <mat-select formControlName="tipo_profesion_id" required>
@@ -23,6 +22,17 @@
                 </mat-select>
                 <mat-error *ngIf="profesionForm.get('tipo_profesion_id').invalid && (profesionForm.get('tipo_profesion_id').dirty || profesionForm.get('tipo_profesion_id').touched)">
                     <span *ngIf="profesionForm.get('tipo_profesion_id').errors.required">El tipo de profesión es obligatorio</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="50" fxFlex.xs="100">
+                <mat-label>Rama</mat-label>
+                <mat-select formControlName="rama_id">
+                    <mat-option *ngFor="let item of ramas" [value]="item.id">
+                        {{item.descripcion}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="profesionForm.get('rama_id').invalid && (profesionForm.get('rama_id').dirty || profesionForm.get('rama_id').touched)">
+                    <span *ngIf="profesionForm.get('rama_id').errors.required">La rama es obligatoria</span>
                 </mat-error>
             </mat-form-field>
         </div>

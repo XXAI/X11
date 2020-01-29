@@ -7,14 +7,14 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class ProfesionesService {
+export class GruposService {
 
-  url = `${environment.base_url}/profesiones`;
-  url_catalogos = `${environment.base_url}/obtener-catalogos`;
+  url = `${environment.base_url}/grupos_unidades`;
+  //url_cat_tipo_profesion = `${environment.base_url}/catalogo-tipo-profesion`;
   
   constructor(private http: HttpClient) { }
 
-  obtenerListaProfesiones(payload):Observable<any> {
+  obtenerListaGrupos(payload):Observable<any> {
     return this.http.get<any>(this.url,{params: payload}).pipe(
       map( response => {
         return response;
@@ -22,7 +22,7 @@ export class ProfesionesService {
     );
   }
 
-  verDatosProfesion(id:any):Observable<any> {
+  verDatosGrupo(id:any):Observable<any> {
     return this.http.get<any>(this.url+'/'+id).pipe(
       map( response => {
         return response;
@@ -30,7 +30,7 @@ export class ProfesionesService {
     );
   }
 
-  actualizarProfesion(id:any, form:any):Observable<any> {
+  actualizarGrupo(id:any, form:any):Observable<any> {
     return this.http.put<any>(this.url +"/"+ id, form).pipe(
       map( (response: any) => {        
         return response;
@@ -38,7 +38,7 @@ export class ProfesionesService {
     ));
   }
 
-  crearProfesion(form:any):Observable<any> {
+  crearGrupo(form:any):Observable<any> {
     return this.http.post<any>(this.url, form).pipe(
       map( (response: any) => {        
         return response;
@@ -46,7 +46,7 @@ export class ProfesionesService {
     ));
   }
 
-  eliminarProfesion(id:any):Observable<any> {
+  eliminarGrupo(id:any):Observable<any> {
     return this.http.delete<any>(this.url +"/"+ id).pipe(
       map( (response: any) => {        
         return response;
@@ -54,11 +54,11 @@ export class ProfesionesService {
     ));
   }
 
-  obtenerCatalogos(payload):Observable<any>{
-    return this.http.get<any>(this.url_catalogos,{params:payload}).pipe(
+  /*obtenerCatalogoTipoProfesion():Observable<any>{
+    return this.http.get<any>(this.url_cat_tipo_profesion).pipe(
       map( response => {
         return response;
       })
     );
-  }
+  }*/
 }

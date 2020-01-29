@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfesionesService } from '../profesiones.service';
+import { GruposService } from '../grupos.service';
 import { SharedService } from '../../../shared/shared.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
@@ -29,13 +29,10 @@ export class ListaComponent implements OnInit {
 
   mediaSize: string;
 
-  displayedColumns: string[] = ['descripcion', 'tipo', 'rama','actions'];
+  displayedColumns: string[] = ['descripcion', 'elementos', 'actions'];
   dataSource: any = [];
 
-  constructor(private sharedService: SharedService, private profesionesService: ProfesionesService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
-
-  //@ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  //@ViewChild(MatTable, {static:false}) usersTable: MatTable<any>;
+  constructor(private sharedService: SharedService, private gruposService: GruposService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
 
   ngOnInit() {
     this.mediaObserver.media$.subscribe(
@@ -43,10 +40,10 @@ export class ListaComponent implements OnInit {
         this.mediaSize = response.mqAlias;
     });
 
-    this.loadProfesionesData();
+    this.loadGruposData();
   }
 
-  public loadProfesionesData(event?:PageEvent){
+  public loadGruposData(event?:PageEvent){
     this.isLoading = true;
     let params:any;
     if(!event){
@@ -60,7 +57,7 @@ export class ListaComponent implements OnInit {
 
     params.query = this.searchQuery;
 
-    this.profesionesService.obtenerListaProfesiones(params).subscribe(
+    this.gruposService.obtenerListaGrupos(params).subscribe(
       response =>{
         if(response.error) {
           let errorMessage = response.error.message;
@@ -87,7 +84,7 @@ export class ListaComponent implements OnInit {
     return event;
   }
 
-  mostrarFormularioProfesion(id?:number){
+  mostrarFormularioGrupo(id?:number){
     let configDialog:any;
     if(this.mediaSize == 'xs'){
       configDialog = {
@@ -112,11 +109,10 @@ export class ListaComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
-        this.loadProfesionesData(this.pageEvent);
+        this.loadGruposData(this.pageEvent);
       }
     });
   }
-
 
   cleanSearch(){
     this.searchQuery = '';
@@ -127,7 +123,8 @@ export class ListaComponent implements OnInit {
     this.paginator.pageIndex = 0;
     this.paginator.pageSize = this.pageSize;
     this.loadEmpleadosData(null);*/
-    this.loadProfesionesData();
+    this.loadGruposData();
   }
 
 }
+

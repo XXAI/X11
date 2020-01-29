@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>{{tituloDialogo}} Grupo </h1>
+<div mat-dialog-content>
+    <div class="form-container" [formGroup]="grupoForm">
+        <div class="loading-shade" *ngIf="isLoading">
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column">
+            <mat-form-field  fxFlex>
+                <input matInput placeholder="Descrición" formControlName="descripcion" [type]="'text'" (keyup.enter)="guardar()" cdkFocusInitial required autocomplete="off">
+                <mat-error *ngIf="grupoForm.get('descripcion').invalid && (grupoForm.get('descripcion').dirty || grupoForm.get('descripcion').touched)">
+                    <span *ngIf="grupoForm.get('descripcion').errors.required">La descripción es obligatoria</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <span fxFlex></span>
+    <button mat-button (click)='cancel()'>Cancelar</button>
+    <button mat-raised-button (click)='guardar()' [class.button-spinner]="isSaving" [disabled]="!grupoForm.valid" color="primary">Guardar</button>
+</div>

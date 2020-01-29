@@ -166,7 +166,7 @@ export class EditarComponent implements OnInit {
     //Datos personales
     'telefono_fijo': [''],
     'telefono_celular': ['', [Validators.required]],
-    'correo_personal': ['', [Validators.required]],
+    'correo_personal': ['', [Validators.required,Validators.email]],
     
     //escolaridad
     'escolaridad_id': ['', [Validators.required]],
@@ -652,6 +652,8 @@ export class EditarComponent implements OnInit {
           if(this.empleadoForm.get('escolaridad_id').value){
             this.addValidationDetallesEstudio(this.empleadoForm.get('escolaridad_id').value);
           }
+
+          this.empleadoForm.markAllAsTouched();
         }
         
         this.isLoading = false;
