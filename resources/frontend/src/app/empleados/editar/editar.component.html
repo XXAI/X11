@@ -97,7 +97,7 @@
                                         <mat-form-field fxFlex="20" fxFlex.xs="100">
                                             <input matInput [matDatepicker]="picker2" placeholder="Ingreso al Gob. Fed."  formControlName="figf" readonly>
                                             <mat-hint align="start">&nbsp;<mat-icon>keyboard_arrow_up</mat-icon> Seleccionar fecha</mat-hint>
-                                            <button mat-icon-button matSuffix (click)="empleadoForm.get('figf').setValue()" [attr.aria-label]="'Limpiar Fecha Gob Fral'">
+                                            <button mat-icon-button matSuffix (click)="empleadoForm.get('figf').setValue('')" [attr.aria-label]="'Limpiar Fecha Gob Fral'">
                                                 <mat-icon>clear</mat-icon>
                                             </button>
                                             <mat-datepicker-toggle matPrefix [for]="picker2"></mat-datepicker-toggle>
