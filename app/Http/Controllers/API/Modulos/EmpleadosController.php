@@ -48,7 +48,9 @@ class EmpleadosController extends Controller
 
             //filtro de valores por permisos del usuario
             if(!$access->is_admin){
-                $empleados = $empleados->where('empleados.estatus','!=','3')->where(function($query)use($access){
+                $empleados = $empleados->where(function($query){
+                    $query->where('empleados.estatus','=','1')->orWhere('empleados.estatus','=','4');
+                })->where(function($query)use($access){
                     $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
                         ->orWhere(function($query2)use($access){
                             $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
