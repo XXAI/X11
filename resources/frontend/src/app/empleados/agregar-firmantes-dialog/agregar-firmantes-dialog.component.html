@@ -20,7 +20,7 @@
                                                     <mat-option *ngIf="firmanteIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                                                     <ng-container *ngIf="!firmanteIsLoading">
                                                         <mat-option *ngFor="let item of filteredFirmante" [value]="item">
-                                                            [{{item.rfc}}] {{ item.nombre }}
+                                                            [{{item.rfc}}] {{ item.nombre }} {{ item.apellido_paterno }} {{ item.apellido_materno }}
                                                         </mat-option>
                                                     </ng-container>
                                                 </mat-autocomplete>
@@ -62,7 +62,7 @@
                                         <!-- Username Column -->
                                         <ng-container matColumnDef="Nombre">
                                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo Firmante </th>
-                                            <td mat-cell *matCellDef="let row"> {{row.empleado.nombre}} </td>
+                                            <td mat-cell *matCellDef="let row"> {{row.empleado.nombre}} {{row.empleado.apellido_paterno}} {{row.empleado.apellido_materno }} </td>
                                         </ng-container>
                                         <!-- ID Column -->
                                         <ng-container matColumnDef="Cargo">

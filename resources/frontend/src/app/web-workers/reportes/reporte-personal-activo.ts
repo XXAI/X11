@@ -206,7 +206,8 @@ export class ReportePersonalActivo{
               
 
               arreglo_espacios.push(obj_espacios);
-              arreglo_firmantes.push({text: reportData.firmantes[i].empleado.nombre+ "\n"+reportData.firmantes[i].cargo, style: 'datos'});
+              let firmante = reportData.firmantes[i].empleado;
+              arreglo_firmantes.push({text: firmante.nombre+" "+firmante.apellido_paterno+" "+firmante.apellido_materno+ "\n"+reportData.firmantes[i].cargo, style: 'datos'});
             }
             datos.content.push(
               {

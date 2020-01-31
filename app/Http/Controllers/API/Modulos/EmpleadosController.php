@@ -1301,7 +1301,7 @@ class EmpleadosController extends Controller
             $access = $this->getUserAccessData();
             
             $empleados = Empleado::where(function($query)use($parametros){
-                return $query->where('nombre','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                return $query->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
                             ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
             })->limit(20);
