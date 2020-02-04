@@ -886,7 +886,12 @@ export class EditarComponent implements OnInit {
 
     //Pasando de objeto fecha a cadena ISO
     let figf = formData.figf;
-    formData.figf = figf.substring(0,10);
+    if(formData.figf)
+    {
+      formData.figf = figf.substring(0,10);
+    }else{
+      formData.figf = null;
+    }
 
     if(formData.codigo){
       formData.codigo_id = formData.codigo.codigo;
