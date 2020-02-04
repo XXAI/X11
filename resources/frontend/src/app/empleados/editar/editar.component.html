@@ -587,13 +587,22 @@
                                                 <mat-form-field fxFlex>
                                                     <input matInput placeholder="Técnico" [matAutocomplete]="estudiosTecnicoAuto" formControlName='tecnico' (blur)="checkSelectedValue('estudios.tecnico')">
                                                     <mat-autocomplete #estudiosTecnicoAuto="matAutocomplete" [displayWith]="displayProfesionFn" [panelWidth]="'auto'">
-                                                        <mat-option *ngIf="estudiosLoading.DIP" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                                        <mat-option *ngIf="estudiosLoading.TEC" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                                                         <ng-container *ngIf="!estudiosLoading.TEC">
                                                             <mat-option *ngFor="let item of filteredEstudios.TEC" [value]="item">
                                                                 {{ item.descripcion }}
                                                             </mat-option>
                                                         </ng-container>
                                                     </mat-autocomplete>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px"  formGroupName="datos_tecnico" *ngIf="empleadoForm.get('estudios.tecnico').value">
+                                                <section fxFlex="none" style="margin-top:5px; margin-bottom:5px; padding-top: .84375em;">
+                                                    &nbsp;
+                                                    <mat-checkbox formControlName="titulo" value="true">Titulo</mat-checkbox>
+                                                </section>
+                                                <mat-form-field fxFlex>
+                                                    <input matInput formControlName="cedula" placeholder="Cédula">
                                                 </mat-form-field>
                                             </div>
                                         </fieldset>

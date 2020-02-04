@@ -118,6 +118,16 @@ export class ReportePersonalActivo{
         for(let i = 0; i < reportData.items.length; i++){
           let empleado = reportData.items[i];
 
+          if(empleado.escolaridad_detalle.length > 0){
+            empleado.profesion = empleado.escolaridad_detalle[0].profesion.descripcion;
+            if(empleado.escolaridad_detalle[1] && empleado.escolaridad_detalle[1].tipo_estudio == 'LIC'){
+              empleado.profesion = empleado.escolaridad_detalle[1].profesion.descripcion;
+            }
+            delete empleado.escolaridad_detalle;
+          }else{
+            empleado.profesion = '';
+          }
+
           if(cr != empleado.cr_id){
             cr = empleado.cr_id;
             if(clues != empleado.clues){

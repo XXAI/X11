@@ -210,7 +210,7 @@ export class EditarComponent implements OnInit {
       }),
       'tecnico':[''],
       'datos_tecnico': this.fb.group({
-        'descripcion':['']
+        'titulo':[''],'cedula':[''],'descripcion':['']
       }),
       'cursos':[''], 
       'ingles':['']

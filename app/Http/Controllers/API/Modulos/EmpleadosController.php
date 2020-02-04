@@ -103,12 +103,12 @@ class EmpleadosController extends Controller
             } else {
                 if(isset($parametros['reporte'])){
                     //Reporte Personal Activo
-                    $empleados = $empleados->select('empleados.*','profesiones.descripcion as profesion','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion')
-                                        ->leftjoin('empleado_escolaridad_detalles as escolaridad_detalle',function($join){
-                                            $join->on('escolaridad_detalle.empleado_id','empleados.id')->where('escolaridad_detalle.tipo_estudio','LIC');
-                                        })
+                    $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion') //'profesiones.descripcion as profesion',
+                                        //->leftjoin('empleado_escolaridad_detalles as escolaridad_detalle',function($join){
+                                        //$join->on('escolaridad_detalle.empleado_id','empleados.id')->where('escolaridad_detalle.tipo_estudio','LIC');
+                                        //})
                                         //->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
-                                        ->leftjoin('catalogo_profesion as profesiones','profesiones.id','escolaridad_detalle.profesion_id')
+                                        //->leftjoin('catalogo_profesion as profesiones','profesiones.id','escolaridad_detalle.profesion_id')
                                         ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
                                         ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
                                         ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
@@ -116,6 +116,9 @@ class EmpleadosController extends Controller
                                         ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
                                         ->orderBy('clues','asc')
                                         ->orderBy('cr_id','asc')
+                                        ->with(['escolaridadDetalle'=>function($query){
+                                            $query->whereIn('tipo_estudio',['LIC','TEC']);
+                                        },'escolaridadDetalle.profesion']);
                                         ;
                 }
                 $empleados = $empleados->get();
@@ -462,7 +465,7 @@ class EmpleadosController extends Controller
 
             $estudio_form = false;
             if($estudios['tecnico']){
-                $estudio_form = ['profesion_id'=>$estudios['tecnico']['id'], 'tipo_estudio'=>'TEC', 'titulado'=>null, 'cedula'=>null, 'descripcion' => $estudios['datos_tecnico']['descripcion']];
+                $estudio_form = ['profesion_id'=>$estudios['tecnico']['id'], 'tipo_estudio'=>'TEC', 'titulado'=>$estudios['datos_tecnico']['titulo'], 'cedula'=>$estudios['datos_tecnico']['cedula'], 'descripcion' => $estudios['datos_tecnico']['descripcion']];
             }
             if(isset($estudios_ids['TEC'])){
                 if($estudio_form === false){
@@ -773,7 +776,7 @@ class EmpleadosController extends Controller
 
             $estudio_form = false;
             if($estudios['tecnico']){
-                $estudio_form = ['profesion_id'=>$estudios['tecnico']['id'], 'tipo_estudio'=>'TEC', 'titulado'=>null, 'cedula'=>null, 'descripcion' => $estudios['datos_tecnico']['descripcion']];
+                $estudio_form = ['profesion_id'=>$estudios['tecnico']['id'], 'tipo_estudio'=>'TEC', 'titulado'=>$estudios['datos_tecnico']['titulo'], 'cedula'=>$estudios['datos_tecnico']['cedula'], 'descripcion' => $estudios['datos_tecnico']['descripcion']];
             }
             if(isset($estudios_ids['TEC'])){
                 if($estudio_form === false){

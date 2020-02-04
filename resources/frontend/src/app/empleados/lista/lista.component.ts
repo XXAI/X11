@@ -571,7 +571,7 @@ export class ListaComponent implements OnInit {
               title: this.reportTitle,
               showSigns: this.reportIncludeSigns, 
             };
-
+            console.log(response.data);
             reportWorker.postMessage({data:{items: response.data, config:config, firmantes: response.firmantes, responsables: response.responsables},reporte:'empleados/personal-activo'});
         }
         this.isLoading = false;
