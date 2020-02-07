@@ -50,6 +50,12 @@ export class ListaComponent implements OnInit {
   isLoadingPDFArea: boolean = false;
   mediaSize: string;
 
+  puedeFinalizar: boolean = false;
+  capturaFinalizada: boolean = false;
+  countPersonalActivo: number = 0;
+  countPersonalValidado: number = 0;
+  percentPersonalValidado: number = 0;
+
   showMyStepper:boolean = false;
   showReportForm:boolean = false;
   stepperConfig:any = {};
@@ -241,6 +247,19 @@ export class ListaComponent implements OnInit {
           let errorMessage = response.error.message;
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
+
+          if(response.estatus.grupo_usuario){
+            this.puedeFinalizar = true;
+            this.capturaFinalizada = response.estatus.finalizado;
+          }else{
+            this.puedeFinalizar = false;
+            this.capturaFinalizada = false;
+          }
+
+          this.countPersonalActivo = response.estatus.estatus_validacion.total_activos;
+          this.countPersonalValidado = response.estatus.estatus_validacion.total_validados;
+          this.percentPersonalValidado = response.estatus.estatus_validacion.porcentaje;
+
           this.dataSource = [];
           this.resultsLength = 0;
           if(response.data.total > 0){
@@ -489,6 +508,39 @@ export class ListaComponent implements OnInit {
       this.showMyStepper = false;
     }
     //this.showMyStepper = !this.showMyStepper;
+  }
+
+  endValiations(){
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Finalizar Captura',dialogMessage:'¿Realmente desea finalizar la validación de los datos? este proceso cerrará la plataforma para edición de datos.',validationString:'FINALIZAR',btnColor:'primary',btnText:'Finalizar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.isLoading = true;
+        this.empleadosService.finalizarValidacion().subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+            } else {
+              console.log(response);
+              this.puedeFinalizar = true;
+              this.capturaFinalizada = response.finalizado;
+            }
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.message;
+            }
+            //this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }
+    });
   }
 
   reportePersonalActivo(){

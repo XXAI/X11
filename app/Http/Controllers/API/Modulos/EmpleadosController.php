@@ -45,11 +45,11 @@ class EmpleadosController extends Controller
                                     $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                 }
                             });
-
+            
             //filtro de valores por permisos del usuario
             if(!$access->is_admin){
                 $empleados = $empleados->where(function($query){
-                    $query->where('empleados.estatus','=','1')->orWhere('empleados.estatus','=','4');
+                    $query->whereIn('empleados.estatus',[1,4]);
                 })->where(function($query)use($access){
                     $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
                         ->orWhere(function($query2)use($access){
@@ -57,7 +57,12 @@ class EmpleadosController extends Controller
                         });
                 });
             }
-            
+
+            //Sacamos totales para el estatus de las cantidades validadas
+            $estatus_validacion = clone $empleados;
+            $estatus_validacion = $estatus_validacion->select(DB::raw('sum(IF(empleados.estatus = 1 OR empleados.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(empleados.validado = 1,1,0)) as total_validados'),DB::raw('count(empleados.id) as total_registros'))->first();
+            $estatus_validacion->porcentaje = intval(($estatus_validacion->total_validados*100)/$estatus_validacion->total_activos);
+
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
                 $empleados = $empleados->where(function($query)use($parametros){
@@ -130,7 +135,17 @@ class EmpleadosController extends Controller
 
             }
 
-            return response()->json(['data'=>$empleados, 'firmantes'=> $firmantes, 'responsables'=>$responsable_clues],HttpResponse::HTTP_OK);
+            $loggedUser = auth()->userOrFail();
+            $loggedUser->load('gruposUnidades');
+            if(count($loggedUser->gruposUnidades) > 0){
+                $estatus = ['grupo_usuario'=>true, 'finalizado'=>$loggedUser->gruposUnidades[0]->finalizado];
+            }else{
+                $estatus = ['grupo_usuario'=>false];
+            }
+            $estatus['estatus_validacion'] = $estatus_validacion;
+            
+
+            return response()->json(['data'=>$empleados, 'firmantes'=> $firmantes, 'responsables'=>$responsable_clues, 'estatus'=>$estatus],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

@@ -154,4 +154,28 @@ class GrupoUnidadesController extends Controller
             return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    public function finalizarCaptura($grupoID = null){
+        DB::beginTransaction();
+        try {
+            
+            if(!$grupoID){
+                $loggedUser = auth()->userOrFail();
+                $loggedUser->load('gruposUnidades');
+    
+                foreach ($loggedUser->gruposUnidades as $grupo) {
+                    $grupo->finalizado = 1;
+                    $grupo->save();
+                }
+    
+            }
+
+            DB::commit();
+            return response()->json(['finalizado'=>true,'grupos'=>$loggedUser->gruposUnidades],HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
+        }
+    }
 }

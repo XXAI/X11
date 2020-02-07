@@ -162,3 +162,25 @@ table {
 .my-stepper .my-step-error, .my-stepper .my-step-error .my-step-label, .my-stepper .my-step-error mat-icon{
   color: #f44336 !important;
 }
+
+.employee-advance-bar{
+  height: auto;
+  max-height: 46px;
+  margin-bottom:5px;
+}
+
+.employee-advance-bar mat-toolbar-row {
+  max-height: 46px;
+}
+
+.mat-toolbar-multiple-rows{
+  min-height: 46px !important;
+}
+
+.employee-advance-bar .advance-icon {
+  padding: 0 14px;
+}
+
+.employee-advance-bar .spacer {
+  flex: 1 1 auto;
+}

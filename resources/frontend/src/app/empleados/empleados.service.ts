@@ -20,6 +20,8 @@ export class EmpleadosService {
   url_activate = `${environment.base_url}/activar-empleado/`;
   url_shut_down = `${environment.base_url}/baja-empleado/`;
 
+  url_finish_validation = `${environment.base_url}/finalizar-captura`;
+
   url_catalogos = `${environment.base_url}/catalogos`;
   url_catalogo_tipo_baja =  `${environment.base_url}/catalogo-tipo-baja`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
@@ -122,6 +124,14 @@ export class EmpleadosService {
 
   finalizarTransferenciaEmpleado(id:any, payload:any):Observable<any> {
     return this.http.put<any>(this.url_finish_transfer + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  finalizarValidacion():Observable<any> {
+    return this.http.put<any>(this.url_finish_validation,{}).pipe(
       map( (response: any) => {        
         return response;
       }
