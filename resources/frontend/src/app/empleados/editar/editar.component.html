@@ -662,9 +662,10 @@
                                                 <mat-option [value]="">Sin Comisión</mat-option>
                                                 <mat-option [value]="'CI'">Comisión Interna</mat-option>
                                                 <mat-option [value]="'CS'">Comisión Sindical</mat-option>
+                                                <mat-option [value]="'LH'">Licencia Humanitaria</mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                        <section fxFlex="60" fxFlex.xs="50" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center" *ngIf="(empleadoForm.get('tipo_comision').value == 'CI' || empleadoForm.get('tipo_comision').value == 'CS') && !mostrarComisionForm">
+                                        <section fxFlex="60" fxFlex.xs="50" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center" *ngIf="(empleadoForm.get('tipo_comision').value == 'CI' || empleadoForm.get('tipo_comision').value == 'CS' || empleadoForm.get('tipo_comision').value == 'LH') && !mostrarComisionForm">
                                             &nbsp;
                                             <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Editar Comisión" [matTooltipPosition]="'below'" color="accent" (click)="mostrarComisionForm = true" *ngIf="empleadoForm.get('ultima_comision_id').value"><mat-icon>edit</mat-icon> Editar</button>
                                             <button mat-raised-button fxFlex="none" [matTooltipDisabled]="true" matTooltip="Renovar Comisión" [matTooltipPosition]="'below'" color="info" (click)="mostrarComisionForm = true" *ngIf="empleadoForm.get('ultima_comision_id').value"><mat-icon>refresh</mat-icon> Renovar</button>
@@ -673,7 +674,7 @@
                                             <!--&nbsp;<button mat-raised-button><mat-icon>list</mat-icon> Ver Historial</button>-->
                                         </section>
                                     </div>
-                                    <div fxLayout="column" *ngIf="(empleadoForm.get('tipo_comision').value == 'CI' || empleadoForm.get('tipo_comision').value == 'CS')">
+                                    <div fxLayout="column" *ngIf="(empleadoForm.get('tipo_comision').value == 'CI' || empleadoForm.get('tipo_comision').value == 'CS' || empleadoForm.get('tipo_comision').value == 'LH')">
                                         <section fxFlex *ngIf="!mostrarComisionForm">
                                             <table class="info-adscripcion-activa mat-elevation-z1">
                                                 <tr><th class="titulo-largo">Ultima Comisión Asignada</th></tr>
@@ -692,6 +693,11 @@
                                                     </section>
                                                     <section fxFlex fxLayout="row wrap"  *ngIf="item.tipo_comision == 'CS'">
                                                         <div fxFlex="25"><strong>Sección: </strong> {{ item.sindicato.descripcion }}</div>
+                                                        <div fxFlex="33"><strong>Fecha Inicio: </strong> {{ item.detalle.fecha_inicio }}</div>
+                                                        <div fxFlex="33"><strong>Fecha Fin: </strong> {{ item.detalle.fecha_fin }}</div>
+                                                        <div fxFlex="33"><strong>No. Oficio: </strong> {{ item.detalle.no_oficio }}</div>
+                                                    </section>
+                                                    <section fxFlex fxLayout="row wrap"  *ngIf="item.tipo_comision == 'LH'">
                                                         <div fxFlex="33"><strong>Fecha Inicio: </strong> {{ item.detalle.fecha_inicio }}</div>
                                                         <div fxFlex="33"><strong>Fecha Fin: </strong> {{ item.detalle.fecha_fin }}</div>
                                                         <div fxFlex="33"><strong>No. Oficio: </strong> {{ item.detalle.no_oficio }}</div>
@@ -748,10 +754,10 @@
                                                         <mat-datepicker #fechaFinPicker disabled="false"></mat-datepicker>
                                                         <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
                                                     </mat-form-field>
-                                                    <section fxFlex="20" style="margin-top:5px; margin-bottom:5px;">
+                                                    <section fxFlex="20" style="margin-top:5px; margin-bottom:5px;" *ngIf="empleadoForm.get('tipo_comision').value != 'LH'">
                                                         <mat-checkbox formControlName="recurrente" value="true">Recurrente</mat-checkbox>
                                                     </section>
-                                                    <mat-form-field fxFlex="25">
+                                                    <mat-form-field fxFlex="25" *ngIf="empleadoForm.get('tipo_comision').value != 'LH'">
                                                         <input matInput type="text" placeholder="Meses Acumulados" formControlName="total_acumulado_meses">
                                                     </mat-form-field>
                                                     <section fxFlex="100" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end start">
