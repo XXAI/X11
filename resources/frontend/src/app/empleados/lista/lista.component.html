@@ -121,9 +121,9 @@
                     <button mat-icon-button (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF">
                         <mat-icon>{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon>
                     </button>
-                    <!--<button mat-icon-button (click)="reportePersonalActivoArea()" [class.button-spinner]="isLoadingPDFArea" [disabled]="isLoadingPDFArea">
+                    <button mat-icon-button (click)="reportePersonalActivoArea()" [ifHasPermission]="'1dDMX0O5llW4ZxMqW0JDI4wozLMktGDp'"  [class.button-spinner]="isLoadingPDFArea" [disabled]="isLoadingPDFArea">
                         <mat-icon>description</mat-icon>
-                    </button>-->
+                    </button>
                 </div>
 
                 <div *ngIf="showReportForm || showMyStepper">
