@@ -13,12 +13,14 @@ import { TransferenciaEmpleadoDialogComponent } from '../transferencia-empleado-
 import { EditarHorarioDialogComponent } from '../editar-horario-dialog/editar-horario-dialog.component';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 import { BREAKPOINT } from '@angular/flex-layout';
+import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 
 
 @Component({
   selector: 'app-editar',
   templateUrl: './editar.component.html',
-  styleUrls: ['./editar.component.css']
+  styleUrls: ['./editar.component.css'],
+  providers: []
 })
 export class EditarComponent implements OnInit {
 
@@ -35,6 +37,27 @@ export class EditarComponent implements OnInit {
   statusIcon: string;
 
   esNuevoEmpleado: boolean = false;
+
+  navTabSelected:number = 0;
+  mostrarTabAsistencia: boolean = false;
+
+  //Para el listado de las asistencias
+  isLoadingAsistencia:boolean = false;
+  asistenciasCargadas:boolean = false;
+  verifData:string;
+  fechaInicioAsist: any;
+  fechaFinAsist: any;
+  displayedScheduleColumns: string[] = ['dia','fecha','hora_entrada','hora_salida','justificado'];
+  assistSource: any = [];
+  daysLabels: any = {
+    1:"LUNES", 
+    2:"MARTES", 
+    3:"MIERCOLES", 
+    4:"JUEVES", 
+    5:"VIERNES", 
+    6:"SABADO", 
+    7:"DOMINGO"
+  };
 
   //Botones Anterior-Siguiente
   miniPagination:any = {
@@ -235,6 +258,13 @@ export class EditarComponent implements OnInit {
   
 
   ngOnInit() {
+    let userPermissions = JSON.parse(localStorage.getItem('permissions'));
+    if(userPermissions['NZlDkhi8ikVhdgfT8zVVIGroFNtHfIQe']){
+      this.mostrarTabAsistencia = true;
+    }else{
+      this.mostrarTabAsistencia = false;
+    }
+
     this.route.paramMap.subscribe(params => {
       this.id_empleado = params.get('id');
 
@@ -355,7 +385,7 @@ export class EditarComponent implements OnInit {
             this.estudiosLoading[i] = true;
           } ),
           switchMap(value => {
-              if(!(typeof value === 'object')){
+              if(!(typeof value === 'object') && value.length > 3){
                 return this.empleadosService.buscarProfesion({query:value,filter:i}).pipe(
                   finalize(() => this.estudiosLoading[i] = false )
                 );
@@ -441,6 +471,65 @@ export class EditarComponent implements OnInit {
         this.empleadoForm.get(field_name).setValue(null);
       } 
     }, 300);
+  }
+
+  dataTabChange(event){
+    if(event.index == 3 && !this.asistenciasCargadas){
+      console.log('corriendo listado de asistencia');
+      this.cargarAssistencias(this.datos_empleado.clave_credencial)
+    }
+  }
+
+  buscarFechasAssitencia(){
+    let fecha_inicio = this.fechaInicioAsist.toISOString().slice(0,10);
+    let fecha_fin = this.fechaFinAsist.toISOString().slice(0,10);
+
+    this.cargarAssistencias(this.datos_empleado.clave_credencial, fecha_inicio, fecha_fin);
+  }
+
+  cargarAssistencias(rfc:string, fecha_inicial?, fecha_final?){
+    let payload:any = {};
+
+    payload.rfc = rfc;
+
+    if(fecha_inicial){
+      payload.fecha_inicio = fecha_inicial;
+      payload.fecha_fin = fecha_final;
+    }
+
+    this.isLoadingAsistencia = true;
+    this.assistSource = [];
+    this.verifData = '';
+
+    this.empleadosService.getDatosAsistencia(payload).subscribe(
+      response => {
+        console.log(response);
+        let conversionAsistencia = [];
+
+        for(let i in response.data){
+          conversionAsistencia.push(response.data[i]);
+        }
+        this.assistSource = conversionAsistencia;
+        
+        let startingDate = new Date(response.fecha_inicial+'T00:00:00');
+        console.log(startingDate);
+
+        this.fechaInicioAsist = new Date(response.fecha_inicial.substring(0,4),(response.fecha_inicial.substring(5,7)-1), response.fecha_inicial.substring(8,10),12,0,0,0);
+        this.fechaFinAsist = new Date(response.fecha_final.substring(0,4),(response.fecha_final.substring(5,7)-1), response.fecha_final.substring(8,10),12,0,0,0);
+
+        this.verifData = response.validacion.Name + ' - ' + response.validacion.TITLE;
+        this.isLoadingAsistencia = false;
+        this.asistenciasCargadas = true;
+      },
+      responsError =>{
+        console.log(responsError);
+        this.fechaInicioAsist = new Date();
+        this.fechaFinAsist = new Date();
+        this.isLoadingAsistencia = false;
+        this.asistenciasCargadas = true;
+        this.sharedService.showSnackBar('Error al intentar recuperar datos de asistencia', null, 4000);
+      }
+    );
   }
 
   loadEmpleadoData(id:any){
@@ -554,6 +643,14 @@ export class EditarComponent implements OnInit {
               }
             );
           }
+
+          if(this.navTabSelected == 3){
+            this.asistenciasCargadas = false;
+            this.cargarAssistencias(this.datos_empleado.clave_credencial);
+          }else{
+            this.assistSource = [];
+            this.asistenciasCargadas = false;
+          }
         }
           /*if(response.error) {
           let errorMessage = response.error.message;
@@ -595,7 +692,11 @@ export class EditarComponent implements OnInit {
           if(this.datos_empleado.figf){
             this.datos_empleado.figf = new Date(this.datos_empleado.figf.substring(0,4),(this.datos_empleado.figf.substring(5,7)-1), this.datos_empleado.figf.substring(8,10),12,0,0,0);
           }
-          this.datos_empleado.fissa = new Date(this.datos_empleado.fissa.substring(0,4),this.datos_empleado.fissa.substring(5,7)-1, this.datos_empleado.fissa.substring(8,10),12,0,0,0);
+
+          if(this.datos_empleado.fissa){
+            this.datos_empleado.fissa = new Date(this.datos_empleado.fissa.substring(0,4),(this.datos_empleado.fissa.substring(5,7)-1), this.datos_empleado.fissa.substring(8,10),12,0,0,0);
+          }
+          //this.datos_empleado.fissa = new Date(this.datos_empleado.fissa.substring(0,4),this.datos_empleado.fissa.substring(5,7)-1, this.datos_empleado.fissa.substring(8,10),12,0,0,0);
   
           //console.log("----------x------------");
           //console.log(this.datos_empleado);

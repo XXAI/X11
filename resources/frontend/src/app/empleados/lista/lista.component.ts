@@ -513,7 +513,7 @@ export class ListaComponent implements OnInit {
   endValiations(){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
-      data:{dialogTitle:'Finalizar Captura',dialogMessage:'¿Realmente desea finalizar la validación de los datos? este proceso cerrará la plataforma para edición de datos.',validationString:'FINALIZAR',btnColor:'primary',btnText:'Finalizar'}
+      data:{dialogTitle:'Finalizar Captura',dialogMessage:'¿Realmente desea finalizar la validación de los datos? este proceso cerrará la plataforma para la edición de datos, escriba FINALIZAR para realizar esta acción.',validationString:'FINALIZAR',btnColor:'primary',btnText:'Finalizar'}
     });
 
     dialogRef.afterClosed().subscribe(valid => {

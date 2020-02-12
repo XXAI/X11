@@ -165,3 +165,23 @@
 .lista-escolaridad-detalle > fieldset:not(:last-child){
     border-bottom:hidden;
 }
+
+mat-grid-tile.labels {
+    background: lightgreen;
+    font-weight: bolder;
+}
+
+mat-grid-tile.days {
+    background: lightblue;
+}
+
+table {
+    width: 100%;
+}
+
+.asistencia-table-container {
+    position: relative;
+    max-height: 400px;
+    min-height:200px;
+    overflow: auto;
+}

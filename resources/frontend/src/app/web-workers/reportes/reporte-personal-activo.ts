@@ -168,7 +168,8 @@ export class ReportePersonalActivo{
             );
           }
 
-          datos.content[indice_actual].table.body.push([  
+          datos.content[indice_actual].table.body.push([
+            //{ text: i+1, style: 'tabla_datos' }, 
             { text: empleado.rfc, style: 'tabla_datos' },
             { text: empleado.curp , style: 'tabla_datos'},
             { text: empleado.nombre + ' '+ empleado.apellido_paterno + ' '+ empleado.apellido_materno , style: 'tabla_datos'},

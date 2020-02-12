@@ -13,4 +13,5 @@ export const PermissionsList = {
     EditarRoles: 'v216XcAzgbt4mIjj6gZP2rdRTupXz0AO',
     EditarUsuarios: 'W8Xmv3hiIyIpkZfJMaL9MsRxxuSIiO5R',
     ReportesQuery: '6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj',
+    VerAsistencias: 'NZlDkhi8ikVhdgfT8zVVIGroFNtHfIQe',
 }

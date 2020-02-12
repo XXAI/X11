@@ -60,7 +60,7 @@ class EmpleadosController extends Controller
 
             //Sacamos totales para el estatus de las cantidades validadas
             $estatus_validacion = clone $empleados;
-            $estatus_validacion = $estatus_validacion->select(DB::raw('sum(IF(empleados.estatus = 1 OR empleados.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(empleados.validado = 1,1,0)) as total_validados'),DB::raw('count(empleados.id) as total_registros'))->first();
+            $estatus_validacion = $estatus_validacion->select(DB::raw('sum(IF(empleados.estatus = 1 OR empleados.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(empleados.estatus = 1 AND empleados.validado = 1,1,0)) as total_validados'),DB::raw('count(empleados.id) as total_registros'))->first();
             $estatus_validacion->porcentaje = intval(($estatus_validacion->total_validados*100)/$estatus_validacion->total_activos);
 
             //Filtros, busquedas, ordenamiento
@@ -181,7 +181,7 @@ class EmpleadosController extends Controller
 
                 //filtro de valores por permisos del usuario
                 if(!$access->is_admin){
-                    $empleados = $empleados->where('empleados.estatus','!=','3')->where(function($query)use($access){
+                    $empleados = $empleados->whereIn('empleados.estatus',[1,4])->where(function($query)use($access){
                         $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
                                 ->orWhere(function($query2)use($access){
                                     $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);

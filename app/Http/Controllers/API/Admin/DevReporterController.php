@@ -24,7 +24,7 @@ class DevReporterController extends Controller
 
             $query = $request->get('query');
 
-            if (preg_match('/(DELETE|DROP|TRUNCATE|ALTER|UPDATE)/',strtoupper($query)) != 0){
+            if (preg_match('/\b(DELETE|DROP|TRUNCATE|ALTER|UPDATE)\b/',strtoupper($query)) != 0){
                 return response()->json(['error' => 'Solo se permiten SELECTs'], HttpResponse::HTTP_CONFLICT);
             }
 
@@ -53,7 +53,7 @@ class DevReporterController extends Controller
         try{
             $query = $request->get('query');
 
-            if (preg_match('/(DELETE|DROP|TRUNCATE|ALTER|UPDATE)/',strtoupper($query)) != 0){
+            if (preg_match('/\b(DELETE|DROP|TRUNCATE|ALTER|UPDATE)\b/',strtoupper($query)) != 0){
                 return response()->json(['error' => 'Solo se permiten SELECTs'], HttpResponse::HTTP_CONFLICT);
             }
 

@@ -26,6 +26,7 @@ export class EmpleadosService {
   url_catalogo_tipo_baja =  `${environment.base_url}/catalogo-tipo-baja`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
+  url_asistencia = 'http://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
   url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
   url_codigos_catalogo = `${environment.base_url}/busqueda-codigos`;
@@ -188,6 +189,14 @@ export class EmpleadosService {
 
   getDatosCredencial(clave_credencial:string):Observable<any> {
     return this.http.get<any>(this.url_credencial+clave_credencial, {}).pipe(
+      map( (response: any) => {
+        return response;
+      }
+    ));
+  }
+
+  getDatosAsistencia(payload):Observable<any> {
+    return this.http.get<any>(this.url_asistencia, {params: payload}).pipe(
       map( (response: any) => {
         return response;
       }
