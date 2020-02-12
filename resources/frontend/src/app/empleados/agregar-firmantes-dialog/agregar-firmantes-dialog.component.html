@@ -20,7 +20,7 @@
                                                     <mat-option *ngIf="firmanteIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                                                     <ng-container *ngIf="!firmanteIsLoading">
                                                         <mat-option *ngFor="let item of filteredFirmante" [value]="item">
-                                                            [{{item.rfc}}] {{ item.nombre }} {{ item.apellido_paterno }} {{ item.apellido_materno }}
+                                                            [{{item.rfc}}] {{ item.nombre }} 
                                                         </mat-option>
                                                     </ng-container>
                                                 </mat-autocomplete>

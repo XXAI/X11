@@ -83,7 +83,7 @@ export class AgregarFirmantesDialogComponent implements OnInit {
   }
 
   displayFirmanteFn(item: any) {
-    if (item) { return item.nombre + " "+ item.apellido_paterno + " " + item.apellido_materno; }
+    if (item) { return item.nombre; }
   }
 
   accionGuardar(validar:boolean = false){

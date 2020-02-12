@@ -251,7 +251,7 @@ export class EmpleadosService {
   }
 
   buscarResponsable(payload):Observable<any>{
-    return this.http.get<any>(this.url_responsable,{params:payload}).pipe(
+    return this.http.get<any>(this.url_empleados,{params:payload}).pipe(
       map( response => {
         return response.data;
       })
