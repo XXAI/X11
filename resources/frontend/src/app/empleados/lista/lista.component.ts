@@ -582,10 +582,12 @@ export class ListaComponent implements OnInit {
 
     this.empleadosService.getEmpleadosList(params).subscribe(
       response =>{
+        //console.log(response);
         if(response.error) {
           let errorMessage = response.error.message;
           this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
           this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+          this.isLoading = false;
           //this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
             this.stepperConfig.steps[0].status = 3;
