@@ -490,7 +490,7 @@ export class EditarComponent implements OnInit {
   cargarAssistencias(rfc:string, fecha_inicial?, fecha_final?){
     let payload:any = {};
 
-    payload.rfc = rfc;
+    payload.rfc = '"'+rfc+'"';
 
     if(fecha_inicial){
       payload.fecha_inicio = fecha_inicial;
@@ -552,6 +552,7 @@ export class EditarComponent implements OnInit {
       if(filter.cr){          params['cr']        = filter.cr.cr; }
       if(filter.estatus){     params['estatus']   = filter.estatus.id; }
       if(filter.rama){        params['rama']      = filter.rama.id; }
+      if(filter.grupos){      params['grupos']    = filter.grupos.id; }
     }
 
     if(query){

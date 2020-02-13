@@ -38,9 +38,9 @@
             </mat-card>
 
             <mat-accordion class="advanced-filter-container">
-                <mat-expansion-panel #advancedFilter  class="advanced-filter">
+                <mat-expansion-panel #advancedFilter  class="advanced-filter" [formGroup]="filterForm">
                     <br>
-                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center" [formGroup]="filterForm">
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
                         <mat-form-field fxFlex="22">
                             <mat-label>CLUES</mat-label>
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
@@ -89,6 +89,16 @@
                         </mat-form-field>
                     </div>
                     <div fxLayout="row wrap">
+                        <mat-form-field fxFlex="50" *ngIf="filterCatalogs.grupos">
+                            <mat-label>Grupos</mat-label>
+                            <input type="text" aria-label="grupos" matInput formControlName="grupos" [matAutocomplete]="gruposAutocomplete">
+                            <mat-autocomplete #gruposAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('descripcion')" [panelWidth]="'auto'">
+                                <mat-option *ngFor="let item of filteredCatalogs['grupos'] | async" [value]="item">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-hint *ngIf="filterForm.get('grupos').value">{{filterForm.get('grupos').value.descripcion}}</mat-hint>
+                        </mat-form-field>
                         <div fxFlex></div>
                         <div fxFlex="none">
                             <button mat-flat-button (click)="filterForm.reset()">

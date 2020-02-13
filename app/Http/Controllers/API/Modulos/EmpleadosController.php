@@ -24,6 +24,7 @@ use App\Models\User;
 use App\Models\ComisionEmpleado;
 use App\Models\ComisionDetalle;
 use App\Models\EmpleadoEscolaridadDetalle;
+use App\Models\GrupoUnidades;
 
 class EmpleadosController extends Controller
 {
@@ -96,6 +97,20 @@ class EmpleadosController extends Controller
 
                 if(isset($parametros['rama']) && $parametros['rama']){
                     $empleados = $empleados->where('rama_id',$parametros['rama']);
+                }
+
+                if($access->is_admin){
+                    if(isset($parametros['grupos']) && $parametros['grupos']){
+                        $grupo = GrupoUnidades::with('listaCR')->find($parametros['grupos']);
+                        $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
+
+                        $empleados = $empleados->where(function($query)use($lista_cr){
+                            $query->whereIn('empleados.cr_id',$lista_cr)
+                                ->orWhere(function($query2)use($lista_cr){
+                                    $query2->whereIn('permuta_adscripcion.cr_destino_id',$lista_cr);
+                                });
+                        });
+                    }
                 }
             }
 
@@ -226,6 +241,20 @@ class EmpleadosController extends Controller
 
                 if(isset($params['rama']) && $params['rama']){
                     $empleados = $empleados->where('rama_id',$params['rama']);
+                }
+
+                if($access->is_admin){
+                    if(isset($params['grupos']) && $params['grupos']){
+                        $grupo = GrupoUnidades::with('listaCR')->find($params['grupos']);
+                        $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
+
+                        $empleados = $empleados->where(function($query)use($lista_cr){
+                            $query->whereIn('empleados.cr_id',$lista_cr)
+                                ->orWhere(function($query2)use($lista_cr){
+                                    $query2->whereIn('permuta_adscripcion.cr_destino_id',$lista_cr);
+                                });
+                        });
+                    }
                 }
 
                 $total_empleados = clone $empleados;
@@ -1226,6 +1255,8 @@ class EmpleadosController extends Controller
             if($access->is_admin){
                 $catalogos['estatus'][] = ['id'=>'2','descripcion'=>'Baja'];
                 $catalogos['estatus'][] = ['id'=>'3','descripcion'=>'Indefinidos'];
+
+                $catalogos['grupos'] = GrupoUnidades::all();
             }
 
             return response()->json(['data'=>$catalogos],HttpResponse::HTTP_OK);

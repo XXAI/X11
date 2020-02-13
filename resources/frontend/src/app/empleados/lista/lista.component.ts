@@ -87,7 +87,8 @@ export class ListaComponent implements OnInit {
     'clues': [undefined],
     'cr': [undefined],
     'estatus': [undefined],
-    'rama': [undefined]
+    'rama': [undefined],
+    'grupos': [undefined]
   });
 
   displayedColumns: string[] = ['estatus','Nombre','RFC','Clues','actions'];
@@ -154,7 +155,11 @@ export class ListaComponent implements OnInit {
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
         this.filteredCatalogs['cr'] = this.filterForm.controls['cr'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'cr','descripcion')));
-        //this.filteredCatalogs['estatus'] = this.filterForm.controls['estatus'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'estatus','descripcion')));
+
+        if(response.data.grupos){
+          this.filterCatalogs.grupos = response.data.grupos;
+          this.filteredCatalogs['grupos'] = this.filterForm.controls['grupos'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'grupos','descripcion')));
+        }
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -215,7 +220,7 @@ export class ListaComponent implements OnInit {
           params[i] = filterFormValues[i].clues;
         }else if(i == 'cr'){
           params[i] = filterFormValues[i].cr;
-        }else{ //profesion y rama
+        }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
         }
         countFilter++;
@@ -307,7 +312,7 @@ export class ListaComponent implements OnInit {
           item.tooltip += data[i].descripcion;
         }else{
           if(data[i].descripcion.length > 30){
-            item.tag = data[i].descripcion.slice(0,27) + '...';
+            item.tag = data[i].descripcion.slice(0,20) + '...';
             item.tooltip += data[i].descripcion;
           }else{
             item.tag = data[i].descripcion;
