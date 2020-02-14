@@ -214,7 +214,8 @@ class EmpleadosController extends Controller
 
                 if(isset($params['query']) && $params['query']){
                     $empleados = $empleados->where(function($query)use($params){
-                        return $query->where('nombre','LIKE','%'.$params['query'].'%')
+                        return $query//->where('nombre','LIKE','%'.$params['query'].'%')
+                                    ->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$params['query'].'%"' )
                                     ->orWhere('curp','LIKE','%'.$params['query'].'%')
                                     ->orWhere('rfc','LIKE','%'.$params['query'].'%');
                     });
@@ -955,12 +956,11 @@ class EmpleadosController extends Controller
             }else{
                 $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$empleado->clues)->where('cr',$empleado->cr_id)->whereNull('fecha_fin')->first();
 
-                if(!$clues_empleado){
-                    throw new \Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
+                if($clues_empleado){
+                    $clues_empleado->fecha_fin = date('Y-m-d');
+                    $clues_empleado->save();
+                    //throw new \Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
                 }
-
-                $clues_empleado->fecha_fin = date('Y-m-d');
-                $clues_empleado->save();
 
                 $empleado->adscripcionHistorial()->create(['clues'=>$parametros['clues'], 'cr'=>$parametros['cr'], 'fecha_inicio'=>date('Y-m-d')]);
                 $empleado->clues = $parametros['clues'];
@@ -997,13 +997,12 @@ class EmpleadosController extends Controller
 
                 $clues_empleado = CluesEmpleado::where('empleado_id',$id)->where('clues',$datos_transferencia->clues_origen)->where('cr',$datos_transferencia->cr_origen_id)->whereNull('fecha_fin')->first();
 
-                if(!$clues_empleado){
-                    throw new \Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
+                if($clues_empleado){
+                    $clues_empleado->fecha_fin = $parametros['fecha_transferencia'];
+                    $clues_empleado->save();
+                    //throw new \Exception("El empleado no tiene registro viable para realizar la transferencia", 1);
                 }
-
-                $clues_empleado->fecha_fin = $parametros['fecha_transferencia'];
-                $clues_empleado->save();
-
+                
                 $empleado->adscripcionHistorial()->create(['clues'=>$datos_transferencia->clues_destino, 'cr'=>$datos_transferencia->cr_destino_id, 'fecha_inicio'=>$parametros['fecha_transferencia']]);
 
                 $empleado->estatus = 1;
@@ -1163,17 +1162,22 @@ class EmpleadosController extends Controller
             DB::beginTransaction();
 
             $access = $this->getUserAccessData();
-            
-            $buscarComision = ComisionEmpleado::where("empleado_id", "=", $id)->first();
-            $buscarComision = ComisionEmpleado::where("empleado_id", "=", $id)->update(['estatus' => "V"]);
-            
-            $comision = new ComisionEmpleado();
 
-            $comision->empleado_id = $id;
-            $comision->tipo_comision = $parametros['tipo_comision'];
-            
-            if($parametros['tipo_comision'] == 'CI')
-            {
+            ComisionEmpleado::where("empleado_id", "=", $id)->where('estatus','A')->update(['estatus' => "V"]);
+
+            $comision = ComisionEmpleado::where("empleado_id", "=", $id)->where('cr',$parametros['cr_comision_id'])->where('tipo_comision',$parametros['tipo_comision'])->first();
+
+            if(!$comision){
+                $comision = new ComisionEmpleado();
+                $comision->empleado_id = $id;
+                $comision->tipo_comision = $parametros['tipo_comision'];
+            }
+
+            $comision->recurrente = $parametros['recurrente'];
+            $comision->total_acumulado_meses = $parametros['total_acumulado_meses'];
+
+            //$comision = new ComisionEmpleado();
+            if($parametros['tipo_comision'] == 'CI'){
                 $comision->cr = $parametros['cr_comision_id'];
                 $cr = Cr::where("cr", "=", $parametros['cr_comision_id'])->first();
                 $comision->clues = $cr->clues;
@@ -1183,12 +1187,13 @@ class EmpleadosController extends Controller
                 $comision->sindicato_id = $parametros['sindicato_id'];
             }
             
-            $empleado->tipo_comision = $parametros['tipo_comision'];
-            $empleado->save();
             $comision->estatus = 'A';
-
             $comision->save();
 
+            $empleado->tipo_comision = $parametros['tipo_comision'];
+            $empleado->ultima_comision_id = $comision->id;
+            $empleado->save();
+            
             $detalles = new ComisionDetalle();
             $detalles->comision_empleado_id = $comision->id;
             $detalles->fecha_inicio = $parametros['fecha_inicio'];

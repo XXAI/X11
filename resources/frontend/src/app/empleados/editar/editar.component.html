@@ -152,14 +152,14 @@
                                     </div>
 
                                     <section fxLayout="column" *ngIf="!esNuevoEmpleado">
-                                        <table class="info-adscripcion-activa mat-elevation-z1" *ngIf="(datos_empleado && datos_empleado.adscripcion_activa)">
+                                        <table class="info-adscripcion-activa mat-elevation-z1" *ngIf="(datos_empleado && datos_empleado.clues)">
                                             <tr><th class="titulo-largo" width="1">CLUES</th><th class="titulo-largo">Nombre</th></tr>
                                             <tr>
                                                 <td class="descripcion">
-                                                    {{datos_empleado.adscripcion_activa.clues.clues}}
+                                                    {{datos_empleado.clues.clues}}
                                                 </td>
                                                 <td class="descripcion">
-                                                    {{datos_empleado.adscripcion_activa.clues.nombre_unidad}}
+                                                    {{datos_empleado.clues.nombre_unidad}}
                                                 </td>
                                             </tr>
                                             <tr><th class="titulo-largo">CR:</th><th class="titulo-largo">Área</th></tr>
@@ -633,7 +633,7 @@
                                 </mat-tab>
                                 <mat-tab label="Datos Comisión" *ngIf="!esNuevoEmpleado">
                                     <br>
-                                    <table class="info-adscripcion-activa mat-elevation-z1" *ngIf="(datos_empleado && datos_empleado.adscripcion_activa)">
+                                    <table class="info-adscripcion-activa mat-elevation-z1" *ngIf="(datos_empleado && datos_empleado.clues_adscripcion)">
                                         <thead>
                                             <th class="titulo-largo" colspan="2">Unidad de Adscripción</th>
                                         </thead>
