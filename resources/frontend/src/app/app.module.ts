@@ -34,6 +34,7 @@ import { CatalogosModule } from './catalogos/catalogos.module';
 
 //Modulos del Sistema
 import { EmpleadosModule } from './empleados/empleados.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { EmpleadosModule } from './empleados/empleados.module';
     AppsListModule,
     UsersModule,
     EmpleadosModule,
+    DashboardModule,
     SecurityModule,
     DevToolsModule,
     CatalogosModule,

@@ -9,6 +9,11 @@ export class App {
 }
 
 export const APPS:App [] = [
+    { name:'Dashboard', route: "dashboard",     icon:"assets/icons/dashboard.svg",           permission:'JIZVHPLq3b50VmEiwHDoGOViE63rBJpF',
+      children:[
+        {name:'Configuración',route:'dashboard/configuracion', icon:'settings', permission:"JIZVHPLq3b50VmEiwHDoGOViE63rBJpFa"}
+      ]
+    },
     { name:"Usuarios",  route: "usuarios",      icon: "assets/icons/users.svg",              permission:"nTSk4Y4SFKMyQmRD4ku0UCiNWIDe8OEt" },
     { name:'Permisos',  route: "permisos",      icon: "assets/icons/security-shield.svg",    permission:"RGMUpFAiRuv7UFoJroHP6CtvmpoFlQXl" },
     { name:'Roles',     route: "roles",         icon: "assets/icons/users-roles.svg",        permission:"nrPqEhq2TX0mI7qT7glaOCJ7Iqx2QtPs" },

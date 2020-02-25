@@ -22,3 +22,12 @@
 .loading-shade span{
     margin:0 auto;
 }
+
+.checkbox-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+    margin: 0 10px;
+
+}

@@ -76,10 +76,10 @@ class GrupoUnidadesController extends Controller
 
         $reglas = [
             'descripcion'        => 'required',
-            'tipo_profesion_id'  => 'required',
+            //'tipo_profesion_id'  => 'required',
         ];
 
-        $object = Profesion::find($id);
+        $object = GrupoUnidades::find($id);
         //return response()->json($object,HttpResponse::HTTP_OK);
         if(!$object){
             return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
@@ -96,7 +96,7 @@ class GrupoUnidadesController extends Controller
         try {
             
             $object->descripcion            = $inputs['descripcion'];
-            $object->tipo_profesion_id      = $inputs['tipo_profesion_id'];
+            $object->finalizado             = $inputs['finalizado'];
 
             $object->save();
     
@@ -124,11 +124,10 @@ class GrupoUnidadesController extends Controller
         ];
 
         $reglas = [
-            'descripcion'        => 'required',
-            'tipo_profesion_id'  => 'required',
+            'descripcion'        => 'required'
         ];
 
-        $object = new Profesion();
+        $object = new GrupoUnidades();
         
         $inputs = Input::all();
         $v = Validator::make($inputs, $reglas, $mensajes);
@@ -141,7 +140,7 @@ class GrupoUnidadesController extends Controller
         try {
             
             $object->descripcion            = $inputs['descripcion'];
-            $object->tipo_profesion_id      = $inputs['tipo_profesion_id'];
+            $object->finalizado             = $inputs['finalizado'];
 
             $object->save();
     
@@ -167,11 +166,43 @@ class GrupoUnidadesController extends Controller
                     $grupo->finalizado = 1;
                     $grupo->save();
                 }
-    
+
+            }else{
+                $grupo = GrupoUnidades::find($grupoID);
+                $grupo->finalizado = 1;
+                $grupo->save();
             }
 
             DB::commit();
-            return response()->json(['finalizado'=>true,'grupos'=>$loggedUser->gruposUnidades],HttpResponse::HTTP_OK);
+            return response()->json(['finalizado'=>true,'grupos'=>($grupoID)?$grupo:$loggedUser->gruposUnidades],HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function habilitarCaptura($grupoID = null){
+        DB::beginTransaction();
+        try {
+            
+            if(!$grupoID){
+                $loggedUser = auth()->userOrFail();
+                $loggedUser->load('gruposUnidades');
+    
+                foreach ($loggedUser->gruposUnidades as $grupo) {
+                    $grupo->finalizado = 0;
+                    $grupo->save();
+                }
+
+            }else{
+                $grupo = GrupoUnidades::find($grupoID);
+                $grupo->finalizado = 0;
+                $grupo->save();
+            }
+
+            DB::commit();
+            return response()->json(['finalizado'=>true,'grupos'=>($grupoID)?$grupo:$loggedUser->gruposUnidades],HttpResponse::HTTP_OK);
 
         } catch (\Exception $e) {
             DB::rollback();

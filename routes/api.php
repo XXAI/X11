@@ -37,6 +37,12 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('grupos_unidades',           'API\Modulos\GrupoUnidadesController');
 
     /**
+     * Rutas para el Modulo de Dashboard
+     */
+    Route::apiResource('dashboard',                 'API\Modulos\DashboardController');
+    Route::get('dashboard-activo',          'API\Modulos\DashboardController@activeDashboard');
+
+    /**
      * Rutas para el Modulo de Empleados
      */
     Route::apiResource('empleados',                 'API\Modulos\EmpleadosController');

@@ -30,7 +30,8 @@ export class FormularioComponent implements OnInit {
   tituloDialogo:string;
 
   grupoForm = this.fb.group({
-    'descripcion': ['',[Validators.required]]
+    'descripcion': ['',[Validators.required]],
+    'finalizado': ['']
   });
 
   ngOnInit() {
