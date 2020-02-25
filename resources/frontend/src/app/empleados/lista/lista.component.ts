@@ -48,6 +48,7 @@ export class ListaComponent implements OnInit {
   isLoading: boolean = false;
   isLoadingPDF: boolean = false;
   isLoadingPDFArea: boolean = false;
+  isLoadingAgent: boolean = false;
   mediaSize: string;
 
   puedeFinalizar: boolean = false;
@@ -91,7 +92,7 @@ export class ListaComponent implements OnInit {
     'grupos': [undefined]
   });
 
-  displayedColumns: string[] = ['estatus','Nombre','RFC','Clues','actions'];
+  displayedColumns: string[] = ['estatus','Nombre','RFC','Clues','Agente','actions'];
   dataSource: any = [];
 
   //showAdvancedFilter:boolean = false;
@@ -444,6 +445,38 @@ export class ListaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
         this.loadEmpleadosData();
+      }
+    });
+  }
+
+  agenteCertificador(id: number){
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Agente Certificador',dialogMessage:'¿Desea establecer a esta persona como agente certificador?, escriba ACEPTAR para confirmar.',validationString:'ACEPTAR',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.isLoadingAgent = true;
+        this.empleadosService.establecerAgenteCertificador(id).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {
+              this.loadEmpleadosData();
+            }
+            this.isLoadingAgent = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoadingAgent = false;
+          }
+        );
       }
     });
   }

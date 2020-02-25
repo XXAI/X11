@@ -1138,6 +1138,30 @@ class EmpleadosController extends Controller
         }
     }
 
+    public function setEmployeeAsAgent($id){
+        try{
+            $empleado = Empleado::find($id);
+            $loggedUser = auth()->userOrFail();
+            
+            if(!$empleado->validado || $empleado->estatus != 1){
+                return response()->json(['error'=>['message'=>"El empleado debe estar activo y validado"]],HttpResponse::HTTP_CONFLICT);
+                throw new Exception("El empleado debe estar validado", 1);
+            }
+
+            if($empleado->es_agente_certificador){
+                $empleado->es_agente_certificador = false;
+            }else{
+                $empleado->es_agente_certificador = true;
+            }
+
+            $empleado->save();
+
+            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function activateEmployee($id){
         try{
             $empleado = Empleado::find($id);

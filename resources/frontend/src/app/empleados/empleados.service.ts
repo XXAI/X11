@@ -19,6 +19,7 @@ export class EmpleadosService {
   url_unlink = `${environment.base_url}/liberar-empleado/`;
   url_activate = `${environment.base_url}/activar-empleado/`;
   url_shut_down = `${environment.base_url}/baja-empleado/`;
+  url_agent = `${environment.base_url}/agente-certificador/`;
 
   url_finish_validation = `${environment.base_url}/finalizar-captura`;
 
@@ -157,6 +158,14 @@ export class EmpleadosService {
 
   desligarEmpleado(id:any):Observable<any> {
     return this.http.put<any>(this.url_unlink + id, {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  establecerAgenteCertificador(id:any):Observable<any>{
+    return this.http.put<any>(this.url_agent + id, {}).pipe(
       map( (response: any) => {        
         return response;
       }
