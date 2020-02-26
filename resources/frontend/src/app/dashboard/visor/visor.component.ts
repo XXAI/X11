@@ -75,6 +75,10 @@ export class VisorComponent implements OnInit {
             if(element.chart.height){
               options.chart.height = element.chart.height;
             }
+
+            if(element.chart.width){
+              options.chart.width = element.chart.width;
+            }
             
             options.title.text = element.chart.title;
             options.yAxis.title.text = element.chart.lefttitle;

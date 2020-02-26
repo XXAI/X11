@@ -55,7 +55,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::put('liberar-empleado/{id}',             'API\Modulos\EmpleadosController@unlinkEmployee');
     Route::put('activar-empleado/{id}',             'API\Modulos\EmpleadosController@activateEmployee');
     Route::put('baja-empleado/{id}',                'API\Modulos\EmpleadosController@shutDownEmployee');
-    Route::put('agente-certificador/{id}',          'API\Modulos\EmpleadosController@setEmployeeAsAgent');
+    //Route::put('agente-certificador/{id}',          'API\Modulos\EmpleadosController@setEmployeeAsAgent');
     Route::put('comision-empleado/{id}',            'API\Modulos\EmpleadosController@comisionEmployee');
     Route::get('empleados-area',                    'API\Modulos\EmpleadosController@getEmployeeAreaData');
     

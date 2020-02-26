@@ -92,7 +92,7 @@ export class ListaComponent implements OnInit {
     'grupos': [undefined]
   });
 
-  displayedColumns: string[] = ['estatus','Nombre','RFC','Clues','Agente','actions'];
+  displayedColumns: string[] = ['estatus','Nombre','RFC','Clues','actions']; //'Agente',
   dataSource: any = [];
 
   //showAdvancedFilter:boolean = false;
@@ -449,10 +449,10 @@ export class ListaComponent implements OnInit {
     });
   }
 
-  agenteCertificador(id: number){
+  /*agenteCertificador(id: number){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
-      data:{dialogTitle:'Agente Certificador',dialogMessage:'¿Desea establecer a esta persona como agente certificador?, escriba ACEPTAR para confirmar.',validationString:'ACEPTAR',btnColor:'primary',btnText:'Aceptar'}
+      data:{dialogTitle:'Agente Certificador',dialogMessage:'¿Desea establecer/remover a esta persona como agente certificador?, escriba ACEPTAR para confirmar.',validationString:'ACEPTAR',btnColor:'primary',btnText:'Aceptar'}
     });
 
     dialogRef.afterClosed().subscribe(valid => {
@@ -479,7 +479,7 @@ export class ListaComponent implements OnInit {
         );
       }
     });
-  }
+  }*/
 
   confirmUntieEmploye(id: number)
   {
