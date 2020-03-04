@@ -517,7 +517,7 @@ export class EditarComponent implements OnInit {
         this.fechaInicioAsist = new Date(response.fecha_inicial.substring(0,4),(response.fecha_inicial.substring(5,7)-1), response.fecha_inicial.substring(8,10),12,0,0,0);
         this.fechaFinAsist = new Date(response.fecha_final.substring(0,4),(response.fecha_final.substring(5,7)-1), response.fecha_final.substring(8,10),12,0,0,0);
 
-        this.verifData = response.validacion.Name + ' - ' + response.validacion.TITLE;
+        this.verifData = 'ID: ' + response.validacion.Badgenumber + ' | Nombre: ' + response.validacion.Name + ' | RFC: ' + response.validacion.TITLE;
         this.isLoadingAsistencia = false;
         this.asistenciasCargadas = true;
       },
