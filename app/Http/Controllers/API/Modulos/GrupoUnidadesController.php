@@ -54,8 +54,8 @@ class GrupoUnidadesController extends Controller
     public function show($id)
     {
         try{
-            $profesion = GrupoUnidades::find($id);
-            return response()->json(['data'=>$profesion],HttpResponse::HTTP_OK);
+            $grupo = GrupoUnidades::with('listaCR')->find($id);
+            return response()->json(['data'=>$grupo],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

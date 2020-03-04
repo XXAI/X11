@@ -29,6 +29,8 @@ export class FormularioComponent implements OnInit {
   grupoId:number;
   tituloDialogo:string;
 
+  listaCRs:any[];
+
   grupoForm = this.fb.group({
     'descripcion': ['',[Validators.required]],
     'finalizado': ['']
@@ -49,6 +51,7 @@ export class FormularioComponent implements OnInit {
             this.sharedService.showSnackBar(errorMessage, null, 3000);
           } else {
             this.grupoForm.patchValue(response.data);
+            this.listaCRs = response.data.lista_c_r;
           }
           this.isLoading = false;
         },
@@ -69,6 +72,48 @@ export class FormularioComponent implements OnInit {
 
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  obtenerListadoEmpleados(){
+    let params = {
+      //mode:'grouped',
+      //grouped_by:'clues',
+      
+      //mode:'paginated',
+      //page:5,
+      //per_page:10,
+
+      mode:'plain-list',
+
+      //grupos: this.data.id,
+      order:'clues|rfc',
+      order_type:'ASC',
+
+      //clues: 'CSSSA001|CSSSA002',
+      //cr: '07000|070001',
+      //estatus: '1|2|3',
+      validado:1
+    };
+
+    this.gruposService.obtenerListaEmpleados(params).subscribe(
+      response =>{
+        if(response.error) {
+          let errorMessage = response.error.message;
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+        } else {
+          console.log(response);
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+      }
+    );
   }
 
   guardar():void {

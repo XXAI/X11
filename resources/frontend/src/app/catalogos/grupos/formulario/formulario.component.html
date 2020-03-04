@@ -15,9 +15,18 @@
         <section class="checkbox-section">
             <mat-checkbox formControlName="finalizado">Captura Finalizada</mat-checkbox>
         </section>
+        <div fxLayout="row" fxLayout.xs="column" style="max-height: 300px; overflow:  hidden; overflow-y: auto;">
+            <mat-chip-list aria-label="Fish selection">
+                <mat-chip *ngFor="let item of listaCRs" [removable]="false" matTooltip="{{item.descripcion}}">
+                    {{item.cr}}
+                    <!--mat-icon matChipRemove>cancel</mat-icon-->
+                </mat-chip>
+            </mat-chip-list>
+        </div>
     </div>
 </div>
 <div mat-dialog-actions>
+    <button mat-button (click)='obtenerListadoEmpleados()'>Probar</button>
     <span fxFlex></span>
     <button mat-button (click)='cancel()'>Cancelar</button>
     <button mat-raised-button (click)='guardar()' [class.button-spinner]="isSaving" [disabled]="!grupoForm.valid" color="primary">Guardar</button>

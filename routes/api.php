@@ -43,6 +43,11 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('dashboard-activo',                  'API\Modulos\DashboardController@activeDashboard');
 
     /**
+     * Rutas para Servicios de la API
+     */
+    Route::get('listado-empleados', 'API\Servicios\EmpleadosServiceController@listadoEmpleados');
+
+    /**
      * Rutas para el Modulo de Empleados
      */
     Route::apiResource('empleados',                 'API\Modulos\EmpleadosController');

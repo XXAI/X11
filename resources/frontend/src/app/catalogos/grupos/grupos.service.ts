@@ -10,12 +10,21 @@ import { map } from 'rxjs/operators';
 export class GruposService {
 
   url = `${environment.base_url}/grupos_unidades`;
+  url_empleados = `${environment.base_url}/listado-empleados`;
   //url_cat_tipo_profesion = `${environment.base_url}/catalogo-tipo-profesion`;
   
   constructor(private http: HttpClient) { }
 
   obtenerListaGrupos(payload):Observable<any> {
     return this.http.get<any>(this.url,{params: payload}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
+
+  obtenerListaEmpleados(payload):Observable<any> {
+    return this.http.get<any>(this.url_empleados,{params: payload}).pipe(
       map( response => {
         return response;
       })
