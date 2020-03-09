@@ -23,6 +23,8 @@ export class EmpleadosService {
 
   url_finish_validation = `${environment.base_url}/finalizar-captura`;
 
+  url_info_empleado = `${environment.base_url}/ver-info-empleado/`;
+
   url_catalogos = `${environment.base_url}/catalogos`;
   url_catalogo_tipo_baja =  `${environment.base_url}/catalogo-tipo-baja`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
@@ -154,6 +156,14 @@ export class EmpleadosService {
         return response;
       }
     ));
+  }
+
+  verInfoEmpleado(id:any):Observable<any>{
+    return this.http.get<any>(this.url_info_empleado + id, {}).pipe(
+      map( (response: any) => {
+        return response;
+      })
+    );
   }
 
   desligarEmpleado(id:any):Observable<any> {

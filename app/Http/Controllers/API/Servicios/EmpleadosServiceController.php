@@ -28,6 +28,22 @@ use App\Models\GrupoUnidades;
 
 class EmpleadosServiceController extends Controller
 {
+    public function infoEmpleado($id){
+        try{
+            //$access = $this->getUserAccessData();
+
+            $empleado = Empleado::with('turno','maxGradoEstudio','codigo.grupoFuncion','rama','tipoTrabajador','programa','ur','clues','cr','cluesAdscripcion','crAdscripcion')->where('id',$id)->first();
+
+            if($empleado){
+                $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
+            }
+
+            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function listadoEmpleados()
     {
         try{

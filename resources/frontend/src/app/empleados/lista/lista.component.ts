@@ -21,6 +21,7 @@ import * as FileSaver from 'file-saver';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { VerComponent } from '../ver/ver.component';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -445,6 +446,27 @@ export class ListaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
         this.loadEmpleadosData();
+      }
+    });
+  }
+
+  verEmpleado(id: number, index: number){
+    this.selectedItemIndex = index;
+    
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    paginator.selectedIndex = index;
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
+
+    const dialogRef = this.dialog.open(VerComponent, {
+      width: '99%',
+      data:{id: id}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log('Aceptar');
+      }else{
+        console.log('Cancelar');
       }
     });
   }

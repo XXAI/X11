@@ -35,6 +35,7 @@ import { CatalogosModule } from './catalogos/catalogos.module';
 //Modulos del Sistema
 import { EmpleadosModule } from './empleados/empleados.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SelectorCrDialogComponent } from './utils/selector-cr-dialog/selector-cr-dialog.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     WelcomeComponent,
     NotFoundComponent,
     DrawerListComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    SelectorCrDialogComponent
   ],
   imports: [
     BrowserModule,

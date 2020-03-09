@@ -27,7 +27,21 @@ class Empleado extends Model
         return $this->hasOne('App\Models\Clues', 'clues', "clues_adscripcion");
     }
 
+    public function tipoTrabajador(){
+        return $this->hasOne('App\Models\TipoTrabajador', 'id', "tipo_trabajador_id");
+    }
 
+    public function programa(){
+        return $this->hasOne('App\Models\Programa', 'id', "programa_id");
+    }
+
+    public function rama(){
+        return $this->hasOne('App\Models\Rama', 'id', "rama_id");
+    }
+    
+    public function maxGradoEstudio(){
+        return $this->hasOne('App\Models\NivelAcademico', 'id', "escolaridad_id");
+    }
     public function profesion(){
         return $this->hasOne('App\Models\Profesion','id','profesion_id');
     }

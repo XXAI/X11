@@ -46,6 +46,7 @@ Route::group(['middleware'=>'auth'],function($router){
      * Rutas para Servicios de la API
      */
     Route::get('listado-empleados', 'API\Servicios\EmpleadosServiceController@listadoEmpleados');
+    Route::get('ver-info-empleado/{id}', 'API\Servicios\EmpleadosServiceController@infoEmpleado');
 
     /**
      * Rutas para el Modulo de Empleados

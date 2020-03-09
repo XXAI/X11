@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import { GruposService  } from '../grupos.service';
 import { SharedService } from '../../../shared/shared.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SelectorCrDialogComponent } from '../../../utils/selector-cr-dialog/selector-cr-dialog.component';
 
 export interface GrupoDialogData {
   id?: number;
@@ -20,7 +22,8 @@ export class FormularioComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: GrupoDialogData,
     private fb: FormBuilder,
     private sharedService: SharedService,
-    private gruposService: GruposService
+    private gruposService: GruposService,
+    public dialog: MatDialog
   ) { }
 
   isSaving:boolean = false;
@@ -72,6 +75,18 @@ export class FormularioComponent implements OnInit {
 
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  agregarCR(id: number){
+    const dialogRef = this.dialog.open(SelectorCrDialogComponent, {});
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log('Aceptar');
+      }else{
+        console.log('Cancelar');
+      }
+    });
   }
 
   obtenerListadoEmpleados(){

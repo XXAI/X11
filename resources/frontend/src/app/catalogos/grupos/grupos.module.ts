@@ -8,6 +8,7 @@ import { FormularioComponent } from './formulario/formulario.component';
 
 import { MatPaginatorIntl } from '@angular/material';
 import { getEspPaginatorIntl } from '../../esp-paginator-intl';
+import { SelectorCrDialogComponent } from '../../utils/selector-cr-dialog/selector-cr-dialog.component';
 
 @NgModule({
   declarations: [ListaComponent, FormularioComponent],
@@ -18,6 +19,7 @@ import { getEspPaginatorIntl } from '../../esp-paginator-intl';
   ],
   entryComponents:[
     FormularioComponent,
+    SelectorCrDialogComponent
   ],
   providers:[
     { provide: MatPaginatorIntl, useValue: getEspPaginatorIntl() }
