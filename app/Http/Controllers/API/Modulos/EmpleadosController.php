@@ -1182,7 +1182,7 @@ class EmpleadosController extends Controller
         try{
             $parametros = Input::all();
             $empleado = Empleado::find($id);
-
+            
             DB::beginTransaction();
 
             $access = $this->getUserAccessData();
@@ -1200,7 +1200,7 @@ class EmpleadosController extends Controller
             $comision->recurrente = $parametros['recurrente'];
             $comision->total_acumulado_meses = $parametros['total_acumulado_meses'];
 
-            //$comision = new ComisionEmpleado();
+            //$comision = new ComisionEmpleado();           
             if($parametros['tipo_comision'] == 'CI'){
                 $comision->cr = $parametros['cr_comision_id'];
                 $cr = Cr::where("cr", "=", $parametros['cr_comision_id'])->first();
