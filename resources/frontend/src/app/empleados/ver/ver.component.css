@@ -58,7 +58,7 @@ table {
 
 .asistencia-table-container {
     position: relative;
-    max-height: 400px;
+    /*max-height: 400px;*/
     min-height:200px;
     overflow: auto;
 }

@@ -40,7 +40,7 @@ export class VerComponent implements OnInit {
   //Para el listado de las asistencias
   isLoadingAsistencia:boolean = false;
   asistenciasCargadas:boolean = false;
-  verifData:string;
+  verifData:any;
   fechaInicioAsist: any;
   fechaFinAsist: any;
   displayedScheduleColumns: string[] = ['dia','fecha','hora_entrada','hora_salida','justificado'];
@@ -55,6 +55,12 @@ export class VerComponent implements OnInit {
     7:"DOMINGO"
   };
 
+  miniPagination:any = {
+    previous: 0,
+    current: 0,
+    next: 0,
+    total: 0
+  };
 
   isLoadingCredential:boolean = false;
   isLoading:boolean = false;
@@ -160,7 +166,7 @@ export class VerComponent implements OnInit {
 
     this.isLoadingAsistencia = true;
     this.assistSource = [];
-    this.verifData = '';
+    this.verifData = undefined;
 
     this.empleadosService.getDatosAsistencia(payload).subscribe(
       response => {
@@ -178,7 +184,7 @@ export class VerComponent implements OnInit {
         this.fechaInicioAsist = new Date(response.fecha_inicial.substring(0,4),(response.fecha_inicial.substring(5,7)-1), response.fecha_inicial.substring(8,10),12,0,0,0);
         this.fechaFinAsist = new Date(response.fecha_final.substring(0,4),(response.fecha_final.substring(5,7)-1), response.fecha_final.substring(8,10),12,0,0,0);
 
-        this.verifData = 'ID: ' + response.validacion.Badgenumber + ' | Nombre: ' + response.validacion.Name + ' | RFC: ' + response.validacion.TITLE;
+        this.verifData = { id: response.validacion.Badgenumber, faltas: response.resumen[0].Falta, retardos: response.resumen[0].Retardo_Mayor + response.resumen[0].Retardo_Menor};
         this.isLoadingAsistencia = false;
         this.asistenciasCargadas = true;
       },

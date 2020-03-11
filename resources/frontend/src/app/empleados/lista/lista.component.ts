@@ -470,7 +470,7 @@ export class ListaComponent implements OnInit {
       configDialog = {
         width: '99%',
         maxHeight: '90vh',
-        height: '85%',
+        height: '643px',
         data:{id: id, puedeEditar: !this.capturaFinalizada}
       }
     }
