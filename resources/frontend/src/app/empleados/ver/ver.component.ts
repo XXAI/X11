@@ -73,14 +73,42 @@ export class VerComponent implements OnInit {
       this.puedeVerAsistencias = false;
     }
 
-    this.isLoadingCredential = true;
-    this.isLoading = true;
-
     if(this.data.puedeEditar){
       this.puedeEditar = this.data.puedeEditar;
     }
+    
+    this.loadDataEmpleado(this.data.id);
+  }
 
-    this.empleadosService.verInfoEmpleado(this.data.id).subscribe(
+  loadDataEmpleado(id:any){
+    let params = {};
+
+    //Inicia: Datos para los botones de Anterior y Siguiente
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    let filter = this.sharedService.getDataFromCurrentApp('filter');
+    let query = this.sharedService.getDataFromCurrentApp('searchQuery');
+
+    for (let i in paginator) {
+      params[i] = paginator[i];
+    }
+
+    for (let i in filter) {
+      if(filter.clues){       params['clues']     = filter.clues.clues; }
+      if(filter.cr){          params['cr']        = filter.cr.cr; }
+      if(filter.estatus){     params['estatus']   = filter.estatus.id; }
+      if(filter.rama){        params['rama']      = filter.rama.id; }
+      if(filter.grupos){      params['grupos']    = filter.grupos.id; }
+    }
+
+    if(query){
+      params['query'] = query;
+    }
+    //Termina: Datos para los botones de Anterior y Siguiente
+
+    this.isLoadingCredential = true;
+    this.isLoading = true;
+
+    this.empleadosService.verInfoEmpleado(id,params).subscribe(
       response =>{
         console.log(response);
         this.dataEmpleado = response.data;
@@ -109,6 +137,25 @@ export class VerComponent implements OnInit {
           this.dataEmpleado.comision = 'Licencia Humanitaria';
         }
 
+        if(response.pagination){
+          let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+
+          let paginationIndex = response.pagination.next_prev.findIndex(item => item.id == this.dataEmpleado.id);
+          //Aqui verificar estatus
+          if(paginationIndex < 0){
+            this.miniPagination.next = (response.pagination.next_prev[1])?response.pagination.next_prev[1].id:0;
+            this.miniPagination.previous = (response.pagination.next_prev[0])?response.pagination.next_prev[0].id:0;
+          }else{
+            this.miniPagination.next = (response.pagination.next_prev[paginationIndex+1])?response.pagination.next_prev[paginationIndex+1].id:0;
+            this.miniPagination.previous = (response.pagination.next_prev[paginationIndex-1])?response.pagination.next_prev[paginationIndex-1].id:0;
+          }
+          
+          this.miniPagination.total = response.pagination.total;
+          this.miniPagination.current = (paginator.pageSize*paginator.pageIndex)+paginator.selectedIndex+1;
+        }else{
+          this.miniPagination.total = 0;
+        }
+
         if(this.dataEmpleado.clave_credencial){
           this.empleadosService.getDatosCredencial(this.dataEmpleado.clave_credencial).subscribe(
             response => {
@@ -132,8 +179,46 @@ export class VerComponent implements OnInit {
           );
         }
 
+        if(this.navTabSelected == 2){
+          this.asistenciasCargadas = false;
+          this.cargarAssistencias(this.dataEmpleado.clave_credencial);
+        }else{
+          this.assistSource = [];
+          this.asistenciasCargadas = false;
+        }
+
         this.isLoading = false;
       });
+  }
+
+  loadNext(){
+    let nextId = this.miniPagination.next;
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+
+    if(paginator.selectedIndex+1 >= paginator.pageSize){
+      paginator.pageIndex += 1;
+      paginator.selectedIndex = 0;
+    }else{
+      paginator.selectedIndex += 1;
+    }
+
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
+    this.loadDataEmpleado(nextId);
+  }
+
+  loadPrevious(){
+    let prevId = this.miniPagination.previous;
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    
+    if(paginator.selectedIndex-1 < 0){
+      paginator.pageIndex -= 1;
+      paginator.selectedIndex = paginator.pageSize-1;
+    }else{
+      paginator.selectedIndex -= 1;
+    }
+
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
+    this.loadDataEmpleado(prevId);
   }
 
   editarEmpleado(){

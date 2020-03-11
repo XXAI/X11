@@ -235,8 +235,8 @@
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>Acciones</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
-                                    <button *ngIf="!capturaFinalizada && row.validado != 1" mat-raised-button color="primary" (click)="editEmpleado(i)" routerLink="/empleados/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>
-                                    <button *ngIf="row.validado == 1 || capturaFinalizada" mat-raised-button color="primary" (click)="verEmpleado(row.id,i)"><mat-icon>remove_red_eye</mat-icon></button>
+                                    <button *ngIf="!capturaFinalizada && row.validado != 1 && row.estatus != 2" mat-raised-button color="primary" (click)="editEmpleado(i)" routerLink="/empleados/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>
+                                    <button *ngIf="row.validado == 1 || capturaFinalizada || row.estatus == 2" mat-raised-button color="primary" (click)="verEmpleado(row.id,i)"><mat-icon>remove_red_eye</mat-icon></button>
                                     <button *ngIf="!capturaFinalizada && row.permuta_activa_clues" mat-icon-button color="accent" (click)="confirmTransferEmploye(row.id,i)"><mat-icon>swap_horizontal_circle</mat-icon></button>
                                     <button *ngIf="!capturaFinalizada && row.estatus == 1" mat-icon-button color="warn" fxHide.xs="true" (click)="confirmUntieEmploye(row.id)"><mat-icon>link_off</mat-icon></button>
                                 </td>

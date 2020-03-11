@@ -158,8 +158,8 @@ export class EmpleadosService {
     ));
   }
 
-  verInfoEmpleado(id:any):Observable<any>{
-    return this.http.get<any>(this.url_info_empleado + id, {}).pipe(
+  verInfoEmpleado(id:any,payload:any):Observable<any>{
+    return this.http.get<any>(this.url_info_empleado + id, {params:payload}).pipe(
       map( (response: any) => {
         return response;
       })

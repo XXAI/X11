@@ -22,9 +22,11 @@
             </div>
             <div fxFlex>
                 <mat-chip-list aria-label="Fish selection">
-                    <mat-chip color="primary" [selected]="dataEmpleado.validado"><mat-icon *ngIf="dataEmpleado.validado">verified_user</mat-icon>{{(dataEmpleado.validado)?' Validado':'No Validado'}}</mat-chip>
+                    <mat-chip color="primary" [selected]="dataEmpleado.validado == 1"><mat-icon *ngIf="dataEmpleado.validado">verified_user</mat-icon>{{(dataEmpleado.validado)?' Validado':'No Validado'}}</mat-chip>
                     <mat-chip color="primary" [selected]="dataEmpleado.estatus == 1">{{(dataEmpleado.estatus == 1)?'Activo':'Inactivo'}}</mat-chip>
+                    <mat-chip color="warn"    selected *ngIf="dataEmpleado.estatus == 2">BAJA <span *ngIf="dataEmpleado.baja && dataEmpleado.baja[0].tipo_baja">: {{ dataEmpleado.baja[0].tipo_baja.descripcion }}</span></mat-chip>
                     <mat-chip color="primary" selected *ngIf="dataEmpleado.comision">{{ dataEmpleado.comision }}</mat-chip>
+                    <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
                 </mat-chip-list>
             </div>
             <mat-divider></mat-divider>
@@ -198,13 +200,13 @@
     </section>
 </div>
 <div mat-dialog-actions>
-    <!--section *ngIf="miniPagination">
+    <section *ngIf="miniPagination.total > 0">
         <button mat-raised-button [disabled]="miniPagination.previous == 0" (click)="loadPrevious()"><mat-icon>navigate_before</mat-icon> <span fxHide.xs="true">Anterior</span></button>
         &nbsp;
         <span><small>{{miniPagination.current}}/{{miniPagination.total}}</small></span>
         &nbsp;
         <button mat-raised-button [disabled]="miniPagination.next == 0" (click)="loadNext()"><span fxHide.xs="true">Siguiente</span> <mat-icon>navigate_next</mat-icon></button>
-    </section-->
+    </section>
     <span fxFlex></span>
     <button mat-button (click)='cancel()'>Cerrar</button>
 </div>

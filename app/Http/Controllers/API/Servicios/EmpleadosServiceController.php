@@ -30,7 +30,10 @@ class EmpleadosServiceController extends Controller
 {
     public function infoEmpleado($id){
         try{
-            //$access = $this->getUserAccessData();
+            $access = $this->getUserAccessData();
+            $params = Input::all();
+
+            $returnData = [];
 
             $empleado = Empleado::with('turno','maxGradoEstudio','codigo.grupoFuncion','rama','tipoTrabajador','programa','ur','clues','cr','cluesAdscripcion','crAdscripcion','fuente')->where('id',$id)->first();
 
@@ -44,7 +47,99 @@ class EmpleadosServiceController extends Controller
                 $empleado->load('empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato');
             }
 
-            return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
+            if($empleado->estatus == 2){
+                $empleado->load('baja.tipoBaja');
+            }
+
+            $returnData['data'] = $empleado;
+
+            if(isset($params['selectedIndex'])){
+                $per_page = $params['pageSize'];
+                $page_index = $params['pageIndex'];
+                $selected_index = $params['selectedIndex'];
+
+                $real_index = ($per_page * $page_index) + $selected_index;
+                $empleados = Empleado::select('empleados.id')->leftJoin('permuta_adscripcion',function($join)use($access){
+                                            $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
+                                            if(!$access->is_admin){
+                                                $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                                            }
+                                        })->orderBy('nombre');
+
+                //filtro de valores por permisos del usuario
+                if(!$access->is_admin){
+                    $empleados = $empleados->whereIn('empleados.estatus',[1,4])->where(function($query)use($access){
+                        $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
+                                ->orWhere(function($query2)use($access){
+                                    $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
+                                });
+                    });
+                }
+
+                if($real_index == 0){
+                    $limit_index = 0;
+                    $total_results = 2;
+                }else{
+                    $limit_index = $real_index-1;
+                    $total_results = 3;
+                }
+
+                if(isset($params['query']) && $params['query']){
+                    $empleados = $empleados->where(function($query)use($params){
+                        return $query//->where('nombre','LIKE','%'.$params['query'].'%')
+                                    ->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$params['query'].'%"' )
+                                    ->orWhere('curp','LIKE','%'.$params['query'].'%')
+                                    ->orWhere('rfc','LIKE','%'.$params['query'].'%');
+                    });
+                }
+
+                if(isset($params['clues']) && $params['clues']){
+                    $empleados = $empleados->where('clues',$params['clues']);
+                }
+
+                if(isset($params['cr']) && $params['cr']){
+                    $empleados = $empleados->where('cr_id',$params['cr']);
+                }
+
+                if(isset($params['estatus']) && $params['estatus']){
+                    $estatus = explode('-',$params['estatus']);
+                    $empleados = $empleados->where('empleados.estatus',$estatus[0]);
+                    if(isset($estatus[1])){
+                        $empleados = $empleados->where('validado',$estatus[1]);
+                    }
+                }
+                /*if(isset($params['profesion']) && $params['profesion']){
+                    $empleados = $empleados->where('profesion_id',$params['profesion']);
+                }*/
+
+                if(isset($params['rama']) && $params['rama']){
+                    $empleados = $empleados->where('rama_id',$params['rama']);
+                }
+
+                if($access->is_admin){
+                    if(isset($params['grupos']) && $params['grupos']){
+                        $grupo = GrupoUnidades::with('listaCR')->find($params['grupos']);
+                        $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
+
+                        $empleados = $empleados->where(function($query)use($lista_cr){
+                            $query->whereIn('empleados.cr_id',$lista_cr)
+                                ->orWhere(function($query2)use($lista_cr){
+                                    $query2->whereIn('permuta_adscripcion.cr_destino_id',$lista_cr);
+                                });
+                        });
+                    }
+                }
+
+                $total_empleados = clone $empleados;
+                $total_empleados = $total_empleados->count();
+                $empleados = $empleados->skip($limit_index)->take($total_results)->get();
+
+                $mini_pagination = ['next_prev'=>$empleados,'total'=>$total_empleados];
+
+                $returnData['pagination'] = $mini_pagination;
+            }
+
+            return response()->json($returnData,HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
