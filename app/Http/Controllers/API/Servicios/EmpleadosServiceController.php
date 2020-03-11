@@ -32,10 +32,16 @@ class EmpleadosServiceController extends Controller
         try{
             //$access = $this->getUserAccessData();
 
-            $empleado = Empleado::with('turno','maxGradoEstudio','codigo.grupoFuncion','rama','tipoTrabajador','programa','ur','clues','cr','cluesAdscripcion','crAdscripcion')->where('id',$id)->first();
+            $empleado = Empleado::with('turno','maxGradoEstudio','codigo.grupoFuncion','rama','tipoTrabajador','programa','ur','clues','cr','cluesAdscripcion','crAdscripcion','fuente')->where('id',$id)->first();
 
-            if($empleado){
-                $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
+            if(!$empleado){
+                throw new Exception("No se encontro al empleado buscado", 1);
+            }
+
+            $empleado->clave_credencial = \Encryption::encrypt($empleado->rfc);
+
+            if($empleado->tipo_comision){
+                $empleado->load('empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato');
             }
 
             return response()->json(['data'=>$empleado],HttpResponse::HTTP_OK);
@@ -59,7 +65,9 @@ class EmpleadosServiceController extends Controller
                 $parametros['grouped_by'] = 'clues';
             }
 
-            $empleados = Empleado::select('empleados.*');
+            $empleados = Empleado::select('empleados.*','clues_fisica.nombre_unidad as unidad_fisica','cr_fisico.descripcion as cr_fisico','clues_adscripcion.nombre_unidad as unidad_adscripcion','cr_adscripcion.descripcion as cr_adscripcion')
+                                    ->leftJoin('catalogo_clues as clues_fisica','empleados.clues','=','clues_fisica.clues')->leftJoin('catalogo_cr as cr_fisico','empleados.cr_id','=','cr_fisico.cr')
+                                    ->leftJoin('catalogo_clues as clues_adscripcion','empleados.clues_adscripcion','=','clues_adscripcion.clues')->leftJoin('catalogo_cr as cr_adscripcion','empleados.cr_adscripcion_id','=','cr_adscripcion.cr');
         
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){

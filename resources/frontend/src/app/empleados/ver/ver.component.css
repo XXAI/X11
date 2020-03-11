@@ -68,8 +68,13 @@ table {
 }
 
 .info-adscripcion-activa th.titulo-largo{
-    background-color: black;
-    color:white;
+    /*background-color: rgba(0,0,0,.85);*/
+    color: rgba(0,0,0,.85);
+    border-bottom: thick;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0,0,0,.85);
+    font-weight: bold;
     text-align: center;
     padding:2px;
 }
@@ -87,4 +92,34 @@ table {
 
 .info-adscripcion-activa td.descripcion{
     text-align: center;
+}
+
+.tarjeta-info-empleado p{
+    line-height: 22px;
+    margin-bottom: 0px;
+}
+
+.tarjeta-info-empleado p:first-child{
+    padding-right: 10px;
+}
+
+.tarjeta-info-empleado p:last-child{
+    padding-left: 10px;
+    border-left: thick;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgba(0,0,0,.12);
+}
+
+.tarjeta-info-empleado p span.label{
+    color: rgba(0,0,0,.87);
+    font-weight: bold;
+    border-bottom: thick;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0,0,0,.50);
+}
+
+.tarjeta-info-empleado p span.value{
+    padding: 0 5px 0 5px;
 }

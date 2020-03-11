@@ -4,7 +4,7 @@ export class ReportePersonalActivo{
         //console.log(reportData);
         let contadorLineasHorizontalesV = 0;
         let fecha_hoy =  Date.now();
-      console.log(LOGOS);
+        console.log(LOGOS);
         let datos = {
           pageOrientation: 'landscape',
           pageSize: 'LEGAL',

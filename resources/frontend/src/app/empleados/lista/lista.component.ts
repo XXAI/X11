@@ -457,10 +457,25 @@ export class ListaComponent implements OnInit {
     paginator.selectedIndex = index;
     this.sharedService.setDataToCurrentApp('paginator',paginator);
 
-    const dialogRef = this.dialog.open(VerComponent, {
-      width: '99%',
-      data:{id: id}
-    });
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '99%',
+        maxHeight: '90vh',
+        height: '85%',
+        data:{id: id, puedeEditar: !this.capturaFinalizada}
+      }
+    }
+
+    const dialogRef = this.dialog.open(VerComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){

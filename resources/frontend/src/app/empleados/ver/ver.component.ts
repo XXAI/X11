@@ -4,9 +4,11 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EmpleadosService } from '../empleados.service';
 import { SharedService } from '../../shared/shared.service';
 import { Router } from '@angular/router';
+import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 
 export interface VerEmpleadoData {
   id: number;
+  puedeEditar?:boolean;
 }
 
 @Component({
@@ -29,6 +31,9 @@ export class VerComponent implements OnInit {
 
   datosCredencial:any;
   photoPlaceholder = 'assets/profile-icon.svg';
+
+  puedeVerAsistencias: boolean = false;
+  puedeEditar:boolean = false;
 
   navTabSelected:number = 0;
 
@@ -55,12 +60,48 @@ export class VerComponent implements OnInit {
   isLoading:boolean = false;
 
   ngOnInit() {
+    let userPermissions = JSON.parse(localStorage.getItem('permissions'));
+    if(userPermissions['NZlDkhi8ikVhdgfT8zVVIGroFNtHfIQe']){
+      this.puedeVerAsistencias = true;
+    }else{
+      this.puedeVerAsistencias = false;
+    }
+
     this.isLoadingCredential = true;
     this.isLoading = true;
+
+    if(this.data.puedeEditar){
+      this.puedeEditar = this.data.puedeEditar;
+    }
+
     this.empleadosService.verInfoEmpleado(this.data.id).subscribe(
       response =>{
         console.log(response);
         this.dataEmpleado = response.data;
+
+        if(this.dataEmpleado.figf){
+          this.dataEmpleado.figf = new Date(this.dataEmpleado.figf.substring(0,4),(this.dataEmpleado.figf.substring(5,7)-1), this.dataEmpleado.figf.substring(8,10),12,0,0,0);
+        }
+
+        if(this.dataEmpleado.fissa){
+          this.dataEmpleado.fissa = new Date(this.dataEmpleado.fissa.substring(0,4),(this.dataEmpleado.fissa.substring(5,7)-1), this.dataEmpleado.fissa.substring(8,10),12,0,0,0);
+        }
+
+        if(this.dataEmpleado.hora_entrada){
+          this.dataEmpleado.hora_entrada = new Date(1,1,1,this.dataEmpleado.hora_entrada.substring(0,2),(this.dataEmpleado.hora_entrada.substring(3,5)),0,0);
+        }
+        
+        if(this.dataEmpleado.hora_salida){
+          this.dataEmpleado.hora_salida = new Date(1,1,1,this.dataEmpleado.hora_salida.substring(0,2),(this.dataEmpleado.hora_salida.substring(3,5)),0,0);
+        }
+
+        if(this.dataEmpleado.tipo_comision == 'CI'){
+          this.dataEmpleado.comision = 'Comisión Interna';
+        }else if(this.dataEmpleado.tipo_comision == 'CS'){
+          this.dataEmpleado.comision = 'Comisión Sindical';
+        }else if(this.dataEmpleado.tipo_comision == 'LH'){
+          this.dataEmpleado.comision = 'Licencia Humanitaria';
+        }
 
         if(this.dataEmpleado.clave_credencial){
           this.empleadosService.getDatosCredencial(this.dataEmpleado.clave_credencial).subscribe(
@@ -77,6 +118,10 @@ export class VerComponent implements OnInit {
                 this.datosCredencial = undefined;
               }
               this.isLoadingCredential = false;
+            },
+            responseError => {
+              console.log(responseError);
+              this.isLoadingCredential = false;
             }
           );
         }
@@ -91,7 +136,7 @@ export class VerComponent implements OnInit {
   }
 
   dataTabChange(event){
-    if(event.index == 1 && !this.asistenciasCargadas){
+    if(event.index == 2 && !this.asistenciasCargadas){
       console.log('corriendo listado de asistencia');
       this.cargarAssistencias(this.dataEmpleado.clave_credencial);
     }

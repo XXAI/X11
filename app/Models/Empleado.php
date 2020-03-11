@@ -11,6 +11,10 @@ class Empleado extends Model
     protected $fillable = ["codigo_id", "comision_sindical_id", "cr_id","curp", "figf", "fissa", "fuente_id", "horario", "nombre", "sexo", "programa_id", "rama_id", "rfc", "tipo_nomina_id", "validado",'estatus' ,'actividades','observaciones', 'tipo_trabajador_id', 'calle', 'no_exterior', 'no_interior', 'colonia', 'cp', 'nacionalidad', 'estado_nacimiento' ,'escolaridad_id', 'no_cedula', 'telefono_fijo', 'telefono_celular', 'correo_personal'];
     protected $table = 'empleados';
 
+    public function fuente(){
+        return $this->hasOne('App\Models\Fuente','id','fuente_id');
+    }
+
     public function sindicato(){
         return $this->hasOne('App\Models\Sindicato','id','comision_sindical_id');
     }
