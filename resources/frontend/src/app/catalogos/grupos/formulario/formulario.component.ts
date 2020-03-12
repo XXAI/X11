@@ -77,7 +77,7 @@ export class FormularioComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  agregarCR(id: number){
+  agregarCR(){
     const dialogRef = this.dialog.open(SelectorCrDialogComponent, {});
 
     dialogRef.afterClosed().subscribe(valid => {
