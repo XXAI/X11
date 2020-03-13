@@ -47,6 +47,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export class ListaComponent implements OnInit {
   isLoading: boolean = false;
+  isLoadingExcel: boolean = false;
   isLoadingPDF: boolean = false;
   isLoadingPDFArea: boolean = false;
   isLoadingAgent: boolean = false;
@@ -616,6 +617,56 @@ export class ListaComponent implements OnInit {
         );
       }
     });
+  }
+
+  reportePersonalActivoExcel(){
+    this.isLoadingExcel = true;
+    let params:any = {};
+    let countFilter = 0;
+
+    let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','filter']);
+
+    params.reporte = 'personal-activo';
+    params.export_excel = true;
+
+    if(appStoredData['searchQuery']){
+      params.query = appStoredData['searchQuery'];
+    }
+
+    for(let i in appStoredData['filter']){
+      if(appStoredData['filter'][i]){
+        if(i == 'clues'){
+          params[i] = appStoredData['filter'][i].clues;
+        }else if(i == 'cr'){
+          params[i] = appStoredData['filter'][i].cr;
+        }else{ //profesion y rama
+          params[i] = appStoredData['filter'][i].id;
+        }
+        countFilter++;
+      }
+    }
+
+    if(countFilter > 0){
+      params.active_filter = true;
+    }
+
+    this.empleadosService.getEmpleadosList(params).subscribe(
+      response => {
+        //FileSaver.saveAs(response);
+        FileSaver.saveAs(response,'reportePersonalActivo');
+        this.isLoadingExcel = false;
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoadingExcel = false;
+      }
+    );
   }
 
   reportePersonalActivo(){

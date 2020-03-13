@@ -26,6 +26,8 @@ use App\Models\ComisionDetalle;
 use App\Models\EmpleadoEscolaridadDetalle;
 use App\Models\GrupoUnidades;
 
+use App\Exports\DevReportExport;
+
 class EmpleadosController extends Controller
 {
     public function index()
@@ -35,6 +37,8 @@ class EmpleadosController extends Controller
         }*/
         $firmantes = array();
         $responsable_clues = array();
+        $loggedUser = auth()->userOrFail();
+
         try{
             $access = $this->getUserAccessData();
             
@@ -123,35 +127,67 @@ class EmpleadosController extends Controller
             } else {
                 if(isset($parametros['reporte'])){
                     //Reporte Personal Activo
-                    $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion', "codigos.descripcion as codigo") //'profesiones.descripcion as profesion',
-                                        //->leftjoin('empleado_escolaridad_detalles as escolaridad_detalle',function($join){
-                                        //$join->on('escolaridad_detalle.empleado_id','empleados.id')->where('escolaridad_detalle.tipo_estudio','LIC');
-                                        //})
-                                        //->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
-                                        //->leftjoin('catalogo_profesion as profesiones','profesiones.id','escolaridad_detalle.profesion_id')
+                    $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion', "codigos.descripcion as codigo")
                                         ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
                                         ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
                                         ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
                                         ->leftjoin('catalogo_clues as clues','clues.clues','empleados.clues')
                                         ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
                                         ->orderBy('clues','asc')
-                                        ->orderBy('cr_id','asc')
-                                        ->with(['escolaridadDetalle'=>function($query){
+                                        ->orderBy('cr_id','asc');
+                    
+                    if(isset($parametros['export_excel']) && $parametros['export_excel']){
+                        ini_set('memory_limit', '-1');
+                        $empleados = $empleados->select('empleados.clues as CLUES','empleados.cr_id as CR','cr.descripcion as CR_DESC','empleados.rfc as RFC','empleados.curp as CURP','empleados.nombre as NOMBRE','codigos.codigo as CODIGO','codigos.descripcion as DESC_CODIGO',
+                                                        'LIC_DET.descripcion as LICENCIATURA','TEC_DET.descripcion as TECNICA','turnos.descripcion as TURNO', 'empleados.hora_entrada as HORA_ENTRADA','empleados.hora_salida as HORA_SALIDA','empleados.area_servicio as AREA_SERVICIO',
+                                                        'funciones.grupo as FUNCION','empleados.observaciones as OBSERVACIONES')
+                                                ->leftjoin('empleado_escolaridad_detalles as LIC',function($join){
+                                                    $join->on('LIC.empleado_id','=','empleados.id')->where('LIC.tipo_estudio','LIC')->whereNull('LIC.deleted_at');
+                                                })
+                                                ->leftjoin('catalogo_profesion as LIC_DET','LIC_DET.id','LIC.profesion_id')
+                                                ->leftjoin('empleado_escolaridad_detalles as TEC',function($join){
+                                                    $join->on('TEC.empleado_id','=','empleados.id')->where('TEC.tipo_estudio','TEC')->whereNull('TEC.deleted_at');
+                                                })
+                                                ->leftjoin('catalogo_profesion as TEC_DET','TEC_DET.id','TEC.profesion_id');
+    
+                        try{
+                            $empleados = $empleados->get();
+                            $columnas = array_keys(collect($empleados[0])->toArray());
+    
+                            if(isset($parametros['nombre_archivo']) && $parametros['nombre_archivo']){
+                                $filename = $parametros['nombre_archivo'];
+                            }else{
+                                $filename = 'reporte-personal-activo';
+                            }
+                            
+                            return (new DevReportExport($empleados,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
+                        }catch(\Exception $e){
+                            return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
+                        }
+                    }else{
+                        $empleados = $empleados->with(['escolaridadDetalle'=>function($query){
                                             $query->whereIn('tipo_estudio',['LIC','TEC']);
                                         },'escolaridadDetalle.profesion']);
-                                        ;
+                    }
                 }
                 $empleados = $empleados->get();
 
-                $loggedUser = auth()->userOrFail();
                 $loggedUser->load('gruposUnidades.listaFirmantes.empleado',"gruposUnidades.listaCR.clues.responsable");
-                $firmantes = $loggedUser->gruposUnidades[0]->listaFirmantes;
-                $responsable_clues = $loggedUser->gruposUnidades[0]->listaCR;
-
+                if(count($loggedUser->gruposUnidades) > 0){
+                    $firmantes = $loggedUser->gruposUnidades[0]->listaFirmantes;
+                    $responsable_clues = $loggedUser->gruposUnidades[0]->listaCR;
+                }else if(isset($parametros['grupos']) && $parametros['grupos']){
+                    $grupo = GrupoUnidades::with('listaFirmantes.empleado','listaCR.clues.responsable')->find($parametros['grupos']);
+                    if($grupo){
+                        $firmantes = $grupo->listaFirmantes;
+                        $responsable_clues = $grupo->listaCR;
+                    }
+                }
             }
 
-            $loggedUser = auth()->userOrFail();
-            $loggedUser->load('gruposUnidades');
+            if(!$loggedUser->gruposUnidades){
+                $loggedUser->load('gruposUnidades');
+            }
             if(count($loggedUser->gruposUnidades) > 0){
                 $estatus = ['grupo_usuario'=>true, 'finalizado'=>$loggedUser->gruposUnidades[0]->finalizado];
             }else{

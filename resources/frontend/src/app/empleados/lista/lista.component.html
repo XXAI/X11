@@ -128,8 +128,8 @@
                     &nbsp;
                     <button *ngIf="!capturaFinalizada" mat-raised-button color="info" (click)="showAddEmployeDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>keyboard</mat-icon> Buscar Empleado</button>
                     &nbsp;
-                    <button mat-icon-button (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF">
-                        <mat-icon>{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon>
+                    <button mat-icon-button (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" color="{{(showReportForm)?'primary':''}}" [disabled]="isLoadingPDF">
+                        <mat-icon fontSet="{{(!showReportForm)?'material-icons-outlined':''}}">{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon>
                     </button>
                     <button mat-icon-button (click)="reportePersonalActivoArea()" [ifHasPermission]="'1dDMX0O5llW4ZxMqW0JDI4wozLMktGDp'"  [class.button-spinner]="isLoadingPDFArea" [disabled]="isLoadingPDFArea">
                         <mat-icon>description</mat-icon>
@@ -145,7 +145,8 @@
                             <section fxFlex="none">
                                 <mat-checkbox [(ngModel)]="reportIncludeSigns" class="check-box">Incluir Firmas</mat-checkbox>
                             </section>
-                            <button mat-stroked-button (click)="reportePersonalActivo()" color="primary"><mat-icon fontSet="material-icons-outlined">insert_drive_file</mat-icon> Generar Reporte</button>
+                            <button mat-stroked-button (click)="reportePersonalActivo()" color="primary"><mat-icon>insert_drive_file</mat-icon>Generar PDF</button>
+                            <button mat-button (click)="reportePersonalActivoExcel()" color="accent" [class.button-spinner]="isLoadingExcel" [disabled]="isLoadingExcel"><mat-icon fontSet="material-icons-outlined">insert_drive_file</mat-icon>Excel</button>
                         </section>
                     </div>
                     <div class="my-stepper" *ngIf="showMyStepper">

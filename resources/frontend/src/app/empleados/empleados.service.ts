@@ -87,7 +87,10 @@ export class EmpleadosService {
   };
 
   getEmpleadosList(payload):Observable<any> {
-    return this.http.get<any>(this.url,{params: payload}).pipe(
+    if(payload.reporte && payload.export_excel){
+      return this.http.get<any>(this.url, {params:payload, responseType: 'blob' as 'json'});
+    }
+    return this.http.get<any>(this.url, {params: payload}).pipe(
       map( response => {
         return response;
       })

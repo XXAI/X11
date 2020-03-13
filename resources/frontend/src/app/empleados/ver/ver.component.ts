@@ -4,7 +4,8 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EmpleadosService } from '../empleados.service';
 import { SharedService } from '../../shared/shared.service';
 import { Router } from '@angular/router';
-import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
+import { ReportWorker } from '../../web-workers/report-worker';
+import * as FileSaver from 'file-saver';
 
 export interface VerEmpleadoData {
   id: number;
@@ -45,6 +46,7 @@ export class VerComponent implements OnInit {
   fechaFinAsist: any;
   displayedScheduleColumns: string[] = ['dia','fecha','hora_entrada','hora_salida','justificado'];
   assistSource: any = [];
+  resumenAsistencias: any;
   daysLabels: any = {
     1:"LUNES", 
     2:"MARTES", 
@@ -63,6 +65,7 @@ export class VerComponent implements OnInit {
   };
 
   isLoadingCredential:boolean = false;
+  isLoadingPDF:boolean = false;
   isLoading:boolean = false;
 
   ngOnInit() {
@@ -269,6 +272,7 @@ export class VerComponent implements OnInit {
         this.fechaInicioAsist = new Date(response.fecha_inicial.substring(0,4),(response.fecha_inicial.substring(5,7)-1), response.fecha_inicial.substring(8,10),12,0,0,0);
         this.fechaFinAsist = new Date(response.fecha_final.substring(0,4),(response.fecha_final.substring(5,7)-1), response.fecha_final.substring(8,10),12,0,0,0);
 
+        this.resumenAsistencias = response.resumen[0];
         this.verifData = { id: response.validacion.Badgenumber, faltas: response.resumen[0].Falta, retardos: response.resumen[0].Retardo_Mayor + response.resumen[0].Retardo_Menor};
         this.isLoadingAsistencia = false;
         this.asistenciasCargadas = true;
@@ -282,6 +286,64 @@ export class VerComponent implements OnInit {
         this.sharedService.showSnackBar('Error al intentar recuperar datos de asistencia', null, 4000);
       }
     );
+  }
+
+  reporteAsistencias(){
+    this.isLoadingPDF = true;
+    const reportWorker = new ReportWorker();
+    reportWorker.onmessage().subscribe(
+      data => {
+        console.log(data);
+        FileSaver.saveAs(data.data,'ReporteAsistencia');
+        reportWorker.terminate();
+
+        this.isLoadingPDF = false;
+    });
+
+    reportWorker.onerror().subscribe(
+      (data) => {
+        //this.sharedService.showSnackBar('Error: ' + data.message,null, 3000);
+        this.isLoadingPDF = false;
+        //console.log(data);
+        reportWorker.terminate();
+      }
+    );
+
+    let estatus_empleado = '';
+
+    switch (this.dataEmpleado.estatus) {
+      case 1:
+        estatus_empleado = 'Activo';
+        break;
+      case 2:
+        estatus_empleado = 'Dado de Baja';
+        break;
+      case 3:
+        estatus_empleado = 'Inactivo';
+        break;
+      case 4:
+        estatus_empleado = 'En Transferencia';
+        break;
+      default:
+        break;
+    }
+
+    let reportData = {
+      fecha_inicial: this.fechaInicioAsist.toISOString().substring(0,10),
+      fecha_final: this.fechaFinAsist.toISOString().substring(0,10),
+      nombre: this.dataEmpleado.apellido_paterno + ' ' + this.dataEmpleado.apellido_materno + ' ' + this.dataEmpleado.nombre,
+      rfc: this.dataEmpleado.rfc,
+      curp: this.dataEmpleado.curp,
+      id: this.verifData.id,
+      estatus: estatus_empleado,
+      lugar:(this.dataEmpleado.cr)?this.dataEmpleado.cr.descripcion:'',
+      turno:(this.dataEmpleado.turno)?this.dataEmpleado.turno.descripcion:'',
+      horario:'de ' + this.dataEmpleado.hora_entrada.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + ' a ' + this.dataEmpleado.hora_salida.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
+      resumen: this.resumenAsistencias
+    };
+    
+    console.log(reportData);
+    reportWorker.postMessage({data:{items: this.assistSource, data: reportData },reporte:'empleados/personal-asistencia'});
   }
 
   cancel(): void {

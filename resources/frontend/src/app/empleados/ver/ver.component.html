@@ -145,14 +145,15 @@
                                 <mat-datepicker #fechaFinAsistPicker disabled="false"></mat-datepicker>
                                 <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
                             </mat-form-field>
-                            <button fxFlex mat-raised-button color="accent" (click)="buscarFechasAssitencia()">Buscar</button>
-                            <div fxFlex="45" class="tarjeta-info-empleado">
+                            <button fxFlex mat-raised-button color="accent" (click)="buscarFechasAssitencia()"><mat-icon>search</mat-icon></button>
+                            <div fxFlex="40" class="tarjeta-info-empleado">
                                 <p class="mat-typography" *ngIf="verifData" style="margin-top:0px;">
                                     <span class="label">ID: </span><span class="value">{{ verifData.id }}</span><br>
                                     <span class="label">Faltas: </span><span class="value">{{ verifData.faltas }}</span><br>
                                     <span class="label">Retardos: </span><span class="value">{{ verifData.retardos }}</span><br>
                                 </p>
                             </div>
+                            <button fxFlex mat-raised-button color="info" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF" (click)="reporteAsistencias()"><mat-icon>insert_drive_file</mat-icon></button>
                         </section>
                         <div class="asistencia-table-container" *ngIf="!isLoadingAsistencia">
                             <table #asistenciaTable mat-table [dataSource]="assistSource" class="data-table" matSort>
