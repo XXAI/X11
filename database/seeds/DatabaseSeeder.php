@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
                 LINES TERMINATED BY '\\n' 
                 IGNORE 1 LINES", addslashes($archivo_csv));
             echo $query;
+            
             DB::connection()->getpdo()->exec($query);
         }
 
