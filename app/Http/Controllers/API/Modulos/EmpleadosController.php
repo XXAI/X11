@@ -138,7 +138,7 @@ class EmpleadosController extends Controller
                     
                     if(isset($parametros['export_excel']) && $parametros['export_excel']){
                         ini_set('memory_limit', '-1');
-                        $empleados = $empleados->select('empleados.clues as CLUES','empleados.cr_id as CR','cr.descripcion as CR_DESC','empleados.rfc as RFC','empleados.curp as CURP','empleados.nombre as NOMBRE','codigos.codigo as CODIGO','codigos.descripcion as DESC_CODIGO',
+                        $empleados = $empleados->select('empleados.clues as CLUES','empleados.cr_id as CR','cr.descripcion as CR_DESC','empleados.rfc as RFC','empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'),'codigos.codigo as CODIGO','codigos.descripcion as DESC_CODIGO',
                                                         'LIC_DET.descripcion as LICENCIATURA','TEC_DET.descripcion as TECNICA','turnos.descripcion as TURNO', 'empleados.hora_entrada as HORA_ENTRADA','empleados.hora_salida as HORA_SALIDA','empleados.area_servicio as AREA_SERVICIO',
                                                         'funciones.grupo as FUNCION','empleados.observaciones as OBSERVACIONES')
                                                 ->leftjoin('empleado_escolaridad_detalles as LIC',function($join){
