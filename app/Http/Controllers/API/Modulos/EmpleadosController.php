@@ -25,6 +25,7 @@ use App\Models\ComisionEmpleado;
 use App\Models\ComisionDetalle;
 use App\Models\EmpleadoEscolaridadDetalle;
 use App\Models\GrupoUnidades;
+use Carbon\Carbon;
 
 use App\Exports\DevReportExport;
 
@@ -165,9 +166,12 @@ class EmpleadosController extends Controller
                             return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
                         }
                     }else{
+                        $carbon = Carbon::now();
                         $empleados = $empleados->with(['escolaridadDetalle'=>function($query){
                                             $query->whereIn('tipo_estudio',['LIC','TEC']);
-                                        },'escolaridadDetalle.profesion']);
+                                        },'escolaridadDetalle.profesion', 'empleado_comision.detalle'=>function($query) use ($carbon){
+                                            $query->where('fecha_fin', '>', $carbon->format('Y-m-d'));
+                                        }, 'empleado_comision.sindicato']);
                     }
                 }
                 $empleados = $empleados->get();

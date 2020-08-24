@@ -104,6 +104,12 @@ export class ReportePersonalActivo{
               tabla_datos:
               {
                 fontSize: 5
+              
+              },
+              tabla_datos_sindicato:
+              {
+                fontSize: 5,
+                color: "red"
               }
             }
         };
@@ -168,6 +174,14 @@ export class ReportePersonalActivo{
             );
           }
 
+          let area_servicio = empleado.area_servicio;
+          let estilo_area = 'tabla_datos';
+          if(empleado.empleado_comision != null)
+          {
+            area_servicio = "COMISIONADO SINDICAL ("+empleado.empleado_comision[0].sindicato.descripcion+")";
+            estilo_area = 'tabla_datos_sindicato';
+          }
+
           datos.content[indice_actual].table.body.push([
             //{ text: i+1, style: 'tabla_datos' }, 
             { text: empleado.rfc, style: 'tabla_datos' },
@@ -181,7 +195,7 @@ export class ReportePersonalActivo{
             { text: empleado.turno , style: 'tabla_datos'},
             { text: empleado.hora_entrada , style: 'tabla_datos'},
             { text: empleado.hora_salida , style: 'tabla_datos'},
-            { text: empleado.area_servicio , style: 'tabla_datos'},
+            { text: area_servicio , style: estilo_area},
             { text: empleado.funcion , style: 'tabla_datos'},
             { text: empleado.observaciones , style: 'tabla_datos'}
           ]);
