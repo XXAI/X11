@@ -182,7 +182,7 @@ export class ReportePersonalActivo{
               if(empleado.empleado_comision.sindicato != null)
               {
                   area_servicio = "\n* COMISIONADO SINDICAL ("+empleado.empleado_comision.sindicato.descripcion+")";
-              }else if(empleado.cr_id != empleado.cr_id_adscripcion)
+              }/*else if(empleado.cr_id != empleado.cr_id_adscripcion)
               {
                 let salto = "";
                 if(area_servicio != "")
@@ -190,7 +190,7 @@ export class ReportePersonalActivo{
                   salto = "\n";
                 }  
                   area_servicio += salto+"* COMISIÓN INTERNA ("+empleado.cr_adscripcion.descripcion_actualizada+")";
-              }
+              }*/
               
           }
 
