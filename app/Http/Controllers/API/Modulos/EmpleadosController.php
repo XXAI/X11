@@ -51,7 +51,9 @@ class EmpleadosController extends Controller
                                     $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                 }
                             });
-            
+                            
+            //SE eliminan los desligados, pero si aparecera en el buscador para que se pueda activar y mover
+            $empleados =  $empleados->whereNotNull("cr_id");                
             //filtro de valores por permisos del usuario
             if(!$access->is_admin){
                 $empleados = $empleados->where(function($query){
@@ -136,6 +138,9 @@ class EmpleadosController extends Controller
                                         ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
                                         ->orderBy('clues','asc')
                                         ->orderBy('cr_id','asc');
+
+                    //Se eliminan los que estan desligados de los reportes
+                    $empleados = $empleados->whereNotNull("cr_id");                    
                     $carbon = Carbon::now();
                     if(isset($parametros['export_excel']) && $parametros['export_excel']){
                         ini_set('memory_limit', '-1');
