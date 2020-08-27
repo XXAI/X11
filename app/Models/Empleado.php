@@ -99,6 +99,6 @@ class Empleado extends Model
     }
 
     public function empleado_comision(){
-        return $this->hasOne('App\Models\ComisionEmpleado')->where("estatus", "=", "A");
+        return $this->hasMany('App\Models\ComisionEmpleado')->where("estatus", "=", "A");
     }
 }

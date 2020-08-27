@@ -148,7 +148,7 @@ class EmpleadosController extends Controller
                     if(isset($parametros['export_excel']) && $parametros['export_excel']){
                         ini_set('memory_limit', '-1');
                         $empleados = $empleados->select('empleados.clues as CLUES','empleados.cr_id as CR','cr.descripcion_actualizada as CR_DESC',
-                        DB::raw("(select descripcion from catalogo_sindicato where id in (select ce.sindicato_id from comision_empleado ce, comision_detalle cd where ce.comision_detalle_id=cd.id and ce.tipo_comision='CS' and cd.fecha_fin > '".$carbon->format('Y-m-d')."' and ce.empleado_id=empleados.id  )) as COMISION_SINDICAL"),
+                        DB::raw("(select descripcion from catalogo_sindicato where id in (select ce.sindicato_id from comision_empleado ce, comision_detalle cd where ce.comision_detalle_id=cd.id and ce.tipo_comision='CS' and cd.fecha_fin > '".$carbon->format('Y-m-d')."' and ce.empleado_id=empleados.id  ) limit 1) as COMISION_SINDICAL"),
                         //DB::raw("IF(cr_id!=cr_adscripcion_id, (select descripcion_actualizada from catalogo_cr where cr = empleados.cr_adscripcion_id),'') as COMISION_INTERNA"),
                         'empleados.rfc as RFC'
                         ,'empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'),'codigos.codigo as CODIGO',

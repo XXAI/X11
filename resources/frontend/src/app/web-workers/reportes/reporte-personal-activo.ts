@@ -176,19 +176,26 @@ export class ReportePersonalActivo{
 
           let area_servicio = empleado.area_servicio;
           let estilo_area = 'tabla_datos';
+          let salto = "";
+          if(area_servicio != "")
+          {
+            salto = "\n";
+          }  
           if(empleado.empleado_comision != null)
           {
-            
-              if(empleado.empleado_comision.sindicato != null)
+              for(let i = 0; i < empleado.empleado_comision.length; i++)
               {
-                  area_servicio = "\n* COMISIONADO SINDICAL ("+empleado.empleado_comision.sindicato.descripcion+")";
-              }/*else if(empleado.cr_id != empleado.cr_id_adscripcion)
+                  if(empleado.empleado_comision[i].tipo_comision == "CS")
+                  {
+                    area_servicio = salto+"* COMISIONADO SINDICAL ("+empleado.empleado_comision[i].sindicato.descripcion+")";
+                  }
+              }
+              /*if(empleado.empleado_comision[0].tipo_comision != null)
               {
-                let salto = "";
-                if(area_servicio != "")
-                {
-                  salto = "\n";
-                }  
+                  area_servicio = "\n* COMISIONADO SINDICAL ("+empleado.empleado_comision[0].sindicato.descripcion+")";
+              }*//*else if(empleado.cr_id != empleado.cr_id_adscripcion)
+              {
+                
                   area_servicio += salto+"* COMISIÓN INTERNA ("+empleado.cr_adscripcion.descripcion_actualizada+")";
               }*/
               
