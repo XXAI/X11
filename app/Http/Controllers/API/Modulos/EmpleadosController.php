@@ -1520,7 +1520,7 @@ class EmpleadosController extends Controller
                 });
             }
                     //Reporte Personal Activo
-            $empleados = $empleados->select('empleados.clues', 'clues.nombre_unidad', 'empleados.cr_id','empleados.nombre', 'empleados.apellido_paterno', 'empleados.apellido_materno', 'cr.descripcion_actualizado as cr_descripcion', \DB::RAW("IF(codigos.tabulador_id = 1, 1, 0) as medico"), \DB::RAW("IF(codigos.tabulador_id = 2, 1, 0) as enfermera"), \DB::RAW("IF(codigos.tabulador_id = 3, 1, 0) as paramedico"), \DB::RAW("IF(codigos.tabulador_id = 5, 1, 0) as administrativo"),
+            $empleados = $empleados->select('empleados.clues', 'clues.nombre_unidad', 'empleados.cr_id','empleados.nombre', 'empleados.apellido_paterno', 'empleados.apellido_materno', 'cr.descripcion_actualizada as cr_descripcion', \DB::RAW("IF(codigos.tabulador_id = 1, 1, 0) as medico"), \DB::RAW("IF(codigos.tabulador_id = 2, 1, 0) as enfermera"), \DB::RAW("IF(codigos.tabulador_id = 3, 1, 0) as paramedico"), \DB::RAW("IF(codigos.tabulador_id = 5, 1, 0) as administrativo"),
                                 'funciones.grupo', 'empleados.actividades', 'tipo_trabajador.descripcion as tipo_trabajador', 'ur.descripcion as ur', 'programa.descripcion as programa', 'fuente.llave', 'turno.descripcion as turno', 'empleados.hora_entrada', 'empleados.hora_salida')
                                 
                                 ->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
