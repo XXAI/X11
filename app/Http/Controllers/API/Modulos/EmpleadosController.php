@@ -140,7 +140,10 @@ class EmpleadosController extends Controller
                                         ->orderBy('cr_id','asc');
 
                     //Se eliminan los que estan desligados de los reportes
-                    $empleados = $empleados->whereNotNull("cr_id");                    
+                    $empleados = $empleados->whereNotNull("cr_id")
+                                        ->whereIn('empleados.estatus',[1,4]);
+                    
+                    
                     $carbon = Carbon::now();
                     if(isset($parametros['export_excel']) && $parametros['export_excel']){
                         ini_set('memory_limit', '-1');
