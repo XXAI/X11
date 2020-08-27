@@ -178,8 +178,20 @@ export class ReportePersonalActivo{
           let estilo_area = 'tabla_datos';
           if(empleado.empleado_comision != null)
           {
-            area_servicio = "COMISIONADO SINDICAL ("+empleado.empleado_comision[0].sindicato.descripcion+")";
-            estilo_area = 'tabla_datos_sindicato';
+            
+              if(empleado.empleado_comision.sindicato != null)
+              {
+                  area_servicio = "\n* COMISIONADO SINDICAL ("+empleado.empleado_comision.sindicato.descripcion+")";
+              }else if(empleado.cr_id != empleado.cr_id_adscripcion)
+              {
+                let salto = "";
+                if(area_servicio != "")
+                {
+                  salto = "\n";
+                }  
+                  area_servicio += salto+"* COMISIÓN INTERNA ("+empleado.cr_adscripcion.descripcion_actualizada+")";
+              }
+              
           }
 
           datos.content[indice_actual].table.body.push([

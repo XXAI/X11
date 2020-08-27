@@ -128,7 +128,7 @@ class EmpleadosController extends Controller
             } else {
                 if(isset($parametros['reporte'])){
                     //Reporte Personal Activo
-                    $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion', "codigos.descripcion as codigo")
+                    $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion_actualizada as cr_descripcion', "codigos.descripcion as codigo")
                                         ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
                                         ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
                                         ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
@@ -136,10 +136,15 @@ class EmpleadosController extends Controller
                                         ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
                                         ->orderBy('clues','asc')
                                         ->orderBy('cr_id','asc');
-                    
+                    $carbon = Carbon::now();
                     if(isset($parametros['export_excel']) && $parametros['export_excel']){
                         ini_set('memory_limit', '-1');
-                        $empleados = $empleados->select('empleados.clues as CLUES','empleados.cr_id as CR','cr.descripcion as CR_DESC','empleados.rfc as RFC','empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'),'codigos.codigo as CODIGO','codigos.descripcion as DESC_CODIGO',
+                        $empleados = $empleados->select('empleados.clues as CLUES','empleados.cr_id as CR','cr.descripcion_actualizada as CR_DESC',
+                        DB::raw("(select descripcion from catalogo_sindicato where id in (select ce.sindicato_id from comision_empleado ce, comision_detalle cd where ce.comision_detalle_id=cd.id and ce.tipo_comision='CS' and cd.fecha_fin > '".$carbon->format('Y-m-d')."' and ce.empleado_id=empleados.id  )) as COMISION_SINDICAL"),
+                        DB::raw("IF(cr_id!=cr_adscripcion_id, (select descripcion_actualizada from catalogo_cr where cr = empleados.cr_adscripcion_id),'') as COMISION_INTERNA"),
+                        'empleados.rfc as RFC'
+                        ,'empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'),'codigos.codigo as CODIGO',
+                        'codigos.descripcion as DESC_CODIGO',
                                                         'LIC_DET.descripcion as LICENCIATURA','TEC_DET.descripcion as TECNICA','turnos.descripcion as TURNO', 'empleados.hora_entrada as HORA_ENTRADA','empleados.hora_salida as HORA_SALIDA','empleados.area_servicio as AREA_SERVICIO',
                                                         'funciones.grupo as FUNCION','empleados.observaciones as OBSERVACIONES')
                                                 ->leftjoin('empleado_escolaridad_detalles as LIC',function($join){
@@ -166,12 +171,12 @@ class EmpleadosController extends Controller
                             return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
                         }
                     }else{
-                        $carbon = Carbon::now();
+                        
                         $empleados = $empleados->with(['escolaridadDetalle'=>function($query){
                                             $query->whereIn('tipo_estudio',['LIC','TEC']);
                                         },'escolaridadDetalle.profesion', 'empleado_comision.detalle'=>function($query) use ($carbon){
                                             $query->where('fecha_fin', '>', $carbon->format('Y-m-d'));
-                                        }, 'empleado_comision.sindicato']);
+                                        }, 'empleado_comision.sindicato', 'crAdscripcion']);
                     }
                 }
                 $empleados = $empleados->get();
@@ -1515,7 +1520,7 @@ class EmpleadosController extends Controller
                 });
             }
                     //Reporte Personal Activo
-            $empleados = $empleados->select('empleados.clues', 'clues.nombre_unidad', 'empleados.cr_id','empleados.nombre', 'empleados.apellido_paterno', 'empleados.apellido_materno', 'cr.descripcion as cr_descripcion', \DB::RAW("IF(codigos.tabulador_id = 1, 1, 0) as medico"), \DB::RAW("IF(codigos.tabulador_id = 2, 1, 0) as enfermera"), \DB::RAW("IF(codigos.tabulador_id = 3, 1, 0) as paramedico"), \DB::RAW("IF(codigos.tabulador_id = 5, 1, 0) as administrativo"),
+            $empleados = $empleados->select('empleados.clues', 'clues.nombre_unidad', 'empleados.cr_id','empleados.nombre', 'empleados.apellido_paterno', 'empleados.apellido_materno', 'cr.descripcion_actualizado as cr_descripcion', \DB::RAW("IF(codigos.tabulador_id = 1, 1, 0) as medico"), \DB::RAW("IF(codigos.tabulador_id = 2, 1, 0) as enfermera"), \DB::RAW("IF(codigos.tabulador_id = 3, 1, 0) as paramedico"), \DB::RAW("IF(codigos.tabulador_id = 5, 1, 0) as administrativo"),
                                 'funciones.grupo', 'empleados.actividades', 'tipo_trabajador.descripcion as tipo_trabajador', 'ur.descripcion as ur', 'programa.descripcion as programa', 'fuente.llave', 'turno.descripcion as turno', 'empleados.hora_entrada', 'empleados.hora_salida')
                                 
                                 ->leftjoin('catalogo_profesion as profesiones','profesiones.id','empleados.profesion_id')
