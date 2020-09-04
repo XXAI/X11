@@ -10,21 +10,42 @@
             </mat-card-content>    
             <mat-card fxFlex *ngIf="panel_registro">
                 <mat-card-content>
+                    <mat-card-title>Ya me he registrado anteriormente</mat-card-title>
+                    <div class="edit-container">
+                        <section  [formGroup]="verificarForm">
+                            <div fxLayout="row" fxLayout.xs="column">
+                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                    <input matInput formControlName="rfc" placeholder="RFC"  type="text"  minlength="13" autocomplete="false">
+                                    <mat-error *ngIf="verificarForm.get('rfc').invalid && (verificarForm.get('rfc').dirty || verificarForm.get('rfc').touched)">
+                                        <span *ngIf="verificarForm.get('rfc').errors.required">El RFC es obligatorio</span>
+                                        <span *ngIf="verificarForm.get('rfc').errors.minlength">longitud de RFC incorrecto</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <div  fxFlex="15" fxFlex.xs="100">
+                                    <button mat-raised-button (click)="accionVerificarAvance()" [disabled]="!verificarForm.valid" color="success"><mat-icon>search</mat-icon> Verificar</button>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </mat-card-content>                
+                <mat-card-content>
                     <mat-card-title>Registro de Participante</mat-card-title>
                     <div class="edit-container">
                         <section  [formGroup]="participanteForm">
                             <div fxLayout="row" fxLayout.xs="column">
                                 <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                    <input matInput formControlName="curp" placeholder="Curp" type="text" autocomplete="false">
+                                    <input matInput formControlName="curp" placeholder="Curp" type="text" minlength="13" autocomplete="false">
                                     <mat-error *ngIf="participanteForm.get('curp').invalid && (participanteForm.get('curp').dirty || participanteForm.get('curp').touched)">
                                         <span *ngIf="participanteForm.get('curp').errors.required">El Curp es obligatorio</span>
+                                        <span *ngIf="participanteForm.get('curp').errors.minlength">longitud de Curp incorrecto</span>
                                     </mat-error>
                                 </mat-form-field>
 
                                 <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                    <input matInput formControlName="rfc" placeholder="RFC"  type="text" autocomplete="false">
+                                    <input matInput formControlName="rfc" placeholder="RFC"  type="text" minlength="13" autocomplete="false">
                                     <mat-error *ngIf="participanteForm.get('rfc').invalid && (participanteForm.get('rfc').dirty || participanteForm.get('rfc').touched)">
                                         <span *ngIf="participanteForm.get('rfc').errors.required">El RFC es obligatorio</span>
+                                        <span *ngIf="participanteForm.get('rfc').errors.minlength">longitud de RFC incorrecto</span>
                                     </mat-error>
                                 </mat-form-field>
                                 <mat-form-field fxFlex="30" fxFlex.xs="100">
@@ -34,15 +55,17 @@
                                     </mat-error>
                                 </mat-form-field>
                                 <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                    <input matInput formControlName="celular" placeholder="celular"  type="text" autocomplete="false">
+                                    <input matInput formControlName="celular" placeholder="celular"  minlength="10" type="text" autocomplete="false">
                                     <mat-error *ngIf="participanteForm.get('celular').invalid && (participanteForm.get('celular').dirty || participanteForm.get('celular').touched)">
                                         <span *ngIf="participanteForm.get('celular').errors.required">El Nombre es obligatorio</span>
+                                        <span *ngIf="participanteForm.get('celular').errors.minlength">longitud de Celular incorrecto</span>
                                     </mat-error>
                                 </mat-form-field>
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                    <input matInput formControlName="correo" placeholder="correo"  type="text" autocomplete="false">
+                                    <input matInput formControlName="correo" placeholder="correo"  type="email" autocomplete="false">
                                     <mat-error *ngIf="participanteForm.get('correo').invalid && (participanteForm.get('correo').dirty || participanteForm.get('correo').touched)">
                                         <span *ngIf="participanteForm.get('correo').errors.required">El Nombre es obligatorio</span>
+                                        <span *ngIf="participanteForm.get('correo').errors.email">Formato de Correo invalido</span>
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -99,7 +122,7 @@
                                     <mat-card-title>Video 1</mat-card-title>
                                     <mat-card-subtitle>Dengue Grave</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%"  #primer_video >
+                                        <video width="100%" controls #primer_video >
                                             <source src="http://docs.saludchiapas.gob.mx/videos/1.mp4" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
@@ -107,7 +130,7 @@
                                     <mat-card-actions>
                                         <button mat-raised-button (click)="play_video1()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
                                         <button mat-raised-button (click)="pause_video1()" color="primary"><mat-icon>pause</mat-icon></button>
-                                        <button mat-raised-button  [disabled]="video_transcurrido1 != duracion_video1" color="success"><mat-icon>check</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_visto1 != 1" color="success"><mat-icon>check</mat-icon></button>
                                     </mat-card-actions>
                                 </mat-card>    
                             </div>
@@ -118,7 +141,7 @@
                                     <mat-card-title>Video 2</mat-card-title>
                                     <mat-card-subtitle>Dengue</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%"  #segundo_video>
+                                        <video width="100%" controls #segundo_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/2.mp4" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
@@ -126,7 +149,7 @@
                                     <mat-card-actions>
                                         <button mat-raised-button (click)="play_video2()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
                                         <button mat-raised-button (click)="pause_video2()" color="primary"><mat-icon>pause</mat-icon></button>
-                                        <button mat-raised-button  [disabled]="video_transcurrido1 != duracion_video1" color="success"><mat-icon>check</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_visto2 != 1" color="success"><mat-icon>check</mat-icon></button>
                                     </mat-card-actions>
                                 </mat-card>    
                                 
@@ -138,7 +161,7 @@
                                     <mat-card-title>Video 3</mat-card-title>
                                     <mat-card-subtitle>Administración de los servicios de salud</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%"  #tercer_video>
+                                        <video width="100%" controls #tercer_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/3.mp4" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
@@ -146,7 +169,7 @@
                                     <mat-card-actions>
                                         <button mat-raised-button (click)="play_video3()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
                                         <button mat-raised-button (click)="pause_video3()" color="primary"><mat-icon>pause</mat-icon></button>
-                                        <button mat-raised-button  [disabled]="video_transcurrido1 != duracion_video1" color="success"><mat-icon>check</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_visto3 != 1" color="success"><mat-icon>check</mat-icon></button>
                                     </mat-card-actions>
                                 </mat-card>    
                                 
@@ -156,7 +179,7 @@
                                     <mat-card-title>Video 4</mat-card-title>
                                     <mat-card-subtitle>Dengue del recién nacido y del lactante</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%"  #cuarto_video>
+                                        <video width="100%" controls #cuarto_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/4.mp4" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
@@ -164,7 +187,7 @@
                                     <mat-card-actions>
                                         <button mat-raised-button (click)="play_video4()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
                                         <button mat-raised-button (click)="pause_video4()" color="primary"><mat-icon>pause</mat-icon></button>
-                                        <button mat-raised-button  [disabled]="video_transcurrido1 != duracion_video1" color="success"><mat-icon>check</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_visto4 != 1" color="success"><mat-icon>check</mat-icon></button>
                                     </mat-card-actions>
                                 </mat-card>    
                                 
@@ -177,7 +200,7 @@
                     <span fxFlex></span>
                     
                     <ng-container>
-                        <button mat-raised-button (click)="accionVerCuestionario()" color="success"><mat-icon>arrow_right_alt</mat-icon> ir al Cuestionario</button>
+                        <button mat-raised-button (click)="accionVerCuestionario()" [disabled]="video_visto1 == 0 || video_visto2 == 0 || video_visto3 == 0 || video_visto4 == 0" color="success"><mat-icon>arrow_right_alt</mat-icon> ir al Cuestionario</button>
                     </ng-container>
                 </mat-card-actions>
             </mat-card>
@@ -348,7 +371,7 @@
                         <section  [formGroup]="cuestionarioForm">
                             <div fxLayout="row" fxLayout.xs="column">
                                 <div fxFlex="100" fxFlex.xs="100" style="text-align: center;">
-                                    <div style="font-size: 60pt">Calificación</div>
+                                    <div style="font-size: 60pt">CALIFICACIÓN</div>
                                     <div style="font-size: 60pt"><span style="color: red">{{ calificacion_participante }}</span> / 10</div>
                                 </div>
                             </div>

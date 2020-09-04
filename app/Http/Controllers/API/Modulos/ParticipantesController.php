@@ -153,4 +153,42 @@ class ParticipantesController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    function actualizarParticipante()
+    {
+        try{
+            $inputs = Input::all();
+            $participante = Participante::find($inputs['participante']);
+            if($inputs['video'] == 1)
+            {
+                $participante->video1 = 1;
+            }else if($inputs['video'] == 2)
+            {
+                $participante->video2 = 1;
+            }else if($inputs['video'] == 3)
+            {
+                $participante->video3 = 1;
+            }else if($inputs['video'] == 4)
+            {
+                $participante->video4 = 1;
+            }
+            
+            $participante->save();
+            return response()->json(['data'=>$participante],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    function verificarAvance()
+    {
+        try{
+            $inputs = Input::all();
+            $participante = Participante::where("rfc", "=", $inputs['rfc'])->first();
+           
+            return response()->json(['data'=>$participante],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
 }

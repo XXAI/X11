@@ -16,7 +16,9 @@ use Illuminate\Http\Response as HttpResponse;
 
 Route::post('save-participante',   'API\Modulos\ParticipantesController@saveParticipante');
 Route::post('save-cuestionario',   'API\Modulos\ParticipantesController@saveCuestionario');
+Route::post('actualizar-participante',   'API\Modulos\ParticipantesController@actualizarParticipante');
 Route::get('verificar-cuestionario',   'API\Modulos\ParticipantesController@verificarCuestionario');
+Route::get('verificar-avance',   'API\Modulos\ParticipantesController@verificarAvance');
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'

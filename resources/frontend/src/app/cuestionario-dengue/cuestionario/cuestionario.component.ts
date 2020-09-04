@@ -27,12 +27,15 @@ export class CuestionarioComponent implements OnInit {
   panel_cuestionario  = false;
   panel_calificacion = false;
 
-  total_videos  = 4;
-  total_vistos   = 0;
-
+  video_visto1 = 0;
+  video_visto2 = 0;
+  video_visto3 = 0;
+  video_visto4 = 0;
   //
   duracion_video1 = 0;
-  video_transcurrido1 = 0;
+  duracion_video2 = 0;
+  duracion_video3 = 0;
+  duracion_video4 = 0;
 
   
   distritos:any = [
@@ -77,12 +80,15 @@ perfiles:any = [
     
   ) { }
 
+  verificarForm = this.fb.group({
+    'rfc': ['',[Validators.required]]
+  });
   participanteForm = this.fb.group({
     'rfc': ['',[Validators.required]],
     'curp': ['',[Validators.required]],
     'nombre': ['',[Validators.required]],
     'celular': ['',[Validators.required]],
-    'correo':['',[Validators.required]],
+    'correo':['',[Validators.required,Validators.email]],
     'distrito':['',[Validators.required]],
     'unidad_medica':['',[Validators.required]],
     'sector': ['',[Validators.required]],
@@ -101,9 +107,12 @@ perfiles:any = [
     'pregunta9': ['',[Validators.required]],
     'pregunta10': ['',[Validators.required]],
   });
+
+  
   
   ngOnInit() {
     this.ver_instrucciones();
+    
   }
 
   accionGuardarParticipante(){
@@ -115,6 +124,37 @@ perfiles:any = [
         this.participante = respuesta.id;
         this.ver_videos();
         this.sharedService.showSnackBar("Se ha guardado correctamente", "Correcto", 3000);
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        
+      }
+    );
+  }
+
+  accionVerificarAvance()
+  {
+    let formData = JSON.parse(JSON.stringify(this.verificarForm.value));
+   
+    this.cuestionarioService.verificarAvance(formData).subscribe(
+      respuesta => {
+        if(respuesta.data.realizado == 1)
+        {
+          this.ver_resultado(parseInt(respuesta.data.calificacion));
+        }else{
+          this.ver_videos();
+          let videos = respuesta.data;
+          this.video_visto1 = videos.video1;
+          this.video_visto2 = videos.video2;
+          this.video_visto3 = videos.video3;
+          this.video_visto4 = videos.video4;
+          this.participante = videos.id;
+        }
       },
       errorResponse =>{
         console.log(errorResponse);
@@ -148,6 +188,76 @@ perfiles:any = [
     );
   }
 
+  listen_video1():void 
+  {
+    let video_transcurrido = this.videoplayer1.nativeElement.currentTime;
+    this.duracion_video1 = this.videoplayer1.nativeElement.duration;
+    let porcentaje= ((video_transcurrido / this.duracion_video1) * 100);
+    console.log(video_transcurrido);
+    console.log(porcentaje);
+    if(porcentaje > 99)
+    {
+      this.video_visto1 = 1;
+      this.actualizacionVideos(1);
+    }else{
+      setTimeout (() => {
+          this.listen_video1();
+        }, 7000);
+    }
+  }
+  listen_video2():void 
+  {
+    let video_transcurrido = this.videoplayer2.nativeElement.currentTime;
+    this.duracion_video2 = this.videoplayer2.nativeElement.duration;
+    let porcentaje= ((video_transcurrido / this.duracion_video2) * 100);
+    console.log(video_transcurrido);
+    console.log(porcentaje);
+    if(porcentaje > 99)
+    {
+      this.video_visto2 = 1;
+      this.actualizacionVideos(2);
+    }else{
+      setTimeout (() => {
+          this.listen_video2();
+        }, 7000);
+    }
+  }
+
+  listen_video3():void 
+  {
+    let video_transcurrido = this.videoplayer3.nativeElement.currentTime;
+    this.duracion_video3 = this.videoplayer3.nativeElement.duration;
+    let porcentaje= ((video_transcurrido / this.duracion_video3) * 100);
+    console.log(video_transcurrido);
+    console.log(porcentaje);
+    if(porcentaje > 99)
+    {
+      this.video_visto3 = 1;
+      this.actualizacionVideos(3);
+    }else{
+      setTimeout (() => {
+          this.listen_video3();
+        }, 7000);
+    }
+  }
+  listen_video4():void 
+  {
+    let video_transcurrido = this.videoplayer4.nativeElement.currentTime;
+    this.duracion_video4 = this.videoplayer4.nativeElement.duration;
+    let porcentaje= ((video_transcurrido / this.duracion_video4) * 100);
+    console.log(video_transcurrido);
+    console.log(porcentaje);
+    if(porcentaje > 99)
+    {
+      this.video_visto4 = 1;
+      this.actualizacionVideos(4);
+    }else{
+      setTimeout (() => {
+          this.listen_video4();
+        }, 7000);
+    }
+  }
+  
   ver_instrucciones():void
   {
       const dialogRef = this.dialog.open(InstruccionesComponent, {
@@ -163,9 +273,7 @@ perfiles:any = [
 
   play_video1() {
     this.videoplayer1.nativeElement.play();
-    this.duracion_video1 = this.videoplayer1.nativeElement.duration;
-    console.log(this.videoplayer1.nativeElement.currentTime);
-    console.log(this.videoplayer1.nativeElement.duration);
+    this.listen_video1();
   }
   
   pause_video1() {
@@ -174,9 +282,7 @@ perfiles:any = [
 
   play_video2() {
     this.videoplayer2.nativeElement.play();
-    this.duracion_video1 = this.videoplayer2.nativeElement.duration;
-    console.log(this.videoplayer2.nativeElement.currentTime);
-    console.log(this.videoplayer2.nativeElement.duration);
+    this.listen_video2();
   }
   
   pause_video2() {
@@ -185,9 +291,7 @@ perfiles:any = [
 
   play_video3() {
     this.videoplayer3.nativeElement.play();
-    this.duracion_video1 = this.videoplayer3.nativeElement.duration;
-    console.log(this.videoplayer3.nativeElement.currentTime);
-    console.log(this.videoplayer3.nativeElement.duration);
+    this.listen_video3();
   }
   
   pause_video3() {
@@ -195,9 +299,7 @@ perfiles:any = [
   }
   play_video4() {
     this.videoplayer4.nativeElement.play();
-    this.duracion_video1 = this.videoplayer4.nativeElement.duration;
-    console.log(this.videoplayer4.nativeElement.currentTime);
-    console.log(this.videoplayer4.nativeElement.duration);
+    this.listen_video4();
   }
   
   pause_video4() {
@@ -205,7 +307,7 @@ perfiles:any = [
   }
   
   accionVerCuestionario():void{
-    this.participante = 1;
+    //this.participante = 1;
     let formData = { 'participante' :this.participante };
     this.cuestionarioService.ver_cuestionario(formData).subscribe(
       respuesta => {
@@ -219,6 +321,26 @@ perfiles:any = [
         this.panel_cuestionario  = true;
         this.panel_calificacion = false;
        }
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        
+      }
+    );
+      
+  }
+
+  actualizacionVideos(video):void{
+    //this.participante = 1;
+    let formData = { 'participante' :this.participante, "video" :video };
+    this.cuestionarioService.actualizarVideos(formData).subscribe(
+      respuesta => {
+       
       },
       errorResponse =>{
         console.log(errorResponse);
@@ -246,7 +368,7 @@ perfiles:any = [
     this.panel_videos        = true;
     this.panel_cuestionario  = false;
     this.panel_calificacion = false;
-}
+  }
   
   
 }
