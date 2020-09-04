@@ -13,6 +13,10 @@ use Illuminate\Http\Response as HttpResponse;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('save-participante',   'API\Modulos\ParticipantesController@saveParticipante');
+Route::post('save-cuestionario',   'API\Modulos\ParticipantesController@saveCuestionario');
+Route::get('verificar-cuestionario',   'API\Modulos\ParticipantesController@verificarCuestionario');
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'

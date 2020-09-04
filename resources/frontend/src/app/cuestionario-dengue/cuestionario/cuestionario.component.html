@@ -1,0 +1,362 @@
+<section class="profile">
+    <section fxLayout="row" fxLayoutAlign="space-evenly start" style="padding-top:15px;">
+        <section fxFlex="95" fxLayout="column">
+            
+            <mat-card-content>
+                <mat-card-title><button mat-raised-button  color="primary" (click)="ver_instrucciones()"><mat-icon>article</mat-icon> INSTRUCCIONES</button></mat-card-title>
+            </mat-card-content>    
+            <mat-card-content>
+                <mat-card-title>EVALUACIÓN DE ADIESTRAMIENTO TEÓRICO PRÁCTICO</mat-card-title>
+            </mat-card-content>    
+            <mat-card fxFlex *ngIf="panel_registro">
+                <mat-card-content>
+                    <mat-card-title>Registro de Participante</mat-card-title>
+                    <div class="edit-container">
+                        <section  [formGroup]="participanteForm">
+                            <div fxLayout="row" fxLayout.xs="column">
+                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                    <input matInput formControlName="curp" placeholder="Curp" type="text" autocomplete="false">
+                                    <mat-error *ngIf="participanteForm.get('curp').invalid && (participanteForm.get('curp').dirty || participanteForm.get('curp').touched)">
+                                        <span *ngIf="participanteForm.get('curp').errors.required">El Curp es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                    <input matInput formControlName="rfc" placeholder="RFC"  type="text" autocomplete="false">
+                                    <mat-error *ngIf="participanteForm.get('rfc').invalid && (participanteForm.get('rfc').dirty || participanteForm.get('rfc').touched)">
+                                        <span *ngIf="participanteForm.get('rfc').errors.required">El RFC es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="30" fxFlex.xs="100">
+                                    <input matInput formControlName="nombre" placeholder="nombre"  type="text" autocomplete="false">
+                                    <mat-error *ngIf="participanteForm.get('nombre').invalid && (participanteForm.get('nombre').dirty || participanteForm.get('nombre').touched)">
+                                        <span *ngIf="participanteForm.get('nombre').errors.required">El Nombre es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                    <input matInput formControlName="celular" placeholder="celular"  type="text" autocomplete="false">
+                                    <mat-error *ngIf="participanteForm.get('celular').invalid && (participanteForm.get('celular').dirty || participanteForm.get('celular').touched)">
+                                        <span *ngIf="participanteForm.get('celular').errors.required">El Nombre es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <input matInput formControlName="correo" placeholder="correo"  type="text" autocomplete="false">
+                                    <mat-error *ngIf="participanteForm.get('correo').invalid && (participanteForm.get('correo').dirty || participanteForm.get('correo').touched)">
+                                        <span *ngIf="participanteForm.get('correo').errors.required">El Nombre es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <mat-label>Distrito</mat-label>
+                                    <mat-select formControlName="distrito">
+                                      
+                                      <mat-option *ngFor="let distrito of distritos" [value]="distrito.id">{{ distrito.nombre }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="40" fxFlex.xs="100">
+                                    <input matInput formControlName="unidad_medica" placeholder="Unidad Medica"  type="text" autocomplete="false">
+                                    <mat-error *ngIf="participanteForm.get('unidad_medica').invalid && (participanteForm.get('unidad_medica').dirty || participanteForm.get('unidad_medica').touched)">
+                                        <span *ngIf="participanteForm.get('unidad_medica').errors.required">El Nombre es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <mat-label>Sector Salud</mat-label>
+                                    <mat-select formControlName="sector">
+                                      
+                                      <mat-option *ngFor="let sector of sectores" [value]="sector.id">{{ sector.nombre }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <mat-label>Perfil Profesional</mat-label>
+                                    <mat-select formControlName="perfil">
+                                      
+                                      <mat-option *ngFor="let perfil of perfiles" [value]="perfil.id">{{ perfil.nombre }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </section>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    
+                    <span fxFlex></span>
+                         
+                    
+                    <ng-container>
+                        <button mat-raised-button (click)="accionGuardarParticipante()" color="success" [disabled]="!participanteForm.valid"><mat-icon>arrow_right_alt</mat-icon> Siguiente</button>
+                    </ng-container>
+                </mat-card-actions>
+            </mat-card>
+
+            <mat-card fxFlex  *ngIf="panel_videos">
+                <!--<mat-card-title>Videos</mat-card-title>-->
+                <mat-card-content>
+                    <div class="edit-container">
+                        <div fxLayout="row" fxLayout.xs="column">                        
+                            <div fxFlex="50" fxFlex.xs="100">
+                                <mat-card>
+                                    <mat-card-title>Video 1</mat-card-title>
+                                    <mat-card-subtitle>Dengue Grave</mat-card-subtitle>
+                                    <mat-card-content>
+                                        <video width="100%"  #primer_video >
+                                            <source src="http://docs.saludchiapas.gob.mx/videos/1.mp4" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-raised-button (click)="play_video1()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
+                                        <button mat-raised-button (click)="pause_video1()" color="primary"><mat-icon>pause</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_transcurrido1 != duracion_video1" color="success"><mat-icon>check</mat-icon></button>
+                                    </mat-card-actions>
+                                </mat-card>    
+                            </div>
+                            
+                            
+                            <div fxFlex="50" fxFlex.xs="100">
+                                <mat-card>
+                                    <mat-card-title>Video 2</mat-card-title>
+                                    <mat-card-subtitle>Dengue</mat-card-subtitle>
+                                    <mat-card-content>
+                                        <video width="100%"  #segundo_video>
+                                            <source src="http://docs.saludchiapas.gob.mx/videos/2.mp4" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-raised-button (click)="play_video2()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
+                                        <button mat-raised-button (click)="pause_video2()" color="primary"><mat-icon>pause</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_transcurrido1 != duracion_video1" color="success"><mat-icon>check</mat-icon></button>
+                                    </mat-card-actions>
+                                </mat-card>    
+                                
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayout.xs="column">    
+                            <div fxFlex="50" fxFlex.xs="100">
+                                <mat-card>
+                                    <mat-card-title>Video 3</mat-card-title>
+                                    <mat-card-subtitle>Administración de los servicios de salud</mat-card-subtitle>
+                                    <mat-card-content>
+                                        <video width="100%"  #tercer_video>
+                                            <source src="http://docs.saludchiapas.gob.mx/videos/3.mp4" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-raised-button (click)="play_video3()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
+                                        <button mat-raised-button (click)="pause_video3()" color="primary"><mat-icon>pause</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_transcurrido1 != duracion_video1" color="success"><mat-icon>check</mat-icon></button>
+                                    </mat-card-actions>
+                                </mat-card>    
+                                
+                            </div>
+                            <div fxFlex="50" fxFlex.xs="100">
+                                <mat-card>
+                                    <mat-card-title>Video 4</mat-card-title>
+                                    <mat-card-subtitle>Dengue del recién nacido y del lactante</mat-card-subtitle>
+                                    <mat-card-content>
+                                        <video width="100%"  #cuarto_video>
+                                            <source src="http://docs.saludchiapas.gob.mx/videos/4.mp4" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-raised-button (click)="play_video4()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
+                                        <button mat-raised-button (click)="pause_video4()" color="primary"><mat-icon>pause</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_transcurrido1 != duracion_video1" color="success"><mat-icon>check</mat-icon></button>
+                                    </mat-card-actions>
+                                </mat-card>    
+                                
+                            </div>
+                        </div>   
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    
+                    <span fxFlex></span>
+                    
+                    <ng-container>
+                        <button mat-raised-button (click)="accionVerCuestionario()" color="success"><mat-icon>arrow_right_alt</mat-icon> ir al Cuestionario</button>
+                    </ng-container>
+                </mat-card-actions>
+            </mat-card>
+
+
+            <mat-card fxFlex *ngIf="panel_cuestionario">
+                <mat-card-title>CUESTIONARIO</mat-card-title>
+                <mat-card-content>
+                    <div class="edit-container">
+                        <section  [formGroup]="cuestionarioForm">
+                            <div fxLayout="row" fxLayout.xs="column">
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin:15px 0px;">1.- ¿CUANTOS TIPOS DE DENGUE VIRUS EXISTEN?</div>
+                                    <mat-select formControlName="pregunta1">
+                                        <mat-option [value]="1">A.	DEN 0, DEN 1, DEN 2, DEN 3</mat-option>
+                                        <mat-option [value]="2">B.	DEN 1, DEN 2, DEN 3, DEN 5</mat-option>
+                                        <mat-option [value]="3">C.	DEN 1, DEN 2, DEN 3, DEN 4</mat-option>
+                                        <mat-option [value]="4">D.	DEN A, DEN B, DEN C, DEN D</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta1').invalid && (cuestionarioForm.get('pregunta1').dirty || cuestionarioForm.get('pregunta1').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta1').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin:15px 0px;">2.- ¿CUANTAS FASES DE DENGUE EXISTEN, MENCIONELAS?</div>
+                                    <mat-select formControlName="pregunta2">
+                                        <mat-option [value]="1">A.	FASE DE CONTAGIO, FASE FEBRIL, FASE HEMORRAGICA</mat-option>
+                                        <mat-option [value]="2">B.	FASE DE CONTAGIO, FASE FEBRIL, FASE DE GRAVEDAD</mat-option>
+                                        <mat-option [value]="3">C.	FASE FEBRIL, FASE CRÍTICA, FASE DE GRAVEDAD</mat-option>
+                                        <mat-option [value]="4">D.	FASE FEBRIL, FASE CRÍTICA, FASE DE CONVALESCENCIA</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta2').invalid && (cuestionarioForm.get('pregunta2').dirty || cuestionarioForm.get('pregunta2').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta2').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin:15px 0px;">3.- ¿CUAL ES LA CLASIFICACIÓN ACTUAL DEL DENGUE?</div>
+                                    <mat-select formControlName="pregunta3">
+                                        <mat-option [value]="1">A. DENGUE CLASICO, DENGUE HEMORRÁGICO</mat-option>
+                                        <mat-option [value]="2">B. DENGUE CLASICO, DENGUE HEMORRÁGICO, CHOQUE POR DENGUE</mat-option>
+                                        <mat-option [value]="3">C. DENGUE NO GRAVE SIN SIGNOS DE ALARMA, DENGUE CON SIGNOS DE ALARMA Y DENGUE GRAVE</mat-option>
+                                        <mat-option [value]="4">D. DENGUE GRAVE SIN SIGNOS DE ALARMA, DENGUE CON SIGNOS DE ALARMA Y DENGUE GRAVE.</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta3').invalid && (cuestionarioForm.get('pregunta3').dirty || cuestionarioForm.get('pregunta3').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta3').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin:15px 0px;">4.- ¿CUALES SON LOS SIGNOS DE ALARMA?</div>
+                                    <mat-select formControlName="pregunta4">
+                                        <mat-option [value]="1">A.	VOMITOS, DIARREA, EPISTAXIS, FALLA ORGÁNICA, HEMOCONCETRACIÓN</mat-option>
+                                        <mat-option [value]="2">B.	VOMITOS, DOLOR ABDOMINAL, HEMATEMESIS, ASCITIS, HEMOCONCENTRACIÓN</mat-option>
+                                        <mat-option [value]="3">C.	DOLOR ABDOMINAL, VOMITOS INCOERCIBLES, EPISTAXIS, GINGIVORRAGIA</mat-option>
+                                        <mat-option [value]="4">D.	DOLOR ABDOMINAL, VOMITOS INCOERCIBLES, HEMOCONCENTRACIÓN, DIFICULTAD RESPIRATORIA.</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta4').invalid && (cuestionarioForm.get('pregunta4').dirty || cuestionarioForm.get('pregunta4').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta4').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin:15px 0px;">5.- SE DEFINE COMO DENGUE GRAVE ALGUNO DE LOS ESCENARIOS SIGUIENTES</div>
+                                    <mat-select formControlName="pregunta5">
+                                        <mat-option [value]="1">A.	FUGA CAPILAR SIN DIFICULTAD RESPIRATORIA</mat-option>
+                                        <mat-option [value]="2">B.	HEMATEMESIS SIN FIEBRE</mat-option>
+                                        <mat-option [value]="3">C.	FUGA CAPILAR CON DIFICULTAD RESPIRATORIA Y DATOS DE CHOQUE</mat-option>
+                                        <mat-option [value]="4">D.	FALLA ORGÁNICA MULTIPLE SIN ANTECEDENTES DE FIEBRE</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta5').invalid && (cuestionarioForm.get('pregunta5').dirty || cuestionarioForm.get('pregunta5').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta5').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin:15px 0px;">6.- MENCIONE CUALES SON DATOS DE PERFUSIÓN QUE DEBEMOS EVALUAR EN EL ESTADO HEMODINÁMICO.</div>
+                                    <mat-select formControlName="pregunta6">
+                                        <mat-option [value]="1">A.	LLENADO CAPILAR, SANGRADOS MASIVOS, FALLAS ORGÁNICAS MULTIPLES</mat-option>
+                                        <mat-option [value]="2">B.	PULSOS, LLENADO CAPILAR, ESTADO NEUROLÓGICO, URESIS</mat-option>
+                                        <mat-option [value]="3">C.	TENSIÓN ARTERIAL, SANGRADOS MASIVOS, ELECTROCARDIOGRAMA</mat-option>
+                                        <mat-option [value]="4">D.	ESTADO NEUROLÓGICO, FALLA ORGÁNICA, SANGRADOS MASIVOS.</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta6').invalid && (cuestionarioForm.get('pregunta6').dirty || cuestionarioForm.get('pregunta6').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta6').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin:15px 0px;">7.- VALORA PACIENTE PEDIATRICO DE 5 AÑOS DE EDAD CON CUADRO DE 6 DÍAS DE EVOLUCIÓN TRAIDO POR LOS PADRES POR VOMITO EN 3 OCASIONES DE CONTENIDO GASTRICO, A LA EXPLORACIÓN LUCE IRRITABLE, NO SE CONSUELA, OJOS HUNDIDOS, BOCA SECA, LLANTO SIN LAGRIMAS, A LA PALPACIÓN DE ABDOMEN DOLOR INTENSO, CUAL ES SU DECISIÓN PARA DEJARLO HOSPITALIZADO.</div>
+                                    <mat-select formControlName="pregunta7">
+                                        <mat-option [value]="1">A.	INGRESO, TOMA DE BH, VIDA SUERO ORAL A LIBRE DEMANDA</mat-option>
+                                        <mat-option [value]="2">B.	INGRESO, TOMA DE BH VIDA SUERO ORAL 150ML DESPUES DE CADA VOMITO</mat-option>
+                                        <mat-option [value]="3">C.	INGRESO, TOMA DE BH, VIDA SUERO ORAL DE 100 ML PARA 4 HORAS</mat-option>
+                                        <mat-option [value]="4">D.	INGRESO, TOMA DE BH, CARGA DE HARTMAN A 20MLKG PARA 2 HORAS</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta7').invalid && (cuestionarioForm.get('pregunta7').dirty || cuestionarioForm.get('pregunta7').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta7').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin:15px 0px;">8.- AL INTERROGATORIO DIRIGIDO USTED IDENTIFICA QUE PRESENTO FIEBRE DE 3 DÍAS  DE HASTA 40 GRADOS ACOMPAÑADO DE DIARREA, TRATADO CON PARACETAMOL Y TRIMETROPRIM SIN MEJORIA, CUAL SERIA SU SOSPECHA DIAGNOSTICA PRINCIPAL</div>
+                                    <mat-select formControlName="pregunta8">
+                                        <mat-option [value]="1">A.	DIARREA AGUDA CON DESHIDRATACIÓN</mat-option>
+                                        <mat-option [value]="2">B.	INFLUENZA</mat-option>
+                                        <mat-option [value]="3">C.	CORIZA</mat-option>
+                                        <mat-option [value]="4">D.	DENGUE</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta8').invalid && (cuestionarioForm.get('pregunta8').dirty || cuestionarioForm.get('pregunta8').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta8').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin: 15px 0px;">9.- EN BASE A SU DIAGNOSTICO DE SOSPECHA QUE TRATAMIENTO INICIARÍA</div>
+                                    <mat-select formControlName="pregunta9">
+                                        <mat-option [value]="1">A.	PLAN B DE HIDRATACIÓN ORAL Y SOLICITO PERFIL COPROLÓGICO CON BUSQUEDA DE ROTAVIRUS</mat-option>
+                                        <mat-option [value]="2">B.	OSELTAMIVIR A 10 MG KG, NEBULIZACONES Y BUSQUEDA DE VIRUS CON ISOPO NASOFARINGEO</mat-option>
+                                        <mat-option [value]="3">C.	LIQUIDOS INTRAVENOSOS CON CRISTALOIDES A 10 ML KG HORA, AJUSTANDO A ESTADO HEMODINÁMICO Y SOLICITAR PCR. </mat-option>
+                                        <mat-option [value]="4">D.	LIQUIDOS INTRAVENOSOS CON CRISTALOIDES A 5ML KG HORA, AJUSTANDO A ESTADO HEMODINÁMICO Y SOLICITAR IFI.</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta9').invalid && (cuestionarioForm.get('pregunta9').dirty || cuestionarioForm.get('pregunta9').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta9').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column">    
+                                <mat-form-field fxFlex="100" fxFlex.xs="100" >
+                                    <div style="margin: 15px 0px;">10.- EL PACIENTE EVOLUCIONA CON EPISTAXIS Y HEMATEMESIS PROFUSA, REALIZA EVALUACIÓN HEMODINÁMICA PRESENTA LOS SIGUIENTES SIGNOS VITALES, FC: 160 LATIDOS X MIN, FR: 30 X MIN, TA: 100/60, LABORATORIOS: BH: LEUCOS 2300, LINFOS 55%, PLAQUETAS 40 MIL, HGB: 15, HCT: 42% EN BASE A SU DIAGNOSTICO ¿ CÚAL ES EL TRATAMIENTO MAS ADECUADO?</div>
+                                    <mat-select formControlName="pregunta10">
+                                        <mat-option [value]="1">A.	CARGA DE HARTMAN O SOLUCIÓN SALINA A 20MLK PARA 20 MINUTOS INTRAVENOSA, CEFTRIAXONA Y TRASLADO A TERAPIA</mat-option>
+                                        <mat-option [value]="2">B.	HIDRATACIÓN ORAL, TRANFUSIÓN DE PLAQUETAS Y VIGILANCIA ESTRECHA.</mat-option>
+                                        <mat-option [value]="3">C.	CARGA DE CRISTALOIDE IV A 20MLKG, MANTENER HEMODINAMIA, TRANSFUSIÓN DE SANGRE Y VIGILAR ESTADO DE COAGULACIÓN, REFERIR.</mat-option>
+                                        <mat-option [value]="4">D.	REFERIR A UNIDAD DE 2DO NIVEL O QUE CUENTE CON TERAPIA INTENSIVA.</mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="cuestionarioForm.get('pregunta10').invalid && (cuestionarioForm.get('pregunta10').dirty || cuestionarioForm.get('pregunta10').touched)">
+                                        <span *ngIf="cuestionarioForm.get('pregunta10').errors.required">Este campo es obligatorio</span>
+                                    </mat-error>
+                                    
+                                </mat-form-field>
+                            </div>
+                        </section>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    
+                    <span fxFlex></span>
+                    
+                    <ng-container>
+                        <button mat-raised-button (click)="accionGuardarCuestionario()" color="success" [disabled]="!cuestionarioForm.valid"><mat-icon>arrow_right_alt</mat-icon> Siguiente</button>
+                    </ng-container>
+                </mat-card-actions>
+            </mat-card>
+            <mat-card fxFlex *ngIf="panel_calificacion">
+                <mat-card-content>
+                    <div class="edit-container">
+                        <section  [formGroup]="cuestionarioForm">
+                            <div fxLayout="row" fxLayout.xs="column">
+                                <div fxFlex="100" fxFlex.xs="100" style="text-align: center;">
+                                    <div style="font-size: 60pt">Calificación</div>
+                                    <div style="font-size: 60pt"><span style="color: red">{{ calificacion_participante }}</span> / 10</div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </mat-card-content>
+            </mat-card>                
+        </section>
+    </section>
+    <!--/div-->
+</section>

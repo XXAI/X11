@@ -37,6 +37,8 @@ import { EmpleadosModule } from './empleados/empleados.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SelectorCrDialogComponent } from './utils/selector-cr-dialog/selector-cr-dialog.component';
 
+//Cuestionario solo por un tiempo
+import { CuestionarioDengueModule } from './cuestionario-dengue/cuestionario-dengue.module';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,7 @@ import { SelectorCrDialogComponent } from './utils/selector-cr-dialog/selector-c
     CatalogosModule,
     ProfileModule,
     AppRoutingModule,
+    CuestionarioDengueModule,
     WildcardRoutingModule,
   ],
   providers: [
