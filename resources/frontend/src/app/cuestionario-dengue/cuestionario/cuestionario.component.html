@@ -10,11 +10,11 @@
             </mat-card-content>    
             <mat-card fxFlex *ngIf="panel_registro">
                 <mat-card-content>
-                    <mat-card-title>Ya me he registrado anteriormente</mat-card-title>
+                    <mat-card-title>Ingresar por RFC</mat-card-title>
                     <div class="edit-container">
                         <section  [formGroup]="verificarForm">
                             <div fxLayout="row" fxLayout.xs="column">
-                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <input matInput formControlName="rfc" placeholder="RFC"  type="text"  minlength="13" autocomplete="false">
                                     <mat-error *ngIf="verificarForm.get('rfc').invalid && (verificarForm.get('rfc').dirty || verificarForm.get('rfc').touched)">
                                         <span *ngIf="verificarForm.get('rfc').errors.required">El RFC es obligatorio</span>
@@ -78,7 +78,7 @@
                                     </mat-select>
                                 </mat-form-field>
                                 <mat-form-field fxFlex="40" fxFlex.xs="100">
-                                    <input matInput formControlName="unidad_medica" placeholder="Unidad Medica"  type="text" autocomplete="false">
+                                    <input matInput formControlName="unidad_medica" placeholder="Unidad Médica"  type="text" autocomplete="false">
                                     <mat-error *ngIf="participanteForm.get('unidad_medica').invalid && (participanteForm.get('unidad_medica').dirty || participanteForm.get('unidad_medica').touched)">
                                         <span *ngIf="participanteForm.get('unidad_medica').errors.required">El Nombre es obligatorio</span>
                                     </mat-error>
@@ -122,9 +122,9 @@
                                     <mat-card-title>Video 1</mat-card-title>
                                     <mat-card-subtitle>Dengue Grave</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%" controls #primer_video >
+                                        <video width="100%" #primer_video >
                                             <source src="http://docs.saludchiapas.gob.mx/videos/1.mp4" type="video/mp4">
-                                            Your browser does not support the video tag.
+                                            Su navegador no soporta la carga del video..
                                         </video>
                                     </mat-card-content>
                                     <mat-card-actions>
@@ -141,9 +141,9 @@
                                     <mat-card-title>Video 2</mat-card-title>
                                     <mat-card-subtitle>Dengue</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%" controls #segundo_video>
+                                        <video width="100%" #segundo_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/2.mp4" type="video/mp4">
-                                            Your browser does not support the video tag.
+                                            Su navegador no soporta la carga del video..
                                         </video>
                                     </mat-card-content>
                                     <mat-card-actions>
@@ -161,9 +161,9 @@
                                     <mat-card-title>Video 3</mat-card-title>
                                     <mat-card-subtitle>Administración de los servicios de salud</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%" controls #tercer_video>
+                                        <video width="100%" #tercer_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/3.mp4" type="video/mp4">
-                                            Your browser does not support the video tag.
+                                            Su navegador no soporta la carga del video..
                                         </video>
                                     </mat-card-content>
                                     <mat-card-actions>
@@ -179,9 +179,9 @@
                                     <mat-card-title>Video 4</mat-card-title>
                                     <mat-card-subtitle>Dengue del recién nacido y del lactante</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%" controls #cuarto_video>
+                                        <video width="100%" #cuarto_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/4.mp4" type="video/mp4">
-                                            Your browser does not support the video tag.
+                                            Su navegador no soporta la carga del video..
                                         </video>
                                     </mat-card-content>
                                     <mat-card-actions>
@@ -213,7 +213,7 @@
                         <section  [formGroup]="cuestionarioForm">
                             <div fxLayout="row" fxLayout.xs="column">
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin:15px 0px;">1.- ¿CUANTOS TIPOS DE DENGUE VIRUS EXISTEN?</div>
+                                    <div style="margin:15px 0px;">1.- ¿CUÁNTOS TIPOS DE DENGUE VIRUS EXISTEN?</div>
                                     <mat-select formControlName="pregunta1">
                                         <mat-option [value]="1">A.	DEN 0, DEN 1, DEN 2, DEN 3</mat-option>
                                         <mat-option [value]="2">B.	DEN 1, DEN 2, DEN 3, DEN 5</mat-option>
@@ -227,9 +227,9 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column">    
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin:15px 0px;">2.- ¿CUANTAS FASES DE DENGUE EXISTEN, MENCIONELAS?</div>
+                                    <div style="margin:15px 0px;">2.- ¿CUáNTAS FASES DE DENGUE EXISTEN, MENCIÓNELAS?</div>
                                     <mat-select formControlName="pregunta2">
-                                        <mat-option [value]="1">A.	FASE DE CONTAGIO, FASE FEBRIL, FASE HEMORRAGICA</mat-option>
+                                        <mat-option [value]="1">A.	FASE DE CONTAGIO, FASE FEBRIL, FASE HEMORRÁGICA</mat-option>
                                         <mat-option [value]="2">B.	FASE DE CONTAGIO, FASE FEBRIL, FASE DE GRAVEDAD</mat-option>
                                         <mat-option [value]="3">C.	FASE FEBRIL, FASE CRÍTICA, FASE DE GRAVEDAD</mat-option>
                                         <mat-option [value]="4">D.	FASE FEBRIL, FASE CRÍTICA, FASE DE CONVALESCENCIA</mat-option>
@@ -241,10 +241,10 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column">    
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin:15px 0px;">3.- ¿CUAL ES LA CLASIFICACIÓN ACTUAL DEL DENGUE?</div>
+                                    <div style="margin:15px 0px;">3.- ¿CÚAL ES LA CLASIFICACIÓN ACTUAL DEL DENGUE?</div>
                                     <mat-select formControlName="pregunta3">
-                                        <mat-option [value]="1">A. DENGUE CLASICO, DENGUE HEMORRÁGICO</mat-option>
-                                        <mat-option [value]="2">B. DENGUE CLASICO, DENGUE HEMORRÁGICO, CHOQUE POR DENGUE</mat-option>
+                                        <mat-option [value]="1">A. DENGUE CLÁSICO, DENGUE HEMORRÁGICO</mat-option>
+                                        <mat-option [value]="2">B. DENGUE CLÁSICO, DENGUE HEMORRÁGICO, CHOQUE POR DENGUE</mat-option>
                                         <mat-option [value]="3">C. DENGUE NO GRAVE SIN SIGNOS DE ALARMA, DENGUE CON SIGNOS DE ALARMA Y DENGUE GRAVE</mat-option>
                                         <mat-option [value]="4">D. DENGUE GRAVE SIN SIGNOS DE ALARMA, DENGUE CON SIGNOS DE ALARMA Y DENGUE GRAVE.</mat-option>
                                       </mat-select>
@@ -255,7 +255,7 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column">    
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin:15px 0px;">4.- ¿CUALES SON LOS SIGNOS DE ALARMA?</div>
+                                    <div style="margin:15px 0px;">4.- ¿CUÁLES SON LOS SIGNOS DE ALARMA?</div>
                                     <mat-select formControlName="pregunta4">
                                         <mat-option [value]="1">A.	VOMITOS, DIARREA, EPISTAXIS, FALLA ORGÁNICA, HEMOCONCETRACIÓN</mat-option>
                                         <mat-option [value]="2">B.	VOMITOS, DOLOR ABDOMINAL, HEMATEMESIS, ASCITIS, HEMOCONCENTRACIÓN</mat-option>
@@ -284,7 +284,7 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column">    
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin:15px 0px;">6.- MENCIONE CUALES SON DATOS DE PERFUSIÓN QUE DEBEMOS EVALUAR EN EL ESTADO HEMODINÁMICO.</div>
+                                    <div style="margin:15px 0px;">6.- MENCIONE ¿CUÁLES SON DATOS DE PERFUSIÓN QUE DEBEMOS EVALUAR EN EL ESTADO HEMODINÁMICO?</div>
                                     <mat-select formControlName="pregunta6">
                                         <mat-option [value]="1">A.	LLENADO CAPILAR, SANGRADOS MASIVOS, FALLAS ORGÁNICAS MULTIPLES</mat-option>
                                         <mat-option [value]="2">B.	PULSOS, LLENADO CAPILAR, ESTADO NEUROLÓGICO, URESIS</mat-option>
@@ -298,12 +298,12 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column">    
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin:15px 0px;">7.- VALORA PACIENTE PEDIATRICO DE 5 AÑOS DE EDAD CON CUADRO DE 6 DÍAS DE EVOLUCIÓN TRAIDO POR LOS PADRES POR VOMITO EN 3 OCASIONES DE CONTENIDO GASTRICO, A LA EXPLORACIÓN LUCE IRRITABLE, NO SE CONSUELA, OJOS HUNDIDOS, BOCA SECA, LLANTO SIN LAGRIMAS, A LA PALPACIÓN DE ABDOMEN DOLOR INTENSO, CUAL ES SU DECISIÓN PARA DEJARLO HOSPITALIZADO.</div>
+                                    <div style="margin:15px 0px;">7.- VALORA PACIENTE PEDIÁTRICO DE 5 AÑOS DE EDAD CON CUADRO DE 6 DÍAS DE EVOLUCIÓN TRAIDO POR LOS PADRES POR VOMITO EN 3 OCASIONES DE CONTENIDO GÁSTRICO, A LA EXPLORACIÓN LUCE IRRITABLE, NO SE CONSUELA, OJOS HUNDIDOS, BOCA SECA, LLANTO SIN LAGRIMAS, A LA PALPACIÓN DE ABDOMEN DOLOR INTENSO, ¿CUÁL ES SU DECISIÓN PARA DEJARLO HOSPITALIZADO?.</div>
                                     <mat-select formControlName="pregunta7">
                                         <mat-option [value]="1">A.	INGRESO, TOMA DE BH, VIDA SUERO ORAL A LIBRE DEMANDA</mat-option>
                                         <mat-option [value]="2">B.	INGRESO, TOMA DE BH VIDA SUERO ORAL 150ML DESPUES DE CADA VOMITO</mat-option>
                                         <mat-option [value]="3">C.	INGRESO, TOMA DE BH, VIDA SUERO ORAL DE 100 ML PARA 4 HORAS</mat-option>
-                                        <mat-option [value]="4">D.	INGRESO, TOMA DE BH, CARGA DE HARTMAN A 20MLKG PARA 2 HORAS</mat-option>
+                                        <mat-option [value]="4">D.	INGRESO, TOMA DE BH, CARGA DE HARTMAN A 20 ML KG PARA 2 HORAS</mat-option>
                                       </mat-select>
                                     <mat-error *ngIf="cuestionarioForm.get('pregunta7').invalid && (cuestionarioForm.get('pregunta7').dirty || cuestionarioForm.get('pregunta7').touched)">
                                         <span *ngIf="cuestionarioForm.get('pregunta7').errors.required">Este campo es obligatorio</span>
@@ -312,7 +312,7 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column">    
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin:15px 0px;">8.- AL INTERROGATORIO DIRIGIDO USTED IDENTIFICA QUE PRESENTO FIEBRE DE 3 DÍAS  DE HASTA 40 GRADOS ACOMPAÑADO DE DIARREA, TRATADO CON PARACETAMOL Y TRIMETROPRIM SIN MEJORIA, CUAL SERIA SU SOSPECHA DIAGNOSTICA PRINCIPAL</div>
+                                    <div style="margin:15px 0px;">8.- AL INTERROGATORIO DIRIGIDO USTED IDENTIFICA QUE PRESENTO FIEBRE DE 3 DÍAS  DE HASTA 40 GRADOS ACOMPAÑADO DE DIARREA, TRATADO CON PARACETAMOL Y TRIMETROPRIM SIN MEJORÍA, ¿CUÁL SERÍA SU SOSPECHA DIAGNOSTICA PRINCIPAL?</div>
                                     <mat-select formControlName="pregunta8">
                                         <mat-option [value]="1">A.	DIARREA AGUDA CON DESHIDRATACIÓN</mat-option>
                                         <mat-option [value]="2">B.	INFLUENZA</mat-option>
@@ -326,12 +326,12 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column">    
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin: 15px 0px;">9.- EN BASE A SU DIAGNOSTICO DE SOSPECHA QUE TRATAMIENTO INICIARÍA</div>
+                                    <div style="margin: 15px 0px;">9.- EN BASE A SU DIAGNOSTICO DE SOSPECHA ¿QUE TRATAMIENTO INICIARÍA?</div>
                                     <mat-select formControlName="pregunta9">
                                         <mat-option [value]="1">A.	PLAN B DE HIDRATACIÓN ORAL Y SOLICITO PERFIL COPROLÓGICO CON BUSQUEDA DE ROTAVIRUS</mat-option>
                                         <mat-option [value]="2">B.	OSELTAMIVIR A 10 MG KG, NEBULIZACONES Y BUSQUEDA DE VIRUS CON ISOPO NASOFARINGEO</mat-option>
-                                        <mat-option [value]="3">C.	LIQUIDOS INTRAVENOSOS CON CRISTALOIDES A 10 ML KG HORA, AJUSTANDO A ESTADO HEMODINÁMICO Y SOLICITAR PCR. </mat-option>
-                                        <mat-option [value]="4">D.	LIQUIDOS INTRAVENOSOS CON CRISTALOIDES A 5ML KG HORA, AJUSTANDO A ESTADO HEMODINÁMICO Y SOLICITAR IFI.</mat-option>
+                                        <mat-option [value]="3">C.	LÍQUIDOS INTRAVENOSOS CON CRISTALOIDES A 10 ML KG HORA, AJUSTANDO A ESTADO HEMODINÁMICO Y SOLICITAR PCR. </mat-option>
+                                        <mat-option [value]="4">D.	LÍQUIDOS INTRAVENOSOS CON CRISTALOIDES A 5ML KG HORA, AJUSTANDO A ESTADO HEMODINÁMICO Y SOLICITAR IFI.</mat-option>
                                       </mat-select>
                                     <mat-error *ngIf="cuestionarioForm.get('pregunta9').invalid && (cuestionarioForm.get('pregunta9').dirty || cuestionarioForm.get('pregunta9').touched)">
                                         <span *ngIf="cuestionarioForm.get('pregunta9').errors.required">Este campo es obligatorio</span>
@@ -340,7 +340,7 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column">    
                                 <mat-form-field fxFlex="100" fxFlex.xs="100" >
-                                    <div style="margin: 15px 0px;">10.- EL PACIENTE EVOLUCIONA CON EPISTAXIS Y HEMATEMESIS PROFUSA, REALIZA EVALUACIÓN HEMODINÁMICA PRESENTA LOS SIGUIENTES SIGNOS VITALES, FC: 160 LATIDOS X MIN, FR: 30 X MIN, TA: 100/60, LABORATORIOS: BH: LEUCOS 2300, LINFOS 55%, PLAQUETAS 40 MIL, HGB: 15, HCT: 42% EN BASE A SU DIAGNOSTICO ¿ CÚAL ES EL TRATAMIENTO MAS ADECUADO?</div>
+                                    <div style="margin: 15px 0px;">10.- EL PACIENTE EVOLUCIONA CON EPISTAXIS Y HEMATEMESIS PROFUSA, REALIZA EVALUACIÓN HEMODINÁMICA PRESENTA LOS SIGUIENTES SIGNOS VITALES, FC: 160 LATIDOS X MIN, FR: 30 X MIN, TA: 100/60, LABORATORIOS: BH: LEUCOS 2300, LINFOS 55%, PLAQUETAS 40 MIL, HGB: 15, HCT: 42% EN BASE A SU DIAGNOSTICO ¿CÚAL ES EL TRATAMIENTO MÁS ADECUADO?</div>
                                     <mat-select formControlName="pregunta10">
                                         <mat-option [value]="1">A.	CARGA DE HARTMAN O SOLUCIÓN SALINA A 20MLK PARA 20 MINUTOS INTRAVENOSA, CEFTRIAXONA Y TRASLADO A TERAPIA</mat-option>
                                         <mat-option [value]="2">B.	HIDRATACIÓN ORAL, TRANFUSIÓN DE PLAQUETAS Y VIGILANCIA ESTRECHA.</mat-option>

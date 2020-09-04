@@ -261,7 +261,7 @@ perfiles:any = [
   ver_instrucciones():void
   {
       const dialogRef = this.dialog.open(InstruccionesComponent, {
-        width: '500px',
+        width: '600px',
         data: {}
       });
 
