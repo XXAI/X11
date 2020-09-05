@@ -2,15 +2,26 @@
     <section fxLayout="row" fxLayoutAlign="space-evenly start" style="padding-top:15px;">
         <section fxFlex="95" fxLayout="column">
             
+            
+            <div fxLayout="row" fxLayout.xs="column">
+                <div fxFlex="10" fxFlex.xs="100">
+                    <img src="assets/logos/secretaria.png" width="100%">
+                </div>  
+                <div fxFlex="80" fxFlex.xs="100">
+                    
+                </div>       
+                <div fxFlex="10" fxFlex.xs="100">
+                    <img src="assets/logos/cenaprece.png" width="100%">
+                </div>
+            </div>    
+                   
             <mat-card-content>
-                <mat-card-title><button mat-raised-button  color="primary" (click)="ver_instrucciones()"><mat-icon>article</mat-icon> INSTRUCCIONES</button></mat-card-title>
-            </mat-card-content>    
-            <mat-card-content>
-                <mat-card-title>EVALUACIÓN DE ADIESTRAMIENTO TEÓRICO PRÁCTICO</mat-card-title>
+                <mat-card-title>EVALUACIÓN DE ADIESTRAMIENTO TEÓRICO PRÁCTICO <button mat-raised-button style="float: right;" color="primary" (click)="ver_instrucciones()"><mat-icon>article</mat-icon> INSTRUCCIONES</button></mat-card-title>
             </mat-card-content>    
             <mat-card fxFlex *ngIf="panel_registro">
                 <mat-card-content>
                     <mat-card-title>Ingresar por RFC</mat-card-title>
+                    <mat-card-subtitle>Personas previamente registradas</mat-card-subtitle>
                     <div class="edit-container">
                         <section  [formGroup]="verificarForm">
                             <div fxLayout="row" fxLayout.xs="column">
@@ -30,6 +41,7 @@
                 </mat-card-content>                
                 <mat-card-content>
                     <mat-card-title>Registro de Participante</mat-card-title>
+                    <mat-card-subtitle>Primera vez.</mat-card-subtitle>
                     <div class="edit-container">
                         <section  [formGroup]="participanteForm">
                             <div fxLayout="row" fxLayout.xs="column">
@@ -107,7 +119,7 @@
                          
                     
                     <ng-container>
-                        <button mat-raised-button (click)="accionGuardarParticipante()" color="success" [disabled]="!participanteForm.valid"><mat-icon>arrow_right_alt</mat-icon> Siguiente</button>
+                        <button mat-raised-button (click)="accionGuardarParticipante()" color="success" [disabled]="!participanteForm.valid"><mat-icon>arrow_right_alt</mat-icon> Registrar</button>
                     </ng-container>
                 </mat-card-actions>
             </mat-card>

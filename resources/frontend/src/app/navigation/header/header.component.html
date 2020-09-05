@@ -3,7 +3,7 @@
       <mat-icon>home</mat-icon>
     </button-->
     <img src="{{(selectedApp)?selectedApp.icon:'assets/app-icon.png'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true">
-    <span style="margin-left:10px" *ngIf="!selectedApp"><a routerLink="/">Personal Activo</a></span> <span *ngIf="selectedApp">&nbsp; <a routerLink="{{selectedApp.route}}">{{selectedApp.name}}</a></span>
+    <span style="margin-left:10px" *ngIf="!selectedApp"><a routerLink="/">Secretaria de Salud</a></span> <span *ngIf="selectedApp">&nbsp; <a routerLink="{{selectedApp.route}}">{{selectedApp.name}}</a></span>
 
     <span class="spacer"></span>
 

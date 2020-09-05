@@ -127,10 +127,10 @@ perfiles:any = [
       },
       errorResponse =>{
         console.log(errorResponse);
-        var errorMessage = "Ocurrió un error.";
-        if(errorResponse.status == 409){
+        var errorMessage = "Error: Verifique si no esta registrado, en el apartado de ingreso por rfc";
+        /*if(errorResponse.status == 409){
           errorMessage = errorResponse.error.error.message;
-        }
+        }*/
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         
       }
@@ -143,18 +143,26 @@ perfiles:any = [
    
     this.cuestionarioService.verificarAvance(formData).subscribe(
       respuesta => {
-        if(respuesta.data.realizado == 1)
+        if(respuesta.data)
         {
-          this.ver_resultado(parseInt(respuesta.data.calificacion));
-        }else{
-          this.ver_videos();
-          let videos = respuesta.data;
-          this.video_visto1 = videos.video1;
-          this.video_visto2 = videos.video2;
-          this.video_visto3 = videos.video3;
-          this.video_visto4 = videos.video4;
-          this.participante = videos.id;
+
+          if(respuesta.data.realizado == 1)
+          {
+            this.ver_resultado(parseInt(respuesta.data.calificacion));
+          }else{
+            this.ver_videos();
+            let videos = respuesta.data;
+            this.video_visto1 = videos.video1;
+            this.video_visto2 = videos.video2;
+            this.video_visto3 = videos.video3;
+            this.video_visto4 = videos.video4;
+            this.participante = videos.id;
+          }
+        }else
+        {
+          this.sharedService.showSnackBar("Usuario no registrado, favor de registrarse", null, 3000);
         }
+        //
       },
       errorResponse =>{
         console.log(errorResponse);
@@ -261,7 +269,7 @@ perfiles:any = [
   ver_instrucciones():void
   {
       const dialogRef = this.dialog.open(InstruccionesComponent, {
-        width: '600px',
+        width: '700px',
         data: {}
       });
 
@@ -340,7 +348,7 @@ perfiles:any = [
     let formData = { 'participante' :this.participante, "video" :video };
     this.cuestionarioService.actualizarVideos(formData).subscribe(
       respuesta => {
-       
+        this.sharedService.showSnackBar("se ha actualizado su avance", null, 3000);
       },
       errorResponse =>{
         console.log(errorResponse);
