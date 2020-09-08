@@ -58,6 +58,7 @@ Route::group(['middleware'=>'auth'],function($router){
      * Rutas para el Modulo de Empleados
      */
     Route::apiResource('empleados',                 'API\Modulos\EmpleadosController');
+    Route::apiResource('trabajador',                'API\Modulos\TrabajadorController');
     Route::apiResource('firmantes',                 'API\Modulos\FirmantesController');
     Route::apiResource('clues',                     'API\Modulos\CluesController');
 
