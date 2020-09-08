@@ -19,6 +19,8 @@ Route::post('save-cuestionario',   'API\Modulos\ParticipantesController@saveCues
 Route::post('actualizar-participante',   'API\Modulos\ParticipantesController@actualizarParticipante');
 Route::get('verificar-cuestionario',   'API\Modulos\ParticipantesController@verificarCuestionario');
 Route::get('verificar-avance',   'API\Modulos\ParticipantesController@verificarAvance');
+Route::get('ver-constancia',   'API\Modulos\ParticipantesController@verConstancia');
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'

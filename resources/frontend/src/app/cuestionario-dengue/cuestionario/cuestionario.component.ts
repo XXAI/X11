@@ -7,6 +7,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, combineLatest, of, forkJoin } from 'rxjs';
 import { startWith, map, throwIfEmpty, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { InstruccionesComponent } from '../instrucciones/instrucciones.component';
+import { ReportWorker } from '../../web-workers/report-worker';
+import * as FileSaver from 'file-saver';
+
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-cuestionario',
@@ -22,10 +29,10 @@ export class CuestionarioComponent implements OnInit {
 
   participante = 0;
   calificacion_participante = 0;
-  panel_registro      = true;
+  panel_registro      = false;
   panel_videos        = false;
   panel_cuestionario  = false;
-  panel_calificacion = false;
+  panel_calificacion = true;
 
   video_visto1 = 0;
   video_visto2 = 0;
@@ -111,7 +118,7 @@ perfiles:any = [
   
   
   ngOnInit() {
-    this.ver_instrucciones();
+    //this.ver_instrucciones();
     
   }
 
@@ -377,6 +384,44 @@ perfiles:any = [
     this.panel_cuestionario  = false;
     this.panel_calificacion = false;
   }
-  
+
+  accionImprimirConstancia():void
+  {
+    this.participante = 1;
+    let formData = { 'participante' :this.participante};
+    this.cuestionarioService.getParticipante(formData).subscribe(
+      response =>{
+        if(response.error) {
+          let errorMessage = response.error.message;
+        } else {
+            const reportWorker = new ReportWorker();
+            reportWorker.onmessage().subscribe(
+              data => {
+                FileSaver.saveAs(data.data,'ReporteConstanciaDengue');
+                reportWorker.terminate();
+            });
+
+            reportWorker.onerror().subscribe(
+              (data) => {
+                reportWorker.terminate();
+              }
+            );
+            
+            let config = {
+            };
+            reportWorker.postMessage({data:{items: response.data, config:config},reporte:'participante/constancia'});
+        }
+        
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        
+      }
+    );
+
+  }
   
 }

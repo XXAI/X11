@@ -16,7 +16,7 @@
             </div>    
                    
             <mat-card-content>
-                <mat-card-title>EVALUACIÓN DE ADIESTRAMIENTO TEÓRICO PRÁCTICO <button mat-raised-button style="float: right;" color="primary" (click)="ver_instrucciones()"><mat-icon>article</mat-icon> INSTRUCCIONES</button></mat-card-title>
+                <mat-card-title>CAPACITACIÓN EN EL MANEJO CLÍNICO DE DENGUE EN EL ESTADO DE CHIAPAS <button mat-raised-button style="float: right;" color="primary" (click)="ver_instrucciones()"><mat-icon>article</mat-icon> INSTRUCCIONES</button></mat-card-title>
             </mat-card-content>    
             <mat-card fxFlex *ngIf="panel_registro">
                 <mat-card-content>
@@ -373,7 +373,7 @@
                     <span fxFlex></span>
                     
                     <ng-container>
-                        <button mat-raised-button (click)="accionGuardarCuestionario()" color="success" [disabled]="!cuestionarioForm.valid"><mat-icon>arrow_right_alt</mat-icon> Siguiente</button>
+                        <button mat-raised-button (click)="accionGuardarCuestionario()" color="primary"><mat-icon>arrow_right_alt</mat-icon> Siguiente</button>
                     </ng-container>
                 </mat-card-actions>
             </mat-card>
@@ -385,6 +385,10 @@
                                 <div fxFlex="100" fxFlex.xs="100" style="text-align: center;">
                                     <div style="font-size: 60pt">CALIFICACIÓN</div>
                                     <div style="font-size: 60pt"><span style="color: red">{{ calificacion_participante }}</span> / 10</div>
+                                    <button mat-raised-button (click)="accionImprimirConstancia()" color="success"><mat-icon>print</mat-icon> Siguiente</button>
+                                    <div style="font-size: 60pt" *ngIf="calificacion_participante >= 8">
+                                        <button mat-raised-button (click)="accionImprimirConstancia()" color="success"><mat-icon>print</mat-icon> Siguiente</button>
+                                    </div>
                                 </div>
                             </div>
                         </section>

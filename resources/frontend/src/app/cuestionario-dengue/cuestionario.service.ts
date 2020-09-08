@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +15,7 @@ export class CuestionarioService {
   url_verificar_cuestionario = `${environment.base_url}/verificar-cuestionario`;
   url_actualizar_participante = `${environment.base_url}/actualizar-participante`;
   url_verificar_avance = `${environment.base_url}/verificar-avance`;
+  url_constancia = `${environment.base_url}/ver-constancia`;
 
   constructor(private http: HttpClient) { }
 
@@ -53,6 +55,14 @@ export class CuestionarioService {
   
   verificarAvance(payload):Observable<any> {
     return this.http.get<any>(this.url_verificar_avance, {params: payload}).pipe(
+      map( (response: any) => {
+        return response;
+      }
+    ));
+  }
+
+  getParticipante(payload):Observable<any> {
+    return this.http.get<any>(this.url_constancia, {params: payload}).pipe(
       map( (response: any) => {
         return response;
       }

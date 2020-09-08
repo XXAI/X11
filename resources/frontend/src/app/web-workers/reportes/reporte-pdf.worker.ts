@@ -4,13 +4,15 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ReportePersonalActivo } from './reporte-personal-activo';
 import { ReportePersonalActivoArea } from './reporte-personal-activo-area';
 import { ReportePersonalAsistencia } from './reporte-personal-asistencia';
+import { ReporteConstanciaDengue } from './reporte-constancia-dengue';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const reportes = {
   'empleados/personal-activo': new ReportePersonalActivo(),
   'empleados/personal-activo-area': new ReportePersonalActivoArea(),
-  'empleados/personal-asistencia': new ReportePersonalAsistencia()
+  'empleados/personal-asistencia': new ReportePersonalAsistencia(),
+  'participante/constancia': new ReporteConstanciaDengue()
 };
 
 addEventListener('message', ({ data }) => {

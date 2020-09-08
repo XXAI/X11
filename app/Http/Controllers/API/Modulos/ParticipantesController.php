@@ -191,4 +191,16 @@ class ParticipantesController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    function verConstancia()
+    {
+        try{
+            $inputs = Input::all();
+            $participante = Participante::find(1);
+           
+            return response()->json(['data'=>$participante],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
 }
