@@ -499,8 +499,212 @@
                         </div>
                     </div>        
                 </mat-tab>
-                <mat-tab label="Horario Laboral"> </mat-tab>
-                <mat-tab label="Escolaridad"> </mat-tab>
+                <mat-tab label="Horario Laboral">
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <div fxFlex="10" fxFlex.xs="100">
+                                    <br>
+                                    <mat-checkbox >Lunes</mat-checkbox>
+                                </div> 
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Hora Salida" required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <div fxFlex="10" fxFlex.xs="100">
+                                    <br>
+                                    <mat-checkbox >Martes</mat-checkbox>
+                                </div> 
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Hora Salida" required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <div fxFlex="10" fxFlex.xs="100">
+                                    <br>
+                                    <mat-checkbox >Miercoles</mat-checkbox>
+                                </div> 
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Hora Salida" required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <div fxFlex="10" fxFlex.xs="100">
+                                    <br>
+                                    <mat-checkbox >Jueves</mat-checkbox>
+                                </div> 
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Hora Salida" required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <div fxFlex="10" fxFlex.xs="100">
+                                    <br>
+                                    <mat-checkbox >Viernes</mat-checkbox>
+                                </div> 
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Hora Salida" required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <div fxFlex="10" fxFlex.xs="100">
+                                    <br>
+                                    <mat-checkbox >Sabado</mat-checkbox>
+                                </div> 
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Hora Salida" required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <div fxFlex="10" fxFlex.xs="100">
+                                    <br>
+                                    <mat-checkbox >Domingo</mat-checkbox>
+                                </div> 
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Hora Salida" required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <div fxFlex="10" fxFlex.xs="100">
+                                    <br>
+                                    <mat-checkbox >Festivos</mat-checkbox>
+                                </div> 
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Hora Salida" required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Escolaridad">
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Hora Inicio" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [inset]="true"></mat-divider>
+
+                <div class="data-container ">
+                    <div class="data-table-container">
+                        <table #dataTable mat-table [dataSource]="dataSource" class="data-table" matSort>
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="estatus">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </th>
+                                <td mat-cell *matCellDef="let row"> <mat-icon>{{(row.estatus >= 2)?statusIcon[row.estatus]:statusIcon[row.estatus+'-'+row.validado]}}</mat-icon> </td>
+                            </ng-container>
+                    
+                            <!-- Username Column -->
+                            <ng-container matColumnDef="Nombre">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo </th>
+                                <td mat-cell *matCellDef="let row"> {{row.nombre}} {{ row.apellido_paterno }} {{ row.apellido_materno }}</td>
+                            </ng-container>
+                    
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="RFC" >
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> RFC </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.rfc}} </td>
+                            </ng-container>
+                    
+                            <!-- Email Column -->
+                            <ng-container matColumnDef="Clues" >
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> CLUES </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.clues}} </td>
+                            </ng-container>
+
+                            
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noResultsFound">
+                                <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                    No se encontraron registros 
+                                </td>
+                            </ng-container>
+                            
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+                            <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
+                        </table>
+                    </div>
+                    
+                </div>             
+                </mat-tab>
                 <mat-tab label="Cursos"> </mat-tab>    
             </mat-tab-group>
         </mat-card>   

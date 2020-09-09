@@ -50,6 +50,7 @@ export class FormularioComponent implements OnInit {
     'colonia': ['',[Validators.required]],
     'cp': ['',[Validators.required]],
     
+    //Datos laborales
     'actividad_id': [],
     'actividad_voluntaria_id': [],
     'area_trabajo_id': [],
@@ -81,9 +82,11 @@ export class FormularioComponent implements OnInit {
     'programa_id': [],
     'fuente_id': [],
     'fuente_finan_id': [],
-    
     'actividades': [],
     'rama_id': [],
+    //Datos escolares
+    'nivel_maximo_id':[],
+
   });
 
   
