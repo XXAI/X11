@@ -26,7 +26,7 @@ export class FormularioComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog
   ) { }
-
+  
   trabajadorForm = this.fb.group({
     'nombre': ['',[Validators.required]],
     'apellido_paterno': [''],
@@ -49,9 +49,47 @@ export class FormularioComponent implements OnInit {
     'no_exterior': ['',[Validators.required]],
     'colonia': ['',[Validators.required]],
     'cp': ['',[Validators.required]],
+    
+    'actividad_id': [],
+    'actividad_voluntaria_id': [],
+    'area_trabajo_id': [],
+    'tipo_personal_id': [],
+    'actividad': [],
+    'codigo_puesto_id': [],
+    'num_empleado': [],
+    'fissa': [],
+    'figf': [],
+    'entidad_federativa_puesto_id': [],
+    'tipo_contrato_id': [],
+    'tipo_plaza_id': [],
+    'unidad_administadora_id': [],
+    'institucion_puesto_id': [],
+    'vigencia_id': [],
+    'motivo_id': [],
+    'temporalidad_id': [],
+    'seguro_salud': [],
+    'licencia_maternidad': [],
+    'seguro_retiro': [],
+    'jornada_id': [],
+    'recurso_formacion': [],
+    'tiene_fiel': [],
+    'vigencia_fiel': [],
+    'comision': [],
+    'tipo_comision_id': [],
+    'ur': [],
+    'tipo_nomina_id': [],
+    'programa_id': [],
+    'fuente_id': [],
+    'fuente_finan_id': [],
+    
+    'actividades': [],
+    'rama_id': [],
   });
 
+  
+
   ngOnInit() {
+    
   }
 
 }

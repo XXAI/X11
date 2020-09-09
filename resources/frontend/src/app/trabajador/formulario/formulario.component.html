@@ -158,7 +158,347 @@
                         </div>
                     </div>
                 </mat-tab>
-                <mat-tab label="Datos Laborales"> </mat-tab>
+                <mat-tab label="Datos Laborales" >
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Actividad</mat-label>
+                                    <mat-select formControlName="actividad_id" required>
+                                        <mat-option *ngFor="let item of actividad" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('actividad_id').invalid && (trabajadorForm.get('actividad_id').dirty || trabajadorForm.get('actividad_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('actividad_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Actividad Voluntaria</mat-label>
+                                    <mat-select formControlName="actividad_voluntaria_id" required>
+                                        <mat-option *ngFor="let item of actividad_voluntaria" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('actividad_voluntaria_id').invalid && (trabajadorForm.get('actividad_voluntaria_id').dirty || trabajadorForm.get('actividad_voluntaria_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('actividad_voluntaria_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Área de Trabajo</mat-label>
+                                    <mat-select formControlName="area_trabajo_id" required>
+                                        <mat-option *ngFor="let item of area_trabajo" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('area_trabajo_id').invalid && (trabajadorForm.get('area_trabajo_id').dirty || trabajadorForm.get('area_trabajo_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('area_trabajo_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Tipo Personal</mat-label>
+                                    <mat-select formControlName="tipo_personal_id" required>
+                                        <mat-option *ngFor="let item of tipo_personal" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('tipo_personal_id').invalid && (trabajadorForm.get('tipo_personal_id').dirty || trabajadorForm.get('tipo_personal_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('tipo_personal_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Código</mat-label>
+                                    <mat-select formControlName="codigo_puesto_id" required>
+                                        <mat-option *ngFor="let item of codigo_puesto" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('codigo_puesto_id').invalid && (trabajadorForm.get('codigo_puesto_id').dirty || trabajadorForm.get('codigo_puesto_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('codigo_puesto_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <input matInput  formControlName="num_empleado" placeholder="No Empleado" required>
+                                    <mat-error *ngIf="trabajadorForm.get('num_empleado').invalid && (trabajadorForm.get('num_empleado').dirty || trabajadorForm.get('num_empleado').touched)">
+                                        <span *ngIf="trabajadorForm.get('num_empleado').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <input matInput  formControlName="fissa" placeholder="Fecha Ingreso SSA" required>
+                                    <mat-error *ngIf="trabajadorForm.get('fissa').invalid && (trabajadorForm.get('fissa').dirty || trabajadorForm.get('fissa').touched)">
+                                        <span *ngIf="trabajadorForm.get('fissa').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <input matInput  formControlName="figf" placeholder="Fecha Ingreso Gob. Fed." required>
+                                    <mat-error *ngIf="trabajadorForm.get('figf').invalid && (trabajadorForm.get('figf').dirty || trabajadorForm.get('figf').touched)">
+                                        <span *ngIf="trabajadorForm.get('figf').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>        
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Entidad Federativa del Puesto</mat-label>
+                                    <mat-select formControlName="entidad_federativa_puesto_id" required>
+                                        <mat-option *ngFor="let item of entidad_federativa" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('entidad_federativa_puesto_id').invalid && (trabajadorForm.get('entidad_federativa_puesto_id').dirty || trabajadorForm.get('entidad_federativa_puesto_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('entidad_federativa_puesto_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Tipo Contrato</mat-label>
+                                    <mat-select formControlName="tipo_contrato_id" required>
+                                        <mat-option *ngFor="let item of tipo_contrato" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('tipo_contrato_id').invalid && (trabajadorForm.get('tipo_contrato_id').dirty || trabajadorForm.get('tipo_contrato_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('tipo_contrato_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Tipo Plaza</mat-label>
+                                    <mat-select formControlName="tipo_plaza_id" required>
+                                        <mat-option *ngFor="let item of tipo_plaza" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('tipo_plaza_id').invalid && (trabajadorForm.get('tipo_plaza_id').dirty || trabajadorForm.get('tipo_plaza_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('tipo_plaza_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Unidad Administradora</mat-label>
+                                    <mat-select formControlName="unidad_administadora_id" required>
+                                        <mat-option *ngFor="let item of unidad_administradora" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('unidad_administadora_id').invalid && (trabajadorForm.get('unidad_administadora_id').dirty || trabajadorForm.get('unidad_administadora_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('unidad_administadora_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>        
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Institución Puesto</mat-label>
+                                    <mat-select formControlName="institucion_puesto_id" required>
+                                        <mat-option *ngFor="let item of institucion_puesto" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('institucion_puesto_id').invalid && (trabajadorForm.get('institucion_puesto_id').dirty || trabajadorForm.get('institucion_puesto_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('institucion_puesto_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Vigencia</mat-label>
+                                    <mat-select formControlName="vigencia_id" required>
+                                        <mat-option *ngFor="let item of vigencia" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('vigencia_id').invalid && (trabajadorForm.get('vigencia_id').dirty || trabajadorForm.get('vigencia_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('vigencia_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Motivo Baja</mat-label>
+                                    <mat-select formControlName="motivo_id" required>
+                                        <mat-option *ngFor="let item of motivo" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('motivo_id').invalid && (trabajadorForm.get('motivo_id').dirty || trabajadorForm.get('motivo_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('motivo_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Temporalidad</mat-label>
+                                    <mat-select formControlName="temporalidad_id" required>
+                                        <mat-option *ngFor="let item of temporalidad" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('temporalidad_id').invalid && (trabajadorForm.get('temporalidad_id').dirty || trabajadorForm.get('temporalidad_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('temporalidad_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>        
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Seguro de Salud</mat-label>
+                                    <mat-select formControlName="seguro_salud" required>
+                                        <mat-option  [value]="1">SI</mat-option>
+                                        <mat-option  [value]="0">NO</mat-option>  
+                                    </mat-select>
+                                </mat-form-field> 
+                               
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Licencia de Maternidad</mat-label>
+                                    <mat-select formControlName="licencia_maternidad" required>
+                                        <mat-option  [value]="1">SI</mat-option>
+                                        <mat-option  [value]="0">NO</mat-option>  
+                                    </mat-select>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Seguro de Retino</mat-label>
+                                    <mat-select formControlName="seguro_retiro" required>
+                                        <mat-option  [value]="1">SI</mat-option>
+                                        <mat-option  [value]="0">NO</mat-option>  
+                                    </mat-select>
+                                </mat-form-field> 
+                               
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Jornada</mat-label>
+                                    <mat-select formControlName="jornada_id" required>
+                                        <mat-option *ngFor="let item of jornada" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('jornada_id').invalid && (trabajadorForm.get('jornada_id').dirty || trabajadorForm.get('jornada_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('jornada_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>        
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Recursos Humanos en formación</mat-label>
+                                    <mat-select formControlName="recurso_formacion" required>
+                                        <mat-option  [value]="1">SI</mat-option>
+                                        <mat-option  [value]="0">NO</mat-option>  
+                                    </mat-select>
+                                </mat-form-field> 
+                               
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>¿Tiene FIEL?</mat-label>
+                                    <mat-select formControlName="tiene_fiel" required>
+                                        <mat-option  [value]="1">SI</mat-option>
+                                        <mat-option  [value]="0">NO</mat-option>  
+                                    </mat-select>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <input matInput  formControlName="vigencia_fiel" placeholder="Vigencia FIEL" required>
+                                    <mat-error *ngIf="trabajadorForm.get('vigencia_fiel').invalid && (trabajadorForm.get('vigencia_fiel').dirty || trabajadorForm.get('vigencia_fiel').touched)">
+                                        <span *ngIf="trabajadorForm.get('vigencia_fiel').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                               
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>UR</mat-label>
+                                    <mat-select formControlName="ur" required>
+                                        <mat-option *ngFor="let item of ur" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('ur').invalid && (trabajadorForm.get('ur').dirty || trabajadorForm.get('ur').touched)">
+                                        <span *ngIf="trabajadorForm.get('ur').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>        
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Tipo Nomina</mat-label>
+                                    <mat-select formControlName="tipo_nomina_id" required>
+                                        <mat-option *ngFor="let item of tipo_nomina" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('tipo_nomina_id').invalid && (trabajadorForm.get('tipo_nomina_id').dirty || trabajadorForm.get('tipo_nomina_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('tipo_nomina_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                               
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Programa</mat-label>
+                                    <mat-select formControlName="programa_id" required>
+                                        <mat-option *ngFor="let item of programa" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('programa_id').invalid && (trabajadorForm.get('programa_id').dirty || trabajadorForm.get('programa_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('programa_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Fuente</mat-label>
+                                    <mat-select formControlName="fuente_id" required>
+                                        <mat-option *ngFor="let item of fuente" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('fuente_id').invalid && (trabajadorForm.get('fuente_id').dirty || trabajadorForm.get('fuente_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('fuente_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Fuente Financiamien</mat-label>
+                                    <mat-select formControlName="fuente_finan_id" required>
+                                        <mat-option *ngFor="let item of fuente_financiamiento" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('fuente_finan_id').invalid && (trabajadorForm.get('fuente_finan_id').dirty || trabajadorForm.get('fuente_finan_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('fuente_finan_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                            </div>
+                        </div>
+                    </div>        
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Rama (Segun Actividades)</mat-label>
+                                    <mat-select formControlName="rama_id" required>
+                                        <mat-option *ngFor="let item of rama" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('rama_id').invalid && (trabajadorForm.get('rama_id').dirty || trabajadorForm.get('rama_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('rama_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="75" fxFlex.xs="100">
+                                    <input matInput formControlName="actividades" placeholder="Actividades" required>
+                                    <mat-error *ngIf="trabajadorForm.get('actividades').invalid && (trabajadorForm.get('actividades').dirty || trabajadorForm.get('actividades').touched)">
+                                        <span *ngIf="trabajadorForm.get('actividades').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>        
+                </mat-tab>
                 <mat-tab label="Horario Laboral"> </mat-tab>
                 <mat-tab label="Escolaridad"> </mat-tab>
                 <mat-tab label="Cursos"> </mat-tab>    
@@ -167,141 +507,3 @@
         
     </section>
 </section>
-<!--<section fxFlex="100" fxLayout="column" >
-    <mat-tab-group>
-        <mat-tab label="Datos Personales">
-            <div class="loading-shade" *ngIf="isLoading">
-                <mat-spinner *ngIf="isLoading"></mat-spinner>
-            </div>
-            <mat-card fxFlex>
-                <mat-card-content>
-                    <div class="edit-container">
-                        <div class="loading-shade" *ngIf="!isLoading && !empleado && !esNuevoEmpleado">No se encontraron los datos del empleado</div>
-                        <section>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
-                                <div fxFlex="100" fxFlex.xs="100">
-                                    <div fxFlex="12" fxFlex.xs="100">
-                                        <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" width="100%">
-                                    </div>
-                                    <div fxFlex="90" fxFlex.xs="100">
-                                        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                            <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                                <input matInput id="nombre" formControlName="nombre" placeholder="Nombre(s)" required>
-                                                <mat-error *ngIf="trabajadorForm.get('nombre').invalid && (trabajadorForm.get('nombre').dirty || trabajadorForm.get('nombre').touched)">
-                                                    <span *ngIf="trabajadorForm.get('nombre').errors.required">Campo obligatorio</span>
-                                                </mat-error>
-                                            </mat-form-field>
-                                            <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                                <input matInput id="apellido_paterno" formControlName="apellido_paterno" placeholder="Apellido Paterno" >
-                                                
-                                            </mat-form-field>
-                                            <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                                <input matInput id="apellido_materno" formControlName="apellido_materno" placeholder="Apellido Materno" > 
-                                            </mat-form-field>
-                                            <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                                <input matInput id="rfc" formControlName="rfc" placeholder="rfc" >
-                                                <mat-error *ngIf="trabajadorForm.get('rfc').invalid && (trabajadorForm.get('rfc').dirty || trabajadorForm.get('rfc').touched)">
-                                                    <span *ngIf="trabajadorForm.get('rfc').errors.required">El rfc es obligatorio</span>
-                                                </mat-error>
-                                            </mat-form-field>
-                                            <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                                <input matInput id="curp" formControlName="curp" placeholder="curp" >
-                                                <mat-error *ngIf="trabajadorForm.get('curp').invalid && (trabajadorForm.get('curp').dirty || trabajadorForm.get('curp').touched)">
-                                                    <span *ngIf="trabajadorForm.get('curp').errors.required">La curp es obligatorio</span>
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                            <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                                <input matInput id="pais_nacimiento" formControlName="pais_nacimiento" placeholder="Pais Nacimiento" >
-                                                <mat-error *ngIf="trabajadorForm.get('pais_nacimiento').invalid && (trabajadorForm.get('pais_nacimiento').dirty || trabajadorForm.get('pais_nacimiento').touched)">
-                                                    <span *ngIf="trabajadorForm.get('pais_nacimiento').errors.required">El pais de nacimiento es obligatorio</span>
-                                                </mat-error>
-                                            </mat-form-field>
-                                            <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                                <input matInput id="entidad_nacimiento" formControlName="entidad_nacimiento" placeholder="Entidad Nacimiento" >
-                                                <mat-error *ngIf="trabajadorForm.get('entidad_nacimiento').invalid && (trabajadorForm.get('entidad_nacimiento').dirty || trabajadorForm.get('entidad_nacimiento').touched)">
-                                                    <span *ngIf="trabajadorForm.get('pais_nacimiento').errors.required">La entidad de nacimiento es obligatorio</span>
-                                                </mat-error>
-                                            </mat-form-field>
-                                            <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                                <input matInput id="municipio_nacimiento" formControlName="municipio_nacimiento" placeholder="Municipio Nacimiento" >
-                                                <mat-error *ngIf="trabajadorForm.get('municipio_nacimiento').invalid && (trabajadorForm.get('municipio_nacimiento').dirty || trabajadorForm.get('municipio_nacimiento').touched)">
-                                                    <span *ngIf="trabajadorForm.get('municipio_nacimiento').errors.required">El municipio de nacimiento es obligatorio</span>
-                                                </mat-error>
-                                            </mat-form-field>
-                                            <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                                <input matInput id="nacionalidad" formControlName="nacionalidad" placeholder="Nacionalidad" >
-                                                <mat-error *ngIf="trabajadorForm.get('nacionalidad').invalid && (trabajadorForm.get('nacionalidad').dirty || trabajadorForm.get('nacionalidad').touched)">
-                                                    <span *ngIf="trabajadorForm.get('nacionalidad').errors.required">La Nacionalidad es obligatorio</span>
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                            <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                                <input matInput id="fecha_nacimiento" formControlName="fecha_nacimiento" placeholder="Fecha Nacimiento" >
-                                                <mat-error *ngIf="trabajadorForm.get('fecha_nacimiento').invalid && (trabajadorForm.get('fecha_nacimiento').dirty || trabajadorForm.get('fecha_nacimiento').touched)">
-                                                    <span *ngIf="trabajadorForm.get('fecha_nacimiento').errors.required">La fecha de nacimiento es obligatorio</span>
-                                                </mat-error>
-                                            </mat-form-field>
-                                            
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                </div>
-                            </div>    
-                                <!--<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
-                                    <div fxFlex="10" fxFlex.xs="100">
-                                        <mat-card class="example-card">
-                                            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-                                        </mat-card>    
-                                    </div>
-                                    <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                        <input matInput id="nombre" formControlName="nombre" placeholder="Nombre(s)" required>
-                                        <mat-error *ngIf="trabajadorForm.get('nombre').invalid && (trabajadorForm.get('nombre').dirty || trabajadorForm.get('nombre').touched)">
-                                            <span *ngIf="trabajadorForm.get('nombre').errors.required">Campo obligatorio</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                                    <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                        <input matInput id="apellido_paterno" formControlName="apellido_paterno" placeholder="Apellido Paterno" >
-                                        
-                                    </mat-form-field>
-                                    <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                        <input matInput id="apellido_materno" formControlName="apellido_materno" placeholder="Apellido Materno" >
-                                        
-                                    </mat-form-field>
-                                    <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                        <input matInput id="rfc" formControlName="rfc" placeholder="rfc" >
-                                        <mat-error *ngIf="trabajadorForm.get('rfc').invalid && (trabajadorForm.get('rfc').dirty || trabajadorForm.get('rfc').touched)">
-                                            <span *ngIf="trabajadorForm.get('rfc').errors.required">El rfc es obligatorio</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                                    <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                        <input matInput id="curp" formControlName="curp" placeholder="curp" >
-                                        <mat-error *ngIf="trabajadorForm.get('curp').invalid && (trabajadorForm.get('curp').dirty || trabajadorForm.get('curp').touched)">
-                                            <span *ngIf="trabajadorForm.get('curp').errors.required">La curp es obligatorio</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                    
-                                    <mat-form-field fxFlex="30" fxFlex.xs="100">
-                                        <input matInput id="pais_nacimiento" formControlName="pais_nacimiento" placeholder="Pais Nacimiento" >
-                                        <mat-error *ngIf="trabajadorForm.get('pais_nacimiento').invalid && (trabajadorForm.get('pais_nacimiento').dirty || trabajadorForm.get('pais_nacimiento').touched)">
-                                            <span *ngIf="trabajadorForm.get('pais_nacimiento').errors.required">El pais de nacimiento es obligatorio</span>
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                                
-                        </section>
-                    </div>
-                </mat-card-content>
-            </mat-card>         
-        </mat-tab>
-        <mat-tab label=" Datos Laborales"> </mat-tab>
-        <mat-tab label="Horario Laboral"> </mat-tab>
-        <mat-tab label="Escolaridad"> </mat-tab>
-        <mat-tab label="Cursos"> </mat-tab>
-    </mat-tab-group>
-</section>-->
