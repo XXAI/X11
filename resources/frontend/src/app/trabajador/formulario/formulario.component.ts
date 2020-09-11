@@ -88,6 +88,32 @@ export class FormularioComponent implements OnInit {
     //Datos escolares
     'nivel_maximo_id':[],
 
+    //Horarios
+    'horario_lunes':[], 
+    'horario_martes':[], 
+    'horario_miercoles':[], 
+    'horario_jueves':[], 
+    'horario_viernes':[], 
+    'horario_sabado':[], 
+    'horario_domingo':[], 
+    'horario_festivo':[], 
+    'hora_inicio_lunes':[], 
+    'hora_fin_lunes':[], 
+    'hora_inicio_martes':[], 
+    'hora_fin_martes':[], 
+    'hora_inicio_miercoles':[], 
+    'hora_fin_miercoles':[], 
+    'hora_inicio_jueves':[], 
+    'hora_fin_jueves':[], 
+    'hora_inicio_viernes':[], 
+    'hora_fin_viernes':[], 
+    'hora_inicio_sabado':[], 
+    'hora_fin_sabado':[], 
+    'hora_inicio_domingo':[], 
+    'hora_fin_domingo':[], 
+    'hora_inicio_festivo':[], 
+    'hora_fin_festivo':[], 
+
     //Cursos
     'tipo_ciclo_formacion_id':[],
     'carrera_ciclo_id':[],
@@ -123,7 +149,12 @@ export class FormularioComponent implements OnInit {
   
 
   ngOnInit() {
-    this.trabajadorForm.patchValue({fecha_nacimiento: new Date('1987/01/28')}); 
+    this.cargarDatosDefault();
+  }
+
+  cargarDatosDefault():void{
+    let datos = {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:1};
+    this.trabajadorForm.patchValue(datos);
   }
 
   verificar_curp(curp):void
