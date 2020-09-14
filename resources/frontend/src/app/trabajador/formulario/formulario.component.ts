@@ -18,6 +18,7 @@ import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.direc
 })
 export class FormularioComponent implements OnInit {
 
+  catalogo:any = [];
   constructor(
     private sharedService: SharedService, 
     private trabajadorService: TrabajadorService,
@@ -150,11 +151,31 @@ export class FormularioComponent implements OnInit {
 
   ngOnInit() {
     this.cargarDatosDefault();
+    this.cargarCatalogos();
   }
 
   cargarDatosDefault():void{
     let datos = {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:1};
     this.trabajadorForm.patchValue(datos);
+  }
+
+  cargarCatalogos():void{
+    
+    this.trabajadorService.getCatalogos().subscribe(
+      response =>{
+
+        this.catalogo = response.data;
+
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        
+      }
+    );
   }
 
   verificar_curp(curp):void
@@ -174,16 +195,17 @@ export class FormularioComponent implements OnInit {
       
       if(sexo == "H")
       {
-
+        this.trabajadorForm.patchValue({sexo: 1});
       }else if(sexo == "F")
       {
-
+        this.trabajadorForm.patchValue({sexo: 2});
       }
       if(estado == "NE")
       {
-
+        this.trabajadorForm.patchValue({nacionalidad_id: 2});
+        
       }else{
-
+        this.trabajadorForm.patchValue({nacionalidad_id: 1});
       }
     }
   }

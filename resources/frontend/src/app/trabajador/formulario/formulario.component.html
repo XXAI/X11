@@ -58,7 +58,7 @@
                                 <mat-form-field fxFlex="30" fxFlex.xs="100">
                                     <mat-label>País de Nacimiento</mat-label>
                                     <mat-select formControlName="pais_nacimiento_id" required>
-                                        <mat-option *ngFor="let item of sexo" [value]="item.id">
+                                        <mat-option *ngFor="let item of catalogo['pais']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
                                     </mat-select>
@@ -70,7 +70,7 @@
                                 <mat-form-field fxFlex="30" fxFlex.xs="100">
                                     <mat-label>Entidad de Nacimiento</mat-label>
                                     <mat-select formControlName="entidad_nacimiento_id" required>
-                                        <mat-option *ngFor="let item of entidad" [value]="item.id">
+                                        <mat-option *ngFor="let item of catalogo['entidad']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
                                     </mat-select>
@@ -82,7 +82,7 @@
                                 <mat-form-field fxFlex="30" fxFlex.xs="100">
                                     <mat-label>Municipio de Nacimiento</mat-label>
                                     <mat-select formControlName="municipio_nacimiento_id" required>
-                                        <mat-option *ngFor="let item of municipio" [value]="item.id">
+                                        <mat-option *ngFor="let item of catalogo['municipio']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
                                     </mat-select>
@@ -94,7 +94,7 @@
                                 <mat-form-field fxFlex="30" fxFlex.xs="100">
                                     <mat-label>Nacionalidad</mat-label>
                                     <mat-select formControlName="nacionalidad_id" required>
-                                        <mat-option *ngFor="let item of nacionalidad" [value]="item.id">
+                                        <mat-option *ngFor="let item of catalogo['nacionalidad']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
                                     </mat-select>
@@ -121,7 +121,7 @@
                                 <mat-form-field fxFlex="45" fxFlex.xs="100">
                                     <mat-label>Estado Conyugal</mat-label>
                                     <mat-select formControlName="estado_conyugal_id" required>
-                                        <mat-option *ngFor="let item of estado_conyugal" [value]="item.id">
+                                        <mat-option *ngFor="let item of catalogo['estado_conyugal']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
                                     </mat-select>
@@ -132,7 +132,7 @@
                                 <mat-form-field fxFlex="20" fxFlex.xs="100">
                                     <mat-label>Sexo</mat-label>
                                     <mat-select formControlName="sexo" required>
-                                        <mat-option *ngFor="let item of sexo" [value]="item.id">
+                                        <mat-option *ngFor="let item of catalogo['sexo']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
                                     </mat-select>

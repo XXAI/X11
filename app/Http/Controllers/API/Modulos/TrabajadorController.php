@@ -13,20 +13,14 @@ use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 
 use App\Models\Trabajador;
-/*use App\Models\EmpleadoEscolaridad;
-use App\Models\Clues;
-use App\Models\Cr;
-use App\Models\Profesion;
-use App\Models\Rama;
-use App\Models\PermutaAdscripcion;
-use App\Models\CluesEmpleado;
-use App\Models\User;
-use App\Models\ComisionEmpleado;
-use App\Models\ComisionDetalle;
-use App\Models\EmpleadoEscolaridadDetalle;
-use App\Models\GrupoUnidades;
+use App\Models\Pais;
+use App\Models\Entidad;
+use App\Models\Municipio;
+use App\Models\Nacionalidad;
+use App\Models\EstadoConyugal;
+use App\Models\Sexo;
 
-use App\Exports\DevReportExport;*/
+use App\Exports\DevReportExport;
 
 class TrabajadorController extends Controller
 {
@@ -191,6 +185,22 @@ class TrabajadorController extends Controller
             
 
             return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function getCatalogos()
+    {
+        try{
+            $catalogos = Array();
+            $catalogos['pais']              = Pais::all();
+            $catalogos['entidad']           = Entidad::all();
+            $catalogos['nacionalidad']      = Nacionalidad::all();
+            $catalogos['estado_conyugal']   = EstadoConyugal::all();
+            $catalogos['sexo']              = Sexo::all();
+            //$catalogos['municipio'] = Municipio::all();
+            return response()->json(['data'=>$catalogos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

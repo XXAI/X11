@@ -58,12 +58,15 @@ Route::group(['middleware'=>'auth'],function($router){
      * Rutas para el Modulo de Empleados
      */
     Route::apiResource('empleados',                 'API\Modulos\EmpleadosController');
+    /* Trabajador */
     Route::apiResource('trabajador',                'API\Modulos\TrabajadorController');
+    Route::get('catalogo-trabajador',               'API\Modulos\TrabajadorController@getCatalogos');
+    /* Fin trabajador */
     Route::apiResource('firmantes',                 'API\Modulos\FirmantesController');
     Route::apiResource('clues',                     'API\Modulos\CluesController');
-
+    
     Route::put('transferir-empleado/{id}',          'API\Modulos\EmpleadosController@transferEmployee');
-    Route::get('obtener-datos-transferencia/{id}',  'API\Modulos\EmpleadosController@getEmployeeTransferData');
+    
     Route::put('finalizar-transferencia/{id}',      'API\Modulos\EmpleadosController@finishTransferEmployee');
     Route::put('liberar-empleado/{id}',             'API\Modulos\EmpleadosController@unlinkEmployee');
     Route::put('activar-empleado/{id}',             'API\Modulos\EmpleadosController@activateEmployee');
