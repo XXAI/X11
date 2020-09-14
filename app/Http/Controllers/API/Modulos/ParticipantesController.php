@@ -171,6 +171,12 @@ class ParticipantesController extends Controller
             }else if($inputs['video'] == 4)
             {
                 $participante->video4 = 1;
+            }else if($inputs['video'] == 5)
+            {
+                $participante->video5 = 1;
+            }else if($inputs['video'] == 6)
+            {
+                $participante->video6 = 1;
             }
             
             $participante->save();

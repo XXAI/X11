@@ -26,25 +26,38 @@ export class CuestionarioComponent implements OnInit {
   @ViewChild('segundo_video', {static: false})  videoplayer2: ElementRef;
   @ViewChild('tercer_video', {static: false})   videoplayer3: ElementRef;
   @ViewChild('cuarto_video', {static: false})   videoplayer4: ElementRef;
+  @ViewChild('quinto_video', {static: false})   videoplayer5: ElementRef;
+  @ViewChild('sexto_video', {static: false})   videoplayer6: ElementRef;
 
   participante = 0;
   calificacion_participante = 0;
-  panel_registro      = false;
+  panel_registro      = true;
   panel_videos        = false;
   panel_cuestionario  = false;
-  panel_calificacion = true;
+  panel_calificacion = false;
 
   video_visto1 = 0;
   video_visto2 = 0;
   video_visto3 = 0;
   video_visto4 = 0;
+  video_visto5 = 0;
+  video_visto6 = 0;
   //
   duracion_video1 = 0;
   duracion_video2 = 0;
   duracion_video3 = 0;
   duracion_video4 = 0;
+  duracion_video5 = 0;
+  duracion_video6 = 0;
 
-  
+  porcentaje_video1:string = "0";
+  porcentaje_video2:string = "0";
+  porcentaje_video3:string = "0";
+  porcentaje_video4:string = "0";
+  porcentaje_video5:string = "0";
+  porcentaje_video6:string = "0";
+
+
   distritos:any = [
     {id:1, nombre: "TUXTLA GUTIÉRREZ"},
     {id:2, nombre: "SAN CRISTOBAL DE LAS CASAS"},
@@ -163,6 +176,8 @@ perfiles:any = [
             this.video_visto2 = videos.video2;
             this.video_visto3 = videos.video3;
             this.video_visto4 = videos.video4;
+            this.video_visto5 = videos.video5;
+            this.video_visto6 = videos.video6;
             this.participante = videos.id;
           }
         }else
@@ -208,8 +223,7 @@ perfiles:any = [
     let video_transcurrido = this.videoplayer1.nativeElement.currentTime;
     this.duracion_video1 = this.videoplayer1.nativeElement.duration;
     let porcentaje= ((video_transcurrido / this.duracion_video1) * 100);
-    console.log(video_transcurrido);
-    console.log(porcentaje);
+    this.porcentaje_video1 = porcentaje.toFixed(2);
     if(porcentaje > 99)
     {
       this.video_visto1 = 1;
@@ -225,8 +239,7 @@ perfiles:any = [
     let video_transcurrido = this.videoplayer2.nativeElement.currentTime;
     this.duracion_video2 = this.videoplayer2.nativeElement.duration;
     let porcentaje= ((video_transcurrido / this.duracion_video2) * 100);
-    console.log(video_transcurrido);
-    console.log(porcentaje);
+    this.porcentaje_video2 = porcentaje.toFixed(2);
     if(porcentaje > 99)
     {
       this.video_visto2 = 1;
@@ -243,8 +256,7 @@ perfiles:any = [
     let video_transcurrido = this.videoplayer3.nativeElement.currentTime;
     this.duracion_video3 = this.videoplayer3.nativeElement.duration;
     let porcentaje= ((video_transcurrido / this.duracion_video3) * 100);
-    console.log(video_transcurrido);
-    console.log(porcentaje);
+    this.porcentaje_video3 = porcentaje.toFixed(2);
     if(porcentaje > 99)
     {
       this.video_visto3 = 1;
@@ -260,8 +272,7 @@ perfiles:any = [
     let video_transcurrido = this.videoplayer4.nativeElement.currentTime;
     this.duracion_video4 = this.videoplayer4.nativeElement.duration;
     let porcentaje= ((video_transcurrido / this.duracion_video4) * 100);
-    console.log(video_transcurrido);
-    console.log(porcentaje);
+    this.porcentaje_video4 = porcentaje.toFixed(2);
     if(porcentaje > 99)
     {
       this.video_visto4 = 1;
@@ -269,6 +280,40 @@ perfiles:any = [
     }else{
       setTimeout (() => {
           this.listen_video4();
+        }, 7000);
+    }
+  }
+  
+  listen_video5():void 
+  {
+    let video_transcurrido = this.videoplayer5.nativeElement.currentTime;
+    this.duracion_video5 = this.videoplayer5.nativeElement.duration;
+    let porcentaje= ((video_transcurrido / this.duracion_video5) * 100);
+    this.porcentaje_video5 = porcentaje.toFixed(2);
+    if(porcentaje > 99)
+    {
+      this.video_visto5 = 1;
+      this.actualizacionVideos(5);
+    }else{
+      setTimeout (() => {
+          this.listen_video5();
+        }, 7000);
+    }
+  }
+  
+  listen_video6():void 
+  {
+    let video_transcurrido = this.videoplayer6.nativeElement.currentTime;
+    this.duracion_video6 = this.videoplayer6.nativeElement.duration;
+    let porcentaje= ((video_transcurrido / this.duracion_video6) * 100);
+    this.porcentaje_video6 = porcentaje.toFixed(2);
+    if(porcentaje > 99)
+    {
+      this.video_visto6 = 1;
+      this.actualizacionVideos(6);
+    }else{
+      setTimeout (() => {
+          this.listen_video6();
         }, 7000);
     }
   }
@@ -319,6 +364,24 @@ perfiles:any = [
   
   pause_video4() {
     this.videoplayer4.nativeElement.pause();
+  }
+  
+  play_video5() {
+    this.videoplayer5.nativeElement.play();
+    this.listen_video5();
+  }
+  
+  pause_video5() {
+    this.videoplayer5.nativeElement.pause();
+  }
+  
+  play_video6() {
+    this.videoplayer6.nativeElement.play();
+    this.listen_video6();
+  }
+  
+  pause_video6() {
+    this.videoplayer6.nativeElement.pause();
   }
   
   accionVerCuestionario():void{

@@ -132,9 +132,9 @@
                             <div fxFlex="50" fxFlex.xs="100">
                                 <mat-card>
                                     <mat-card-title>Video 1</mat-card-title>
-                                    <mat-card-subtitle>Dengue Grave</mat-card-subtitle>
+                                    <mat-card-subtitle>Historia del Dengue en Chiapas</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%" #primer_video >
+                                        <video width="100%"  #primer_video >
                                             <source src="http://docs.saludchiapas.gob.mx/videos/1.mp4" type="video/mp4">
                                             Su navegador no soporta la carga del video..
                                         </video>
@@ -143,7 +143,9 @@
                                         <button mat-raised-button (click)="play_video1()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
                                         <button mat-raised-button (click)="pause_video1()" color="primary"><mat-icon>pause</mat-icon></button>
                                         <button mat-raised-button  [disabled]="video_visto1 != 1" color="success"><mat-icon>check</mat-icon></button>
+                                        <b>Duración: 23:19</b> <b> Transcurrido: <span style="color: red;">{{ porcentaje_video1 }} %</span></b>
                                     </mat-card-actions>
+                                    <mat-card-footer *ngIf="video_visto1 == 1"><span style="margin-left: 10px;"><a href="https://www.gob.mx/salud/documentos/panorama-epidemiologico-de-dengue-2020" target="_blank" style="color: red;">Ir a: Panorama Epidemiológico de Dengue</a></span></mat-card-footer>
                                 </mat-card>    
                             </div>
                             
@@ -153,7 +155,7 @@
                                     <mat-card-title>Video 2</mat-card-title>
                                     <mat-card-subtitle>Dengue</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%" #segundo_video>
+                                        <video width="100%"  #segundo_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/2.mp4" type="video/mp4">
                                             Su navegador no soporta la carga del video..
                                         </video>
@@ -162,6 +164,7 @@
                                         <button mat-raised-button (click)="play_video2()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
                                         <button mat-raised-button (click)="pause_video2()" color="primary"><mat-icon>pause</mat-icon></button>
                                         <button mat-raised-button  [disabled]="video_visto2 != 1" color="success"><mat-icon>check</mat-icon></button>
+                                        <b>Duración: 01:44:19</b> <b> Transcurrido: <span style="color: red;">{{ porcentaje_video2 }} %</span></b>
                                     </mat-card-actions>
                                 </mat-card>    
                                 
@@ -171,9 +174,10 @@
                             <div fxFlex="50" fxFlex.xs="100">
                                 <mat-card>
                                     <mat-card-title>Video 3</mat-card-title>
-                                    <mat-card-subtitle>Administración de los servicios de salud</mat-card-subtitle>
+                                    <mat-card-subtitle>Dengue del recién nacido y del lactante</mat-card-subtitle>
+                                    
                                     <mat-card-content>
-                                        <video width="100%" #tercer_video>
+                                        <video width="100%"  #tercer_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/3.mp4" type="video/mp4">
                                             Su navegador no soporta la carga del video..
                                         </video>
@@ -182,6 +186,7 @@
                                         <button mat-raised-button (click)="play_video3()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
                                         <button mat-raised-button (click)="pause_video3()" color="primary"><mat-icon>pause</mat-icon></button>
                                         <button mat-raised-button  [disabled]="video_visto3 != 1" color="success"><mat-icon>check</mat-icon></button>
+                                        <b>Duración: 01:34:49</b> <b> Transcurrido: <span style="color: red;">{{ porcentaje_video3 }} %</span></b>
                                     </mat-card-actions>
                                 </mat-card>    
                                 
@@ -189,9 +194,9 @@
                             <div fxFlex="50" fxFlex.xs="100">
                                 <mat-card>
                                     <mat-card-title>Video 4</mat-card-title>
-                                    <mat-card-subtitle>Dengue del recién nacido y del lactante</mat-card-subtitle>
+                                    <mat-card-subtitle>Dengue Grave</mat-card-subtitle>
                                     <mat-card-content>
-                                        <video width="100%" #cuarto_video>
+                                        <video width="100%"  #cuarto_video>
                                             <source src="http://docs.saludchiapas.gob.mx/videos/4.mp4" type="video/mp4">
                                             Su navegador no soporta la carga del video..
                                         </video>
@@ -200,6 +205,47 @@
                                         <button mat-raised-button (click)="play_video4()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
                                         <button mat-raised-button (click)="pause_video4()" color="primary"><mat-icon>pause</mat-icon></button>
                                         <button mat-raised-button  [disabled]="video_visto4 != 1" color="success"><mat-icon>check</mat-icon></button>
+                                        <b>Duración: 28:50</b> <b> Transcurrido: <span style="color: red;">{{ porcentaje_video4 }} %</span></b>
+                                    </mat-card-actions>
+                                </mat-card>    
+                                
+                            </div>
+                        </div>   
+                        <div fxLayout="row" fxLayout.xs="column">    
+                            <div fxFlex="50" fxFlex.xs="100">
+                                <mat-card>
+                                    <mat-card-title>Video 5</mat-card-title>
+                                    <mat-card-subtitle></mat-card-subtitle>
+                                    <mat-card-content>
+                                        <video width="100%"  #quinto_video>
+                                            <source src="http://docs.saludchiapas.gob.mx/videos/5.mp4" type="video/mp4">
+                                            Su navegador no soporta la carga del video..
+                                        </video>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-raised-button (click)="play_video5()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
+                                        <button mat-raised-button (click)="pause_video5()" color="primary"><mat-icon>pause</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_visto5 != 1" color="success"><mat-icon>check</mat-icon></button>
+                                        <b>Duración: 01:38:49</b> <b> Transcurrido: <span style="color: red;">{{ porcentaje_video5 }} %</span></b>
+                                    </mat-card-actions>
+                                </mat-card>    
+                                
+                            </div>
+                            <div fxFlex="50" fxFlex.xs="100">
+                                <mat-card>
+                                    <mat-card-title>Video 6</mat-card-title>
+                                    <mat-card-subtitle>Administración de los servicios de salud</mat-card-subtitle>
+                                    <mat-card-content>
+                                        <video width="100%"  #sexto_video>
+                                            <source src="http://docs.saludchiapas.gob.mx/videos/6.mp4" type="video/mp4">
+                                            Su navegador no soporta la carga del video..
+                                        </video>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-raised-button (click)="play_video6()" color="primary"><mat-icon>play_circle_filled</mat-icon></button>
+                                        <button mat-raised-button (click)="pause_video6()" color="primary"><mat-icon>pause</mat-icon></button>
+                                        <button mat-raised-button  [disabled]="video_visto6 != 1" color="success"><mat-icon>check</mat-icon></button>
+                                        <b>Duración: 43:13</b> <b> Transcurrido: <span style="color: red;">{{ porcentaje_video6 }} %</span></b>
                                     </mat-card-actions>
                                 </mat-card>    
                                 
@@ -212,7 +258,7 @@
                     <span fxFlex></span>
                     
                     <ng-container>
-                        <button mat-raised-button (click)="accionVerCuestionario()" [disabled]="video_visto1 == 0 || video_visto2 == 0 || video_visto3 == 0 || video_visto4 == 0" color="success"><mat-icon>arrow_right_alt</mat-icon> ir al Cuestionario</button>
+                        <button mat-raised-button (click)="accionVerCuestionario()" [disabled]="video_visto1 == 0 || video_visto2 == 0 || video_visto3 == 0 || video_visto4 == 0 || video_visto5 == 0 || video_visto6 == 0" color="success"><mat-icon>arrow_right_alt</mat-icon> ir al Cuestionario</button>
                     </ng-container>
                 </mat-card-actions>
             </mat-card>
