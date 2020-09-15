@@ -145,13 +145,14 @@ export class ReportePersonalActivo{
                   headerRows:2,
                   dontBreakRows: true,
                   keepWithHeaderRows: 1,
-                  widths: [ 43, 60, 110, 30, 100,'*', 50, 35, 29,'*', 80,'*' ],
+                  widths: [ 43, 60, 110, 60, 30, 100,'*', 50, 35, 29,'*', 80,'*' ],
                   margin: [0,0,0,0],
                   body: [
-                    [{text: "["+empleado.clues+"] "+empleado.clues_descripcion, colSpan: 12, style: 'cabecera'},{},{},{},{},{},{},{},{},{},{},{}],
+                    [{text: "["+empleado.clues+"] "+empleado.clues_descripcion, colSpan: 13, style: 'cabecera'},{},{},{},{},{},{},{},{},{},{},{},{}],
                     [{text: "RFC", style: 'cabecera'},
                       {text: "CURP", style: 'cabecera'},
                       {text: "NOMBRE", style: 'cabecera'},
+                      {text: "TIPO DE EMPLEADO", style: 'cabecera'},
                       {text: "CODIGO", style: 'cabecera'},
                       {text: "DESC. CODIGO", style: 'cabecera'},
                       {text: "PROFESIÓN", style: 'cabecera'},
@@ -170,7 +171,7 @@ export class ReportePersonalActivo{
               indice_actual = datos.content.length -1;
             }
             datos.content[indice_actual].table.body.push(
-              [{text: "["+empleado.cr_id+"] "+empleado.cr_descripcion, colSpan: 12, style: 'subcabecera'},{},{},{},{},{},{},{},{},{},{},{}],
+              [{text: "["+empleado.cr_id+"] "+empleado.cr_descripcion, colSpan: 13, style: 'subcabecera'},{},{},{},{},{},{},{},{},{},{},{},{}],
             );
           }
 
@@ -206,6 +207,7 @@ export class ReportePersonalActivo{
             { text: empleado.rfc, style: 'tabla_datos' },
             { text: empleado.curp , style: 'tabla_datos'},
             { text: empleado.nombre + ' '+ empleado.apellido_paterno + ' '+ empleado.apellido_materno , style: 'tabla_datos'},
+            { text: empleado.tipo_trabajador , style: 'tabla_datos'},
             { text: empleado.codigo_id , style: 'tabla_datos'},
             { text: empleado.codigo , style: 'tabla_datos'},
             { text: empleado.profesion , style: 'tabla_datos'},

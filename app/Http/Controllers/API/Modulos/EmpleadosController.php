@@ -130,12 +130,13 @@ class EmpleadosController extends Controller
             } else {
                 if(isset($parametros['reporte'])){
                     //Reporte Personal Activo
-                    $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion_actualizada as cr_descripcion', "codigos.descripcion as codigo")
+                    $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion_actualizada as cr_descripcion', "codigos.descripcion as codigo",'tipo.descripcion as tipo_trabajador')
                                         ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
                                         ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
                                         ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
                                         ->leftjoin('catalogo_clues as clues','clues.clues','empleados.clues')
                                         ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
+                                        ->leftjoin('catalogo_tipo_trabajador as tipo','tipo.id','empleados.tipo_trabajador_id')
                                         ->orderBy('clues','asc')
                                         ->orderBy('cr_id','asc');
 
@@ -151,7 +152,7 @@ class EmpleadosController extends Controller
                         DB::raw("(select descripcion from catalogo_sindicato where id in (select ce.sindicato_id from comision_empleado ce, comision_detalle cd where ce.comision_detalle_id=cd.id and ce.tipo_comision='CS' and cd.fecha_fin > '".$carbon->format('Y-m-d')."' and ce.empleado_id=empleados.id  ) limit 1) as COMISION_SINDICAL"),
                         //DB::raw("IF(cr_id!=cr_adscripcion_id, (select descripcion_actualizada from catalogo_cr where cr = empleados.cr_adscripcion_id),'') as COMISION_INTERNA"),
                         'empleados.rfc as RFC'
-                        ,'empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'),'codigos.codigo as CODIGO',
+                        ,'empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'), 'tipo_trab.descripcion as TIPO_TRABAJADOR','codigos.codigo as CODIGO',
                         'codigos.descripcion as DESC_CODIGO',
                                                         'LIC_DET.descripcion as LICENCIATURA','TEC_DET.descripcion as TECNICA','turnos.descripcion as TURNO', 'empleados.hora_entrada as HORA_ENTRADA','empleados.hora_salida as HORA_SALIDA','empleados.area_servicio as AREA_SERVICIO',
                                                         'funciones.grupo as FUNCION','empleados.observaciones as OBSERVACIONES')
@@ -162,7 +163,8 @@ class EmpleadosController extends Controller
                                                 ->leftjoin('empleado_escolaridad_detalles as TEC',function($join){
                                                     $join->on('TEC.empleado_id','=','empleados.id')->where('TEC.tipo_estudio','TEC')->whereNull('TEC.deleted_at');
                                                 })
-                                                ->leftjoin('catalogo_profesion as TEC_DET','TEC_DET.id','TEC.profesion_id');
+                                                ->leftjoin('catalogo_profesion as TEC_DET','TEC_DET.id','TEC.profesion_id')
+                                                ->leftjoin('catalogo_tipo_trabajador as tipo_trab','tipo_trab.id','empleados.tipo_trabajador_id');
     
                         try{
                             $empleados = $empleados->get();
