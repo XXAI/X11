@@ -28,7 +28,7 @@ export class ReporteConstanciaDengue{
           },
           content: [
             { text: "Al C. "+reportData.items.nombre, style: "nombramiento" , absolutePosition: {x:140, y:270} },
-            { text: "Por su participación y aprobacion del curso", style: "texto_base" , absolutePosition: {x:250, y:350} },
+            { text: "Por su participación y aprobacion del curso en línea", style: "texto_base" , absolutePosition: {x:230, y:350} },
             { text: "\"Capacitación en el manejo clínico de dengue en el Estado de Chiapas\"", style: "texto_base" , absolutePosition: {x:160, y:370} },
             { text: "Tuxtla Gutiérrez, Chiapas a "+fecha_actual.getDate()+" de "+meses[fecha_actual.getMonth()]+" del "+fecha_actual.getFullYear(), style: "texto_base" , absolutePosition: {x:250, y:440} }
           ],

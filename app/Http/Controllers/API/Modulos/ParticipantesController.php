@@ -192,6 +192,12 @@ class ParticipantesController extends Controller
             $inputs = Input::all();
             $participante = Participante::where("rfc", "=", $inputs['rfc'])->first();
            
+            if($participante->realizado == 1 && $participante->calificacion <=7)
+            {
+                $participante->realizado = 0;
+                $participante->calificacion = 0;
+                $participante->save();
+            }
             return response()->json(['data'=>$participante],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
@@ -201,8 +207,9 @@ class ParticipantesController extends Controller
     function verConstancia()
     {
         try{
+
             $inputs = Input::all();
-            $participante = Participante::find(1);
+            $participante = Participante::find($inputs['participante']);
            
             return response()->json(['data'=>$participante],HttpResponse::HTTP_OK);
         }catch(\Exception $e){

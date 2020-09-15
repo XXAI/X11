@@ -168,6 +168,7 @@ perfiles:any = [
 
           if(respuesta.data.realizado == 1)
           {
+            this.participante = respuesta.data.id;
             this.ver_resultado(parseInt(respuesta.data.calificacion));
           }else{
             this.ver_videos();
@@ -450,7 +451,7 @@ perfiles:any = [
 
   accionImprimirConstancia():void
   {
-    this.participante = 1;
+    
     let formData = { 'participante' :this.participante};
     this.cuestionarioService.getParticipante(formData).subscribe(
       response =>{
