@@ -192,11 +192,15 @@ class ParticipantesController extends Controller
             $inputs = Input::all();
             $participante = Participante::where("rfc", "=", $inputs['rfc'])->first();
            
-            if($participante->realizado == 1 && $participante->calificacion <=7)
+            if($participante)
             {
-                $participante->realizado = 0;
-                $participante->calificacion = 0;
-                $participante->save();
+                if($participante->realizado == 1 && $participante->calificacion <=7)
+                {
+                    $participante->realizado = 0;
+                    $participante->calificacion = 0;
+                    $participante->save();
+                    ParticipanteCuestionario::where("participante_id", "=", $participante->id)->delete();
+                }
             }
             return response()->json(['data'=>$participante],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
