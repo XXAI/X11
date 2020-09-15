@@ -131,7 +131,7 @@ perfiles:any = [
   
   
   ngOnInit() {
-    //this.ver_instrucciones();
+    this.ver_instrucciones();
     
   }
 
