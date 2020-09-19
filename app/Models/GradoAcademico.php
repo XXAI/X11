@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Lengua extends Model
+class GradoAcademico extends Model
 {
     use SoftDeletes;
     protected $fillable = [''];
-    protected $table = 'catalogo_lengua_indigena';
+    protected $table = 'catalogo_grado_academico';
 }

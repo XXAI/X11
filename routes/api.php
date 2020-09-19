@@ -61,6 +61,7 @@ Route::group(['middleware'=>'auth'],function($router){
     /* Trabajador */
     Route::apiResource('trabajador',                'API\Modulos\TrabajadorController');
     Route::get('catalogo-trabajador',               'API\Modulos\TrabajadorController@getCatalogos');
+    Route::get('buscador-datos-trabajador',         'API\Modulos\TrabajadorController@getBuscador');
     /* Fin trabajador */
     Route::apiResource('firmantes',                 'API\Modulos\FirmantesController');
     Route::apiResource('clues',                     'API\Modulos\CluesController');

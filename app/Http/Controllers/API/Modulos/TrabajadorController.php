@@ -19,6 +19,29 @@ use App\Models\Municipio;
 use App\Models\Nacionalidad;
 use App\Models\EstadoConyugal;
 use App\Models\Sexo;
+use App\Models\Codigo;
+use App\Models\Rama;
+use App\Models\Actividad;
+use App\Models\ActividadVoluntaria;
+use App\Models\AreaTrabajo;
+use App\Models\TipoPersonal;
+use App\Models\UnidadAdministradora;
+use App\Models\Programa;
+use App\Models\UR;
+use App\Models\Jornada;
+use App\Models\GradoAcademico;
+use App\Models\NivelDominio;
+
+use App\Models\InstitucionEducativa;
+use App\Models\AnioCursa;
+use App\Models\CicloFormacion;
+//use App\Models\Carrera;
+use App\Models\Colegio;
+use App\Models\Certificado;
+//use App\Models\Consejo;
+use App\Models\Idioma;
+//use App\Models\NivelDominio;
+use App\Models\Lengua;
 
 use App\Exports\DevReportExport;
 
@@ -199,13 +222,44 @@ class TrabajadorController extends Controller
             $catalogos['nacionalidad']      = Nacionalidad::all();
             $catalogos['estado_conyugal']   = EstadoConyugal::all();
             $catalogos['sexo']              = Sexo::all();
-            //$catalogos['municipio'] = Municipio::all();
+            $catalogos['rama']              = Rama::all();
+            $catalogos['actividad']         = Actividad::all();
+            $catalogos['area_trabajo']         = AreaTrabajo::all();
+            $catalogos['tipo_personal']         = TipoPersonal::all();
+            $catalogos['unidad_administradora']         = UnidadAdministradora::all();
+            $catalogos['programa']         = Programa::all();
+            $catalogos['ur']         = UR::all();
+            $catalogos['jornada']         = Jornada::orderBy("descripcion")->get();
+            $catalogos['grado_academico']         = GradoAcademico::all();
+            $catalogos['institucion_educativa']         = InstitucionEducativa::all();
+            $catalogos['anio_cursa']         = AnioCursa::all();
+            $catalogos['ciclo_formacion']         = CicloFormacion::all();
+            $catalogos['colegio']         = Colegio::all();
+            $catalogos['idioma']         = Idioma::all();
+            $catalogos['lengua']         = Lengua::all();
+            $catalogos['certificacion']         = Certificado::all();
+            $catalogos['nivel_dominio']         = NivelDominio::all();
+            $catalogos['actividad_voluntaria']         = ActividadVoluntaria::all();
+            $catalogos['codigo']            = Codigo::orderBy("codigo")->get();
+            
             return response()->json(['data'=>$catalogos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
 
+    public function getBuscador()
+    {
+        try{
+            $parametros = Input::all();
+            $obj = Municipio::where("descripcion", "like", "%".$parametros['query']."%")
+            ->where("entidad_id", "=", $parametros['entidad_nacimiento'])
+            ->get();
+            return response()->json(['data'=>$obj],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
     private function getUserAccessData($loggedUser = null){
         if(!$loggedUser){
             $loggedUser = auth()->userOrFail();
