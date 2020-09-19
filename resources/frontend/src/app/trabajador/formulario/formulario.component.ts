@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 import { BREAKPOINT } from '@angular/flex-layout';
 import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-formulario',
@@ -19,6 +20,13 @@ import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.direc
 export class FormularioComponent implements OnInit {
 
   catalogo:any = [];
+  municipioIsLoading: boolean = false;
+  filteredMunicipio: Observable<any[]>;
+  objeto_puente: Observable<any[]>;
+  buscadores:any = [
+    {objeto: 'municipio', filtro:{}, loading: 'municipioIsLoading', items: 'filteredMunicipio'}
+  ]
+
   constructor(
     private sharedService: SharedService, 
     private trabajadorService: TrabajadorService,
@@ -28,6 +36,7 @@ export class FormularioComponent implements OnInit {
     public dialog: MatDialog
   ) { }
   
+  extrangero:boolean = false;
   trabajadorForm = this.fb.group({
    
     'nombre': ['',[Validators.required]],
@@ -37,8 +46,9 @@ export class FormularioComponent implements OnInit {
     'curp': ['',[Validators.required]],
     'pais_nacimiento_id': ['',[Validators.required]],
     'entidad_nacimiento_id': ['',[Validators.required]],
+    'municipio': [''],
     'municipio_nacimiento_id': ['',[Validators.required]],
-    'nacionalidad_id': ['',[Validators.required]],
+    'nacionalidad_id': ['', { disabled: this.extrangero}, [Validators.required]],
     'fecha_nacimiento': ['',[Validators.required]],
     'edad': ['',[Validators.required]],
     'estado_conyugal_id': ['',[Validators.required]],
@@ -152,6 +162,44 @@ export class FormularioComponent implements OnInit {
   ngOnInit() {
     this.cargarDatosDefault();
     this.cargarCatalogos();
+
+    this.cargarBuscadores();
+    
+  }
+
+  cargarBuscadores():void
+  {
+    console.log(this.trabajadorForm.get('entidad_nacimiento_id').value);
+    
+      this.trabajadorForm.get('municipio').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          //this.element.loading = true;
+            this.municipioIsLoading = true; 
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              this.municipioIsLoading = false;
+              let entidad = this.trabajadorForm.get('entidad_nacimiento_id').value;
+              let municipio = this.trabajadorForm.get('municipio').value;
+              console.log(municipio);
+              if( entidad != '' && municipio!="")
+              {
+                
+                return this.trabajadorService.buscar({query:value, entidad_nacimiento:entidad }).pipe(finalize(() => this.municipioIsLoading = false ));
+              }else{
+                return [];
+              }
+               
+            }else{
+              this.municipioIsLoading = false; 
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredMunicipio = items);
+    
   }
 
   cargarDatosDefault():void{
@@ -196,18 +244,24 @@ export class FormularioComponent implements OnInit {
       if(sexo == "H")
       {
         this.trabajadorForm.patchValue({sexo: 1});
-      }else if(sexo == "F")
+      }else if(sexo == "M")
       {
-        this.trabajadorForm.patchValue({sexo: 2});
+          this.trabajadorForm.patchValue({sexo: 2});
       }
       if(estado == "NE")
       {
-        this.trabajadorForm.patchValue({nacionalidad_id: 2});
+        this.extrangero = false;
+        this.trabajadorForm.patchValue({nacionalidad_id: 2, entidad_nacimiento_id:2499 });
         
       }else{
-        this.trabajadorForm.patchValue({nacionalidad_id: 1});
+        this.extrangero = false;
+        this.trabajadorForm.patchValue({nacionalidad_id: 1, pais_nacimiento_id:142, entidad_nacimiento_id:7});
       }
     }
+  }
+
+  displayMunicipioFn(item: any) {
+    if (item) { return item.descripcion; }
   }
 
 }
