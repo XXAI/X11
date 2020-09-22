@@ -8,7 +8,7 @@ import { Observable, combineLatest, of, forkJoin } from 'rxjs';
 import { startWith, map, throwIfEmpty, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
-import { BREAKPOINT } from '@angular/flex-layout';
+import { BREAKPOINT, validateBasis } from '@angular/flex-layout';
 import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
@@ -33,7 +33,8 @@ export class FormularioComponent implements OnInit {
   filteredInstitucionCiclo: Observable<any[]>;
   colegioIsLoading: boolean = false;
   filteredColegio: Observable<any[]>;
-  freitag:boolean =true;
+  
+  
 
   constructor(
     private sharedService: SharedService, 
@@ -44,8 +45,7 @@ export class FormularioComponent implements OnInit {
     public dialog: MatDialog
   ) { }
   
-  extrangero:boolean = false;
-  trabajadorForm = this.fb.group({
+  public trabajadorForm = this.fb.group({
    
     'nombre': ['',[Validators.required]],
     'apellido_paterno': [''],
@@ -54,11 +54,11 @@ export class FormularioComponent implements OnInit {
     'curp': ['',[Validators.required]],
     'pais_nacimiento_id': ['',[Validators.required]],
     'entidad_nacimiento_id': ['',[Validators.required]],
-    'municipio': [''],
-    'municipio_nacimiento_id': ['',[Validators.required]],
-    'nacionalidad_id': ['', { disabled: this.extrangero}, [Validators.required]],
+    'municipio': [{ value:'', disabled:true}, Validators.required],
+    'municipio_nacimiento_id': ['', [Validators.required]],
+    'nacionalidad_id': ['',[Validators.required]],
     'fecha_nacimiento': ['',[Validators.required]],
-    'edad': ['',[Validators.required]],
+    //'edad': ['',[Validators.required]],
     'estado_conyugal_id': ['',[Validators.required]],
     'sexo': ['',[Validators.required]],
     'telefono_fijo': ['',[Validators.required]],
@@ -71,43 +71,38 @@ export class FormularioComponent implements OnInit {
     'cp': ['',[Validators.required]],
     
     //Datos laborales
+    'fissa': [],
+    'figf': [],
+    'codigo_puesto_id': [],
+    'rama_id': [],
+
     'actividad_id': [],
     'actividad_voluntaria_id': [],
     'area_trabajo_id': [],
     'tipo_personal_id': [],
-    'actividad': [],
-    'codigo_puesto_id': [],
-    'num_empleado': [],
-    'fissa': [],
-    'figf': [],
-    'entidad_federativa_puesto_id': [],
-    'tipo_contrato_id': [],
-    'tipo_plaza_id': [],
+    
     'unidad_administadora_id': [],
-    'institucion_puesto_id': [],
-    'vigencia_id': [],
-    'motivo_id': [],
-    'temporalidad_id': [],
     'seguro_salud': [],
     'licencia_maternidad': [],
     'seguro_retiro': [],
-    'jornada_id': [],
+
+    'programa_id': [],
     'recurso_formacion': [],
     'tiene_fiel': [],
-    'vigencia_fiel': [],
-    'comision': [],
-    'tipo_comision_id': [],
+    'vigencia_fiel': [{ value:'', disabled:true}, Validators.required],
     'ur': [],
-    'tipo_nomina_id': [],
-    'programa_id': [],
-    'fuente_id': [],
-    'fuente_finan_id': [],
+
     'actividades': [],
-    'rama_id': [],
+
     //Datos escolares
+    
+
+    //Estudios
     'nivel_maximo_id':[],
 
+
     //Horarios
+    'jornada_id': [],
     'horario_lunes':[], 
     'horario_martes':[], 
     'horario_miercoles':[], 
@@ -116,22 +111,22 @@ export class FormularioComponent implements OnInit {
     'horario_sabado':[], 
     'horario_domingo':[], 
     'horario_festivo':[], 
-    'hora_inicio_lunes':[], 
-    'hora_fin_lunes':[], 
-    'hora_inicio_martes':[], 
-    'hora_fin_martes':[], 
-    'hora_inicio_miercoles':[], 
-    'hora_fin_miercoles':[], 
-    'hora_inicio_jueves':[], 
-    'hora_fin_jueves':[], 
-    'hora_inicio_viernes':[], 
-    'hora_fin_viernes':[], 
-    'hora_inicio_sabado':[], 
-    'hora_fin_sabado':[], 
-    'hora_inicio_domingo':[], 
-    'hora_fin_domingo':[], 
-    'hora_inicio_festivo':[], 
-    'hora_fin_festivo':[], 
+    'hora_inicio_lunes':[{ value:'', disabled:true}, Validators.required], 
+    'hora_fin_lunes':[{ value:'', disabled:true}, Validators.required], 
+    'hora_inicio_martes':[{ value:'', disabled:true}, Validators.required], 
+    'hora_fin_martes':[{ value:'', disabled:true}, Validators.required], 
+    'hora_inicio_miercoles':[{ value:'', disabled:true}, Validators.required], 
+    'hora_fin_miercoles':[{ value:'', disabled:true}, Validators.required], 
+    'hora_inicio_jueves':[{ value:'', disabled:true}, Validators.required], 
+    'hora_fin_jueves':[{ value:'', disabled:true}, Validators.required], 
+    'hora_inicio_viernes':[{ value:'', disabled:true}, Validators.required], 
+    'hora_fin_viernes':[{ value:'', disabled:true}, Validators.required], 
+    'hora_inicio_sabado':[{ value:'', disabled:true}, Validators.required], 
+    'hora_fin_sabado':[{ value:'', disabled:true}, Validators.required], 
+    'hora_inicio_domingo':[{ value:'', disabled:true}, Validators.required], 
+    'hora_fin_domingo':[{ value:'', disabled:true}, Validators.required], 
+    'hora_inicio_festivo':[{ value:'', disabled:true}, Validators.required], 
+    'hora_fin_festivo':[{ value:'', disabled:true}, Validators.required], 
 
     //Cursos
     'tipo_ciclo_formacion_id':[],
@@ -141,10 +136,10 @@ export class FormularioComponent implements OnInit {
     'institucion_ciclo_id':[],
     'anio_cursa_id':[],
     'colegiacion':[],
-    'colegio':[],
+    'colegio':[{ value:'', disabled:true}, Validators.required],
     'colegio_id':[],
     'certificacion':[],
-    'certificacion_id':[],
+    'certificacion_id':[{ value:'', disabled:true}, Validators.required],
     'consejo':[],
     'idioma_id':[],
     'nivel_idioma_id':[],
@@ -153,15 +148,15 @@ export class FormularioComponent implements OnInit {
     'lenguaje_senias':[],
 
     //capacitacion
-    'capacitacion_anual':[],
-    'grado_academico_id':[],
-    'titulo_capacitacion':[],
-    'titulo_diploma_id':[],
-    'otro_nombre_titulo':[],
-    'institucion':[],
+    'capacitacion_anual':['', [Validators.required]],
+    'grado_academico_id':[{ value:'', disabled:true}, Validators.required],
+    'titulo_capacitacion':[{ value:'', disabled:true}, Validators.required],
+    'titulo_diploma_id':[{ value:'', disabled:true}, Validators.required],
+    'otro_nombre_titulo':[{ value:'', disabled:true}, Validators.required],
+    'institucion':[{ value:'', disabled:true}, Validators.required],
     'institucion_id':[],
-    'otro_nombre_institucion':[],
-    'ciclo_id':[],
+    'otro_nombre_institucion':[{ value:'', disabled:true}, Validators.required],
+    'ciclo_id':[{ value:'', disabled:true}, Validators.required],
 
 
   });
@@ -348,7 +343,7 @@ export class FormularioComponent implements OnInit {
   }
 
   cargarDatosDefault():void{
-    let datos = {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:1};
+    let datos = {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:0, colegiacion:0, certificacion:0, capacitacion_anual:0};
     this.trabajadorForm.patchValue(datos);
   }
 
@@ -395,13 +390,142 @@ export class FormularioComponent implements OnInit {
       }
       if(estado == "NE")
       {
-        this.extrangero = false;
+        this.trabajadorForm.get('municipio').disable();
         this.trabajadorForm.patchValue({nacionalidad_id: 2, entidad_nacimiento_id:2499 });
         
       }else{
-        this.extrangero = false;
+        this.trabajadorForm.get('municipio').enable();
         this.trabajadorForm.patchValue({nacionalidad_id: 1, pais_nacimiento_id:142, entidad_nacimiento_id:7});
+
       }
+    }
+  }
+
+  fiel(valor):void{
+    if(valor == '0')
+    {
+      this.trabajadorForm.get('vigencia_fiel').disable();
+    }else if(valor == '1')
+    {
+      this.trabajadorForm.get('vigencia_fiel').enable();
+    }
+  }
+  
+  tiene_capacitacion(valor):void{
+    if(valor == '0')
+    {
+      this.trabajadorForm.get('grado_academico_id').disable();
+      this.trabajadorForm.get('titulo_capacitacion').disable();
+      this.trabajadorForm.get('otro_nombre_titulo').disable();
+      this.trabajadorForm.get('institucion').disable();
+      this.trabajadorForm.get('otro_nombre_institucion').disable();
+      this.trabajadorForm.get('ciclo_id').disable();
+    }else if(valor == '1')
+    {
+      this.trabajadorForm.get('grado_academico_id').enable();
+      this.trabajadorForm.get('titulo_capacitacion').enable();
+      this.trabajadorForm.get('otro_nombre_titulo').enable();
+      this.trabajadorForm.get('institucion').enable();
+      this.trabajadorForm.get('otro_nombre_institucion').enable();
+      this.trabajadorForm.get('ciclo_id').enable();
+    }
+  }
+
+  tiene_colegio(valor):void{
+    if(valor == '0')
+    {
+      this.trabajadorForm.get('colegio').disable();
+    }else if(valor == '1')
+    {
+      this.trabajadorForm.get('colegio').enable();
+    }
+  }
+
+  tiene_certificado(valor):void{
+    if(valor == '0')
+    {
+      this.trabajadorForm.get('certificacion_id').disable();
+    }else if(valor == '1')
+    {
+      this.trabajadorForm.get('certificacion_id').enable();
+    }
+  }
+
+  jornada(key, valor)
+  {
+    switch (key) {
+      case 1:
+        if(valor){
+          this.trabajadorForm.get('hora_inicio_lunes').disable();
+          this.trabajadorForm.get('hora_fin_lunes').disable();
+        }else{
+          this.trabajadorForm.get('hora_inicio_lunes').enable();
+          this.trabajadorForm.get('hora_fin_lunes').enable();
+        }  
+      break;
+      case 2:
+        if(valor){
+          this.trabajadorForm.get('hora_inicio_martes').disable();
+          this.trabajadorForm.get('hora_fin_martes').disable();
+        }else{
+          this.trabajadorForm.get('hora_inicio_martes').enable();
+          this.trabajadorForm.get('hora_fin_martes').enable();
+        }  
+      break;
+      case 3:
+        if(valor){
+          this.trabajadorForm.get('hora_inicio_miercoles').disable();
+          this.trabajadorForm.get('hora_fin_miercoles').disable();
+        }else{
+          this.trabajadorForm.get('hora_inicio_miercoles').enable();
+          this.trabajadorForm.get('hora_fin_miercoles').enable();
+        }  
+      break;
+      case 4:
+        if(valor){
+          this.trabajadorForm.get('hora_inicio_jueves').disable();
+          this.trabajadorForm.get('hora_fin_jueves').disable();
+        }else{
+          this.trabajadorForm.get('hora_inicio_jueves').enable();
+          this.trabajadorForm.get('hora_fin_jueves').enable();
+        }  
+      break;
+      case 5:
+        if(valor){
+          this.trabajadorForm.get('hora_inicio_viernes').disable();
+          this.trabajadorForm.get('hora_fin_viernes').disable();
+        }else{
+          this.trabajadorForm.get('hora_inicio_viernes').enable();
+          this.trabajadorForm.get('hora_fin_viernes').enable();
+        }  
+      break;
+      case 6:
+        if(valor){
+          this.trabajadorForm.get('hora_inicio_sabado').disable();
+          this.trabajadorForm.get('hora_fin_sabado').disable();
+        }else{
+          this.trabajadorForm.get('hora_inicio_sabado').enable();
+          this.trabajadorForm.get('hora_fin_sabado').enable();
+        }  
+      break;
+      case 7:
+        if(valor){
+          this.trabajadorForm.get('hora_inicio_domingo').disable();
+          this.trabajadorForm.get('hora_fin_domingo').disable();
+        }else{
+          this.trabajadorForm.get('hora_inicio_domingo').enable();
+          this.trabajadorForm.get('hora_fin_domingo').enable();
+        }  
+      break;
+      case 8:
+        if(valor){
+          this.trabajadorForm.get('hora_inicio_festivo').disable();
+          this.trabajadorForm.get('hora_fin_festivo').disable();
+        }else{
+          this.trabajadorForm.get('hora_inicio_festivo').enable();
+          this.trabajadorForm.get('hora_fin_festivo').enable();
+        }  
+      break;
     }
   }
 
