@@ -35,6 +35,7 @@ use App\Models\NivelDominio;
 use App\Models\InstitucionEducativa;
 use App\Models\AnioCursa;
 use App\Models\CicloFormacion;
+use App\Models\Profesion;
 //use App\Models\Carrera;
 use App\Models\Colegio;
 use App\Models\Certificado;
@@ -252,9 +253,32 @@ class TrabajadorController extends Controller
     {
         try{
             $parametros = Input::all();
-            $obj = Municipio::where("descripcion", "like", "%".$parametros['query']."%")
-            ->where("entidad_id", "=", $parametros['entidad_nacimiento'])
-            ->get();
+            switch ($parametros['tipo']) {
+                case 1:
+                    $obj = Municipio::where("descripcion", "like", "%".$parametros['query']."%")
+                    ->where("entidad_id", "=", $parametros['entidad_nacimiento']);
+                break;
+                
+                case 2:
+                $obj = Profesion::where("descripcion", "like", "%".$parametros['query']."%")
+                ->where("tipo_profesion_id", "=", $parametros['grado_academico']);
+                break;
+                case 3:
+                $obj = InstitucionEducativa::where("descripcion", "like", "%".$parametros['query']."%");
+                break;
+                case 4:
+                    $obj = Profesion::where("descripcion", "like", "%".$parametros['query']."%")
+                    ->whereIn("tipo_profesion_id", [1,3,4,8,9]);
+                break;
+                case 5:
+                    $obj = InstitucionEducativa::where("descripcion", "like", "%".$parametros['query']."%");
+                break;
+                case 6:
+                    $obj = Colegio::where("descripcion", "like", "%".$parametros['query']."%");
+                break;
+            }
+            
+            $obj = $obj->get();
             return response()->json(['data'=>$obj],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);

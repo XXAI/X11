@@ -23,9 +23,17 @@ export class FormularioComponent implements OnInit {
   municipioIsLoading: boolean = false;
   filteredMunicipio: Observable<any[]>;
   objeto_puente: Observable<any[]>;
-  buscadores:any = [
-    {objeto: 'municipio', filtro:{}, loading: 'municipioIsLoading', items: 'filteredMunicipio'}
-  ]
+  capacitacionIsLoading: boolean = false;
+  filteredCapacitacion: Observable<any[]>;
+  institucionIsLoading: boolean = false;
+  filteredInstitucion: Observable<any[]>;
+  carreraIsLoading: boolean = false;
+  filteredCarrera: Observable<any[]>;
+  institucionCicloIsLoading: boolean = false;
+  filteredInstitucionCiclo: Observable<any[]>;
+  colegioIsLoading: boolean = false;
+  filteredColegio: Observable<any[]>;
+  freitag:boolean =true;
 
   constructor(
     private sharedService: SharedService, 
@@ -127,10 +135,13 @@ export class FormularioComponent implements OnInit {
 
     //Cursos
     'tipo_ciclo_formacion_id':[],
+    'carrera_ciclo':[],
     'carrera_ciclo_id':[],
+    'institucion_ciclo':[],
     'institucion_ciclo_id':[],
     'anio_cursa_id':[],
     'colegiacion':[],
+    'colegio':[],
     'colegio_id':[],
     'certificacion':[],
     'certificacion_id':[],
@@ -144,8 +155,10 @@ export class FormularioComponent implements OnInit {
     //capacitacion
     'capacitacion_anual':[],
     'grado_academico_id':[],
+    'titulo_capacitacion':[],
     'titulo_diploma_id':[],
     'otro_nombre_titulo':[],
+    'institucion':[],
     'institucion_id':[],
     'otro_nombre_institucion':[],
     'ciclo_id':[],
@@ -169,8 +182,6 @@ export class FormularioComponent implements OnInit {
 
   cargarBuscadores():void
   {
-    console.log(this.trabajadorForm.get('entidad_nacimiento_id').value);
-    
       this.trabajadorForm.get('municipio').valueChanges
       .pipe(
         debounceTime(300),
@@ -183,11 +194,9 @@ export class FormularioComponent implements OnInit {
               this.municipioIsLoading = false;
               let entidad = this.trabajadorForm.get('entidad_nacimiento_id').value;
               let municipio = this.trabajadorForm.get('municipio').value;
-              console.log(municipio);
               if( entidad != '' && municipio!="")
               {
-                
-                return this.trabajadorService.buscar({query:value, entidad_nacimiento:entidad }).pipe(finalize(() => this.municipioIsLoading = false ));
+                return this.trabajadorService.buscar({tipo:1, query:value, entidad_nacimiento:entidad }).pipe(finalize(() => this.municipioIsLoading = false ));
               }else{
                 return [];
               }
@@ -199,6 +208,142 @@ export class FormularioComponent implements OnInit {
           }
         ),
       ).subscribe(items => this.filteredMunicipio = items);
+    
+      this.trabajadorForm.get('titulo_capacitacion').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          //this.element.loading = true;
+            this.capacitacionIsLoading = true; 
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              this.capacitacionIsLoading = false; 
+              let grado = this.trabajadorForm.get('grado_academico_id').value;
+              let descripcion = this.trabajadorForm.get('titulo_capacitacion').value;
+              if( grado != '' && descripcion!="")
+              {
+                console.log("entra");
+                return this.trabajadorService.buscar({tipo: 2, query:value, grado_academico:grado }).pipe(finalize(() => this.capacitacionIsLoading = false ));
+              }else{
+                return [];
+              }
+               
+            }else{
+              this.capacitacionIsLoading = false; 
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredCapacitacion = items);
+      
+      this.trabajadorForm.get('institucion').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          //this.element.loading = true;
+            this.institucionIsLoading = true; 
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              this.institucionIsLoading = false; 
+              let descripcion = this.trabajadorForm.get('institucion').value;
+              if( descripcion!="")
+              {
+               
+                return this.trabajadorService.buscar({tipo: 3, query:value}).pipe(finalize(() => this.institucionIsLoading = false ));
+              }else{
+                return [];
+              }
+               
+            }else{
+              this.institucionIsLoading = false; 
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredInstitucion = items);
+
+      this.trabajadorForm.get('carrera_ciclo').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          //this.element.loading = true;
+            this.carreraIsLoading = true; 
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              this.carreraIsLoading = false; 
+              let descripcion = this.trabajadorForm.get('carrera_ciclo').value;
+              if(descripcion!="")
+              {
+                console.log("entra");
+                return this.trabajadorService.buscar({tipo: 4, query:value }).pipe(finalize(() => this.carreraIsLoading = false ));
+              }else{
+                return [];
+              }
+               
+            }else{
+              this.carreraIsLoading = false; 
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredCarrera = items);
+
+      this.trabajadorForm.get('institucion_ciclo').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          //this.element.loading = true;
+            this.institucionCicloIsLoading = true; 
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              this.institucionCicloIsLoading = false; 
+              let descripcion = this.trabajadorForm.get('institucion_ciclo').value;
+              if( descripcion!="")
+              {
+               
+                return this.trabajadorService.buscar({tipo: 5, query:value}).pipe(finalize(() => this.institucionCicloIsLoading = false ));
+              }else{
+                return [];
+              }
+               
+            }else{
+              this.institucionCicloIsLoading = false; 
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredInstitucionCiclo = items);
+      
+      this.trabajadorForm.get('colegio').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          //this.element.loading = true;
+            this.colegioIsLoading = true; 
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              this.colegioIsLoading = false; 
+              let descripcion = this.trabajadorForm.get('colegio').value;
+              if( descripcion!="")
+              {
+               
+                return this.trabajadorService.buscar({tipo: 6, query:value}).pipe(finalize(() => this.colegioIsLoading = false ));
+              }else{
+                return [];
+              }
+               
+            }else{
+              this.colegioIsLoading = false; 
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredColegio = items);
     
   }
 
@@ -263,5 +408,24 @@ export class FormularioComponent implements OnInit {
   displayMunicipioFn(item: any) {
     if (item) { return item.descripcion; }
   }
+  
+  displayCapacitacionFn(item: any) {
+    if (item) { return item.descripcion; }
+  }
 
+  displayInstitucionFn(item: any) {
+    if (item) { return item.descripcion; }
+  }
+  
+  displayCarreraFn(item: any) {
+    if (item) { return item.descripcion; }
+  }
+
+  displayInstitucionCicloFn(item: any) {
+    if (item) { return item.descripcion; }
+  }
+  
+  displayColegioFn(item: any) {
+    if (item) { return item.descripcion; }
+  }
 }

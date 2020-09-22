@@ -81,7 +81,7 @@
                                 </mat-form-field>
                                 <mat-form-field fxFlex="30" fxFlex.xs="100">
                                     <mat-label>Municipio de Nacimiento</mat-label>
-                                    <input matInput placeholder="Municipio" [matAutocomplete]="municipioAutocomplete" formControlName='municipio' [attr.disabled]="extrangero?'':null"  required>
+                                    <input matInput placeholder="Municipio" [matAutocomplete]="municipioAutocomplete" formControlName='municipio'   required>
                                     <mat-autocomplete #municipioAutocomplete="matAutocomplete" [displayWith]="displayMunicipioFn" [panelWidth]="'auto'">
                                         <mat-option *ngIf="municipioIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                                         <ng-container *ngIf="!municipioIsLoading">
@@ -200,7 +200,7 @@
                         </div>
                     </div>
                 </mat-tab>
-                <!--<mat-tab label="Datos Laborales" >
+                <mat-tab label="Datos Laborales" >
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -683,14 +683,24 @@
                                 </mat-form-field>
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Nombre del titulo o diploma</mat-label>
-                                    <mat-select formControlName="titulo_diploma_id" required>
+                                    <input matInput placeholder="Titulo o Diploma" [matAutocomplete]="tituloCapacitacionAutocomplete" formControlName='titulo_capacitacion'   required>
+                                   <mat-autocomplete #tituloCapacitacionAutocomplete="matAutocomplete" [displayWith]="displayCapacitacionFn" [panelWidth]="'auto'">
+                                        <mat-option *ngIf="capacitacionIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                        <ng-container *ngIf="!capacitacionIsLoading">
+                                            <mat-option *ngFor="let item of filteredCapacitacion" [value]="item">
+                                                 {{ item.descripcion }}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                    <input type="hidden" formControlName='titulo_diploma_id'>
+                                    <!--<mat-select formControlName="titulo_diploma_id" required>
                                         <mat-option *ngFor="let item of catalogo['grado_academico']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="trabajadorForm.get('titulo_diploma_id').invalid && (trabajadorForm.get('titulo_diploma_id').dirty || trabajadorForm.get('titulo_diploma_id').touched)">
                                         <span *ngIf="trabajadorForm.get('titulo_diploma_id').errors.required">Campo obligatorio</span>
-                                    </mat-error>
+                                    </mat-error>-->
                                 </mat-form-field>
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <input matInput formControlName="otro_nombre_titulo" placeholder="Otro" required>
@@ -705,12 +715,17 @@
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <mat-form-field fxFlex="33" fxFlex.xs="100">
-                                    <mat-label>Institución educativa (especial)</mat-label>
-                                    <mat-select formControlName="institucion_id" required>
-                                        <mat-option *ngFor="let item of catalogo['institucion_educativa']" [value]="item.id">
-                                            {{item.descripcion}}
-                                        </mat-option>
-                                    </mat-select>
+                                    <mat-label>Institución educativa</mat-label>
+                                    <input matInput placeholder="Institución educativa" [matAutocomplete]="institucionAutocomplete" formControlName='institucion'   required>
+                                    <mat-autocomplete #institucionAutocomplete="matAutocomplete" [displayWith]="displayInstitucionFn" [panelWidth]="'auto'">
+                                        <mat-option *ngIf="institucionIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                        <ng-container *ngIf="!institucionIsLoading">
+                                            <mat-option *ngFor="let item of filteredInstitucion" [value]="item">
+                                                {{ item.descripcion }}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                    <input type="hidden" formControlName='institucion_id'>
                                     <mat-error *ngIf="trabajadorForm.get('institucion_id').invalid && (trabajadorForm.get('institucion_id').dirty || trabajadorForm.get('institucion_id').touched)">
                                         <span *ngIf="trabajadorForm.get('institucion_id').errors.required">Campo obligatorio</span>
                                     </mat-error>
@@ -795,22 +810,34 @@
                                 </mat-form-field> 
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Carrera del Ciclo (espacial)</mat-label>
-                                    <mat-select formControlName="carrera_ciclo_id" required>
-                                        <mat-option *ngFor="let item of catalogo['carrera_ciclo']" [value]="item.id">
-                                            {{item.descripcion}}
-                                        </mat-option>
-                                    </mat-select>
+                                    <input matInput placeholder="Carrera del ciclo" [matAutocomplete]="carreraAutocomplete" formControlName='carrera_ciclo'   required>
+                                    <mat-autocomplete #carreraAutocomplete="matAutocomplete" [displayWith]="displayCarreraFn" [panelWidth]="'auto'">
+                                         <mat-option *ngIf="carreraIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                         <ng-container *ngIf="!carreraIsLoading">
+                                             <mat-option *ngFor="let item of filteredCarrera" [value]="item">
+                                                  {{ item.descripcion }}
+                                             </mat-option>
+                                         </ng-container>
+                                     </mat-autocomplete>
+                                     <input type="hidden" formControlName='carrera_ciclo_id'>
+
+                                    
                                     <mat-error *ngIf="trabajadorForm.get('carrera_ciclo_id').invalid && (trabajadorForm.get('carrera_ciclo_id').dirty || trabajadorForm.get('carrera_ciclo_id').touched)">
                                         <span *ngIf="trabajadorForm.get('carrera_ciclo_id').errors.required">Campo obligatorio</span>
                                     </mat-error>
                                 </mat-form-field> 
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Institución del Ciclo</mat-label>
-                                    <mat-select formControlName="institucion_ciclo_id" required>
-                                        <mat-option *ngFor="let item of catalogo['institucion_ciclo']" [value]="item.id">
-                                            {{item.descripcion}}
-                                        </mat-option>
-                                    </mat-select>
+                                    <input matInput placeholder="Institución educativa" [matAutocomplete]="institucionCicloAutocomplete" formControlName='institucion_ciclo'   required>
+                                    <mat-autocomplete #institucionCicloAutocomplete="matAutocomplete" [displayWith]="displayInstitucionCicloFn" [panelWidth]="'auto'">
+                                        <mat-option *ngIf="institucionCicloIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                        <ng-container *ngIf="!institucionCicloIsLoading">
+                                            <mat-option *ngFor="let item of filteredInstitucionCiclo" [value]="item">
+                                                {{ item.descripcion }}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                    <input type="hidden" formControlName='institucion_ciclo_id'>
                                     <mat-error *ngIf="trabajadorForm.get('institucion_ciclo_id').invalid && (trabajadorForm.get('institucion_ciclo_id').dirty || trabajadorForm.get('institucion_ciclo_id').touched)">
                                         <span *ngIf="trabajadorForm.get('institucion_ciclo_id').errors.required">Campo obligatorio</span>
                                     </mat-error>
@@ -841,11 +868,18 @@
                                 </mat-form-field> 
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Colegio</mat-label>
-                                    <mat-select formControlName="colegio_id" required>
-                                        <mat-option *ngFor="let item of catalogo['colegio']" [value]="item.id">
-                                            {{item.descripcion}}
-                                        </mat-option>
-                                    </mat-select>
+                                    <input matInput placeholder="Colegio" [matAutocomplete]="colegioAutocomplete" formControlName='colegio'   required>
+                                    <mat-autocomplete #colegioAutocomplete="matAutocomplete" [displayWith]="displayColegioFn" [panelWidth]="'auto'">
+                                        <mat-option *ngIf="colegioIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                        <ng-container *ngIf="!colegioIsLoading">
+                                            <mat-option *ngFor="let item of filteredColegio" [value]="item">
+                                                {{ item.descripcion }}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                    <input type="hidden" formControlName='colegio_id'>
+
+                                    
                                     <mat-error *ngIf="trabajadorForm.get('colegio_id').invalid && (trabajadorForm.get('colegio_id').dirty || trabajadorForm.get('colegio_id').touched)">
                                         <span *ngIf="trabajadorForm.get('colegio_id').errors.required">Campo obligatorio</span>
                                     </mat-error>
@@ -943,7 +977,7 @@
                             </div>
                         </div>
                     </div>
-                </mat-tab>-->    
+                </mat-tab>
             </mat-tab-group>
         </mat-card>   
         
