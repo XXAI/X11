@@ -443,6 +443,11 @@
                                         <span *ngIf="trabajadorForm.get('jornada_id').errors.required">Campo obligatorio</span>
                                     </mat-error>
                                 </mat-form-field>
+                                <div fxFlex="25" fxFlex.xs="100">
+                                    <div class="example-button-row">
+                                        <button mat-button color="primary" (click)="showJornadaDialog()"><mat-icon>content_copy</mat-icon> Igualar horarios de días laborados</button>
+                                    </div>
+                                </div>
                             </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <div fxFlex="10" fxFlex.xs="100">
@@ -608,7 +613,7 @@
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top: 10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <button mat-raised-button color="primary" ><mat-icon>library_add</mat-icon> Agregar Estudios</button>
+                                <button mat-raised-button color="primary" (click)="showEstudiosDialog()"><mat-icon>library_add</mat-icon> Agregar Estudios</button>
                             </div>
                         </div>
                     </div>  

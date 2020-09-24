@@ -11,6 +11,11 @@ import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/
 import { BREAKPOINT, validateBasis } from '@angular/flex-layout';
 import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { MediaObserver } from '@angular/flex-layout';
+
+/*Dialogs */
+import { JornadaDialogComponent } from '../jornada-dialog/jornada-dialog.component';
+import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.component';
 
 @Component({
   selector: 'app-formulario',
@@ -33,16 +38,16 @@ export class FormularioComponent implements OnInit {
   filteredInstitucionCiclo: Observable<any[]>;
   colegioIsLoading: boolean = false;
   filteredColegio: Observable<any[]>;
+  mediaSize: string;
   
-  
-
   constructor(
     private sharedService: SharedService, 
     private trabajadorService: TrabajadorService,
     private authService: AuthService, 
     private route: ActivatedRoute, 
     private fb: FormBuilder,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public mediaObserver: MediaObserver
   ) { }
   
   public trabajadorForm = this.fb.group({
@@ -170,9 +175,11 @@ export class FormularioComponent implements OnInit {
   ngOnInit() {
     this.cargarDatosDefault();
     this.cargarCatalogos();
-
     this.cargarBuscadores();
-    
+    this.mediaObserver.media$.subscribe(
+      response => {
+        this.mediaSize = response.mqAlias;
+    });
   }
 
   cargarBuscadores():void
@@ -365,6 +372,7 @@ export class FormularioComponent implements OnInit {
       }
     );
   }
+/*Funciones de formulario */
 
   verificar_curp(curp):void
   {
@@ -401,6 +409,62 @@ export class FormularioComponent implements OnInit {
     }
   }
 
+  showJornadaDialog(){
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '50%',
+        data:{}
+      }
+    }
+    const dialogRef = this.dialog.open(JornadaDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid.estatus){
+        for (let index = 0; index < valid.dias.length; index++) {
+          this.jornada(valid.dias[index], false, valid.datos.hora_inicio, valid.datos.hora_fin); 
+        }
+      }
+    });
+  }
+
+  showEstudiosDialog(){
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+        data:{}
+      }
+    }
+    const dialogRef = this.dialog.open(EstudiosDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        /*for (let index = 0; index < valid.dias.length; index++) {
+          this.jornada(valid.dias[index], false, valid.datos.hora_inicio, valid.datos.hora_fin); 
+        }*/
+      }
+    });
+  }
+
+
+  /* Activadores functions */
   fiel(valor):void{
     if(valor == '0')
     {
@@ -451,84 +515,141 @@ export class FormularioComponent implements OnInit {
     }
   }
 
-  jornada(key, valor)
+  jornada(key, valor, inicio:any = null, fin:any = null)
   {
     switch (key) {
       case 1:
         if(valor){
           this.trabajadorForm.get('hora_inicio_lunes').disable();
           this.trabajadorForm.get('hora_fin_lunes').disable();
+          this.trabajadorForm.patchValue({hora_inicio_lunes: inicio, hora_fin_lunes: fin} );
+          
         }else{
           this.trabajadorForm.get('hora_inicio_lunes').enable();
           this.trabajadorForm.get('hora_fin_lunes').enable();
+          if(inicio != null && fin != null)
+          {
+            this.trabajadorForm.patchValue({horario_lunes: true});
+            this.trabajadorForm.patchValue({hora_inicio_lunes: inicio, hora_fin_lunes: fin} );
+          }
         }  
       break;
       case 2:
         if(valor){
           this.trabajadorForm.get('hora_inicio_martes').disable();
           this.trabajadorForm.get('hora_fin_martes').disable();
+          this.trabajadorForm.patchValue({hora_inicio_martes: inicio, hora_fin_martes: fin} );
         }else{
           this.trabajadorForm.get('hora_inicio_martes').enable();
           this.trabajadorForm.get('hora_fin_martes').enable();
+          
+          if(inicio != null && fin != null)
+          {
+            this.trabajadorForm.patchValue({horario_martes: true});
+            this.trabajadorForm.patchValue({hora_inicio_martes: inicio, hora_fin_martes: fin} );
+          }
         }  
       break;
       case 3:
         if(valor){
           this.trabajadorForm.get('hora_inicio_miercoles').disable();
           this.trabajadorForm.get('hora_fin_miercoles').disable();
+          this.trabajadorForm.patchValue({hora_inicio_miercoles: inicio, hora_fin_miercoles: fin} );
         }else{
           this.trabajadorForm.get('hora_inicio_miercoles').enable();
           this.trabajadorForm.get('hora_fin_miercoles').enable();
+          
+          if(inicio != null && fin != null)
+          {
+            this.trabajadorForm.patchValue({horario_miercoles: true});
+            this.trabajadorForm.patchValue({hora_inicio_miercoles: inicio, hora_fin_miercoles: fin} );
+          }
         }  
       break;
       case 4:
         if(valor){
           this.trabajadorForm.get('hora_inicio_jueves').disable();
           this.trabajadorForm.get('hora_fin_jueves').disable();
+          this.trabajadorForm.patchValue({hora_inicio_jueves: inicio, hora_fin_jueves: fin} );
         }else{
           this.trabajadorForm.get('hora_inicio_jueves').enable();
           this.trabajadorForm.get('hora_fin_jueves').enable();
+          
+          if(inicio != null && fin != null)
+          {
+            this.trabajadorForm.patchValue({horario_jueves: true});
+            this.trabajadorForm.patchValue({hora_inicio_jueves: inicio, hora_fin_jueves: fin} );
+          }
         }  
       break;
       case 5:
         if(valor){
           this.trabajadorForm.get('hora_inicio_viernes').disable();
           this.trabajadorForm.get('hora_fin_viernes').disable();
+          this.trabajadorForm.patchValue({hora_inicio_viernes: inicio, hora_fin_viernes: fin} );
         }else{
           this.trabajadorForm.get('hora_inicio_viernes').enable();
           this.trabajadorForm.get('hora_fin_viernes').enable();
+          
+          if(inicio != null && fin != null)
+          {
+            this.trabajadorForm.patchValue({horario_viernes: true});
+            this.trabajadorForm.patchValue({hora_inicio_viernes: inicio, hora_fin_viernes: fin} );
+          }
         }  
       break;
       case 6:
         if(valor){
           this.trabajadorForm.get('hora_inicio_sabado').disable();
           this.trabajadorForm.get('hora_fin_sabado').disable();
+          this.trabajadorForm.patchValue({hora_inicio_sabado: inicio, hora_fin_sabado: fin} );
         }else{
           this.trabajadorForm.get('hora_inicio_sabado').enable();
           this.trabajadorForm.get('hora_fin_sabado').enable();
+          
+          if(inicio != null && fin != null)
+          {
+            this.trabajadorForm.patchValue({horario_sabado: true});
+            this.trabajadorForm.patchValue({hora_inicio_sabado: inicio, hora_fin_sabado: fin} );
+          }
         }  
       break;
       case 7:
         if(valor){
           this.trabajadorForm.get('hora_inicio_domingo').disable();
           this.trabajadorForm.get('hora_fin_domingo').disable();
+          this.trabajadorForm.patchValue({hora_inicio_domingo: inicio, hora_fin_domingo: fin} );
         }else{
           this.trabajadorForm.get('hora_inicio_domingo').enable();
           this.trabajadorForm.get('hora_fin_domingo').enable();
+          
+          if(inicio != null && fin != null)
+          {
+            this.trabajadorForm.patchValue({horario_domingo: true});
+            this.trabajadorForm.patchValue({hora_inicio_domingo: inicio, hora_fin_domingo: fin} );
+          }
         }  
       break;
       case 8:
         if(valor){
           this.trabajadorForm.get('hora_inicio_festivo').disable();
           this.trabajadorForm.get('hora_fin_festivo').disable();
+          this.trabajadorForm.patchValue({hora_inicio_festivo: inicio, hora_fin_festivo: fin} );
         }else{
           this.trabajadorForm.get('hora_inicio_festivo').enable();
           this.trabajadorForm.get('hora_fin_festivo').enable();
+          
+          if(inicio != null && fin != null)
+          {
+            this.trabajadorForm.patchValue({horario_festivo: true});
+            this.trabajadorForm.patchValue({hora_inicio_festivo: inicio, hora_fin_festivo: fin} );
+          }
         }  
       break;
     }
   }
 
+  /* Displays functions */
   displayMunicipioFn(item: any) {
     if (item) { return item.descripcion; }
   }
