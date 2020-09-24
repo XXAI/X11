@@ -17,6 +17,7 @@ import { MediaObserver } from '@angular/flex-layout';
 import { JornadaDialogComponent } from '../jornada-dialog/jornada-dialog.component';
 import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.component';
 
+
 @Component({
   selector: 'app-formulario',
   templateUrl: './formulario.component.html',
@@ -39,7 +40,8 @@ export class FormularioComponent implements OnInit {
   colegioIsLoading: boolean = false;
   filteredColegio: Observable<any[]>;
   mediaSize: string;
-  
+  datosEstudios:any = [];
+
   constructor(
     private sharedService: SharedService, 
     private trabajadorService: TrabajadorService,
@@ -168,7 +170,8 @@ export class FormularioComponent implements OnInit {
 
   displayedColumns: string[] = ['tipo','descripcion','institucion','cedula','actions'];
   displayedColumnsCursos: string[] = ['entidad','nombre_curso','actions'];
-  dataSource: any = [];
+  //datos:any = [{grado_academico_id:5}, {grado_academico_id:5},{grado_academico_id:5},{grado_academico_id:5},{grado_academico_id:5}];
+  dataSourceEstudios: any = [];
   dataSourceCapacitacion: any = [];
   
 
@@ -358,9 +361,7 @@ export class FormularioComponent implements OnInit {
     
     this.trabajadorService.getCatalogos().subscribe(
       response =>{
-
         this.catalogo = response.data;
-
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -428,9 +429,11 @@ export class FormularioComponent implements OnInit {
     const dialogRef = this.dialog.open(JornadaDialogComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
-      if(valid.estatus){
-        for (let index = 0; index < valid.dias.length; index++) {
-          this.jornada(valid.dias[index], false, valid.datos.hora_inicio, valid.datos.hora_fin); 
+      if(valid){
+        if(valid.estatus){
+          for (let index = 0; index < valid.dias.length; index++) {
+            this.jornada(valid.dias[index], false, valid.datos.hora_inicio, valid.datos.hora_fin); 
+          }
         }
       }
     });
@@ -444,21 +447,28 @@ export class FormularioComponent implements OnInit {
         maxHeight: '100vh',
         height: '100%',
         width: '100%',
-        data:{scSize:this.mediaSize}
+        data:{scSize:this.mediaSize, catalogos: this.catalogo['grado_academico']},
       };
     }else{
       configDialog = {
         width: '95%',
-        data:{}
+        data:{ catalogos: this.catalogo['grado_academico']},
       }
     }
+
+    //console.log(this.catalogo);
     const dialogRef = this.dialog.open(EstudiosDialogComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
+      
       if(valid){
-        /*for (let index = 0; index < valid.dias.length; index++) {
-          this.jornada(valid.dias[index], false, valid.datos.hora_inicio, valid.datos.hora_fin); 
-        }*/
+        if(valid.estatus){
+          this.datosEstudios.push(valid.datos);
+          this.dataSourceEstudios = this.datosEstudios;
+          console.log(this.dataSourceEstudios);
+          //this.dataSourceEstudios.push({grado_academico_id:4, x:{a:1}});
+          console.log(this.dataSourceEstudios);
+        }
       }
     });
   }
