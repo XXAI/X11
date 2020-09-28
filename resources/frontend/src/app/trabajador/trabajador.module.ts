@@ -8,10 +8,13 @@ import { FormularioComponent } from './formulario/formulario.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatPaginatorIntl, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material';
 import { getEspPaginatorIntl } from '../esp-paginator-intl';
+import { JornadaDialogComponent } from './jornada-dialog/jornada-dialog.component';
+import { EstudiosDialogComponent } from './estudios-dialog/estudios-dialog.component';
+import { CapacitacionDialogComponent } from './capacitacion-dialog/capacitacion-dialog.component';
 
 
 @NgModule({
-  declarations: [ListaComponent, FormularioComponent],
+  declarations: [ListaComponent, FormularioComponent, JornadaDialogComponent, EstudiosDialogComponent, CapacitacionDialogComponent],
   imports: [
     CommonModule,
     TrabajadorRoutingModule,
@@ -20,6 +23,8 @@ import { getEspPaginatorIntl } from '../esp-paginator-intl';
     MatNativeDateModule 
   ],
   entryComponents:[
+    JornadaDialogComponent,
+    EstudiosDialogComponent
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

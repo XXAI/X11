@@ -11,6 +11,7 @@ export class TrabajadorService {
 
   url           = `${environment.base_url}/trabajador`;
   url_catalogos = `${environment.base_url}/catalogo-trabajador`;
+  url_buscador = `${environment.base_url}/buscador-datos-trabajador`;
 
   constructor(private http: HttpClient) { }
 
@@ -32,4 +33,12 @@ export class TrabajadorService {
           })
       );
   }
+
+  buscar(payload):Observable<any>{
+    return this.http.get<any>(this.url_buscador,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
 }

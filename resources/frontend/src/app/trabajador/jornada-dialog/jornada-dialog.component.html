@@ -1,0 +1,61 @@
+<section  fxFlex="100" fxFlex.xs="100" [formGroup]="JornadaForm">
+    <mat-card>
+        <mat-card-title>IGUALAR HORARIOS DE DÍAS LABORADOS</mat-card-title>
+        <mat-card-subtitle>Esta opción copiará el horario que ingrese en los días que seleccione.</mat-card-subtitle>
+        <mat-card-content>
+            <mat-card-subtitle>Días Laborales</mat-card-subtitle>
+            <hr>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <div fxFlex="25" fxFlex.xs="100">
+                    <mat-checkbox formControlName="horario_lunes">Lunes</mat-checkbox>
+                </div> 
+                <div fxFlex="25" fxFlex.xs="100">
+                    <mat-checkbox formControlName="horario_martes">Martes</mat-checkbox>
+                </div> 
+                <div fxFlex="25" fxFlex.xs="100">
+                    <mat-checkbox formControlName="horario_miercoles">Miércoles</mat-checkbox>
+                </div> 
+                <div fxFlex="25" fxFlex.xs="100">
+                    <mat-checkbox formControlName="horario_jueves">Jueves</mat-checkbox>
+                </div> 
+            </div>    
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <div fxFlex="25" fxFlex.xs="100">
+                    <mat-checkbox formControlName="horario_viernes">Viernes</mat-checkbox>
+                </div> 
+                <div fxFlex="25" fxFlex.xs="100">
+                    <mat-checkbox formControlName="horario_sabado">Sábado</mat-checkbox>
+                </div> 
+                <div fxFlex="25" fxFlex.xs="100">
+                    <mat-checkbox formControlName="horario_domingo">Domingo</mat-checkbox>
+                </div> 
+                <div fxFlex="25" fxFlex.xs="100">
+                    <mat-checkbox formControlName="horario_festivo">Festivo</mat-checkbox>
+                </div> 
+            </div>    
+            <br>
+            <mat-card-subtitle>Horario Laboral</mat-card-subtitle>
+            <hr>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                    <input matInput  formControlName="hora_inicio" type="time" placeholder="Hora Inicio" required>
+                    <mat-error *ngIf="JornadaForm.get('hora_inicio').invalid && (JornadaForm.get('hora_inicio').dirty || JornadaForm.get('hora_inicio').touched)">
+                        <span *ngIf="JornadaForm.get('hora_inicio').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                    <input matInput  formControlName="hora_fin" type="time" placeholder="Hora Salida" required>
+                    <mat-error *ngIf="JornadaForm.get('hora_fin').invalid && (JornadaForm.get('hora_fin').dirty || JornadaForm.get('hora_fin').touched)">
+                        <span *ngIf="JornadaForm.get('hora_fin').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            
+           
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="cancelar()">Cancelar</button>
+            <button mat-raised-button color="primary" (click)="guardar()">Si, copiar horario</button>
+        </mat-card-actions>
+    </mat-card>
+</section>
