@@ -1,1 +1,38 @@
-<p>capacitacion-dialog works!</p>
+<section  fxFlex="100" fxFlex.xs="100" [formGroup]="CapacitacionForm">
+    <mat-card>
+        <mat-card-title>CAPACITACIÓN</mat-card-title>
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                    <mat-label>Entidad Federativa </mat-label>
+                    <mat-select formControlName="entidad_id" (selectionChange) = "obtener_texto($event)" required>
+                        <mat-option *ngFor="let item of catalogos" [value]="item.id">
+                            {{item.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="CapacitacionForm.get('entidad_id').invalid && (CapacitacionForm.get('entidad_id').dirty || CapacitacionForm.get('entidad_id').touched)">
+                        <span *ngIf="CapacitacionForm.get('entidad_id').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                    <mat-label>Nombre del curso</mat-label>
+                    <input matInput placeholder="Nombre del Curso" [matAutocomplete]="cursoAutocomplete" formControlName='nombre_curso' required>
+                   <mat-autocomplete #cursoAutocomplete="matAutocomplete" [displayWith]="displayFn" [panelWidth]="'auto'">
+                        <mat-option *ngIf="cursoIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                        <ng-container *ngIf="!cursoIsLoading">
+                            <mat-option *ngFor="let item of filteredCurso" [value]="item">
+                                 {{ item.descripcion }}
+                            </mat-option>
+                        </ng-container>
+                    </mat-autocomplete>
+                    <!--<input type="hidden" formControlName='curso_id'>-->
+                </mat-form-field>
+            </div>
+                    
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="cancelar()">Cancelar</button>
+            <button mat-raised-button color="primary" [disabled]="!CapacitacionForm.valid" (click)="guardar()">Agregar</button>
+        </mat-card-actions>
+    </mat-card>
+</section>        

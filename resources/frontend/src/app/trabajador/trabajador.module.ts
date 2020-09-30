@@ -24,7 +24,8 @@ import { CapacitacionDialogComponent } from './capacitacion-dialog/capacitacion-
   ],
   entryComponents:[
     JornadaDialogComponent,
-    EstudiosDialogComponent
+    EstudiosDialogComponent,
+    CapacitacionDialogComponent
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

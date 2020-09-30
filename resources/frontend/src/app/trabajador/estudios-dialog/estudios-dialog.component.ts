@@ -5,8 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TrabajadorService } from '../trabajador.service';
 import { MediaObserver } from '@angular/flex-layout';
-import { Observable, combineLatest, of, forkJoin } from 'rxjs';
-import { startWith, map, throwIfEmpty, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-estudios-dialog',
@@ -51,12 +51,24 @@ export class EstudiosDialogComponent implements OnInit {
     this.cargarBuscadores();
     this.cargarGrado();
     this.EstudiosForm.patchValue({cedula_profesional: 0});
+    if(this.data.editable != null)
+    {
+      this.cargarEditable();
+    }
+  }
+
+  cargarEditable():void
+  {
+    this.EstudiosForm.patchValue(this.data.editable);
+    this.texto_grado_seleccionado = this.data.editable.grado_estudios_descripcion;
+    this.activar_otro_titulo(!this.data.editable.otro_titulo);
+    this.activar_otro_institucion(!this.data.editable.otro_institucion);
+    this.tiene_cedula(this.data.editable.cedula_profesional);
   }
 
   cargarGrado():void
   {
     this.catalogos = this.data.catalogos;
-    
   }
 
   
@@ -186,7 +198,11 @@ export class EstudiosDialogComponent implements OnInit {
   guardar(): void {
     this.resultado.estatus = true;
     this.resultado.datos = this.EstudiosForm.value;
-    this.resultado.datos.grado_estudios_descripcion = this.texto_grado_seleccionado;
+    //console.log(this.texto_grado_seleccionado);
+    if(this.texto_grado_seleccionado != "")
+    {
+      this.resultado.datos.grado_estudios_descripcion = this.texto_grado_seleccionado;
+    }
     this.dialogRef.close(this.resultado);
   }
 
