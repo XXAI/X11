@@ -35,6 +35,13 @@
                                 <div  fxFlex="15" fxFlex.xs="100">
                                     <button mat-raised-button (click)="accionVerificarAvance()" [disabled]="!verificarForm.valid" color="success"><mat-icon>search</mat-icon> Verificar</button>
                                 </div>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <input matInput formControlName="codigo" placeholder="Codigo"  type="text" autocomplete="false">
+                                </mat-form-field>
+                                <div  fxFlex="15" fxFlex.xs="100">
+                                    <button mat-raised-button (click)="accionVerificarCodigo()" color="success"><mat-icon>search</mat-icon> Verificar Código</button>
+                                    <button mat-raised-button (click)="generarReporte()" [disabled]="estatusReporte" *ngIf="code" color="primary"><mat-icon>print</mat-icon> </button>
+                                </div>
                             </div>
                         </section>
                     </div>

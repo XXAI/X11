@@ -8,6 +8,8 @@ use Illuminate\Http\Response as HttpResponse;
 use App\Http\Requests;
 
 use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DevReportExport;
 
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
@@ -218,6 +220,33 @@ class ParticipantesController extends Controller
             return response()->json(['data'=>$participante],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function exportExcel(Request $request){
+        ini_set('memory_limit', '-1');
+
+        try{
+            
+            $resultado = Participante::select("rfc", 
+                                                "curp", 
+                                                "nombre", 
+                                                DB::RAW("(((video1+video2+video3+video4+video5+video6) / 6) * 100) as porcentaje_videos"),
+                                                DB::RAW("if(realizado = 1, 'SI', 'NO') as examen_realizado"),
+                                                DB::RAW("if(calificacion >= 8, 'SI', 'NO') as aprobado"))
+                                        ->get();
+            
+            //return array_keys(collect($resultado[0])->toArray());
+            $columnas = array_keys(collect($resultado[0])->toArray());
+
+            $filename = $request->get('nombre_archivo');
+            if(!$filename){
+                $filename = 'reporte-dengue';
+            }
+            
+            return (new DevReportExport($resultado,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
+        }catch(\Exception $e){
+            return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
         }
     }
 }

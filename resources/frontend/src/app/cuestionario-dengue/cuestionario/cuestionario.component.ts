@@ -35,6 +35,8 @@ export class CuestionarioComponent implements OnInit {
   panel_videos        = false;
   panel_cuestionario  = false;
   panel_calificacion = false;
+  code:boolean= false;
+  estatusReporte:boolean= false;
 
   video_visto1 = 0;
   video_visto2 = 0;
@@ -101,7 +103,8 @@ perfiles:any = [
   ) { }
 
   verificarForm = this.fb.group({
-    'rfc': ['',[Validators.required]]
+    'rfc': ['',[Validators.required]],
+    'codigo':['']
   });
   participanteForm = this.fb.group({
     'rfc': ['',[Validators.required]],
@@ -131,8 +134,7 @@ perfiles:any = [
   
   
   ngOnInit() {
-    this.ver_instrucciones();
-    
+    //this.ver_instrucciones();
   }
 
   accionGuardarParticipante(){
@@ -384,6 +386,13 @@ perfiles:any = [
   pause_video6() {
     this.videoplayer6.nativeElement.pause();
   }
+
+  accionVerificarCodigo():void{
+    if(this.verificarForm.get('codigo').value == '5aludDengue#')
+    {
+      this.code = true;
+    }
+  }
   
   accionVerCuestionario():void{
     //this.participante = 1;
@@ -412,6 +421,26 @@ perfiles:any = [
       }
     );
       
+  }
+
+  generarReporte():void{
+    this.estatusReporte = true;
+    this.cuestionarioService.generar_reporte().subscribe(
+      respuesta => {
+        FileSaver.saveAs(respuesta,'reporte-dengue');
+        this.estatusReporte = false;
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+        this.estatusReporte = false;
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        
+      }
+    );
   }
 
   actualizacionVideos(video):void{
