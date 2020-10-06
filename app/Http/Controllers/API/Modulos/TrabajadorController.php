@@ -32,18 +32,18 @@ use App\Models\Jornada;
 use App\Models\GradoAcademico;
 use App\Models\NivelDominio;
 use App\Models\Cursos;
+use App\Models\Cr;
 
 use App\Models\InstitucionEducativa;
 use App\Models\AnioCursa;
 use App\Models\CicloFormacion;
 use App\Models\Profesion;
-//use App\Models\Carrera;
 use App\Models\Colegio;
 use App\Models\Certificado;
-//use App\Models\Consejo;
 use App\Models\Idioma;
-//use App\Models\NivelDominio;
 use App\Models\Lengua;
+use App\Models\Sindicato;
+use App\Models\TipoBaja;
 
 use App\Exports\DevReportExport;
 
@@ -284,6 +284,15 @@ class TrabajadorController extends Controller
                 case 8:
                     $obj = Cursos::where("descripcion", "like", "%".$parametros['query']."%")
                     ->where("entidad_id", "=", $parametros['entidad']);
+                break;
+                case 9:
+                    $obj = Cr::where("descripcion", "like", "%".$parametros['query']."%");
+                break;
+                case 10:
+                    $obj = Sindicato::orderBy("id");
+                break;
+                case 11:
+                    $obj = TipoBaja::orderBy("id");
                 break;
             }
             

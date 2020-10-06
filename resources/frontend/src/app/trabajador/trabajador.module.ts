@@ -11,10 +11,14 @@ import { getEspPaginatorIntl } from '../esp-paginator-intl';
 import { JornadaDialogComponent } from './jornada-dialog/jornada-dialog.component';
 import { EstudiosDialogComponent } from './estudios-dialog/estudios-dialog.component';
 import { CapacitacionDialogComponent } from './capacitacion-dialog/capacitacion-dialog.component';
+import { BajaDialogComponent } from './baja-dialog/baja-dialog.component';
+import { ComisionDialogComponent } from './comision-dialog/comision-dialog.component';
+
+import { FormatoFechaPipe } from '../utils/classes/fecha/formato-fecha.pipe'
 
 
 @NgModule({
-  declarations: [ListaComponent, FormularioComponent, JornadaDialogComponent, EstudiosDialogComponent, CapacitacionDialogComponent],
+  declarations: [ListaComponent, FormularioComponent, JornadaDialogComponent, EstudiosDialogComponent, CapacitacionDialogComponent, BajaDialogComponent, ComisionDialogComponent, FormatoFechaPipe],
   imports: [
     CommonModule,
     TrabajadorRoutingModule,
@@ -25,7 +29,9 @@ import { CapacitacionDialogComponent } from './capacitacion-dialog/capacitacion-
   entryComponents:[
     JornadaDialogComponent,
     EstudiosDialogComponent,
-    CapacitacionDialogComponent
+    CapacitacionDialogComponent,
+    BajaDialogComponent, 
+    ComisionDialogComponent
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

@@ -14,10 +14,15 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { MediaObserver } from '@angular/flex-layout';
 import { MatTableDataSource } from '@angular/material';
 
+/* Utilerias */
+
+
 /*Dialogs */
 import { JornadaDialogComponent } from '../jornada-dialog/jornada-dialog.component';
 import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.component';
 import { CapacitacionDialogComponent } from '../capacitacion-dialog/capacitacion-dialog.component';
+import { ComisionDialogComponent } from '../comision-dialog/comision-dialog.component';
+import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
 
 
 @Component({
@@ -44,6 +49,9 @@ export class FormularioComponent implements OnInit {
   mediaSize: string;
   datosEstudios:any = [];
   datosCapacitacion:any = [];
+  datosComision:any = null;
+
+  trabajador_id:number = 0;
 
   constructor(
     private sharedService: SharedService, 
@@ -507,6 +515,60 @@ export class FormularioComponent implements OnInit {
           //console.log(this.datosCapacitacion);
           this.dataSourceCapacitacion.data = this.datosCapacitacion;
         }
+      }
+    });
+  }
+
+  showComisionDialog(){
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize, catalogos: this.catalogo['entidad'] },
+      };
+    }else{
+      
+      configDialog = {
+        width: '95%',
+        data:{ catalogos: this.catalogo['entidad'] },
+      }
+    }
+    const dialogRef = this.dialog.open(ComisionDialogComponent, configDialog);
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        if(valid.estatus){
+          this.datosComision = valid.datos;
+          console.log(this.datosComision);
+        }
+      }
+    });
+  }
+
+  showBajaDialog(){
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize },
+      };
+    }else{
+      
+      configDialog = {
+        width: '95%',
+        data:{  },
+      }
+    }
+    const dialogRef = this.dialog.open(BajaDialogComponent, configDialog);
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.sharedService.showSnackBar("Se ha dado de Baja el trabajador", null, 3000);
+        /* Aqui debe de estar el proceso de bloque para que no se pueda editar nada mas */
       }
     });
   }
