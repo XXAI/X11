@@ -91,6 +91,8 @@ perfiles:any = [
     {id:4, nombre: "ENFERMERA GENERAL"},
     {id:5, nombre: "TÉCNICA EN ENFERMERÍA"},
     {id:6, nombre: "TAPS"},
+    {id:8, nombre: "MEDICO PASANTE"},
+    {id:9, nombre: "ENFERMERA PASANTE"},
     {id:7, nombre: "OTRO"}
 ];
   constructor(
