@@ -18,6 +18,7 @@ export const APPS:App [] = [
     { name:'Permisos',  route: "permisos",      icon: "assets/icons/security-shield.svg",    permission:"RGMUpFAiRuv7UFoJroHP6CtvmpoFlQXl" },
     { name:'Roles',     route: "roles",         icon: "assets/icons/users-roles.svg",        permission:"nrPqEhq2TX0mI7qT7glaOCJ7Iqx2QtPs" },
     { name:'Empleados', route: "empleados",     icon: "assets/icons/trabajador_salud.svg",   permission:"8QnE1cYkjjNAmM7qHSf1CSlPMJiQeqr5" },
+    { name:'Trabajadores', route: "trabajadores",     icon: "assets/icons/trabajador_salud.svg",   permission:"8QnE1cYkjjNAmM7qHSf1CSlPMJiQeqr5" },
     { name:'Herramientas Dev', route: "dev-tools",  icon: "assets/icons/toolbox.svg", isHub:true, hideHome:true, 
       children:[
         {name:'Reportes MySQL',route:'dev-tools/mysql-reportes', icon:'insert_drive_file', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"}
