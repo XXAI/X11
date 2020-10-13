@@ -20,6 +20,7 @@ Route::post('actualizar-participante',   'API\Modulos\ParticipantesController@ac
 Route::get('verificar-cuestionario',   'API\Modulos\ParticipantesController@verificarCuestionario');
 Route::get('verificar-avance',   'API\Modulos\ParticipantesController@verificarAvance');
 Route::get('ver-constancia',   'API\Modulos\ParticipantesController@verConstancia');
+Route::get('ver-reporte-dengue',                'API\Modulos\ParticipantesController@exportExcel');
 
 Route::group([
     'middleware' => 'api',
@@ -84,6 +85,7 @@ Route::group(['middleware'=>'auth'],function($router){
 
     Route::get('ejecutar-query',                    'API\Admin\DevReporterController@executeQuery');
     Route::get('exportar-query',                    'API\Admin\DevReporterController@exportExcel');
+    
 
     Route::get('catalogos-filtro-empleados', 'API\Modulos\EmpleadosController@getFilterCatalogs');
 

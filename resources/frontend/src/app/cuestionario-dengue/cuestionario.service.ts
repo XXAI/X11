@@ -16,6 +16,7 @@ export class CuestionarioService {
   url_actualizar_participante = `${environment.base_url}/actualizar-participante`;
   url_verificar_avance = `${environment.base_url}/verificar-avance`;
   url_constancia = `${environment.base_url}/ver-constancia`;
+  url_reporte = `${environment.base_url}/ver-reporte-dengue`;
 
   constructor(private http: HttpClient) { }
 
@@ -42,8 +43,6 @@ export class CuestionarioService {
       }
     ));
   }
-  
-  
 
   ver_cuestionario(payload):Observable<any> {
     return this.http.get<any>(this.url_verificar_cuestionario, {params: payload}).pipe(
@@ -68,4 +67,9 @@ export class CuestionarioService {
       }
     ));
   }
+
+  generar_reporte():Observable<any>{
+    return this.http.get<any>(this.url_reporte, { responseType: 'blob' as 'json'});
+  }
+ 
 }

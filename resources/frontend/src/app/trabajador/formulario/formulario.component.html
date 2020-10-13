@@ -1,26 +1,25 @@
 <section fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly start" style="padding-top:5px;">
-    <section  fxFlex="15" fxFlex.xs="100" class="hide">
+    <!--<section  fxFlex="15" fxFlex.xs="100" *ngIf="trabajador_id != 0">-->
+    <section  fxFlex="15" fxFlex.xs="100">
         <mat-card>
             <mat-card-header fxShow.xs="true" fxHide="true">
-                <div mat-card-avatar>
-                    <mat-icon aria-label="Estatus Empleado">{{statusIcon}}</mat-icon>
-                </div>
-                <mat-card-title>{{statusLabel}}</mat-card-title>
-                <mat-card-subtitle *ngIf="datos_empleado && datos_empleado.permuta_adscripcion_activa" matTooltip="{{datos_empleado.permuta_adscripcion_activa.clues_destino.nombre_unidad}}: {{datos_empleado.permuta_adscripcion_activa.cr_destino.descripcion}}">
-                    [{{datos_empleado.permuta_adscripcion_activa.clues_destino.clues}}: {{datos_empleado.permuta_adscripcion_activa.cr_destino.cr}}]
-                </mat-card-subtitle>
+                <mat-icon>account_circle</mat-icon>
+                <mat-card-title>Secretaría de Salud</mat-card-title>
             </mat-card-header>
-
-            <div class="credential-loading-shade" *ngIf="isLoadingCredential">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
-                <span>Cargando los datos de la credencial del empleado</span>    
-            </div>
-            <img *ngIf="!isLoadingCredential && datosCredencial" mat-card-image style="width:100%; margin:0 auto 0 auto; border-radius: 50%;" src="{{datosCredencial.photo}}" alt="">
-            
+            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+            <mat-card-content>Villatoro Díaz Mario Alberto</mat-card-content>
+            <mat-card-actions>
+                <mat-select placeholder="Acciones Generales">
+                    <mat-option [value]="0">Acciones Generales</mat-option>
+                    <mat-option [value]="1" color="warn"> Desligar</mat-option>
+                    <mat-option [value]="2" (click)="showBajaDialog()"> Dar de Baja</mat-option>
+                    <mat-option [value]="3" (click)="showComisionDialog()"> Agregar Comisión</mat-option>
+                </mat-select>
+                    
+              </mat-card-actions>
         </mat-card>
     </section>    
     <section  fxFlex="83" fxFlex.xs="100" [formGroup]="trabajadorForm">
-        
         <mat-card>
             <mat-tab-group>
                 <mat-tab label="Datos Personales">
@@ -425,7 +424,68 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                    </div>        
+                    </div> 
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <mat-accordion>
+                                <mat-expansion-panel (opened)="panelOpenState = true"
+                                                    (closed)="panelOpenState = false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Lugar de Adscripción
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <p>Clues: Oficina Administrativa Estatal<br>
+                                    Centro de Responsabilidad (CR): Área de Informatica</p>
+                                </mat-expansion-panel>
+                                <mat-expansion-panel (opened)="panelOpenState = true"
+                                                    (closed)="panelOpenState = false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Lugar de Trabajo (Fisicamente)
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <p>Clues:<br>
+                                    Centro de Responsabilidad (CR):</p>
+                                </mat-expansion-panel>
+                            </mat-accordion> 
+                        </div>
+                    </div> 
+                    <br>
+                    <!--<button mat-raised-button color="primary" (click)="showComisionDialog()">Agregar Comisión</button> -->
+                    <br>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100" *ngIf="datosComision != null">
+                            <mat-accordion>
+                                <mat-expansion-panel (opened)="panelOpenState = true"
+                                                    (closed)="panelOpenState = false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Comisión
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                   <p>Tipo: {{ datosComision.tipo_descripcion }}<br>
+                                        No. Documento: {{ datosComision.no_documento }}<br>
+                                        Centro de Responsabilidad (CR): {{ (datosComision.cr)?datosComision.cr.descripcion:'N/A' }}<br>
+                                        Sindicato: {{ (datosComision.sindicato_id)? datosComision.sindicato_descripcion:'N/A' }}<br>
+                                        Fecha Inicio: {{ datosComision.fecha_inicio | formatoFecha }}<br>
+                                        Fecha Fin: {{ datosComision.fecha_fin | formatoFecha }}<br>
+                                        Recurrente: {{ (datosComision.recurrente)?'SI':'NO' }}<br>
+                                        Meses: {{ datosComision.meses }}<br>
+                                    </p>
+                                </mat-expansion-panel>
+                            </mat-accordion> 
+                        </div>
+                    </div>             
                 </mat-tab>
                 <mat-tab label="Horario Laboral">
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
@@ -655,11 +715,11 @@
                                 </ng-container>
                             
                                 <ng-container matColumnDef="actions">
-                                    <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                                    <mat-cell *matCellDef="let row">
-                                        <button mat-button color="primary">Editar</button>
-                                        <button mat-button color="warn">Eliminar</button>
-                                    </mat-cell>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
+                                    <td mat-cell *matCellDef="let row = index">
+                                        <button mat-button color="primary" (click)="showEstudiosDialog(row)">Editar</button>
+                                        <button mat-button color="warn" (click)="eliminarEstudio(row)">Eliminar</button>
+                                    </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="noResultsFound">
@@ -671,7 +731,7 @@
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                                 <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
 
-                                <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSourceEstudios!=null && dataSourceEstudios.length==0)}"></tr>
+                                <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(datosEstudios!=null && datosEstudios.length==0)}"></tr>
                             </table>
                         </div>
                         
@@ -775,7 +835,7 @@
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top: 10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <button mat-raised-button color="primary" ><mat-icon>library_add</mat-icon> Agregar Capacitación</button>
+                                <button mat-raised-button color="primary" (click)="showCapacitacionDialog()" ><mat-icon>library_add</mat-icon> Agregar Capacitación</button>
                             </div>
                         </div>
                     </div>  
@@ -784,16 +844,20 @@
                             <table #dataTable mat-table [dataSource]="dataSourceCapacitacion" class="data-table" matSort>
                                 <ng-container matColumnDef="entidad">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Entidad </th>
-                                    <td mat-cell *matCellDef="let row"> <mat-icon>{{(row.estatus >= 2)?statusIcon[row.estatus]:statusIcon[row.estatus+'-'+row.validado]}}</mat-icon> </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.entidad_descripcion}} </td>
                                 </ng-container>
                         
                                 <ng-container matColumnDef="nombre_curso">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Curso </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.nombre}} {{ row.apellido_paterno }} {{ row.apellido_materno }}</td>
+                                    <td mat-cell *matCellDef="let row"> {{row.nombre_curso.descripcion}} </td>
                                 </ng-container>
                                 
                                 <ng-container matColumnDef="actions">
                                     <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                                    <td mat-cell *matCellDef="let row = index">
+                                        <button mat-button color="primary" (click)="showCapacitacionDialog(row)">Editar</button>
+                                        <button mat-button color="warn" (click)="eliminarCapacitacion(row)">Eliminar</button>
+                                    </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="noResultsFound">
@@ -805,7 +869,7 @@
                                 <tr mat-header-row *matHeaderRowDef="displayedColumnsCursos; sticky: true"></tr>
                                 <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumnsCursos;"></tr>
 
-                                <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSourceCapacitacion!=null && dataSourceCapacitacion.length==0)}"></tr>
+                                <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(datosCapacitacion!=null && datosCapacitacion.length==0)}"></tr>
                             </table>
                         </div>
                         

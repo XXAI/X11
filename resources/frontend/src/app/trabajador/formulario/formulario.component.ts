@@ -12,10 +12,17 @@ import { BREAKPOINT, validateBasis } from '@angular/flex-layout';
 import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { MediaObserver } from '@angular/flex-layout';
+import { MatTableDataSource } from '@angular/material';
+
+/* Utilerias */
+
 
 /*Dialogs */
 import { JornadaDialogComponent } from '../jornada-dialog/jornada-dialog.component';
 import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.component';
+import { CapacitacionDialogComponent } from '../capacitacion-dialog/capacitacion-dialog.component';
+import { ComisionDialogComponent } from '../comision-dialog/comision-dialog.component';
+import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
 
 
 @Component({
@@ -41,6 +48,10 @@ export class FormularioComponent implements OnInit {
   filteredColegio: Observable<any[]>;
   mediaSize: string;
   datosEstudios:any = [];
+  datosCapacitacion:any = [];
+  datosComision:any = null;
+
+  trabajador_id:number = 0;
 
   constructor(
     private sharedService: SharedService, 
@@ -170,10 +181,8 @@ export class FormularioComponent implements OnInit {
 
   displayedColumns: string[] = ['tipo','descripcion','institucion','cedula','actions'];
   displayedColumnsCursos: string[] = ['entidad','nombre_curso','actions'];
-  //datos:any = [{grado_academico_id:5}, {grado_academico_id:5},{grado_academico_id:5},{grado_academico_id:5},{grado_academico_id:5}];
-  dataSourceEstudios: any = [];
-  dataSourceCapacitacion: any = [];
-  
+  dataSourceEstudios:any = new MatTableDataSource(this.datosEstudios);
+  dataSourceCapacitacion:any = new MatTableDataSource(this.datosCapacitacion);
 
   ngOnInit() {
     this.cargarDatosDefault();
@@ -439,7 +448,78 @@ export class FormularioComponent implements OnInit {
     });
   }
 
-  showEstudiosDialog(){
+  showEstudiosDialog(index_editable = null){
+    let configDialog = {};
+    let index = index_editable;
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize, catalogos: this.catalogo['grado_academico'], editable: this.datosEstudios[index_editable] },
+      };
+    }else{
+      
+      configDialog = {
+        width: '95%',
+        data:{ catalogos: this.catalogo['grado_academico'], editable: this.datosEstudios[index_editable] },
+      }
+    }
+    const dialogRef = this.dialog.open(EstudiosDialogComponent, configDialog);
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        if(valid.estatus){
+          console.log(index);
+          if(index != null)
+          {
+            this.datosEstudios[index] = valid.datos;  
+          }else{
+            this.datosEstudios.push(valid.datos);
+          }
+          this.dataSourceEstudios.data = this.datosEstudios;
+          
+        }
+      }
+    });
+  }
+  
+  showCapacitacionDialog(index_editable = null){
+    let configDialog = {};
+    let index = index_editable;
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize, catalogos: this.catalogo['entidad'], editable: this.datosCapacitacion[index_editable] },
+      };
+    }else{
+      
+      configDialog = {
+        width: '95%',
+        data:{ catalogos: this.catalogo['entidad'], editable: this.datosCapacitacion[index_editable] },
+      }
+    }
+    const dialogRef = this.dialog.open(CapacitacionDialogComponent, configDialog);
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        if(valid.estatus){
+          if(index != null)
+          {
+            this.datosCapacitacion[index] = valid.datos;  
+          }else{
+            this.datosCapacitacion.push(valid.datos);
+          }
+          //console.log(this.datosCapacitacion);
+          this.dataSourceCapacitacion.data = this.datosCapacitacion;
+        }
+      }
+    });
+  }
+
+  showComisionDialog(){
     let configDialog = {};
     if(this.mediaSize == 'xs'){
       configDialog = {
@@ -447,28 +527,48 @@ export class FormularioComponent implements OnInit {
         maxHeight: '100vh',
         height: '100%',
         width: '100%',
-        data:{scSize:this.mediaSize, catalogos: this.catalogo['grado_academico']},
+        data:{scSize:this.mediaSize, catalogos: this.catalogo['entidad'] },
       };
     }else{
+      
       configDialog = {
         width: '95%',
-        data:{ catalogos: this.catalogo['grado_academico']},
+        data:{ catalogos: this.catalogo['entidad'] },
       }
     }
-
-    //console.log(this.catalogo);
-    const dialogRef = this.dialog.open(EstudiosDialogComponent, configDialog);
-
+    const dialogRef = this.dialog.open(ComisionDialogComponent, configDialog);
     dialogRef.afterClosed().subscribe(valid => {
-      
       if(valid){
         if(valid.estatus){
-          this.datosEstudios.push(valid.datos);
-          this.dataSourceEstudios = this.datosEstudios;
-          console.log(this.dataSourceEstudios);
-          //this.dataSourceEstudios.push({grado_academico_id:4, x:{a:1}});
-          console.log(this.dataSourceEstudios);
+          this.datosComision = valid.datos;
+          console.log(this.datosComision);
         }
+      }
+    });
+  }
+
+  showBajaDialog(){
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize },
+      };
+    }else{
+      
+      configDialog = {
+        width: '95%',
+        data:{  },
+      }
+    }
+    const dialogRef = this.dialog.open(BajaDialogComponent, configDialog);
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.sharedService.showSnackBar("Se ha dado de Baja el trabajador", null, 3000);
+        /* Aqui debe de estar el proceso de bloque para que no se pueda editar nada mas */
       }
     });
   }
@@ -657,6 +757,36 @@ export class FormularioComponent implements OnInit {
         }  
       break;
     }
+  }
+
+  eliminarEstudio(index)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Eliminar Estudio',dialogMessage:'¿Realmente desea eliminar el estudio?',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.datosEstudios.splice(index, 1);
+        this.dataSourceEstudios.data = this.datosEstudios;
+      }
+    });
+  }
+  
+  eliminarCapacitacion(index)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Eliminar Capacitación',dialogMessage:'¿Realmente desea eliminar el curso?',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.datosCapacitacion.splice(index, 1);
+        this.dataSourceCapacitacion.data = this.datosCapacitacion;
+      }
+    });
   }
 
   /* Displays functions */

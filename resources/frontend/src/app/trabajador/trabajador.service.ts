@@ -41,4 +41,21 @@ export class TrabajadorService {
       })
     );
   };
+
+  getCatalogoSindicato():Observable<any> {
+    return this.http.get<any>(this.url_catalogos, {}).pipe(
+        map( response => {
+          return response;
+        })
+    );
+  }
+
+  bajaTrabajador(id:any, payload:any):Observable<any> {
+    return this.http.put<any>(this.url + "/" + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  
 }

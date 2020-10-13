@@ -15,13 +15,15 @@ class CreateRelTrabajadorDatosLaborales extends Migration
     {
         Schema::create('rel_trabajador_datos_laborales', function (Blueprint $table) {
             $table->smallIncrements('id')->unsigned();
+            $table->smallInteger('trabajador_id')->unsigned();
             //Datos Laborales
             $table->smallInteger('institucion_id')->unsigned()->nullable();
             $table->smallInteger('actividad_id')->unsigned()->nullable();
             $table->smallInteger('actividad_voluntaria_id')->unsigned()->nullable();
             $table->smallInteger('area_trabajo_id')->unsigned()->nullable();
             $table->smallInteger('tipo_personal_id')->unsigned()->nullable();
-            $table->smallInteger('codigo_puesto_id')->unsigned()->nullable();//Descripcion va en el catalogo
+            $table->string('codigo_puesto_id')->nullable();
+            //$table->smallInteger('codigo_puesto_id')->unsigned()->nullable();//Descripcion va en el catalogo
             $table->string('numero_empleado', 50)->nullable();
             $table->date('fecha_ingreso')->nullable();
             $table->date('fecha_ingreso_federal')->nullable();
