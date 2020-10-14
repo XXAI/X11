@@ -1,0 +1,125 @@
+.credential-header-image {
+    background-image: url('/assets/logo-estatal.svg');
+    background-size: cover;
+}
+
+.infoEmployee th{
+    text-align: left;
+    white-space: nowrap;
+}
+
+.infoEmployee td{
+    padding-left: 10px;
+}
+
+.is-loading{
+    display: flex;
+    justify-content: center;
+}
+
+.is-loading mat-spinner{
+    margin: 0 auto;
+}
+
+.loading-shade {
+    position: relative;
+    min-height: 60px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.loading-shade mat-spinner{
+    margin:0 auto;
+}
+
+.loading-shade span{
+    margin:0 auto;
+}
+
+table {
+    width: 100%;
+}
+
+.not-results-found{
+    text-align: center;
+    font-style: italic;
+}
+
+.hide{
+    display: none;
+}
+
+.asistencia-table-container {
+    position: relative;
+    /*max-height: 400px;*/
+    min-height:200px;
+    overflow: auto;
+}
+
+.info-adscripcion-activa{
+    width: 100%;
+}
+
+.info-adscripcion-activa th.titulo-largo{
+    /*background-color: rgba(0,0,0,.85);*/
+    color: rgba(0,0,0,.85);
+    border-bottom: thick;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0,0,0,.85);
+    font-weight: bold;
+    text-align: center;
+    padding:2px;
+}
+
+.info-adscripcion-activa th.titulo-corto{
+    background-color: lightsteelblue;
+    text-align: right;
+}
+
+.info-adscripcion-activa td{
+    background-color: #dddddd;
+    text-align: left;
+    padding:2px;
+}
+
+.info-adscripcion-activa td.descripcion{
+    text-align: center;
+}
+
+.tarjeta-info-empleado p{
+    line-height: 22px;
+    margin-bottom: 0px;
+}
+
+.tarjeta-info-empleado p:first-child{
+    padding-right: 10px;
+}
+
+.tarjeta-info-empleado p:last-child{
+    padding-left: 10px;
+    border-left: thick;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgba(0,0,0,.12);
+}
+
+.tarjeta-info-empleado p span.label{
+    color: rgba(0,0,0,.87);
+    font-weight: bold;
+    border-bottom: thick;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0,0,0,.50);
+}
+
+.tarjeta-info-empleado p span.value{
+    padding: 0 5px 0 5px;
+}

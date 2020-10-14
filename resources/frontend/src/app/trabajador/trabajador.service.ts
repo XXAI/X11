@@ -13,6 +13,8 @@ export class TrabajadorService {
   url_catalogos = `${environment.base_url}/catalogo-trabajador`;
   url_buscador = `${environment.base_url}/buscador-datos-trabajador`;
 
+  url_info_trabajador = `${environment.base_url}/ver-info-trabajador/`;
+
   constructor(private http: HttpClient) { }
 
   getTrabajadorList(payload):Observable<any> {
@@ -56,6 +58,15 @@ export class TrabajadorService {
         return response;
       }
     ));
+  }
+
+  //lista
+  verInfoTrabajador(id:any,payload:any):Observable<any>{
+    return this.http.get<any>(this.url_info_trabajador + id, {params:payload}).pipe(
+      map( (response: any) => {
+        return response;
+      })
+    );
   }
   
 }
