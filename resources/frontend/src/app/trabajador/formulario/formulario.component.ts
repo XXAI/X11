@@ -51,7 +51,8 @@ export class FormularioComponent implements OnInit {
   datosCapacitacion:any = [];
   datosComision:any = null;
 
-  trabajador_id:number = 0;
+  trabajador_id:string;
+  nombre_trabajador:string;
 
   constructor(
     private sharedService: SharedService, 
@@ -192,6 +193,36 @@ export class FormularioComponent implements OnInit {
       response => {
         this.mediaSize = response.mqAlias;
     });
+
+    this.route.paramMap.subscribe(params => {
+      this.trabajador_id = params.get('id');
+
+      if(this.trabajador_id){
+        this.cargarTrabajador(this.trabajador_id);
+      }
+    });
+  }
+
+  cargarTrabajador(id):void{
+    console.log(id);
+    this.trabajadorService.buscarTrabajador(id, {}).subscribe(
+      response =>{
+        console.log(response);
+        let trabajador = response;
+        
+        this.verificar_curp(trabajador.curp);
+        this.nombre_trabajador= trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+trabajador.nombre;
+        this.trabajadorForm.patchValue(trabajador);
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        
+      }
+    );
   }
 
   cargarBuscadores():void
