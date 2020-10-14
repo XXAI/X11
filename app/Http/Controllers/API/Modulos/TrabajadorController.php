@@ -45,6 +45,15 @@ use App\Models\Lengua;
 use App\Models\Sindicato;
 use App\Models\TipoBaja;
 
+//Relacionales
+use App\Models\RelCapacitacion;
+use App\Models\RelCapacitacionDetalles;
+use App\Models\RelDatosLaborales;
+use App\Models\RelEscolaridad;
+use App\Models\RelEscolaridadCursante;
+use App\Models\RelHorario;
+use App\Models\RelNomina;
+
 use App\Exports\DevReportExport;
 
 class TrabajadorController extends Controller
@@ -210,6 +219,21 @@ class TrabajadorController extends Controller
             
 
             return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function show($id)
+    {
+        try{
+            $access = $this->getUserAccessData();
+
+            $params = Input::all();
+
+            $trabajador = Trabajador::with('capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario')->where("id", "=", $id)->first();
+
+            return response()->json($trabajador,HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

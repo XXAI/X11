@@ -44,6 +44,16 @@ export class TrabajadorService {
     );
   };
 
+  buscarTrabajador(id:any, payload:any):Observable<any>{
+    return this.http.get<any>(this.url + "/" + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  };
+
+  
+
   getCatalogoSindicato():Observable<any> {
     return this.http.get<any>(this.url_catalogos, {}).pipe(
         map( response => {
