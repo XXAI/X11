@@ -15,6 +15,7 @@ import { trigger, transition, animate, style } from '@angular/animations';
 import { PermissionsList } from '../../auth/models/permissions-list';
 import { MediaObserver } from '@angular/flex-layout';
 import { TrabajadorService } from '../trabajador.service';
+import { VerComponent } from '../ver/ver.component';
 
 @Component({
   selector: 'app-lista',
@@ -119,6 +120,42 @@ export class ListaComponent implements OnInit {
 
     this.loadEmpleadosData(event);
     //this.loadFilterCatalogs();
+  }
+
+  verEmpleado(id: number, index: number){
+    this.selectedItemIndex = index;
+    
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    paginator.selectedIndex = index;
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
+
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '99%',
+        maxHeight: '90vh',
+        height: '643px',
+        data:{id: id, puedeEditar: !this.capturaFinalizada}
+      }
+    }
+
+    const dialogRef = this.dialog.open(VerComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log('Aceptar');
+      }else{
+        console.log('Cancelar');
+      }
+    });
   }
 
   public loadEmpleadosData(event?:PageEvent){

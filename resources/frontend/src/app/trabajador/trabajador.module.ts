@@ -15,10 +15,21 @@ import { BajaDialogComponent } from './baja-dialog/baja-dialog.component';
 import { ComisionDialogComponent } from './comision-dialog/comision-dialog.component';
 
 import { FormatoFechaPipe } from '../utils/classes/fecha/formato-fecha.pipe'
+import { VerComponent } from './ver/ver.component';
 
 
 @NgModule({
-  declarations: [ListaComponent, FormularioComponent, JornadaDialogComponent, EstudiosDialogComponent, CapacitacionDialogComponent, BajaDialogComponent, ComisionDialogComponent, FormatoFechaPipe],
+  declarations: [
+    ListaComponent,
+    FormularioComponent,
+    JornadaDialogComponent,
+    EstudiosDialogComponent,
+    CapacitacionDialogComponent,
+    BajaDialogComponent,
+    ComisionDialogComponent,
+    FormatoFechaPipe,
+    VerComponent
+  ],
   imports: [
     CommonModule,
     TrabajadorRoutingModule,
@@ -31,7 +42,8 @@ import { FormatoFechaPipe } from '../utils/classes/fecha/formato-fecha.pipe'
     EstudiosDialogComponent,
     CapacitacionDialogComponent,
     BajaDialogComponent, 
-    ComisionDialogComponent
+    ComisionDialogComponent,
+    VerComponent
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},
