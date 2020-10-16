@@ -9,5 +9,6 @@ class Pais extends Model
 {
     use SoftDeletes;
     protected $fillable = [''];
+    protected $hidden = ["created_at", "updated_at", "deleted_at"];
     protected $table = 'catalogo_pais_nacimiento';
 }

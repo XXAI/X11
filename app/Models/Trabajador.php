@@ -34,4 +34,35 @@ class Trabajador extends Model
     public function nomina(){
         return $this->hasOne('App\Models\RelNomina');
     }
+
+    //catalogos
+    public function pais_nacimiento(){
+        return $this->belongsTo('App\Models\Pais');
+    }
+
+    public function entidad_nacimiento(){
+        return $this->belongsTo('App\Models\Entidad');
+    }
+    public function municipio_nacimiento(){
+        return $this->belongsTo('App\Models\Municipio');
+    }
+
+    public function nacionalidad(){
+        return $this->belongsTo('App\Models\Nacionalidad');
+    }
+
+    public function estado_conyugal(){
+        return $this->belongsTo('App\Models\EstadoConyugal');
+    }
+
+    public function sexo(){
+        return $this->belongsTo('App\Models\Sexo');
+    }
+    public function entidad_federativa(){
+        return $this->belongsTo('App\Models\Entidad');
+    }
+    public function municipio_federativo(){
+        return $this->belongsTo('App\Models\Municipio');
+    }
+
 }

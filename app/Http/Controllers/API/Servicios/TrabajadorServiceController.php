@@ -32,7 +32,9 @@ class TrabajadorServiceController extends Controller
 
         try {
             $params = Input::all();
-            $empleado = Trabajador::select('trabajador.*')->where('id',$id)->first();
+            
+            $empleado = Trabajador::select('trabajador.*')->where('id',$id)
+                        ->with('capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'pais_nacimiento', 'entidad_nacimiento', 'municipio_nacimiento', 'nacionalidad', 'estado_conyugal', 'sexo', 'entidad_federativa', 'municipio_federativo')->first();
 
 
             return response()->json($empleado,HttpResponse::HTTP_OK);

@@ -123,3 +123,26 @@ table {
 .tarjeta-info-empleado p span.value{
     padding: 0 5px 0 5px;
 }
+
+/**Nuevo **/
+
+.form-loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.form-container {
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    padding:10px;
+}
