@@ -4,13 +4,148 @@
     <div class="form-loading-shade" *ngIf="!isLoading && !dataTrabajador">No se encontraron los datos del Trabajador</div>
 
 
-    <mat-card>
+    <!-- <mat-card>
         <mat-grid-list cols="4" rowHeight="2:2" *ngIf="!isLoading && dataTrabajador">
             <mat-grid-tile>{{dataTrabajador.rfc}}</mat-grid-tile>
             <mat-grid-tile>2</mat-grid-tile>
             <mat-grid-tile>3</mat-grid-tile>
             <mat-grid-tile>4</mat-grid-tile>
         </mat-grid-list>
+    </mat-card> -->
+
+    <mat-card *ngIf="!isLoading && dataTrabajador">
+
+        <mat-card-content>
+
+            <mat-card class="datos-carta">
+                <mat-card-header>
+
+                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="!isLoadingCredential">
+
+                        <div fxFlex="50" fxLayout="column" class="datos-foto">
+                            <div fxFlex>
+                                <img mat-card-image src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </mat-card-header>
+
+                <mat-card-content>
+
+                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="15" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>RFC: </mat-label>
+                            <input matInput id="rfc" value="{{dataTrabajador.rfc}}" placeholder="RFC" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex>
+                            <mat-label>Nombre: </mat-label>
+                            <input matInput id="nombre" value="{{dataTrabajador.nombre}} {{dataTrabajador.apellido_paterno}} {{dataTrabajador.apellido_materno}}" placeholder="Nombre" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="10" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.sexo != null">
+                            <mat-label>Sexo: </mat-label>
+                            <input matInput id="sexo" value="{{dataTrabajador.sexo.descripcion}}" placeholder="Sexo" fxFlex.xs="100" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="8" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>Edad: </mat-label>
+                            <input matInput id="edad" value="{{dataTrabajador.edad}} Años" placeholder="Sexo" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>CURP: </mat-label>
+                            <input matInput id="curp" value="{{dataTrabajador.curp}}" placeholder="CURP" readonly>
+                        </mat-form-field>
+        
+                    </div>
+        
+                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+        
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.sexo != null">
+                            <mat-label>Nacionalidad: </mat-label>
+                            <input matInput id="nacionalidad" value="{{dataTrabajador.nacionalidad.descripcion}}" placeholder="Sexo" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.pais_nacimiento != null">
+                            <mat-label>Pais de Nacimiento: </mat-label>
+                            <input matInput id="nacionalidad" value="{{dataTrabajador.pais_nacimiento.descripcion}}" placeholder="Sexo" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.entidad_nacimiento != null">
+                            <mat-label>Entidad de Nacimiento: </mat-label>
+                            <input matInput id="nacionalidad" value="{{dataTrabajador.entidad_nacimiento.descripcion}}" placeholder="Sexo" readonly>
+                        </mat-form-field>
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.municipio_nacimiento != null">
+                            <mat-label>Municipio de Nacimiento: </mat-label>
+                            <input matInput id="nacionalidad" value="{{dataTrabajador.municipio_nacimiento.descripcion}}" placeholder="Sexo" readonly>
+                        </mat-form-field>
+        
+                    </div>
+        
+                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+        
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.estado_conyugal != null">
+                            <mat-label>Estado Conyugal: </mat-label>
+                            <input matInput id="conyugal" value="{{dataTrabajador.estado_conyugal.descripcion}}" placeholder="Estado Conyugal" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.estado_conyugal != null">
+                            <mat-label>Correo Electrónico: </mat-label>
+                            <input matInput id="email" value="{{dataTrabajador.correo_electronico}}" placeholder="Correo" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.estado_conyugal != null">
+                            <mat-label>Teléfono Fijo: </mat-label>
+                            <input matInput id="telefono" value="{{dataTrabajador.telefono_fijo}}" placeholder="Telefono" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.estado_conyugal != null">
+                            <mat-label>Teléfono celular: </mat-label>
+                            <input matInput id="celular" value="{{dataTrabajador.telefono_celular}}" placeholder="Celular" readonly>
+                        </mat-form-field>
+        
+                    </div>
+
+                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>Calle:</mat-label>
+                            <input matInput id="calle" value="{{dataTrabajador.calle}}" placeholder="Calle" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>N° Interior:</mat-label>
+                            <input matInput id="interior" value="{{dataTrabajador.no_interior}}" placeholder="N° Interior" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>N° Exterior:</mat-label>
+                            <input matInput id="exterior" value="{{dataTrabajador.no_exterior}}" placeholder="N° Exterior" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>Colonia:</mat-label>
+                            <input matInput id="colonia" value="{{dataTrabajador.colonia}}" placeholder="Colonia" readonly>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>C.P:</mat-label>
+                            <input matInput id="cp" value="{{dataTrabajador.cp}}" placeholder="Código Postal" readonly>
+                        </mat-form-field>
+
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+
+        </mat-card-content>
+
     </mat-card>
 
     <div>

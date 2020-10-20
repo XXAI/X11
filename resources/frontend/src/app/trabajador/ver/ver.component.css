@@ -146,3 +146,29 @@ table {
     flex-direction: column;
     padding:10px;
 }
+ .form-input {
+    font-weight: bold;
+ }
+
+ .datos-carta {
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,1), 
+                0 1px 1px 0 rgba(0,0,0,1), 
+                0 1px 3px 0 rgba(0,0,0,1);
+ }
+ /* .datos-foto {
+    height: 170px;
+    width: 170px;
+    margin: 0 auto 0 auto;
+    border-radius: 50%;
+ } */
+
+ .datos-foto {
+    display:inline-block;
+    padding: 10px;
+  }
+  
+  .datos-foto img {
+    border-radius: 50%; 
+    height: 200px;
+    width: 200px;
+  }

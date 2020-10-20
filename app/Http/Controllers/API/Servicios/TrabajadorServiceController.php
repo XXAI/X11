@@ -33,11 +33,13 @@ class TrabajadorServiceController extends Controller
         try {
             $params = Input::all();
             
-            $empleado = Trabajador::select('trabajador.*')->where('id',$id)
-                        ->with('capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'pais_nacimiento', 'entidad_nacimiento', 'municipio_nacimiento', 'nacionalidad', 'estado_conyugal', 'sexo', 'entidad_federativa', 'municipio_federativo')->first();
+            $trabajador = Trabajador::select('trabajador.*')->where('id',$id)
+                        ->with('capacitacion','datoslaborales.clues_adscripcion','escolaridad','escolaridadcursante','horario', 'pais_nacimiento', 'entidad_nacimiento', 'municipio_nacimiento', 'nacionalidad', 'estado_conyugal', 'sexo', 'entidad_federativa', 'municipio_federativo')->first();
+
+            $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
 
 
-            return response()->json($empleado,HttpResponse::HTTP_OK);
+            return response()->json($trabajador,HttpResponse::HTTP_OK);
 
         } catch(\Exception $e) {
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);

@@ -30,7 +30,6 @@ export class VerComponent implements OnInit {
   ) { }
 
   dataTrabajador: any;
-
   datosCredencial:any;
   photoPlaceholder = 'assets/profile-icon.svg';
 
@@ -126,6 +125,8 @@ export class VerComponent implements OnInit {
         console.log(response);
         this.dataTrabajador = response;
 
+        this.credencial(this.dataTrabajador.clave_credencial);
+
         console.log(this.dataTrabajador);
 
         this.isLoading = false;
@@ -133,7 +134,37 @@ export class VerComponent implements OnInit {
       errorResponse => {
         console.log(errorResponse);
         this.isLoading = false;
+        
       });
   }
+
+  credencial(clave: any){
+
+    if(this.dataTrabajador.clave_credencial){
+      this.trabajadorService.getDatosCredencial(clave).subscribe(
+        response => {
+          console.log(response);
+          if(response.length > 0){
+            this.datosCredencial = response[0];
+            if(this.datosCredencial.tieneFoto == '1'){
+              this.datosCredencial.photo = 'http://credencializacion.saludchiapas.gob.mx/images/credenciales/'+this.datosCredencial.id+'.'+this.datosCredencial.tipoFoto;
+            }else{
+              this.datosCredencial.photo = this.photoPlaceholder;
+            }
+          }else{
+            this.datosCredencial = undefined;
+          }
+          this.isLoadingCredential = false;
+        },
+        responseError => {
+          console.log(responseError);
+          this.isLoadingCredential = false;
+        }
+      );
+    }
+    
+  }
+
+  
 
 }

@@ -113,7 +113,7 @@ export class VerComponent implements OnInit {
 
     this.empleadosService.verInfoEmpleado(id,params).subscribe(
       response =>{
-        console.log(response);
+        console.log("onde",response);
         this.dataEmpleado = response.data;
 
         if(this.dataEmpleado.figf){
