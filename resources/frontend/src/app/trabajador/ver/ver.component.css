@@ -161,14 +161,3 @@ table {
     margin: 0 auto 0 auto;
     border-radius: 50%;
  } */
-
- .datos-foto {
-    display:inline-block;
-    padding: 10px;
-  }
-  
-  .datos-foto img {
-    border-radius: 50%; 
-    height: 200px;
-    width: 200px;
-  }

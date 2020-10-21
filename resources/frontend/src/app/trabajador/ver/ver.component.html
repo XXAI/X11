@@ -18,45 +18,92 @@
         <mat-card-content>
 
             <mat-card class="datos-carta">
-                <mat-card-header>
 
-                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="!isLoadingCredential">
 
-                        <div fxFlex="50" fxLayout="column" class="datos-foto">
+                    <!-- <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="!isLoadingCredential">
+
+                        <div fxLayout="column" class="datos-foto" fxFlex="30">
                             <div fxFlex>
                                 <img mat-card-image src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
                             </div>
                         </div>
 
+                        <div fxFlex="100">
+                            <h1 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
+                            <h2 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.cr)?dataTrabajador.cr.descripcion:'CR físico no asignado' }}</h2>
+                        </div>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="50">
+                            <mat-label>Nombre: </mat-label>
+                            <input matInput id="nombre" value="{{dataTrabajador.nombre}} {{dataTrabajador.apellido_paterno}} {{dataTrabajador.apellido_materno}}" placeholder="Nombre" readonly>
+                        </mat-form-field>
+
+                    </div> -->
+
+                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="!isLoadingCredential">
+
+
+                        <div fxFlex="20" fxLayout="column">
+                            <div fxFlex>
+                                <img mat-card-image style="width: 90%; height: 90%; margin: 0 auto 0 auto; object-fit: contain;" src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
+                            </div>
+                        </div>
+
+                        <div fxFlex="80"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
+                            <div fxFlex>
+                                <h1 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
+                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">({{ (dataTrabajador.datoslaborales != null)?dataTrabajador.datoslaborales.clues_adscripcion.clues:'Clues no asignada' }})</h2>
+                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.datoslaborales != null)?dataTrabajador.datoslaborales.clues_adscripcion.nombre_unidad:'Clues no asignada' }}</h2>
+                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.datoslaborales != null)?dataTrabajador.datoslaborales.fecha_ingreso:'Fecha de ingreso no asignada' | date: 'dd/MM/yyyy'}}</h2>
+                            </div>
+                            <br>
+                            <div fxFlex>
+                                <mat-chip-list aria-label="Fish selection" fxLayoutAlign="center stretch">
+                                    <mat-chip color="primary" [selected]="dataTrabajador.validado == 1"><mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
+                                    <mat-chip color="primary" [selected]="dataTrabajador.estatus == 1">{{(dataTrabajador.estatus == 1)?'Activo':'Inactivo'}}</mat-chip>
+                                    <!-- <mat-chip color="warn"    selected *ngIf="dataTrabajador.estatus == 2">BAJA <span *ngIf="dataTrabajador.baja && dataTrabajador.baja[0].tipo_baja">: {{ dataTrabajador.baja[0].tipo_baja.descripcion }}</span></mat-chip>
+                                    <mat-chip color="primary" selected *ngIf="dataTrabajador.comision">{{ dataTrabajador.comision }}</mat-chip> -->
+                                    <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <!-- <div fxFlex fxLayout="row">
+                                <div fxFlex>
+                                    <h4 style="margin-bottom:0px;">
+                                        <strong>Turno: </strong><span>{{ (dataTrabajador.turno)?dataTrabajador.turno.descripcion:'' }}</span><br>
+                                        <strong>Hora Entrada: </strong><span>{{ dataTrabajador.hora_entrada | date:'shortTime' }}</span>&nbsp;&nbsp;
+                                        <strong>Hora Salida: </strong><span>{{ dataTrabajador.hora_salida | date:'shortTime' }}</span>
+                                    </h4>
+                                    
+                                </div>
+                                <button *ngIf="puedeEditar" mat-button (click)="editarEmpleado()" color="accent"><mat-icon>edit</mat-icon> Editar</button>
+                            </div> -->
+                        </div>
+                        
                     </div>
 
-                </mat-card-header>
+
 
                 <mat-card-content>
 
                     <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
 
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="15" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>RFC: </mat-label>
-                            <input matInput id="rfc" value="{{dataTrabajador.rfc}}" placeholder="RFC" readonly>
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="10" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>Edad: </mat-label>
+                            <input matInput id="edad" value="{{dataTrabajador.edad}} Años" placeholder="Sexo" readonly>
                         </mat-form-field>
-        
-                        <mat-form-field class="form-input" appearance="outline" fxFlex>
-                            <mat-label>Nombre: </mat-label>
-                            <input matInput id="nombre" value="{{dataTrabajador.nombre}} {{dataTrabajador.apellido_paterno}} {{dataTrabajador.apellido_materno}}" placeholder="Nombre" readonly>
-                        </mat-form-field>
-        
+
                         <mat-form-field class="form-input" appearance="outline" fxFlex="10" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.sexo != null">
                             <mat-label>Sexo: </mat-label>
                             <input matInput id="sexo" value="{{dataTrabajador.sexo.descripcion}}" placeholder="Sexo" fxFlex.xs="100" readonly>
                         </mat-form-field>
-        
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="8" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>Edad: </mat-label>
-                            <input matInput id="edad" value="{{dataTrabajador.edad}} Años" placeholder="Sexo" readonly>
+
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="40" fxFlex.xs="100" fxFlex.sm="100">
+                            <mat-label>RFC: </mat-label>
+                            <input matInput id="rfc" value="{{dataTrabajador.rfc}}" placeholder="RFC" readonly>
                         </mat-form-field>
         
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                        <mat-form-field class="form-input" appearance="outline" fxFlex="40" fxFlex.xs="100" fxFlex.sm="100">
                             <mat-label>CURP: </mat-label>
                             <input matInput id="curp" value="{{dataTrabajador.curp}}" placeholder="CURP" readonly>
                         </mat-form-field>
