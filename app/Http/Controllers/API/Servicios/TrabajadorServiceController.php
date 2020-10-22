@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 
 use App\Models\Trabajador;
+use App\Models\RelDatosLaborales;
 // use App\Models\EmpleadoEscolaridad;
 // use App\Models\Clues;
 // use App\Models\Cr;
@@ -34,7 +35,26 @@ class TrabajadorServiceController extends Controller
             $params = Input::all();
             
             $trabajador = Trabajador::select('trabajador.*')->where('id',$id)
-                        ->with('capacitacion','datoslaborales.clues_adscripcion','escolaridad','escolaridadcursante','horario', 'pais_nacimiento', 'entidad_nacimiento', 'municipio_nacimiento', 'nacionalidad', 'estado_conyugal', 'sexo', 'entidad_federativa', 'municipio_federativo')->first();
+                         ->with('capacitacion',
+                                'escolaridad',
+                                'escolaridadcursante',
+                                'horario', 
+                                'pais_nacimiento',
+                                'entidad_nacimiento',
+                                'municipio_nacimiento',
+                                'nacionalidad',
+                                'estado_conyugal',
+                                'sexo',
+                                'entidad_federativa',
+                                'municipio_federativo',
+                                'rel_trabajador_capacitacion',
+                                'rel_trabajador_capacitacion_detalles',
+                                'rel_datos_laborales',
+                                'rel_trabajador_escolaridad',
+                                'rel_trabajador_escolaridad_cursante',
+                                'rel_trabajador_horario'
+                         )->first();
+            
 
             $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
 

@@ -52,11 +52,11 @@
                         <div fxFlex="80"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
                             <div fxFlex>
                                 <h1 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
-                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">({{ (dataTrabajador.datoslaborales != null)?dataTrabajador.datoslaborales.clues_adscripcion.clues:'Clues no asignada' }})</h2>
-                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.datoslaborales != null)?dataTrabajador.datoslaborales.clues_adscripcion.nombre_unidad:'Clues no asignada' }}</h2>
-                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.datoslaborales != null)?dataTrabajador.datoslaborales.fecha_ingreso:'Fecha de ingreso no asignada' | date: 'dd/MM/yyyy'}}</h2>
+                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">({{ (dataTrabajador.rel_datos_laborales != null)?dataTrabajador.rel_datos_laborales.clues_adscripcion.clues:'Clues no asignada' }})</h2>
+                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales != null)?dataTrabajador.rel_datos_laborales.clues_adscripcion.nombre_unidad:'Clues no asignada' }}</h2>
+                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales != null)?dataTrabajador.rel_datos_laborales.fecha_ingreso:'Fecha de ingreso no asignada' | date: 'dd/MM/yyyy'}}</h2>
                             </div>
-                            <br>
+                            <br><br>
                             <div fxFlex>
                                 <mat-chip-list aria-label="Fish selection" fxLayoutAlign="center stretch">
                                     <mat-chip color="primary" [selected]="dataTrabajador.validado == 1"><mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
@@ -66,7 +66,6 @@
                                     <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
                                 </mat-chip-list>
                             </div>
-                            <mat-divider></mat-divider>
                             <!-- <div fxFlex fxLayout="row">
                                 <div fxFlex>
                                     <h4 style="margin-bottom:0px;">
@@ -81,7 +80,9 @@
                         </div>
                         
                     </div>
-
+                    <br><br><br>
+                    <mat-divider></mat-divider>
+                    <br><br>
 
 
                 <mat-card-content>

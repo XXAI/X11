@@ -14,4 +14,5 @@ class RelCapacitacion extends Model
     public function detalles(){
         return $this->hasMany('App\Models\RelCapacitacionDetalles');
     }
+
 }

@@ -65,4 +65,25 @@ class Trabajador extends Model
         return $this->belongsTo('App\Models\Municipio');
     }
 
+    //Ver trabajador
+    public function rel_trabajador_capacitacion(){
+        return $this->hasOne('App\Models\RelCapacitacion');
+    }
+    public function rel_trabajador_capacitacion_detalles(){
+        return $this->hasMany('App\Models\RelCapacitacionDetalles')->with('entidad_nacimiento', 'cursos');
+    }
+    public function rel_datos_laborales(){
+        return $this->hasOne('App\Models\RelDatosLaborales')->with('clues_adscripcion','actividad','actividad_voluntaria','area_trabajo','cr_fisico','programa','rama');
+    }
+
+    public function rel_trabajador_escolaridad(){
+        return $this->hasMany('App\Models\RelEscolaridad')->with('grado_academico', 'institucion');
+    }
+    public function rel_trabajador_escolaridad_cursante(){
+        return $this->hasOne('App\Models\RelEscolaridadCursante')->with('grado_academico', 'institucion');
+    }
+    public function rel_trabajador_horario(){
+        return $this->hasMany('App\Models\RelHorario');
+    }
+
 }
