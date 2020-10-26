@@ -69,8 +69,8 @@ export class FormularioComponent implements OnInit {
     'nombre': ['',[Validators.required]],
     'apellido_paterno': [''],
     'apellido_materno': [''],
-    'rfc': ['',[Validators.required]],
-    'curp': ['',[Validators.required]],
+    'rfc': ['',[Validators.required, Validators.minLength(13)]],
+    'curp': ['',[Validators.required, Validators.minLength(18)]],
     'pais_nacimiento_id': ['',[Validators.required]],
     'entidad_nacimiento_id': ['',[Validators.required]],
     'municipio': [{ value:'', disabled:true}, Validators.required],
@@ -80,18 +80,21 @@ export class FormularioComponent implements OnInit {
     //'edad': ['',[Validators.required]],
     'estado_conyugal_id': ['',[Validators.required]],
     'sexo': ['',[Validators.required]],
-    'telefono_fijo': ['',[Validators.required]],
-    'telefono_celular': ['',[Validators.required]],
+    'telefono_fijo': ['',],
+    'telefono_celular': ['',[Validators.required,, Validators.minLength(10)]],
     'correo_electronico': ['',[Validators.required, Validators.email]],
     'calle': ['',[Validators.required]],
     'no_interior': [''],
     'no_exterior': ['',[Validators.required]],
     'colonia': ['',[Validators.required]],
     'cp': ['',[Validators.required]],
-    
+    'observacion': ['',]
+  });
+
+  public datosLaborelesForm = this.fb.group({
     //Datos laborales
-    'fissa': [],
-    'figf': [],
+    'fecha_ingreso': [],
+    'fecha_ingreso_federal': [],
     'codigo_puesto_id': [],
     'rama_id': [],
 
@@ -109,17 +112,17 @@ export class FormularioComponent implements OnInit {
     'recurso_formacion': [],
     'tiene_fiel': [],
     'vigencia_fiel': [{ value:'', disabled:true}, Validators.required],
-    'ur': [],
-
+    //'ur': [],
     'actividades': [],
-
-    //Datos escolares
-    
-
+  });
+  
+  public datosEscolaresForm = this.fb.group({
     //Estudios
     'nivel_maximo_id':[],
 
+  });
 
+  public datosHorarioForm = this.fb.group({
     //Horarios
     'jornada_id': [],
     'horario_lunes':[], 
@@ -146,7 +149,8 @@ export class FormularioComponent implements OnInit {
     'hora_fin_domingo':[{ value:'', disabled:true}, Validators.required], 
     'hora_inicio_festivo':[{ value:'', disabled:true}, Validators.required], 
     'hora_fin_festivo':[{ value:'', disabled:true}, Validators.required], 
-
+  });
+  public datosCursosForm = this.fb.group({
     //Cursos
     'tipo_ciclo_formacion_id':[],
     'carrera_ciclo':[],
@@ -165,7 +169,9 @@ export class FormularioComponent implements OnInit {
     'lengua_indigena_id':[],
     'nivel_lengua_id':[],
     'lenguaje_senias':[],
+  });
 
+  public datosCapacitacionForm = this.fb.group({
     //capacitacion
     'capacitacion_anual':['', [Validators.required]],
     'grado_academico_id':[{ value:'', disabled:true}, Validators.required],
@@ -204,15 +210,35 @@ export class FormularioComponent implements OnInit {
   }
 
   cargarTrabajador(id):void{
-    console.log(id);
+    
     this.trabajadorService.buscarTrabajador(id, {}).subscribe(
       response =>{
-        console.log(response);
+        //console.log(response);
         let trabajador = response;
         
         this.verificar_curp(trabajador.curp);
         this.nombre_trabajador= trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+trabajador.nombre;
         this.trabajadorForm.patchValue(trabajador);
+
+        this.trabajadorForm.patchValue({municipio: trabajador.municipio_nacimiento});
+        /* Fech de ingreso */
+        console.log(trabajador.datoslaborales);
+        let ingreso;
+        this.datosLaborelesForm.patchValue(trabajador.datoslaborales);
+        let datos_laborales = trabajador.datoslaborales;
+        let anio = datos_laborales.fecha_ingreso.substring(0,4);
+        let mes = parseInt(datos_laborales.fecha_ingreso.substring(5,7));
+        let dia = parseInt(datos_laborales.fecha_ingreso.substring(8,10));
+        ingreso = new Date(anio+"-"+mes+"-"+dia);
+
+        let ingreso_federal;
+        let anio_federal = datos_laborales.fecha_ingreso_federal.substring(0,4);
+        let mes_federal = parseInt(datos_laborales.fecha_ingreso_federal.substring(5,7));
+        let dia_federal = parseInt(datos_laborales.fecha_ingreso_federal.substring(8,10));
+        ingreso_federal = new Date(anio_federal+"-"+mes_federal+"-"+dia_federal);
+        
+        this.datosLaborelesForm.patchValue({fecha_ingreso: ingreso, fecha_ingreso_federal: ingreso_federal}); 
+        this.datosLaborelesForm.patchValue( {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:0});
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -254,7 +280,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredMunicipio = items);
     
-      this.trabajadorForm.get('titulo_capacitacion').valueChanges
+      /*this.trabajadorForm.get('titulo_capacitacion').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -388,13 +414,14 @@ export class FormularioComponent implements OnInit {
             }
           }
         ),
-      ).subscribe(items => this.filteredColegio = items);
+      ).subscribe(items => this.filteredColegio = items);*/
     
   }
 
   cargarDatosDefault():void{
-    let datos = {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:0, colegiacion:0, certificacion:0, capacitacion_anual:0};
+    let datos = { colegiacion:0, certificacion:0, capacitacion_anual:0};
     this.trabajadorForm.patchValue(datos);
+    
   }
 
   cargarCatalogos():void{
@@ -419,14 +446,21 @@ export class FormularioComponent implements OnInit {
   {
     if(curp.length == 18)
     {
-      this.trabajadorForm.patchValue({rfc: curp.substring(0, 10)}); 
+      let rfc = this.trabajadorForm.get('rfc').value;
+      console.log(rfc);
+      if(rfc.length == 0)
+      {
+        this.trabajadorForm.patchValue({rfc: curp.substring(0, 10)}); 
+      }
+
+      
       let sexo = curp.substring(10,11);
       let estado = curp.substring(11,13);
       let fecha_nacimiento = curp.substring(4,10);
       
       let anio = fecha_nacimiento.substring(0,2);
-      let mes = fecha_nacimiento.substring(2,4);
-      let dia = fecha_nacimiento.substring(4,6);
+      let mes = parseInt(fecha_nacimiento.substring(2,4));
+      let dia = parseInt(fecha_nacimiento.substring(4,6));
       
       this.trabajadorForm.patchValue({fecha_nacimiento: new Date(anio+"-"+mes+"-"+dia)}); 
       
@@ -448,6 +482,39 @@ export class FormularioComponent implements OnInit {
 
       }
     }
+  }
+
+  accionGuardar(tipo:number):void{
+    let data;
+    
+    if(tipo == 1)
+    {
+      data = this.trabajadorForm.value;
+      data.municipio_nacimiento_id = data.municipio.id;
+    }else if(tipo == 2)
+    {
+      data = this.datosLaborelesForm.value;
+      data.municipio_nacimiento_id = data.municipio.id;
+    }
+
+
+    //data.trabajador_id = this.trabajador_id;
+    data.tipo_dato = tipo;
+    console.log(data); 
+    this.trabajadorService.guardarTrabajador(this.trabajador_id, data).subscribe(
+      response =>{
+        //console.log(response);
+        this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
+        
+      }
+    );
   }
 
   showJornadaDialog(){
@@ -609,10 +676,10 @@ export class FormularioComponent implements OnInit {
   fiel(valor):void{
     if(valor == '0')
     {
-      this.trabajadorForm.get('vigencia_fiel').disable();
+      this.datosLaborelesForm.get('vigencia_fiel').disable();
     }else if(valor == '1')
     {
-      this.trabajadorForm.get('vigencia_fiel').enable();
+      this.datosLaborelesForm.get('vigencia_fiel').enable();
     }
   }
   
