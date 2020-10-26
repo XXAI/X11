@@ -36,7 +36,7 @@ export class JornadaDialogComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.JornadaForm.patchValue({hora_inicio: '08:00', hora_fin: '14:30'});
+    this.JornadaForm.patchValue({hora_inicio: '08:00', hora_fin: '15:00'});
   }
 
   cancelar(): void {

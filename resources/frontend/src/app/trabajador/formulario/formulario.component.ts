@@ -23,6 +23,7 @@ import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.comp
 import { CapacitacionDialogComponent } from '../capacitacion-dialog/capacitacion-dialog.component';
 import { ComisionDialogComponent } from '../comision-dialog/comision-dialog.component';
 import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
+import { count } from 'console';
 
 
 @Component({
@@ -50,6 +51,8 @@ export class FormularioComponent implements OnInit {
   datosEstudios:any = [];
   datosCapacitacion:any = [];
   datosComision:any = null;
+  isLoading:boolean = false;
+  dias:number = 0;
 
   trabajador_id:string;
   nombre_trabajador:string;
@@ -69,8 +72,8 @@ export class FormularioComponent implements OnInit {
     'nombre': ['',[Validators.required]],
     'apellido_paterno': [''],
     'apellido_materno': [''],
-    'rfc': ['',[Validators.required]],
-    'curp': ['',[Validators.required]],
+    'rfc': ['',[Validators.required, Validators.minLength(13)]],
+    'curp': ['',[Validators.required, Validators.minLength(18)]],
     'pais_nacimiento_id': ['',[Validators.required]],
     'entidad_nacimiento_id': ['',[Validators.required]],
     'municipio': [{ value:'', disabled:true}, Validators.required],
@@ -80,18 +83,21 @@ export class FormularioComponent implements OnInit {
     //'edad': ['',[Validators.required]],
     'estado_conyugal_id': ['',[Validators.required]],
     'sexo': ['',[Validators.required]],
-    'telefono_fijo': ['',[Validators.required]],
-    'telefono_celular': ['',[Validators.required]],
+    'telefono_fijo': ['',],
+    'telefono_celular': ['',[Validators.required,, Validators.minLength(10)]],
     'correo_electronico': ['',[Validators.required, Validators.email]],
     'calle': ['',[Validators.required]],
     'no_interior': [''],
     'no_exterior': ['',[Validators.required]],
     'colonia': ['',[Validators.required]],
     'cp': ['',[Validators.required]],
-    
+    'observacion': ['',]
+  });
+
+  public datosLaborelesForm = this.fb.group({
     //Datos laborales
-    'fissa': [],
-    'figf': [],
+    'fecha_ingreso': [],
+    'fecha_ingreso_federal': [],
     'codigo_puesto_id': [],
     'rama_id': [],
 
@@ -100,7 +106,7 @@ export class FormularioComponent implements OnInit {
     'area_trabajo_id': [],
     'tipo_personal_id': [],
     
-    'unidad_administadora_id': [],
+    'unidad_administradora_id': [],
     'seguro_salud': [],
     'licencia_maternidad': [],
     'seguro_retiro': [],
@@ -109,17 +115,17 @@ export class FormularioComponent implements OnInit {
     'recurso_formacion': [],
     'tiene_fiel': [],
     'vigencia_fiel': [{ value:'', disabled:true}, Validators.required],
-    'ur': [],
-
+    //'ur': [],
     'actividades': [],
-
-    //Datos escolares
-    
-
+  });
+  
+  public datosEscolaresForm = this.fb.group({
     //Estudios
     'nivel_maximo_id':[],
 
+  });
 
+  public datosHorarioForm = this.fb.group({
     //Horarios
     'jornada_id': [],
     'horario_lunes':[], 
@@ -146,7 +152,8 @@ export class FormularioComponent implements OnInit {
     'hora_fin_domingo':[{ value:'', disabled:true}, Validators.required], 
     'hora_inicio_festivo':[{ value:'', disabled:true}, Validators.required], 
     'hora_fin_festivo':[{ value:'', disabled:true}, Validators.required], 
-
+  });
+  public datosCursosForm = this.fb.group({
     //Cursos
     'tipo_ciclo_formacion_id':[],
     'carrera_ciclo':[],
@@ -165,7 +172,9 @@ export class FormularioComponent implements OnInit {
     'lengua_indigena_id':[],
     'nivel_lengua_id':[],
     'lenguaje_senias':[],
+  });
 
+  public datosCapacitacionForm = this.fb.group({
     //capacitacion
     'capacitacion_anual':['', [Validators.required]],
     'grado_academico_id':[{ value:'', disabled:true}, Validators.required],
@@ -204,15 +213,70 @@ export class FormularioComponent implements OnInit {
   }
 
   cargarTrabajador(id):void{
-    console.log(id);
+    
     this.trabajadorService.buscarTrabajador(id, {}).subscribe(
       response =>{
-        console.log(response);
+        //console.log(response);
         let trabajador = response;
         
         this.verificar_curp(trabajador.curp);
         this.nombre_trabajador= trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+trabajador.nombre;
-        this.trabajadorForm.patchValue(trabajador);
+        this.trabajadorForm.patchValue(trabajador);  //carga datos de trabajador
+
+        this.trabajadorForm.patchValue({municipio: trabajador.municipio_nacimiento});
+        /* Fech de ingreso */ // Carga datos laborales
+        let ingreso;
+        this.datosLaborelesForm.patchValue(trabajador.datoslaborales);
+        let datos_laborales = trabajador.datoslaborales;
+        let anio = datos_laborales.fecha_ingreso.substring(0,4);
+        let mes = (parseInt(datos_laborales.fecha_ingreso.substring(5,7)) - 1);
+        let dia = parseInt(datos_laborales.fecha_ingreso.substring(8,10));
+        ingreso = new Date(anio,+mes,dia);
+
+        let ingreso_federal;
+        let anio_federal = datos_laborales.fecha_ingreso_federal.substring(0,4);
+        let mes_federal = (parseInt(datos_laborales.fecha_ingreso_federal.substring(5,7)) - 1);
+        let dia_federal = parseInt(datos_laborales.fecha_ingreso_federal.substring(8,10));
+        
+        ingreso_federal = new Date(anio_federal,mes_federal,dia_federal);
+
+        if(datos_laborales.vigencia_fiel != null)
+        {
+          this.fiel(datos_laborales.tiene_fiel);
+          let vigencia_fiel;
+          let anio_fiel = datos_laborales.vigencia_fiel.substring(0,4);
+          let mes_fiel = (parseInt(datos_laborales.vigencia_fiel.substring(5,7)) - 1)
+          let dia_fiel = parseInt(datos_laborales.vigencia_fiel.substring(8,10));
+          vigencia_fiel = new Date(anio_fiel,+mes_fiel,dia_fiel);
+          console.log(anio_fiel+"-"+mes_fiel+"-"+dia_fiel);
+          console.log(vigencia_fiel);
+          this.datosLaborelesForm.patchValue({vigencia_fiel: vigencia_fiel}); 
+        }
+        
+        this.datosLaborelesForm.patchValue({fecha_ingreso: ingreso, fecha_ingreso_federal: ingreso_federal}); 
+        //this.datosLaborelesForm.patchValue( {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:0});
+        //Caga datos dehorario
+        let datos_horario = trabajador.horario;
+        this.datosHorarioForm.patchValue({jornada_id: datos_laborales.jornada_id});
+        let dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo", "festivo"];
+        for(let i = 0; i < datos_horario.length; i++)
+        {
+          let indice_dia = datos_horario[i].dia;
+          this.jornada(indice_dia, false); 
+          switch (indice_dia) {
+            case 1: this.datosHorarioForm.patchValue({horario_lunes: true, hora_inicio_lunes: datos_horario[i].entrada, hora_fin_lunes: datos_horario[i].salida }); break;
+            case 2: this.datosHorarioForm.patchValue({horario_martes: true, hora_inicio_martes: datos_horario[i].entrada, hora_fin_martes: datos_horario[i].salida }); break;
+            case 3: this.datosHorarioForm.patchValue({horario_miercoles: true, hora_inicio_miercoles: datos_horario[i].entrada, hora_fin_miercoles: datos_horario[i].salida }); break;
+            case 4: this.datosHorarioForm.patchValue({horario_jueves: true, hora_inicio_jueves: datos_horario[i].entrada, hora_fin_jueves: datos_horario[i].salida }); break;
+            case 5: this.datosHorarioForm.patchValue({horario_viernes: true, hora_inicio_viernes: datos_horario[i].entrada, hora_fin_viernes: datos_horario[i].salida }); break;
+            case 6: this.datosHorarioForm.patchValue({horario_sabado: true, hora_inicio_sabado: datos_horario[i].entrada, hora_fin_sabado: datos_horario[i].salida }); break;
+            case 7: this.datosHorarioForm.patchValue({horario_domingo: true, hora_inicio_domingo: datos_horario[i].entrada, hora_fin_domingo: datos_horario[i].salida }); break;
+            case 8: this.datosHorarioForm.patchValue({horario_festivo: true, hora_inicio_festivo: datos_horario[i].entrada, hora_fin_festivo: datos_horario[i].salida }); break;
+          
+            default:
+              break;
+          }
+        }
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -254,7 +318,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredMunicipio = items);
     
-      this.trabajadorForm.get('titulo_capacitacion').valueChanges
+      /*this.trabajadorForm.get('titulo_capacitacion').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -388,13 +452,14 @@ export class FormularioComponent implements OnInit {
             }
           }
         ),
-      ).subscribe(items => this.filteredColegio = items);
+      ).subscribe(items => this.filteredColegio = items);*/
     
   }
 
   cargarDatosDefault():void{
-    let datos = {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:0, colegiacion:0, certificacion:0, capacitacion_anual:0};
+    let datos = { colegiacion:0, certificacion:0, capacitacion_anual:0};
     this.trabajadorForm.patchValue(datos);
+    
   }
 
   cargarCatalogos():void{
@@ -419,14 +484,21 @@ export class FormularioComponent implements OnInit {
   {
     if(curp.length == 18)
     {
-      this.trabajadorForm.patchValue({rfc: curp.substring(0, 10)}); 
+      let rfc = this.trabajadorForm.get('rfc').value;
+      console.log(rfc);
+      if(rfc.length == 0)
+      {
+        this.trabajadorForm.patchValue({rfc: curp.substring(0, 10)}); 
+      }
+
+      
       let sexo = curp.substring(10,11);
       let estado = curp.substring(11,13);
       let fecha_nacimiento = curp.substring(4,10);
       
       let anio = fecha_nacimiento.substring(0,2);
-      let mes = fecha_nacimiento.substring(2,4);
-      let dia = fecha_nacimiento.substring(4,6);
+      let mes = parseInt(fecha_nacimiento.substring(2,4));
+      let dia = parseInt(fecha_nacimiento.substring(4,6));
       
       this.trabajadorForm.patchValue({fecha_nacimiento: new Date(anio+"-"+mes+"-"+dia)}); 
       
@@ -450,6 +522,43 @@ export class FormularioComponent implements OnInit {
     }
   }
 
+  accionGuardar(tipo:number):void{
+    let data;
+    
+    if(tipo == 1)
+    {
+      data = this.trabajadorForm.value;
+      data.municipio_nacimiento_id = data.municipio.id;
+    }else if(tipo == 2)
+    {
+      data = this.datosLaborelesForm.value;
+    }else if(tipo == 3)
+    {
+      data = this.datosHorarioForm.value;
+    }
+
+    this.isLoading = true;
+    //data.trabajador_id = this.trabajador_id;
+    data.tipo_dato = tipo;
+    console.log(data); 
+    this.trabajadorService.guardarTrabajador(this.trabajador_id, data).subscribe(
+      response =>{
+        //console.log(response);
+        this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        this.isLoading = false;
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
+        
+      }
+    );
+  }
+
   showJornadaDialog(){
     let configDialog = {};
     if(this.mediaSize == 'xs'){
@@ -469,6 +578,7 @@ export class FormularioComponent implements OnInit {
     const dialogRef = this.dialog.open(JornadaDialogComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
+      console.log(valid);
       if(valid){
         if(valid.estatus){
           for (let index = 0; index < valid.dias.length; index++) {
@@ -609,10 +719,10 @@ export class FormularioComponent implements OnInit {
   fiel(valor):void{
     if(valor == '0')
     {
-      this.trabajadorForm.get('vigencia_fiel').disable();
+      this.datosLaborelesForm.get('vigencia_fiel').disable();
     }else if(valor == '1')
     {
-      this.trabajadorForm.get('vigencia_fiel').enable();
+      this.datosLaborelesForm.get('vigencia_fiel').enable();
     }
   }
   
@@ -658,132 +768,141 @@ export class FormularioComponent implements OnInit {
 
   jornada(key, valor, inicio:any = null, fin:any = null)
   {
+    
     switch (key) {
       case 1:
         if(valor){
-          this.trabajadorForm.get('hora_inicio_lunes').disable();
-          this.trabajadorForm.get('hora_fin_lunes').disable();
-          this.trabajadorForm.patchValue({hora_inicio_lunes: inicio, hora_fin_lunes: fin} );
+          this.datosHorarioForm.get('hora_inicio_lunes').disable();
+          this.datosHorarioForm.get('hora_fin_lunes').disable();
+          this.datosHorarioForm.patchValue({hora_inicio_lunes: inicio, hora_fin_lunes: fin} );
           
         }else{
-          this.trabajadorForm.get('hora_inicio_lunes').enable();
-          this.trabajadorForm.get('hora_fin_lunes').enable();
+          this.dias++;;
+          this.datosHorarioForm.get('hora_inicio_lunes').enable();
+          this.datosHorarioForm.get('hora_fin_lunes').enable();
           if(inicio != null && fin != null)
           {
-            this.trabajadorForm.patchValue({horario_lunes: true});
-            this.trabajadorForm.patchValue({hora_inicio_lunes: inicio, hora_fin_lunes: fin} );
+            this.datosHorarioForm.patchValue({horario_lunes: true});
+            this.datosHorarioForm.patchValue({hora_inicio_lunes: inicio, hora_fin_lunes: fin} );
           }
         }  
       break;
       case 2:
         if(valor){
-          this.trabajadorForm.get('hora_inicio_martes').disable();
-          this.trabajadorForm.get('hora_fin_martes').disable();
-          this.trabajadorForm.patchValue({hora_inicio_martes: inicio, hora_fin_martes: fin} );
+          this.datosHorarioForm.get('hora_inicio_martes').disable();
+          this.datosHorarioForm.get('hora_fin_martes').disable();
+          this.datosHorarioForm.patchValue({hora_inicio_martes: inicio, hora_fin_martes: fin} );
         }else{
-          this.trabajadorForm.get('hora_inicio_martes').enable();
-          this.trabajadorForm.get('hora_fin_martes').enable();
+          this.dias++;;
+          this.datosHorarioForm.get('hora_inicio_martes').enable();
+          this.datosHorarioForm.get('hora_fin_martes').enable();
           
           if(inicio != null && fin != null)
           {
-            this.trabajadorForm.patchValue({horario_martes: true});
-            this.trabajadorForm.patchValue({hora_inicio_martes: inicio, hora_fin_martes: fin} );
+            this.datosHorarioForm.patchValue({horario_martes: true});
+            this.datosHorarioForm.patchValue({hora_inicio_martes: inicio, hora_fin_martes: fin} );
           }
         }  
       break;
       case 3:
         if(valor){
-          this.trabajadorForm.get('hora_inicio_miercoles').disable();
-          this.trabajadorForm.get('hora_fin_miercoles').disable();
-          this.trabajadorForm.patchValue({hora_inicio_miercoles: inicio, hora_fin_miercoles: fin} );
+          this.datosHorarioForm.get('hora_inicio_miercoles').disable();
+          this.datosHorarioForm.get('hora_fin_miercoles').disable();
+          this.datosHorarioForm.patchValue({hora_inicio_miercoles: inicio, hora_fin_miercoles: fin} );
         }else{
-          this.trabajadorForm.get('hora_inicio_miercoles').enable();
-          this.trabajadorForm.get('hora_fin_miercoles').enable();
+          this.dias++;;
+          this.datosHorarioForm.get('hora_inicio_miercoles').enable();
+          this.datosHorarioForm.get('hora_fin_miercoles').enable();
           
           if(inicio != null && fin != null)
           {
-            this.trabajadorForm.patchValue({horario_miercoles: true});
-            this.trabajadorForm.patchValue({hora_inicio_miercoles: inicio, hora_fin_miercoles: fin} );
+            this.datosHorarioForm.patchValue({horario_miercoles: true});
+            this.datosHorarioForm.patchValue({hora_inicio_miercoles: inicio, hora_fin_miercoles: fin} );
           }
         }  
       break;
       case 4:
         if(valor){
-          this.trabajadorForm.get('hora_inicio_jueves').disable();
-          this.trabajadorForm.get('hora_fin_jueves').disable();
-          this.trabajadorForm.patchValue({hora_inicio_jueves: inicio, hora_fin_jueves: fin} );
+          this.datosHorarioForm.get('hora_inicio_jueves').disable();
+          this.datosHorarioForm.get('hora_fin_jueves').disable();
+          this.datosHorarioForm.patchValue({hora_inicio_jueves: inicio, hora_fin_jueves: fin} );
         }else{
-          this.trabajadorForm.get('hora_inicio_jueves').enable();
-          this.trabajadorForm.get('hora_fin_jueves').enable();
+          this.dias++;;
+          this.datosHorarioForm.get('hora_inicio_jueves').enable();
+          this.datosHorarioForm.get('hora_fin_jueves').enable();
           
           if(inicio != null && fin != null)
           {
-            this.trabajadorForm.patchValue({horario_jueves: true});
-            this.trabajadorForm.patchValue({hora_inicio_jueves: inicio, hora_fin_jueves: fin} );
+            this.datosHorarioForm.patchValue({horario_jueves: true});
+            this.datosHorarioForm.patchValue({hora_inicio_jueves: inicio, hora_fin_jueves: fin} );
           }
         }  
       break;
       case 5:
         if(valor){
-          this.trabajadorForm.get('hora_inicio_viernes').disable();
-          this.trabajadorForm.get('hora_fin_viernes').disable();
-          this.trabajadorForm.patchValue({hora_inicio_viernes: inicio, hora_fin_viernes: fin} );
+          this.datosHorarioForm.get('hora_inicio_viernes').disable();
+          this.datosHorarioForm.get('hora_fin_viernes').disable();
+          this.datosHorarioForm.patchValue({hora_inicio_viernes: inicio, hora_fin_viernes: fin} );
         }else{
-          this.trabajadorForm.get('hora_inicio_viernes').enable();
-          this.trabajadorForm.get('hora_fin_viernes').enable();
+          this.dias++;;
+          this.datosHorarioForm.get('hora_inicio_viernes').enable();
+          this.datosHorarioForm.get('hora_fin_viernes').enable();
           
           if(inicio != null && fin != null)
           {
-            this.trabajadorForm.patchValue({horario_viernes: true});
-            this.trabajadorForm.patchValue({hora_inicio_viernes: inicio, hora_fin_viernes: fin} );
+            this.datosHorarioForm.patchValue({horario_viernes: true});
+            this.datosHorarioForm.patchValue({hora_inicio_viernes: inicio, hora_fin_viernes: fin} );
           }
         }  
       break;
       case 6:
         if(valor){
-          this.trabajadorForm.get('hora_inicio_sabado').disable();
-          this.trabajadorForm.get('hora_fin_sabado').disable();
-          this.trabajadorForm.patchValue({hora_inicio_sabado: inicio, hora_fin_sabado: fin} );
+          this.datosHorarioForm.get('hora_inicio_sabado').disable();
+          this.datosHorarioForm.get('hora_fin_sabado').disable();
+          this.datosHorarioForm.patchValue({hora_inicio_sabado: inicio, hora_fin_sabado: fin} );
         }else{
-          this.trabajadorForm.get('hora_inicio_sabado').enable();
-          this.trabajadorForm.get('hora_fin_sabado').enable();
+          this.dias++;;
+          this.datosHorarioForm.get('hora_inicio_sabado').enable();
+          this.datosHorarioForm.get('hora_fin_sabado').enable();
           
           if(inicio != null && fin != null)
           {
-            this.trabajadorForm.patchValue({horario_sabado: true});
-            this.trabajadorForm.patchValue({hora_inicio_sabado: inicio, hora_fin_sabado: fin} );
+            this.datosHorarioForm.patchValue({horario_sabado: true});
+            this.datosHorarioForm.patchValue({hora_inicio_sabado: inicio, hora_fin_sabado: fin} );
           }
         }  
       break;
       case 7:
         if(valor){
-          this.trabajadorForm.get('hora_inicio_domingo').disable();
-          this.trabajadorForm.get('hora_fin_domingo').disable();
-          this.trabajadorForm.patchValue({hora_inicio_domingo: inicio, hora_fin_domingo: fin} );
+          this.datosHorarioForm.get('hora_inicio_domingo').disable();
+          this.datosHorarioForm.get('hora_fin_domingo').disable();
+          this.datosHorarioForm.patchValue({hora_inicio_domingo: inicio, hora_fin_domingo: fin} );
         }else{
-          this.trabajadorForm.get('hora_inicio_domingo').enable();
-          this.trabajadorForm.get('hora_fin_domingo').enable();
+          this.dias++;;
+          this.datosHorarioForm.get('hora_inicio_domingo').enable();
+          this.datosHorarioForm.get('hora_fin_domingo').enable();
           
           if(inicio != null && fin != null)
           {
-            this.trabajadorForm.patchValue({horario_domingo: true});
-            this.trabajadorForm.patchValue({hora_inicio_domingo: inicio, hora_fin_domingo: fin} );
+            this.datosHorarioForm.patchValue({horario_domingo: true});
+            this.datosHorarioForm.patchValue({hora_inicio_domingo: inicio, hora_fin_domingo: fin} );
           }
         }  
       break;
       case 8:
         if(valor){
-          this.trabajadorForm.get('hora_inicio_festivo').disable();
-          this.trabajadorForm.get('hora_fin_festivo').disable();
-          this.trabajadorForm.patchValue({hora_inicio_festivo: inicio, hora_fin_festivo: fin} );
+          this.datosHorarioForm.get('hora_inicio_festivo').disable();
+          this.datosHorarioForm.get('hora_fin_festivo').disable();
+          this.datosHorarioForm.patchValue({hora_inicio_festivo: inicio, hora_fin_festivo: fin} );
         }else{
-          this.trabajadorForm.get('hora_inicio_festivo').enable();
-          this.trabajadorForm.get('hora_fin_festivo').enable();
+          this.dias++;;
+          this.datosHorarioForm.get('hora_inicio_festivo').enable();
+          this.datosHorarioForm.get('hora_fin_festivo').enable();
           
           if(inicio != null && fin != null)
           {
-            this.trabajadorForm.patchValue({horario_festivo: true});
-            this.trabajadorForm.patchValue({hora_inicio_festivo: inicio, hora_fin_festivo: fin} );
+            this.datosHorarioForm.patchValue({horario_festivo: true});
+            this.datosHorarioForm.patchValue({hora_inicio_festivo: inicio, hora_fin_festivo: fin} );
           }
         }  
       break;

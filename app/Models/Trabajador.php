@@ -44,7 +44,7 @@ class Trabajador extends Model
         return $this->belongsTo('App\Models\Entidad');
     }
     public function municipio_nacimiento(){
-        return $this->belongsTo('App\Models\Municipio');
+        return $this->belongsTo('App\Models\Municipio', 'municipio_nacimiento_id');
     }
 
     public function nacionalidad(){
