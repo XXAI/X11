@@ -71,6 +71,9 @@ export class VerComponent implements OnInit {
 
   trabajador_id:number = 0;
 
+  panelEscolaridad = false;
+  panelEscolaridadCursante = false;
+
   ngOnInit() {
     // let userPermissions = JSON.parse(localStorage.getItem('permissions'));
     // if(userPermissions['NZlDkhi8ikVhdgfT8zVVIGroFNtHfIQe']){

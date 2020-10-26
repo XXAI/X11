@@ -191,6 +191,118 @@
 
                 </mat-card-content>
             </mat-card>
+            <br>
+            <mat-card class="datos-carta">
+
+                <h1>Escolaridad</h1>
+
+                <div fxLayoutAlign="center center" *ngIf="dataTrabajador.rel_trabajador_escolaridad.length == 0">
+                    <i color="primary"><mat-icon color="primary">school</mat-icon>&nbsp;No tiene escolaridad asignada</i>
+                </div>
+
+                <mat-accordion *ngIf="dataTrabajador.rel_trabajador_escolaridad.length > 0">
+                    <mat-expansion-panel *ngFor="let esco of dataTrabajador.rel_trabajador_escolaridad; let i = index" (click)='panelEscolaridad=panelEscolaridad?false:true'>
+                        <mat-expansion-panel-header>
+
+                            <mat-panel-title>
+                                
+                                <p class="form-input"><mat-icon color="primary" >school</mat-icon>&nbsp;Escolaridad N°: {{ i+1 }}</p>
+                                
+                            </mat-panel-title>
+
+                            <!-- <mat-panel-description>
+                                <p>Escolaridad</p>
+                            </mat-panel-description> -->
+            
+                        </mat-expansion-panel-header>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
+
+                            <mat-form-field class="form-input" fxFlex appearance="outline" >
+                                <mat-label>Grado Academico: </mat-label>
+                                <input matInput value="{{ (esco.grado_academico != null)?esco.grado_academico.descripcion:'No Asignado' }}" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" fxFlex appearance="outline" *ngIf="esco.institucion != null">
+                                <mat-label>Instituciòn: </mat-label>
+                                <input matInput value="{{ (esco.institucion != null)?esco.institucion.descripcion:'N/A' }}" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" fxFlex appearance="outline" *ngIf="esco.nombre_estudio != null">
+                                <mat-label>Nombre del Estudio: </mat-label>
+                                <input matInput value="{{ (esco.nombre_estudio != null)?esco.nombre_estudio.descripcion:'N/A' }}" readonly>
+                            </mat-form-field>
+
+                            <!--OTRO-->
+                            <mat-form-field class="form-input" fxFlex appearance="outline" *ngIf="esco.otro_nombre_institucion != null">
+                                <mat-label>Instituciòn: </mat-label>
+                                <input matInput value="{{ (esco.otro_nombre_institucion != null)?esco.otro_nombre_institucion:'N/A' }}" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" fxFlex appearance="outline" *ngIf="esco.otro_nombre_estudio != null">
+                                <mat-label>Nombre del Estudio: </mat-label>
+                                <input matInput value="{{ (esco.otro_nombre_estudio != null)?esco.otro_nombre_estudio:'N/A' }}" readonly>
+                            </mat-form-field>
+            
+                        </div>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                            <mat-form-field class="form-input" fxFlex appearance="outline">
+                                <mat-label>Cedula: </mat-label>
+                                <input matInput value="{{ (esco.cedula != null)?esco.cedula:'N/A' }}" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" fxFlex appearance="outline" >
+                                <mat-label>Nº Cedula: </mat-label>
+                                <input matInput value="{{ (esco.no_cedula != null)?esco.no_cedula:'N/A' }}" readonly>
+                            </mat-form-field>
+
+                        </div>
+
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <br>
+
+                <h1>Cursos</h1>
+
+                <div fxLayoutAlign="center center" *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante == null">
+                    <i color="primary"><mat-icon color="primary">class</mat-icon>&nbsp;No tiene cursos</i>
+                </div>
+
+                <mat-accordion *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante != null">
+                    <mat-expansion-panel (click)='panelEscolaridad=panelEscolaridad?false:true'>
+                        <mat-expansion-panel-header>
+
+                            <mat-panel-title>
+                                
+                                <p class="form-input"><mat-icon color="primary" >class</mat-icon>&nbsp;Curso</p>
+                                
+                            </mat-panel-title>
+
+                            <!-- <mat-panel-description>
+                                <p>Escolaridad</p>
+                            </mat-panel-description> -->
+            
+                        </mat-expansion-panel-header>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
+
+            
+                        </div>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+
+                        </div>
+
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+
+
+            </mat-card>
 
         </mat-card-content>
 

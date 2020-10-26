@@ -77,10 +77,10 @@ class Trabajador extends Model
     }
 
     public function rel_trabajador_escolaridad(){
-        return $this->hasMany('App\Models\RelEscolaridad')->with('grado_academico', 'institucion');
+        return $this->hasMany('App\Models\RelEscolaridad')->with('grado_academico', 'institucion', 'nombre_estudio');
     }
     public function rel_trabajador_escolaridad_cursante(){
-        return $this->hasOne('App\Models\RelEscolaridadCursante')->with('grado_academico', 'institucion');
+        return $this->hasOne('App\Models\RelEscolaridadCursante')->with('tipo_ciclo_formacion', 'institucion_ciclo', 'anio_cursa', 'idioma', 'nivel_idioma', 'lengua_indigena');
     }
     public function rel_trabajador_horario(){
         return $this->hasMany('App\Models\RelHorario');

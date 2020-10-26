@@ -19,4 +19,8 @@ class RelEscolaridad extends Model
         return $this->belongsTo('App\Models\InstitucionEducativa', 'institucion_id', 'id');
     }
 
+    public function nombre_estudio(){
+        return $this->belongsTo('App\Models\EstudiosAcademicos', 'nombre_estudio_id', 'id');
+    }
+
 }
