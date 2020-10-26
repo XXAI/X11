@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
+use Carbon\Carbon;
 
 use App\Models\Trabajador;
 use App\Models\Pais;
@@ -231,7 +232,7 @@ class TrabajadorController extends Controller
 
             $params = Input::all();
 
-            $trabajador = Trabajador::with('capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario')->where("id", "=", $id)->first();
+            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario')->where("id", "=", $id)->first();
 
             return response()->json($trabajador,HttpResponse::HTTP_OK);
         }catch(\Exception $e){
@@ -239,6 +240,155 @@ class TrabajadorController extends Controller
         }
     }
 
+    public function update(Request $request, $id)
+    {
+        $mensajes = [
+            
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = Input::all();
+        $reglas = [];
+
+        if($inputs['tipo_dato'] == 1)
+        {
+
+            $reglas = [
+                'rfc'                       => 'required',
+                'curp'                      => 'required',
+                'nombre'                    => 'required',
+                'calle'                     => 'required',
+                'no_exterior'               => 'required',
+                'colonia'                   => 'required',
+                'cp'                        => 'required',
+                'correo_electronico'        => 'required|email',
+                'telefono_celular'          => 'required',
+                'nacionalidad_id'           => 'required',
+                'pais_nacimiento_id'        => 'required',
+                'entidad_nacimiento_id'     => 'required',
+                'municipio_nacimiento_id'   => 'required',
+                'estado_conyugal_id'        => 'required',
+                'sexo'                      => 'required',
+            ];
+        }else if($inputs['tipo_dato'] == 2)
+        {
+            $reglas = [
+                'actividad_id'              => 'required',
+                'actividad_voluntaria_id'   => 'required',
+                'area_trabajo_id'           => 'required',
+                'tipo_personal_id'         => 'required',
+                'fecha_ingreso'             => 'required',
+                'unidad_administradora_id'  => 'required',
+                'seguro_salud'              => 'required',
+                'licencia_maternidad'       => 'required',
+                'seguro_retiro'             => 'required',
+                'recurso_formacion'         => 'required',
+                'tiene_fiel'                => 'required',
+                'actividades'               => 'required',
+                'rama_id'                   => 'required',
+            ];
+        }
+
+        
+        $object = Trabajador::find($id);
+        if(!$object){
+            return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
+        }
+
+        
+        $v = Validator::make($inputs, $reglas, $mensajes);
+
+        if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
+        {   
+            throw new \Exception("Debe de escribir al menos un apellido, por favor verificar", 1);
+        }
+        
+        /*if($inputs['rfc'] != $object->rfc)
+        {
+            $object = Empleado::where("rfc", "=", $inputs['rfc'])->orWhere("curp", "=",  $inputs['curp'])->first();
+            if($object){
+                throw new \Exception("Existe en empleado con el mismo rfc o curp, por favor verificar", 1);
+            }
+        }*/
+
+        
+
+        
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+
+        DB::beginTransaction();
+        try {
+            
+            DB::commit();
+            if($inputs['tipo_dato'] == 1)
+            {
+                $fecha_actual = Carbon::now();
+                $fecha = Carbon::parse($inputs['fecha_nacimiento']);
+                $edad = $fecha_actual->diffInYears($fecha);  
+                $object->nombre                     = strtoupper($inputs['nombre']);
+                $object->apellido_paterno           = strtoupper($inputs['apellido_paterno']);
+                $object->apellido_materno           = strtoupper($inputs['apellido_materno']);
+                $object->rfc                        = strtoupper($inputs['rfc']);
+                $object->curp                       = $inputs['curp'];
+                $object->sexo_id                    = $inputs['sexo'];
+                $object->calle                      = strtoupper($inputs['calle']);
+                $object->no_exterior                = $inputs['no_exterior'];
+                $object->no_interior                = $inputs['no_interior'];
+                $object->colonia                    = strtoupper($inputs['colonia']);
+                $object->cp                         = $inputs['cp'];
+                $object->telefono_fijo              = $inputs['telefono_fijo'];
+                $object->telefono_celular           = $inputs['telefono_celular'];
+                $object->correo_electronico         = $inputs['correo_electronico'];
+                $object->pais_nacimiento_id         = $inputs['pais_nacimiento_id'];
+                $object->entidad_nacimiento_id      = $inputs['entidad_nacimiento_id'];
+                $object->municipio_nacimiento_id    = $inputs['municipio_nacimiento_id'];
+                $object->nacionalidad_id            = $inputs['nacionalidad_id'];
+                $object->estado_conyugal_id         = $inputs['estado_conyugal_id'];
+                $object->entidad_federativa_id      = 7;
+                $object->municipio_federativo_id    = 186;
+                $object->validado                   = 0;
+                $object->estatus                    = 0;
+                $object->edad                       = $edad;
+                $object->observacion                = $inputs['observacion'];
+                $object->save();
+            }else if($inputs['tipo_datos'] == 2)
+            {
+                $objectRL = RelDatosLaborales::where("trabajador_id", "=", $id)->first();
+                if($objectRL == null)
+                {
+                    $objectRL = new RelDatosLaborales();
+                    $objectRL->trabajadir_id = $id;
+                }
+                
+                $objectRL->actividad_id             = $inputs['actividad_id'];
+                $objectRL->actividad_voluntaria_id  = $inputs['actividad_voluntaria_id'];
+                $objectRL->area_trabajo_id          = $inputs['area_trabajo_id'];
+                $objectRL->tipo_personal_id         = $inputs['tipo_personal_id'];
+                $objectRL->fecha_ingreso            = $inputs['fecha_ingreso'];
+                $objectRL->fecha_ingreso_federal    = $inputs['fecha_ingreso_federal'];
+                $objectRL->unidad_administradora_id = $inputs['unidad_administradora_id'];
+                $objectRL->seguro_salud             = $inputs['seguro_salud'];
+                $objectRL->licencia_maternidad      = $inputs['licencia_maternidad'];
+                $objectRL->seguro_retiro            = $inputs['seguro_retiro'];
+                $objectRL->recurso_formacion        = $inputs['recurso_formacion'];
+                $objectRL->tiene_fiel               = $inputs['tiene_fiel'];
+                $objectRL->vigencia_fiel            = $inputs['vigencia_fiel'];
+                $objectRL->actividades              = $inputs['actividades'];
+                $objectRL->rama_id                  = $inputs['rama_id'];
+                $objectRL->save();
+            }
+           
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
     public function getCatalogos()
     {
         try{

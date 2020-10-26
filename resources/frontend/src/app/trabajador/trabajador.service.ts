@@ -70,6 +70,14 @@ export class TrabajadorService {
     ));
   }
 
+  guardarTrabajador(id:any, payload:any):Observable<any> {
+    return this.http.put<any>(this.url + "/" + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
   //lista
   verInfoTrabajador(id:any,payload:any):Observable<any>{
     return this.http.get<any>(this.url_info_trabajador + id, {params:payload}).pipe(
