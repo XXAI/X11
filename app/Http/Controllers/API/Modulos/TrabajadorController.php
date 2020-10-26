@@ -271,6 +271,11 @@ class TrabajadorController extends Controller
                 'estado_conyugal_id'        => 'required',
                 'sexo'                      => 'required',
             ];
+            
+            if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
+            {   
+                throw new \Exception("Debe de escribir al menos un apellido, por favor verificar", 1);
+            }
         }else if($inputs['tipo_dato'] == 2)
         {
             $reglas = [
@@ -288,6 +293,11 @@ class TrabajadorController extends Controller
                 'actividades'               => 'required',
                 'rama_id'                   => 'required',
             ];
+        }else if($inputs['tipo_dato'] == 3)
+        {
+            $reglas = [
+                'jornada_id'              => 'required',
+            ];
         }
 
         
@@ -299,14 +309,11 @@ class TrabajadorController extends Controller
         
         $v = Validator::make($inputs, $reglas, $mensajes);
 
-        if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
-        {   
-            throw new \Exception("Debe de escribir al menos un apellido, por favor verificar", 1);
-        }
+        
         
         /*if($inputs['rfc'] != $object->rfc)
         {
-            $object = Empleado::where("rfc", "=", $inputs['rfc'])->orWhere("curp", "=",  $inputs['curp'])->first();
+            $object = Trabajador::where("rfc", "=", $inputs['rfc'])->orWhere("curp", "=",  $inputs['curp'])->first();
             if($object){
                 throw new \Exception("Existe en empleado con el mismo rfc o curp, por favor verificar", 1);
             }
@@ -354,7 +361,7 @@ class TrabajadorController extends Controller
                 $object->edad                       = $edad;
                 $object->observacion                = $inputs['observacion'];
                 $object->save();
-            }else if($inputs['tipo_datos'] == 2)
+            }else if($inputs['tipo_dato'] == 2)
             {
                 $objectRL = RelDatosLaborales::where("trabajador_id", "=", $id)->first();
                 if($objectRL == null)
@@ -379,9 +386,39 @@ class TrabajadorController extends Controller
                 $objectRL->actividades              = $inputs['actividades'];
                 $objectRL->rama_id                  = $inputs['rama_id'];
                 $objectRL->save();
+
+            }else if($inputs['tipo_dato'] == 3)
+            {
+                $objectRL = RelDatosLaborales::where("trabajador_id", "=", $id)->first();
+                if($objectRL == null)
+                {
+                    $objectRL = new RelDatosLaborales();
+                    $objectRL->trabajadir_id = $id;
+                }
+                
+                $objectRL->jornada_id               = $inputs['jornada_id'];
+                $objectRL->save();
+                
+                $borrar_horario = DB::table("rel_trabajador_horario")->where("trabajador_id", "=", $id)->delete();
+                //$borrar_horario->destroy();
+                $dias = array("lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo", "festivo");
+                $indice = 0;
+                while($indice < count($dias))
+                {
+                    if($inputs['horario_'.$dias[$indice]] != null)
+                    {
+                        $horario = new RelHorario();
+                        $horario->trabajador_id     = $id;
+                        $horario->dia               = ($indice + 1);
+                        $horario->entrada           = $inputs['hora_inicio_'.$dias[$indice]];
+                        $horario->salida            = $inputs['hora_fin_'.$dias[$indice]];
+                        $horario->save();
+                    }
+                    $indice++;
+                }
             }
            
-            return response()->json($object,HttpResponse::HTTP_OK);
+            return response()->json($borrar_horario,HttpResponse::HTTP_OK);
 
         } catch (\Exception $e) {
             DB::rollback();

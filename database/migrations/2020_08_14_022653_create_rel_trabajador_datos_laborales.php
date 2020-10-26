@@ -24,7 +24,7 @@ class CreateRelTrabajadorDatosLaborales extends Migration
             $table->date('fecha_ingreso')->nullable();
             $table->date('fecha_ingreso_federal')->nullable();
             $table->string('clues_adscripcion_fisica')->nullable();
-            $table->smallInteger('unidad_administadora_id')->unsigned()->nullable();
+            $table->smallInteger('unidad_administradora_id')->unsigned()->nullable();
             $table->smallInteger('vigencia_id')->unsigned()->nullable();
             $table->smallInteger('motivo_id')->unsigned()->nullable();//Checar
             $table->smallInteger('temporalidad_id')->unsigned()->nullable();
