@@ -15,9 +15,18 @@ class RelEscolaridadCursante extends Model
         return $this->belongsTo('App\Models\CicloFormacion', 'tipo_ciclo_formacion_id', 'id');
     }
 
-    // public function carrera_ciclo(){
-    //     return $this->belongsTo('App\Models\CicloFormacion', 'tipo_ciclo_formacion_id', 'id');
-    // }
+    public function certificado(){
+        return $this->belongsTo('App\Models\Certificado', 'certificacion_id', 'id');
+    }
+
+    public function colegio(){
+        return $this->belongsTo('App\Models\Colegio', 'colegio_id', 'id');
+    }
+
+    public function carrera_ciclo(){
+        return $this->belongsTo('App\Models\Profesion', 'carrera_ciclo_id', 'id');
+    }
+
     public function institucion_ciclo(){
         return $this->belongsTo('App\Models\InstitucionEducativa', 'institucion_ciclo_id', 'id');
     }
@@ -36,5 +45,9 @@ class RelEscolaridadCursante extends Model
 
     public function lengua_indigena(){
         return $this->belongsTo('App\Models\Lengua', 'lengua_indigena_id', 'id');
+    }
+
+    public function nivel_lengua(){
+        return $this->belongsTo('App\Models\NivelDominio', 'nivel_lengua_id', 'id');
     }
 }

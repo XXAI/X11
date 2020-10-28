@@ -272,7 +272,7 @@
                 </div>
 
                 <mat-accordion *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante != null">
-                    <mat-expansion-panel (click)='panelEscolaridad=panelEscolaridad?false:true'>
+                    <mat-expansion-panel (click)='panelCursos=panelCursos?false:true'>
                         <mat-expansion-panel-header>
 
                             <mat-panel-title>
@@ -289,16 +289,157 @@
 
                         <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
 
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>Año que Cursa:</mat-label>
+                                <input matInput id="anio_cursa" value="{{dataTrabajador.rel_trabajador_escolaridad_cursante.anio_cursa.descripcion}}" placeholder="Año que Cursa" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="80" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>Institución Educativa Formadora:</mat-label>
+                                <input matInput id="anio_cursa" value="{{dataTrabajador.rel_trabajador_escolaridad_cursante.institucion_ciclo.descripcion}}" placeholder="Institución Educativa Formadora" readonly>
+                            </mat-form-field>
+
             
+                        </div>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante.colegiacion == 1">
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>¿Colegiación?:</mat-label>
+                                <input matInput id="colegiacion" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.colegiacion == 1)?'Si':'No'}}" placeholder="Colegiación" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>Nombre del Colegio:</mat-label>
+                                <input matInput id="nombre_colegio" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.colegio != null )?dataTrabajador.rel_trabajador_escolaridad_cursante.colegio.descripcion:'No Tiene'}}" placeholder="Colegiación" readonly>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante.certificacion == 1">
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>¿Certificación?:</mat-label>
+                                <input matInput id="certificacion" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.certificacion == 1)?'Si':'No'}}" placeholder="Certificación" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>Nombre de la Certificación:</mat-label>
+                                <input matInput id="nombre_certificacion" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.certificado != null )?dataTrabajador.rel_trabajador_escolaridad_cursante.certificado.descripcion:'No Tiene'}}" placeholder="Nombre Certificación:" readonly>
+                            </mat-form-field>
+
                         </div>
 
                         <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
 
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>Idioma:</mat-label>
+                                <input matInput id="idioma" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.idioma != null)?dataTrabajador.rel_trabajador_escolaridad_cursante.idioma.descripcion:'N/A'}}" placeholder="Idioma" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>Nivel de Dominio:</mat-label>
+                                <input matInput id="nivel_dominio" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.nivel_idioma != null )?dataTrabajador.rel_trabajador_escolaridad_cursante.nivel_idioma.descripcion:'N/A'}}" placeholder="Nivel de Dominio:" readonly>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>Lengua Indigena:</mat-label>
+                                <input matInput id="idioma" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.lengua_indigena != null)?dataTrabajador.rel_trabajador_escolaridad_cursante.lengua_indigena.descripcion:'N/A'}}" placeholder="Lengua" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
+                                <mat-label>Nivel de la Lengua:</mat-label>
+                                <input matInput id="nivel_dominio" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.nivel_lengua != null )?dataTrabajador.rel_trabajador_escolaridad_cursante.nivel_lengua.descripcion:'N/A'}}" placeholder="Nivel de Lengua:" readonly>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
+                                <mat-label>Lenguaje de Señas:</mat-label>
+                                <input matInput id="señas" value=" {{ (dataTrabajador.rel_trabajador_escolaridad_cursante.lenguaje_senias == 1)?'Si':'No' }}" placeholder="Lenguaje de Señales" readonly>
+                            </mat-form-field>
 
                         </div>
 
                     </mat-expansion-panel>
                 </mat-accordion>
+
+                <br>
+
+                <h1>Capacitación</h1>
+
+                <div fxLayoutAlign="center center" *ngIf="dataTrabajador.rel_trabajador_capacitacion == null">
+                    <i color="primary"><mat-icon color="primary">class</mat-icon>&nbsp;No tiene capacitación</i>
+                </div>
+
+                <mat-accordion *ngIf="dataTrabajador.rel_trabajador_capacitacion != null">
+                    <mat-expansion-panel (click)='panelCursos=panelCursos?false:true'>
+                        <mat-expansion-panel-header>
+
+                            <mat-panel-title>
+                                
+                                <p class="form-input"><mat-icon color="primary" >class</mat-icon>&nbsp;Capacitación</p>
+                                
+                            </mat-panel-title>
+
+                            <!-- <mat-panel-description>
+                                <p>Escolaridad</p>
+                            </mat-panel-description> -->
+            
+                        </mat-expansion-panel-header>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
+                                <mat-label>¿Tiene capacitación anual?:</mat-label>
+                                <input matInput id="capacitacion_anual" value="{{ (dataTrabajador.rel_trabajador_capacitacion.capacitacion_anual == 1)?'Si':'No' }}" placeholder="Capacitación anual" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
+                                <mat-label>Grado Academico:</mat-label>
+                                <input matInput id="capacitacion_anual" value="{{ (dataTrabajador.rel_trabajador_capacitacion.grado_academico)?dataTrabajador.rel_trabajador_capacitacion.grado_academico.descripcion:'No' }}" placeholder="Capacitación anual" readonly>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
+                            
+                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
+                                <mat-label>Titulo ó Diploma:</mat-label>
+                                <input matInput id="titulo_diploma" value="{{ (dataTrabajador.rel_trabajador_capacitacion.titulo_diploma)?dataTrabajador.rel_trabajador_capacitacion.titulo_diploma.descripcion:'N/A' }}" placeholder="Titulo ó Diploma" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
+                                <mat-label>Otro Titulo ó Diploma:</mat-label>
+                                <input matInput id="otro_titulo_diploma" value="{{ (dataTrabajador.rel_trabajador_capacitacion.otro_nombre_titulo)?dataTrabajador.rel_trabajador_capacitacion.otro_nombre_titulo:'N/A' }}" placeholder="Otro Titulo ó Diploma" readonly>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
+                                <mat-label>Institución:</mat-label>
+                                <input matInput id="institucion_capacitacion" value="{{ (dataTrabajador.rel_trabajador_capacitacion.institucion)?dataTrabajador.rel_trabajador_capacitacion.institucion.descripcion:'N/A' }}" placeholder="Institución Capacitación" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
+                                <mat-label>Otro Titulo ó Diploma:</mat-label>
+                                <input matInput id="otro_titulo_diploma" value="{{ (dataTrabajador.rel_trabajador_capacitacion.otro_nombre_titulo)?dataTrabajador.rel_trabajador_capacitacion.otro_nombre_titulo:'N/A' }}" placeholder="Otro Titulo ó Diploma" readonly>
+                            </mat-form-field>
+
+                        </div>
+
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+
 
 
 

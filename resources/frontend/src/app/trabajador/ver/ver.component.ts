@@ -73,6 +73,8 @@ export class VerComponent implements OnInit {
 
   panelEscolaridad = false;
   panelEscolaridadCursante = false;
+  panelCursos = false;
+  panelCapacitacion = false;
 
   ngOnInit() {
     // let userPermissions = JSON.parse(localStorage.getItem('permissions'));
@@ -125,12 +127,11 @@ export class VerComponent implements OnInit {
     this.isLoading = true;
     this.trabajadorService.verInfoTrabajador(id,params).subscribe(
       response =>{
-        console.log(response);
         this.dataTrabajador = response;
 
         this.credencial(this.dataTrabajador.clave_credencial);
 
-        console.log(this.dataTrabajador);
+        console.log("datos", this.dataTrabajador);
 
         this.isLoading = false;
       },

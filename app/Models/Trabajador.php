@@ -67,7 +67,7 @@ class Trabajador extends Model
 
     //Ver trabajador
     public function rel_trabajador_capacitacion(){
-        return $this->hasOne('App\Models\RelCapacitacion');
+        return $this->hasOne('App\Models\RelCapacitacion')->with('grado_academico', 'titulo_diploma', 'institucion');
     }
     public function rel_trabajador_capacitacion_detalles(){
         return $this->hasMany('App\Models\RelCapacitacionDetalles')->with('entidad_nacimiento', 'cursos');
@@ -80,7 +80,7 @@ class Trabajador extends Model
         return $this->hasMany('App\Models\RelEscolaridad')->with('grado_academico', 'institucion', 'nombre_estudio');
     }
     public function rel_trabajador_escolaridad_cursante(){
-        return $this->hasOne('App\Models\RelEscolaridadCursante')->with('tipo_ciclo_formacion', 'institucion_ciclo', 'anio_cursa', 'idioma', 'nivel_idioma', 'lengua_indigena');
+        return $this->hasOne('App\Models\RelEscolaridadCursante')->with('tipo_ciclo_formacion', 'carrera_ciclo', 'certificado', 'colegio', 'institucion_ciclo', 'anio_cursa', 'idioma', 'nivel_idioma', 'lengua_indigena', 'nivel_lengua');
     }
     public function rel_trabajador_horario(){
         return $this->hasMany('App\Models\RelHorario');

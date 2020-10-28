@@ -15,4 +15,16 @@ class RelCapacitacion extends Model
         return $this->hasMany('App\Models\RelCapacitacionDetalles');
     }
 
+    public function grado_academico(){
+        return $this->belongsTo('App\Models\GradoAcademico', 'grado_academico', 'id');
+    }
+
+    public function titulo_diploma(){
+        return $this->belongsTo('App\Models\GradoAcademico', 'titulo_diploma_id', 'id');
+    }
+
+    public function institucion(){
+        return $this->belongsTo('App\Models\InstitucionEducativa', 'institucion_id', 'id');
+    }
+
 }

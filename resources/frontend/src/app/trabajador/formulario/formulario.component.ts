@@ -23,7 +23,7 @@ import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.comp
 import { CapacitacionDialogComponent } from '../capacitacion-dialog/capacitacion-dialog.component';
 import { ComisionDialogComponent } from '../comision-dialog/comision-dialog.component';
 import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
-import { count } from 'console';
+//import { count } from 'console';
 
 
 @Component({
