@@ -18,7 +18,7 @@
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                 <mat-form-field fxFlex="45" fxFlex.xs="100">
                     <mat-label>Nombre del titulo o diploma</mat-label>
-                    <input matInput placeholder="Titulo o Diploma" [matAutocomplete]="tituloAutocomplete" formControlName='titulo'   required>
+                    <input matInput placeholder="Titulo o Diploma" [matAutocomplete]="tituloAutocomplete" formControlName='nombre_estudio'   required>
                    <mat-autocomplete #tituloAutocomplete="matAutocomplete" [displayWith]="displayTituloFn" [panelWidth]="'auto'">
                         <mat-option *ngIf="tituloIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                         <ng-container *ngIf="!tituloIsLoading">
@@ -27,16 +27,16 @@
                             </mat-option>
                         </ng-container>
                     </mat-autocomplete>
-                    <input type="hidden" formControlName='titulo_diploma_id'>
+                   
                 </mat-form-field>
                 <div fxFlex="10" fxFlex.xs="100">
                     <br>
-                    <mat-checkbox  formControlName="otro_titulo" #otro_titulo (click)="activar_otro_titulo(otro_titulo.checked)">Otro</mat-checkbox>
+                    <mat-checkbox  formControlName="otro_estudio" #otro_titulo (click)="activar_otro_titulo(otro_titulo.checked)">Otro</mat-checkbox>
                 </div> 
                 <mat-form-field fxFlex="45" fxFlex.xs="100">
-                    <input matInput formControlName="otro_nombre_titulo" placeholder="Otro" required>
-                    <mat-error *ngIf="EstudiosForm.get('otro_nombre_titulo').invalid && (EstudiosForm.get('otro_nombre_titulo').dirty || EstudiosForm.get('otro_nombre_titulo').touched)">
-                        <span *ngIf="EstudiosForm.get('otro_nombre_titulo').errors.required">Campo obligatorio</span>
+                    <input matInput formControlName="otro_nombre_estudio" placeholder="Otro" required>
+                    <mat-error *ngIf="EstudiosForm.get('otro_nombre_estudio').invalid && (EstudiosForm.get('otro_nombre_estudio').dirty || EstudiosForm.get('otro_nombre_estudio').touched)">
+                        <span *ngIf="EstudiosForm.get('otro_nombre_estudio').errors.required">Campo obligatorio</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -52,10 +52,7 @@
                             </mat-option>
                         </ng-container>
                     </mat-autocomplete>
-                    <input type="hidden" formControlName='institucion_id'>
-                    <mat-error *ngIf="EstudiosForm.get('institucion_id').invalid && (EstudiosForm.get('institucion_id').dirty || EstudiosForm.get('institucion_id').touched)">
-                        <span *ngIf="EstudiosForm.get('institucion_id').errors.required">Campo obligatorio</span>
-                    </mat-error>
+                   
                 </mat-form-field>
                 <div fxFlex="10" fxFlex.xs="100">
                     <br>
@@ -71,7 +68,7 @@
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                 <mat-form-field fxFlex="50" fxFlex.xs="100">
                     <mat-label>¿Tiene cédula profesional?</mat-label>
-                    <mat-select formControlName="cedula_profesional" #cedula  (selectionChange) = "tiene_cedula(cedula.value)" required>
+                    <mat-select formControlName="cedula" #cedula  (selectionChange) = "tiene_cedula(cedula.value)" required>
                         <mat-option [value]="0">NO</mat-option>
                         <mat-option [value]="1">SI</mat-option>
                     </mat-select>

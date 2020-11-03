@@ -35,22 +35,20 @@ export class EstudiosDialogComponent implements OnInit {
 
   public EstudiosForm = this.fb.group({
     'grado_academico_id':['',Validators.required],
-    'titulo':['',Validators.required],
-    'titulo_diploma_id':[''],
-    'otro_titulo':[],
-    'otro_nombre_titulo':[{ value:'', disabled:true}, Validators.required],
+    'nombre_estudio':['',Validators.required],
+    'otro_estudio':[],
+    'otro_nombre_estudio':[{ value:'', disabled:true}, Validators.required],
     'institucion':['',Validators.required],
     'otro_institucion':[''],
-    'institucion_id':[],
     'otro_nombre_institucion':[{ value:'', disabled:true}, Validators.required],
-    'cedula_profesional': ['',Validators.required],
+    'cedula': ['',Validators.required],
     'no_cedula': [{ value:'', disabled:true}, Validators.required],
   });
 
   ngOnInit() {
     this.cargarBuscadores();
     this.cargarGrado();
-    this.EstudiosForm.patchValue({cedula_profesional: 0});
+    this.EstudiosForm.patchValue({cedula: 0});
     if(this.data.editable != null)
     {
       this.cargarEditable();
@@ -60,10 +58,11 @@ export class EstudiosDialogComponent implements OnInit {
   cargarEditable():void
   {
     this.EstudiosForm.patchValue(this.data.editable);
-    this.texto_grado_seleccionado = this.data.editable.grado_estudios_descripcion;
-    this.activar_otro_titulo(!this.data.editable.otro_titulo);
+    this.texto_grado_seleccionado = this.data.editable.grado_academico.descripcion;
+    this.activar_otro_titulo(!this.data.editable.otro_estudio);
     this.activar_otro_institucion(!this.data.editable.otro_institucion);
     this.tiene_cedula(this.data.editable.cedula_profesional);
+    this.tiene_cedula(this.data.editable.cedula);
   }
 
   cargarGrado():void
@@ -74,7 +73,7 @@ export class EstudiosDialogComponent implements OnInit {
   
   cargarBuscadores():void
   { 
-      this.EstudiosForm.get('titulo').valueChanges
+      this.EstudiosForm.get('nombre_estudio').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -85,7 +84,7 @@ export class EstudiosDialogComponent implements OnInit {
             if(!(typeof value === 'object')){
               this.capacitacionIsLoading = false; 
               let grado = this.EstudiosForm.get('grado_academico_id').value;
-              let descripcion = this.EstudiosForm.get('titulo').value;
+              let descripcion = this.EstudiosForm.get('nombre_estudio').value;
               if( grado != '' && descripcion!="")
               {
                 return this.trabajadorService.buscar({tipo: 2, query:value, grado_academico:grado }).pipe(finalize(() => this.capacitacionIsLoading = false ));
@@ -171,11 +170,11 @@ export class EstudiosDialogComponent implements OnInit {
   activar_otro_titulo(valor)
   {
     if(valor){
-      this.EstudiosForm.get('titulo').enable();
-      this.EstudiosForm.get('otro_nombre_titulo').disable();
+      this.EstudiosForm.get('nombre_estudio').enable();
+      this.EstudiosForm.get('otro_nombre_estudio').disable();
     }else{
-      this.EstudiosForm.get('titulo').disable();
-      this.EstudiosForm.get('otro_nombre_titulo').enable();
+      this.EstudiosForm.get('nombre_estudio').disable();
+      this.EstudiosForm.get('otro_nombre_estudio').enable();
     }  
     
   }
@@ -198,11 +197,9 @@ export class EstudiosDialogComponent implements OnInit {
   guardar(): void {
     this.resultado.estatus = true;
     this.resultado.datos = this.EstudiosForm.value;
+    this.resultado.datos.grado_academico = { descripcion: this.texto_grado_seleccionado};
     //console.log(this.texto_grado_seleccionado);
-    if(this.texto_grado_seleccionado != "")
-    {
-      this.resultado.datos.grado_estudios_descripcion = this.texto_grado_seleccionado;
-    }
+    console.log(this.resultado);
     this.dialogRef.close(this.resultado);
   }
 

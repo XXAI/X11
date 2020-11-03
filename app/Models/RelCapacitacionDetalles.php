@@ -11,7 +11,7 @@ class RelCapacitacionDetalles extends Model
     protected $fillable = [''];
     protected $table = 'rel_trabajador_capacitacion_detalles';
 
-    public function entidad_nacimiento(){
+    public function entidad(){
         return $this->belongsTo('App\Models\Entidad', 'entidad_id', 'id');
     }
 

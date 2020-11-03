@@ -158,6 +158,7 @@ export class FormularioComponent implements OnInit {
     'tipo_ciclo_formacion_id':[],
     'carrera_ciclo':[],
     'carrera_ciclo_id':[],
+    
     'institucion_ciclo':[],
     'institucion_ciclo_id':[],
     'anio_cursa_id':[],
@@ -179,14 +180,14 @@ export class FormularioComponent implements OnInit {
     'capacitacion_anual':['', [Validators.required]],
     'grado_academico_id':[{ value:'', disabled:true}, Validators.required],
     'titulo_capacitacion':[{ value:'', disabled:true}, Validators.required],
+    'otro_estudio_capacitacion':[],
     'titulo_diploma_id':[{ value:'', disabled:true}, Validators.required],
+    'otro_institucion_educativa':[],
     'otro_nombre_titulo':[{ value:'', disabled:true}, Validators.required],
     'institucion':[{ value:'', disabled:true}, Validators.required],
     'institucion_id':[],
     'otro_nombre_institucion':[{ value:'', disabled:true}, Validators.required],
     'ciclo_id':[{ value:'', disabled:true}, Validators.required],
-
-
   });
 
   displayedColumns: string[] = ['tipo','descripcion','institucion','cedula','actions'];
@@ -277,6 +278,57 @@ export class FormularioComponent implements OnInit {
               break;
           }
         }
+
+        //Escolaridad
+        this.datosEscolaresForm.patchValue({ nivel_maximo_id: trabajador.nivel_maximo_id});
+        let datos_escolares = trabajador.escolaridad;
+        
+        for(let i = 0; i < datos_escolares.length; i++)
+        {
+          if(datos_escolares[i].nombre_estudio)
+          {
+            datos_escolares[i].otro_estudio = false;
+          }else{
+            datos_escolares[i].otro_estudio = true;
+          }
+          
+          if(datos_escolares[i].institucion)
+          {
+            datos_escolares[i].otro_institucion = false;
+          }else{
+            datos_escolares[i].otro_institucion = true;
+          }
+        }
+        this.datosEstudios = datos_escolares;
+        this.dataSourceEstudios.data = datos_escolares;
+        //this.datosEscolaresForm.patchValue(datos_escolares);
+
+        //Capacitacion
+        let Capacitacion = trabajador.capacitacion;
+        let CapacitacionDetalles = trabajador.capacitacion_detalles;
+        console.log(CapacitacionDetalles);
+        this.datosCapacitacionForm.patchValue(Capacitacion);
+        this.tiene_capacitacion(Capacitacion.capacitacion_anual);
+        if(!Capacitacion.titulo_capacitacion)
+        {
+          this.activar_otro_titulo(false);
+          this.datosCapacitacionForm.patchValue({otro_estudio_capacitacion: true});
+        }
+        if(!Capacitacion.institucion)
+        {
+          this.activar_otro_institucion(false);
+          this.datosCapacitacionForm.patchValue({otro_institucion_educativa: true});
+        }
+
+        this.dataSourceCapacitacion.data = CapacitacionDetalles;
+        //
+        
+        //Escolaridad Cursante
+        let datosEscolaridadCursante = trabajador.escolaridadcursante;
+        this.datosCursosForm.patchValue(datosEscolaridadCursante);
+        //console.log(datosEscolaridadCursante.colegiacion);
+        this.tiene_colegio(datosEscolaridadCursante.colegiacion);
+        this.tiene_certificado(datosEscolaridadCursante.certificacion);
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -318,7 +370,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredMunicipio = items);
     
-      /*this.trabajadorForm.get('titulo_capacitacion').valueChanges
+      this.datosCapacitacionForm.get('titulo_capacitacion').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -328,11 +380,10 @@ export class FormularioComponent implements OnInit {
         switchMap(value => {
             if(!(typeof value === 'object')){
               this.capacitacionIsLoading = false; 
-              let grado = this.trabajadorForm.get('grado_academico_id').value;
-              let descripcion = this.trabajadorForm.get('titulo_capacitacion').value;
+              let grado = this.datosCapacitacionForm.get('grado_academico_id').value;
+              let descripcion = this.datosCapacitacionForm.get('titulo_capacitacion').value;
               if( grado != '' && descripcion!="")
               {
-                console.log("entra");
                 return this.trabajadorService.buscar({tipo: 2, query:value, grado_academico:grado }).pipe(finalize(() => this.capacitacionIsLoading = false ));
               }else{
                 return [];
@@ -346,7 +397,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredCapacitacion = items);
       
-      this.trabajadorForm.get('institucion').valueChanges
+      this.datosCapacitacionForm.get('institucion').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -356,7 +407,7 @@ export class FormularioComponent implements OnInit {
         switchMap(value => {
             if(!(typeof value === 'object')){
               this.institucionIsLoading = false; 
-              let descripcion = this.trabajadorForm.get('institucion').value;
+              let descripcion = this.datosCapacitacionForm.get('institucion').value;
               if( descripcion!="")
               {
                
@@ -373,7 +424,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredInstitucion = items);
 
-      this.trabajadorForm.get('carrera_ciclo').valueChanges
+      this.datosCursosForm.get('carrera_ciclo').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -383,7 +434,7 @@ export class FormularioComponent implements OnInit {
         switchMap(value => {
             if(!(typeof value === 'object')){
               this.carreraIsLoading = false; 
-              let descripcion = this.trabajadorForm.get('carrera_ciclo').value;
+              let descripcion = this.datosCursosForm.get('carrera_ciclo').value;
               if(descripcion!="")
               {
                 console.log("entra");
@@ -400,7 +451,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredCarrera = items);
 
-      this.trabajadorForm.get('institucion_ciclo').valueChanges
+      this.datosCursosForm.get('institucion_ciclo').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -410,7 +461,7 @@ export class FormularioComponent implements OnInit {
         switchMap(value => {
             if(!(typeof value === 'object')){
               this.institucionCicloIsLoading = false; 
-              let descripcion = this.trabajadorForm.get('institucion_ciclo').value;
+              let descripcion = this.datosCursosForm.get('institucion_ciclo').value;
               if( descripcion!="")
               {
                
@@ -427,7 +478,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredInstitucionCiclo = items);
       
-      this.trabajadorForm.get('colegio').valueChanges
+      this.datosCursosForm.get('colegio').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -437,7 +488,7 @@ export class FormularioComponent implements OnInit {
         switchMap(value => {
             if(!(typeof value === 'object')){
               this.colegioIsLoading = false; 
-              let descripcion = this.trabajadorForm.get('colegio').value;
+              let descripcion = this.datosCursosForm.get('colegio').value;
               if( descripcion!="")
               {
                
@@ -452,14 +503,13 @@ export class FormularioComponent implements OnInit {
             }
           }
         ),
-      ).subscribe(items => this.filteredColegio = items);*/
+      ).subscribe(items => this.filteredColegio = items);
     
   }
 
   cargarDatosDefault():void{
     let datos = { colegiacion:0, certificacion:0, capacitacion_anual:0};
     this.trabajadorForm.patchValue(datos);
-    
   }
 
   cargarCatalogos():void{
@@ -535,7 +585,20 @@ export class FormularioComponent implements OnInit {
     }else if(tipo == 3)
     {
       data = this.datosHorarioForm.value;
+    }else if(tipo == 4)
+    {
+      data = this.datosEscolaresForm.value;
+      data.datos = this.datosEstudios;
+    }else if(tipo == 5)
+    {
+      data = this.datosCapacitacionForm.value;
+      data.datos = this.datosCapacitacion;
+    }else if(tipo == 6)
+    {
+      data = this.datosCursosForm.value;
+      //data.datos = this.datosEstudios;
     }
+    console.log(this.datosEstudios);
 
     this.isLoading = true;
     //data.trabajador_id = this.trabajador_id;
@@ -592,6 +655,7 @@ export class FormularioComponent implements OnInit {
   showEstudiosDialog(index_editable = null){
     let configDialog = {};
     let index = index_editable;
+    //console.log(index_editable);
     if(this.mediaSize == 'xs'){
       configDialog = {
         maxWidth: '100vw',
@@ -715,6 +779,7 @@ export class FormularioComponent implements OnInit {
   }
 
 
+
   /* Activadores functions */
   fiel(valor):void{
     if(valor == '0')
@@ -726,43 +791,74 @@ export class FormularioComponent implements OnInit {
     }
   }
   
+  activar_otro_titulo(valor)
+  {
+    if(valor){
+      this.datosCapacitacionForm.get('titulo_capacitacion').enable();
+      this.datosCapacitacionForm.get('otro_nombre_titulo').disable();
+    }else{
+      this.datosCapacitacionForm.get('titulo_capacitacion').disable();
+      this.datosCapacitacionForm.get('otro_nombre_titulo').enable();
+    }  
+    
+  }
+
+  activar_otro_institucion(valor)
+  {
+    if(valor){
+      this.datosCapacitacionForm.get('institucion').enable();
+      this.datosCapacitacionForm.get('otro_nombre_institucion').disable();
+    }else{
+      this.datosCapacitacionForm.get('institucion').disable();
+      this.datosCapacitacionForm.get('otro_nombre_institucion').enable();
+    }   
+  }
+
   tiene_capacitacion(valor):void{
     if(valor == '0')
     {
-      this.trabajadorForm.get('grado_academico_id').disable();
-      this.trabajadorForm.get('titulo_capacitacion').disable();
-      this.trabajadorForm.get('otro_nombre_titulo').disable();
-      this.trabajadorForm.get('institucion').disable();
-      this.trabajadorForm.get('otro_nombre_institucion').disable();
-      this.trabajadorForm.get('ciclo_id').disable();
+      this.datosCapacitacionForm.get('grado_academico_id').disable();
+      this.datosCapacitacionForm.get('titulo_capacitacion').disable();
+      this.datosCapacitacionForm.get('otro_nombre_titulo').disable();
+      this.datosCapacitacionForm.get('institucion').disable();
+      this.datosCapacitacionForm.get('otro_nombre_institucion').disable();
+      this.datosCapacitacionForm.get('ciclo_id').disable();
+      this.datosCapacitacionForm.get('otro_estudio_capacitacion').disable();
+      this.datosCapacitacionForm.get('otro_institucion_educativa').disable();
     }else if(valor == '1')
     {
-      this.trabajadorForm.get('grado_academico_id').enable();
-      this.trabajadorForm.get('titulo_capacitacion').enable();
-      this.trabajadorForm.get('otro_nombre_titulo').enable();
-      this.trabajadorForm.get('institucion').enable();
-      this.trabajadorForm.get('otro_nombre_institucion').enable();
-      this.trabajadorForm.get('ciclo_id').enable();
+      //console.log(this.datosCapacitacionForm.get('otro_institucion_educativa'));
+      this.datosCapacitacionForm.get('grado_academico_id').enable();
+      //this.datosCapacitacionForm.get('titulo_capacitacion').enable();
+      //this.datosCapacitacionForm.get('otro_nombre_titulo').enable();
+      //this.datosCapacitacionForm.get('institucion').enable();
+      //this.datosCapacitacionForm.get('otro_nombre_institucion').enable();
+      this.datosCapacitacionForm.get('ciclo_id').enable();
+      this.datosCapacitacionForm.get('otro_estudio_capacitacion').enable();
+      this.datosCapacitacionForm.get('otro_institucion_educativa').enable();
+
+      this.activar_otro_institucion(!this.datosCapacitacionForm.get('otro_institucion_educativa').value);
+      this.activar_otro_titulo(!this.datosCapacitacionForm.get('otro_estudio_capacitacion').value);
     }
   }
 
   tiene_colegio(valor):void{
     if(valor == '0')
     {
-      this.trabajadorForm.get('colegio').disable();
+      this.datosCursosForm.get('colegio').disable();
     }else if(valor == '1')
     {
-      this.trabajadorForm.get('colegio').enable();
+      this.datosCursosForm.get('colegio').enable();
     }
   }
 
   tiene_certificado(valor):void{
     if(valor == '0')
     {
-      this.trabajadorForm.get('certificacion_id').disable();
+      this.datosCursosForm.get('certificacion_id').disable();
     }else if(valor == '1')
     {
-      this.trabajadorForm.get('certificacion_id').enable();
+      this.datosCursosForm.get('certificacion_id').enable();
     }
   }
 

@@ -34,12 +34,12 @@ export class CapacitacionDialogComponent implements OnInit {
   public CapacitacionForm = this.fb.group({
     'entidad_id':['',Validators.required],
     'nombre_curso':['',Validators.required],
-    'curso_id':[''],
   });
 
   ngOnInit() {
     this.cargarEntidad();
     this.cargarBuscadores();
+    console.log(this.data.editable);
     if(this.data.editable != null)
     {
       this.cargarEditable();
