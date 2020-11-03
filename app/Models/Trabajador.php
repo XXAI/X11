@@ -12,7 +12,11 @@ class Trabajador extends Model
     protected $table = 'trabajador';
 
     public function capacitacion(){
-        return $this->hasOne('App\Models\RelCapacitacion');
+        return $this->hasOne('App\Models\RelCapacitacion')->with('institucion', 'titulo_capacitacion');
+    }
+
+    public function capacitacionDetalles(){
+        return $this->hasMany('App\Models\RelCapacitacionDetalles')->with('cursos', 'entidad');
     }
 
     public function datoslaborales(){
@@ -24,7 +28,7 @@ class Trabajador extends Model
     }
 
     public function escolaridadcursante(){
-        return $this->hasOne('App\Models\RelEscolaridadCursante');
+        return $this->hasOne('App\Models\RelEscolaridadCursante')->with('colegio', 'carrera_ciclo', 'institucion_ciclo');
     }
 
     public function horario(){

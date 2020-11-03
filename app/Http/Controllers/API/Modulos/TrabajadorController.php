@@ -232,7 +232,7 @@ class TrabajadorController extends Controller
 
             $params = Input::all();
 
-            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario')->where("id", "=", $id)->first();
+            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad.grado_academico','escolaridad.institucion', 'escolaridad.nombre_estudio','escolaridadcursante','horario', 'capacitacionDetalles')->where("id", "=", $id)->first();
 
             return response()->json($trabajador,HttpResponse::HTTP_OK);
         }catch(\Exception $e){
@@ -298,6 +298,35 @@ class TrabajadorController extends Controller
             $reglas = [
                 'jornada_id'              => 'required',
             ];
+        }else if($inputs['tipo_dato'] == 4)
+        {
+            $reglas = [
+                'nivel_maximo_id'              => 'required',
+            ];
+        }else if($inputs['tipo_dato'] == 5)
+        {
+            $reglas = [
+                'capacitacion_anual'                => 'required',
+                'ciclo_id'                          => 'required',
+            ];
+        }else if($inputs['tipo_dato'] == 6)
+        {
+            $reglas = [
+                'tipo_ciclo_formacion_id'   => 'required',
+                'carrera_ciclo'             => 'required',
+                'institucion_ciclo'         => 'required',
+                'anio_cursa_id'             => 'required',
+                'colegiacion'               => 'required',
+                //'colegio'              => 'required',
+                'certificacion'             => 'required',
+                //'certificacion_id'              => 'required',
+                'consejo'                   => 'required',
+                'idioma_id'                 => 'required',
+                'nivel_idioma_id'           => 'required',
+                'lengua_indigena_id'        => 'required',
+                'nivel_lengua_id'           => 'required',
+                'lenguaje_senias'           => 'required',
+            ];
         }
 
         
@@ -308,8 +337,6 @@ class TrabajadorController extends Controller
 
         
         $v = Validator::make($inputs, $reglas, $mensajes);
-
-        
         
         /*if($inputs['rfc'] != $object->rfc)
         {
@@ -318,10 +345,7 @@ class TrabajadorController extends Controller
                 throw new \Exception("Existe en empleado con el mismo rfc o curp, por favor verificar", 1);
             }
         }*/
-
-        
-
-        
+ 
         if ($v->fails()) {
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
@@ -367,7 +391,7 @@ class TrabajadorController extends Controller
                 if($objectRL == null)
                 {
                     $objectRL = new RelDatosLaborales();
-                    $objectRL->trabajadir_id = $id;
+                    $objectRL->trabajador_id = $id;
                 }
                 
                 $objectRL->actividad_id             = $inputs['actividad_id'];
@@ -393,14 +417,13 @@ class TrabajadorController extends Controller
                 if($objectRL == null)
                 {
                     $objectRL = new RelDatosLaborales();
-                    $objectRL->trabajadir_id = $id;
+                    $objectRL->trabajador_id = $id;
                 }
                 
                 $objectRL->jornada_id               = $inputs['jornada_id'];
                 $objectRL->save();
                 
                 $borrar_horario = DB::table("rel_trabajador_horario")->where("trabajador_id", "=", $id)->delete();
-                //$borrar_horario->destroy();
                 $dias = array("lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo", "festivo");
                 $indice = 0;
                 while($indice < count($dias))
@@ -416,9 +439,117 @@ class TrabajadorController extends Controller
                     }
                     $indice++;
                 }
+            }else if($inputs['tipo_dato'] == 4)
+            {
+                $escolaridad = $inputs['datos'];
+                $indice_escolaridad = 0;
+                $object->nivel_maximo_id = $inputs['nivel_maximo_id'];
+                $object->save();
+                
+                $borrar_escolaridad = DB::table("rel_trabajador_escolaridad")->where("trabajador_id", "=", $id)->delete();
+                while($indice_escolaridad < count($escolaridad))
+                {
+                    $dato = $escolaridad[$indice_escolaridad];
+                    $objectEscolaridad = new RelEscolaridad();
+                    $objectEscolaridad->trabajador_id = $id;
+                    $objectEscolaridad->grado_academico_id = $dato['grado_academico_id'];
+                    if($dato['otro_estudio'] == true)
+                    {
+                        $objectEscolaridad->otro_nombre_estudio = $dato['otro_nombre_estudio'];
+                        $objectEscolaridad->nombre_estudio_id = null;
+                    }else{
+                        $objectEscolaridad->otro_nombre_estudio = null;
+                        $objectEscolaridad->nombre_estudio_id = $dato['nombre_estudio']['id'];
+                    }
+                    
+                    if($dato['otro_institucion'] == true)
+                    {
+                        $objectEscolaridad->otro_nombre_institucion = $dato['otro_nombre_institucion'];
+                        $objectEscolaridad->institucion_id = null;
+                    }else{
+                        $objectEscolaridad->institucion_id = $dato['institucion']['id'];
+                        $objectEscolaridad->otro_nombre_institucion = null;
+                    }
+                    $objectEscolaridad->cedula = $dato['cedula'];
+                    if($dato['otro_institucion'] == 1)
+                    {
+                        $objectEscolaridad->no_cedula = $dato['no_cedula'];
+                    }
+                    $objectEscolaridad->save();
+                    $indice_escolaridad++;
+                }
+            }else if($inputs['tipo_dato'] == 5)
+            {
+                $objectCapacitacion = RelCapacitacion::where("trabajador_id", "=", $id)->first();
+                if($objectCapacitacion == null)
+                {
+                    $objectCapacitacion = new RelCapacitacion();
+                    $objectCapacitacion->trabajador_id = $id;
+                }
+                $objectCapacitacion->capacitacion_anual = $inputs['capacitacion_anual'];
+                $objectCapacitacion->grado_academico_id = $inputs['grado_academico_id'];
+                if($inputs['otro_estudio_capacitacion'] == true)
+                {
+                    $objectCapacitacion->otro_nombre_titulo = $inputs['otro_nombre_titulo'];
+                    $objectCapacitacion->titulo_diploma_id = null;
+                }else{
+                    $objectCapacitacion->titulo_diploma_id = $inputs['titulo_capacitacion']['id'];
+                    $objectCapacitacion->otro_nombre_titulo = null;
+                }
+                if($inputs['otro_institucion_educativa'] == true)
+                {
+                    $objectCapacitacion->otro_nombre_institucion = $inputs['otro_nombre_institucion'];
+                    $objectCapacitacion->institucion_id = null;
+                }else{
+                    $objectCapacitacion->institucion_id = $inputs['institucion']['id'];
+                    $objectCapacitacion->otro_nombre_institucion = null;
+                }
+                
+                $objectCapacitacion->ciclo_id = $inputs['ciclo_id'];
+                $objectCapacitacion->save();
+
+                $capacitacionDetalles = $inputs['datos'];
+                $borrar_capacitacion = DB::table("rel_trabajador_capacitacion_detalles")->where("trabajador_id", "=", $id)->delete();
+                $indice_cursos = 0;
+                while($indice_cursos < count($capacitacionDetalles))
+                {
+                    $dato = $capacitacionDetalles[$indice_cursos];
+                    $objectCursos = new RelCapacitacionDetalles();
+                    $objectCursos->trabajador_id = $id;
+                    $objectCursos->entidad_id = $dato['entidad_id'];
+                    $objectCursos->nombre_curso_id = $dato['nombre_curso']['id'];
+                    
+                    $objectCursos->save();
+                    $indice_cursos++;
+                }
+
+            }else if($inputs['tipo_dato'] == 6)
+            {
+                $objectCursos = RelEscolaridadCursante::where("trabajador_id", "=", $id)->first();
+                if($objectCursos == null)
+                {
+                    $objectCursos = new RelEscolaridadCursante();
+                    $objectCursos->trabajador_id = $id;
+                }
+                $objectCursos->tipo_ciclo_formacion_id = $inputs['tipo_ciclo_formacion_id'];
+                $objectCursos->carrera_ciclo_id = $inputs['carrera_ciclo']['id'];
+                $objectCursos->tipo_ciclo_formacion_id = $inputs['tipo_ciclo_formacion_id'];
+                $objectCursos->institucion_ciclo_id = $inputs['institucion_ciclo']['id'];
+                $objectCursos->colegiacion = $inputs['colegiacion'];
+                if($inputs['colegiacion'] == 1){ $objectCursos->colegio_id = $inputs['colegio']['id']; }else{ $objectCursos->colegio_id = null; }
+                $objectCursos->certificacion = $inputs['certificacion'];
+                if($inputs['certificacion'] == 1){ $objectCursos->certificacion_id = $inputs['certificacion_id']; }else { $objectCursos->certificacion_id = null; }
+                $objectCursos->consejo = $inputs['consejo'];
+                $objectCursos->idioma_id = $inputs['idioma_id'];
+                $objectCursos->nivel_idioma_id = $inputs['nivel_idioma_id'];
+                $objectCursos->lengua_indigena_id = $inputs['lengua_indigena_id'];
+                $objectCursos->nivel_lengua_id = $inputs['nivel_lengua_id'];
+                $objectCursos->lenguaje_senias = $inputs['lenguaje_senias'];
+                $objectCursos->anio_cursa_id = $inputs['anio_cursa_id'];
+                $objectCursos->save();
             }
-           
-            return response()->json($borrar_horario,HttpResponse::HTTP_OK);
+            
+            return response()->json($object,HttpResponse::HTTP_OK);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -493,6 +624,7 @@ class TrabajadorController extends Controller
                     ->where("entidad_id", "=", $parametros['grado_academico']);
                 break;
                 case 8:
+                    
                     $obj = Cursos::where("descripcion", "like", "%".$parametros['query']."%")
                     ->where("entidad_id", "=", $parametros['entidad']);
                 break;
