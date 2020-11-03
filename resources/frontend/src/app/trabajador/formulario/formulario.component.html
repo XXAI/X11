@@ -198,6 +198,61 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
+                            
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Idioma</mat-label>
+                                    <mat-select formControlName="idioma_id" required>
+                                        <mat-option *ngFor="let item of catalogo['idioma']" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('idioma_id').invalid && (trabajadorForm.get('idioma_id').dirty || trabajadorForm.get('idioma_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('idioma_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Nivel de Dominio</mat-label>
+                                    <mat-select formControlName="nivel_idioma_id" required>
+                                        <mat-option *ngFor="let item of catalogo['nivel_dominio']" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('nivel_idioma_id').invalid && (trabajadorForm.get('nivel_idioma_id').dirty || trabajadorForm.get('nivel_idioma_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('nivel_idioma_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Lengua Indigena</mat-label>
+                                    <mat-select formControlName="lengua_indigena_id" required>
+                                        <mat-option *ngFor="let item of catalogo['lengua']" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('lengua_indigena_id').invalid && (trabajadorForm.get('lengua_indigena_id').dirty || trabajadorForm.get('lengua_indigena_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('lengua_indigena_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field> 
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Nivel de Dominio</mat-label>
+                                    <mat-select formControlName="nivel_lengua_id" required>
+                                        <mat-option *ngFor="let item of catalogo['nivel_dominio']" [value]="item.id">
+                                            {{item.descripcion}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="trabajadorForm.get('nivel_lengua_id').invalid && (trabajadorForm.get('nivel_lengua_id').dirty || trabajadorForm.get('nivel_lengua_id').touched)">
+                                        <span *ngIf="trabajadorForm.get('nivel_lengua_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                    <mat-label>Lenguaje de Señas</mat-label>
+                                    <mat-select formControlName="lenguaje_senias" required>
+                                        <mat-option [value]="0">NO</mat-option>
+                                        <mat-option [value]="1">SI</mat-option>
+                                    </mat-select>
+                                </mat-form-field> 
+                                
+                            </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" style="margin-bottom: 3px; border-bottom: 1px solid #999;">
                                 <textarea matInput formControlName="observacion" placeholder="Observacion" rowSpan="5"></textarea>
                             </div>
@@ -716,7 +771,7 @@
                         <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(!datosEscolaresForm.valid || isLoading)"><mat-icon>save</mat-icon> Guardar</button>
                     </div>             
                 </mat-tab>
-                <mat-tab label="Capacitación"  [formGroup]="datosCapacitacionForm">
+                <!--<mat-tab label="Capacitación"  [formGroup]="datosCapacitacionForm">
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -830,7 +885,7 @@
                         
                                 <ng-container matColumnDef="nombre_curso">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Curso </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.cursos.descripcion}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.nombre_curso.descripcion}} </td>
                                 </ng-container>
                                 
                                 <ng-container matColumnDef="actions">
@@ -986,57 +1041,6 @@
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                    <mat-label>Idioma</mat-label>
-                                    <mat-select formControlName="idioma_id" required>
-                                        <mat-option *ngFor="let item of catalogo['idioma']" [value]="item.id">
-                                            {{item.descripcion}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="datosCursosForm.get('idioma_id').invalid && (datosCursosForm.get('idioma_id').dirty || datosCursosForm.get('idioma_id').touched)">
-                                        <span *ngIf="datosCursosForm.get('idioma_id').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field> 
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                    <mat-label>Nivel de Dominio</mat-label>
-                                    <mat-select formControlName="nivel_idioma_id" required>
-                                        <mat-option *ngFor="let item of catalogo['nivel_dominio']" [value]="item.id">
-                                            {{item.descripcion}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="datosCursosForm.get('nivel_idioma_id').invalid && (datosCursosForm.get('nivel_idioma_id').dirty || datosCursosForm.get('nivel_idioma_id').touched)">
-                                        <span *ngIf="datosCursosForm.get('nivel_idioma_id').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field> 
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                    <mat-label>Lengua Indigena</mat-label>
-                                    <mat-select formControlName="lengua_indigena_id" required>
-                                        <mat-option *ngFor="let item of catalogo['lengua']" [value]="item.id">
-                                            {{item.descripcion}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="datosCursosForm.get('lengua_indigena_id').invalid && (datosCursosForm.get('lengua_indigena_id').dirty || datosCursosForm.get('lengua_indigena_id').touched)">
-                                        <span *ngIf="datosCursosForm.get('lengua_indigena_id').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field> 
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                    <mat-label>Nivel de Dominio</mat-label>
-                                    <mat-select formControlName="nivel_lengua_id" required>
-                                        <mat-option *ngFor="let item of catalogo['nivel_dominio']" [value]="item.id">
-                                            {{item.descripcion}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="datosCursosForm.get('nivel_lengua_id').invalid && (datosCursosForm.get('nivel_lengua_id').dirty || datosCursosForm.get('nivel_lengua_id').touched)">
-                                        <span *ngIf="datosCursosForm.get('nivel_lengua_id').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field>
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                    <mat-label>Lenguaje de Señas</mat-label>
-                                    <mat-select formControlName="lenguaje_senias" required>
-                                        <mat-option [value]="0">NO</mat-option>
-                                        <mat-option [value]="1">SI</mat-option>
-                                    </mat-select>
-                                </mat-form-field> 
                                  
                             </div>
                         </div>
@@ -1044,7 +1048,7 @@
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                         <button mat-raised-button (click)="accionGuardar(6)" color="success" [disabled]="(!datosCursosForm.valid || isLoading)"><mat-icon>save</mat-icon> Guardar</button>
                     </div>
-                </mat-tab>
+                </mat-tab>-->
             </mat-tab-group>
         </mat-card>   
         

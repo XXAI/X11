@@ -91,7 +91,12 @@ export class FormularioComponent implements OnInit {
     'no_exterior': ['',[Validators.required]],
     'colonia': ['',[Validators.required]],
     'cp': ['',[Validators.required]],
-    'observacion': ['',]
+    'observacion': ['',],
+    'idioma_id':[],
+    'nivel_idioma_id':[],
+    'lengua_indigena_id':[],
+    'nivel_lengua_id':[],
+    'lenguaje_senias':[],
   });
 
   public datosLaborelesForm = this.fb.group({
@@ -117,6 +122,7 @@ export class FormularioComponent implements OnInit {
     'vigencia_fiel': [{ value:'', disabled:true}, Validators.required],
     //'ur': [],
     'actividades': [],
+    
   });
   
   public datosEscolaresForm = this.fb.group({
@@ -168,11 +174,7 @@ export class FormularioComponent implements OnInit {
     'certificacion':[],
     'certificacion_id':[{ value:'', disabled:true}, Validators.required],
     'consejo':[],
-    'idioma_id':[],
-    'nivel_idioma_id':[],
-    'lengua_indigena_id':[],
-    'nivel_lengua_id':[],
-    'lenguaje_senias':[],
+    
   });
 
   public datosCapacitacionForm = this.fb.group({
@@ -249,8 +251,6 @@ export class FormularioComponent implements OnInit {
           let mes_fiel = (parseInt(datos_laborales.vigencia_fiel.substring(5,7)) - 1)
           let dia_fiel = parseInt(datos_laborales.vigencia_fiel.substring(8,10));
           vigencia_fiel = new Date(anio_fiel,+mes_fiel,dia_fiel);
-          console.log(anio_fiel+"-"+mes_fiel+"-"+dia_fiel);
-          console.log(vigencia_fiel);
           this.datosLaborelesForm.patchValue({vigencia_fiel: vigencia_fiel}); 
         }
         
@@ -718,6 +718,7 @@ export class FormularioComponent implements OnInit {
             this.datosCapacitacion.push(valid.datos);
           }
           //console.log(this.datosCapacitacion);
+          console.log(valid.datos);
           this.dataSourceCapacitacion.data = this.datosCapacitacion;
         }
       }

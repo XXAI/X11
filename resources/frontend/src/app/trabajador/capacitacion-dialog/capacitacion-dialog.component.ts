@@ -48,7 +48,8 @@ export class CapacitacionDialogComponent implements OnInit {
 
   cargarEditable():void
   {
-    this.texto_entidad_seleccionado = this.data.editable.entidad_descripcion;
+    console.log(this.data);
+    this.texto_entidad_seleccionado = this.data.editable.entidad.descripcion;
     this.CapacitacionForm.patchValue(this.data.editable);
   }
 
@@ -96,7 +97,7 @@ export class CapacitacionDialogComponent implements OnInit {
     this.resultado.datos = this.CapacitacionForm.value;
     if(this.texto_entidad_seleccionado != "")
     {
-      this.resultado.datos.entidad_descripcion = this.texto_entidad_seleccionado;
+      this.resultado.datos.entidad = {descripcion : this.texto_entidad_seleccionado};
     }
     this.dialogRef.close(this.resultado);
   }
