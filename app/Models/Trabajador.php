@@ -24,7 +24,7 @@ class Trabajador extends Model
     }
 
     public function escolaridad(){
-        return $this->hasMany('App\Models\RelEscolaridad');
+        return $this->hasMany('App\Models\RelEscolaridad')->with('grado_academico', 'institucion', 'nombre_estudio');
     }
 
     public function escolaridadcursante(){

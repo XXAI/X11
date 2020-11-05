@@ -232,7 +232,7 @@ class TrabajadorController extends Controller
 
             $params = Input::all();
 
-            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad.grado_academico','escolaridad.institucion', 'escolaridad.nombre_estudio','escolaridadcursante','horario', 'capacitacionDetalles')->where("id", "=", $id)->first();
+            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario'/*, 'capacitacionDetalles'*/)->where("id", "=", $id)->first();
 
             return response()->json($trabajador,HttpResponse::HTTP_OK);
         }catch(\Exception $e){

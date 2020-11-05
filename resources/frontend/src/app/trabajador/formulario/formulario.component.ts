@@ -93,9 +93,9 @@ export class FormularioComponent implements OnInit {
     'cp': ['',[Validators.required]],
     'observacion': ['',],
     'idioma_id':[],
-    'nivel_idioma_id':[],
+    'nivel_idioma_id':[{ value:'', disabled:true}, Validators.required],
     'lengua_indigena_id':[],
-    'nivel_lengua_id':[],
+    'nivel_lengua_id':[{ value:'', disabled:true}, Validators.required],
     'lenguaje_senias':[],
   });
 
@@ -789,6 +789,26 @@ export class FormularioComponent implements OnInit {
     }else if(valor == '1')
     {
       this.datosLaborelesForm.get('vigencia_fiel').enable();
+    }
+  }
+
+  idioma(valor):void{
+    if(valor == '0')
+    {
+      this.datosLaborelesForm.get('nivel_idioma_id').disable();
+    }else if(valor != '0')
+    {
+      this.datosLaborelesForm.get('nivel_idioma_id').enable();
+    }
+  }
+
+  lengua(valor):void{
+    if(valor == '0')
+    {
+      this.datosLaborelesForm.get('nivel_lengua_id').disable();
+    }else if(valor != '0')
+    {
+      this.datosLaborelesForm.get('nivel_lengua_id').enable();
     }
   }
   

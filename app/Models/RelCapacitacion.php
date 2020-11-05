@@ -22,6 +22,10 @@ class RelCapacitacion extends Model
     public function titulo_diploma(){
         return $this->belongsTo('App\Models\GradoAcademico', 'titulo_diploma_id', 'id');
     }
+    
+    public function titulo_capacitacion(){
+        return $this->belongsTo('App\Models\GradoAcademico', 'titulo_diploma_id', 'id');
+    }
 
     public function institucion(){
         return $this->belongsTo('App\Models\InstitucionEducativa', 'institucion_id', 'id');

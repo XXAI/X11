@@ -202,7 +202,8 @@
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Idioma</mat-label>
-                                    <mat-select formControlName="idioma_id" required>
+                                    <mat-select formControlName="idioma_id" #idioma (selectionChange) = "idioma(idioma.value)"  required>
+                                        <mat-option [value]="0">NO</mat-option>
                                         <mat-option *ngFor="let item of catalogo['idioma']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
@@ -213,7 +214,7 @@
                                 </mat-form-field> 
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Nivel de Dominio</mat-label>
-                                    <mat-select formControlName="nivel_idioma_id" required>
+                                    <mat-select formControlName="nivel_idioma_id" required >
                                         <mat-option *ngFor="let item of catalogo['nivel_dominio']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
@@ -224,7 +225,9 @@
                                 </mat-form-field> 
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Lengua Indigena</mat-label>
-                                    <mat-select formControlName="lengua_indigena_id" required>
+                                    
+                                    <mat-select formControlName="lengua_indigena_id" #lengua (selectionChange) = "lengua(lengua.value)"  required>
+                                        <mat-option [value]="0">NO</mat-option>
                                         <mat-option *ngFor="let item of catalogo['lengua']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
@@ -309,7 +312,7 @@
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                <mat-form-field fxFlex="50" fxFlex.xs="100">
                                     <mat-label>Actividad</mat-label>
                                     <mat-select formControlName="actividad_id" required>
                                         <mat-option *ngFor="let item of catalogo['actividad']" [value]="item.id">
@@ -343,6 +346,14 @@
                                         <span *ngIf="datosLaborelesForm.get('area_trabajo_id').errors.required">Campo obligatorio</span>
                                     </mat-error>
                                 </mat-form-field> 
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Tipo Personal</mat-label>
                                     <mat-select formControlName="tipo_personal_id" required>
@@ -354,15 +365,7 @@
                                         <span *ngIf="datosLaborelesForm.get('tipo_personal_id').errors.required">Campo obligatorio</span>
                                     </mat-error>
                                 </mat-form-field> 
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
-                        <div fxFlex="100" fxFlex.xs="100">
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                               
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                <!--<mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Unidad Administradora</mat-label>
                                     <mat-select formControlName="unidad_administradora_id" required>
                                         <mat-option *ngFor="let item of catalogo['unidad_administradora']" [value]="item.id">
@@ -372,7 +375,7 @@
                                     <mat-error *ngIf="datosLaborelesForm.get('unidad_administradora_id').invalid && (datosLaborelesForm.get('unidad_administradora_id').dirty || datosLaborelesForm.get('unidad_administradora_id').touched)">
                                         <span *ngIf="datosLaborelesForm.get('unidad_administradora_id').errors.required">Campo obligatorio</span>
                                     </mat-error>
-                                </mat-form-field>
+                                </mat-form-field>-->
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Seguro de Salud</mat-label>
                                     <mat-select formControlName="seguro_salud" required>
