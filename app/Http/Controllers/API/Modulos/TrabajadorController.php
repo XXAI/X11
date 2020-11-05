@@ -69,7 +69,7 @@ class TrabajadorController extends Controller
             $access = $this->getUserAccessData();
             
             $parametros = Input::all();
-            $trabajador = Trabajador::select('trabajador.*')/*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
+            $trabajador = Trabajador::select('trabajador.*')/*->where("rfc", "=", 'VIDM870128TJA')/*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
                                 if(!$access->is_admin){
@@ -232,8 +232,11 @@ class TrabajadorController extends Controller
 
             $params = Input::all();
 
-            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario'/*, 'capacitacionDetalles'*/)->where("id", "=", $id)->first();
+            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'datoslaboralesnomina'/*, 'capacitacionDetalles'*/)->where("id", "=", $id)->first();
 
+            if($trabajador){
+                $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
+            }
             return response()->json($trabajador,HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
@@ -384,6 +387,24 @@ class TrabajadorController extends Controller
                 $object->estatus                    = 0;
                 $object->edad                       = $edad;
                 $object->observacion                = $inputs['observacion'];
+                if($inputs['idioma_id'] != 0)
+                {
+                    $object->idioma_id = $inputs['idioma_id'];
+                    $object->nivel_idioma_id = $inputs['nivel_idioma_id'];
+                }else{
+                    $object->idioma_id = null;
+                    $object->nivel_idioma_id = null;
+                }
+                if($inputs['lengua_indigena_id'] != 0)
+                {
+                    $object->lengua_indigena_id = $inputs['lengua_indigena_id'];
+                    $object->nivel_lengua_id = $inputs['nivel_lengua_id'];
+                }else{
+                    $object->lengua_indigena_id = null;
+                    $object->nivel_lengua_id = null;
+                }
+                
+                $object->lenguaje_senias = $inputs['lenguaje_senias'];
                 $object->save();
             }else if($inputs['tipo_dato'] == 2)
             {
@@ -540,11 +561,7 @@ class TrabajadorController extends Controller
                 $objectCursos->certificacion = $inputs['certificacion'];
                 if($inputs['certificacion'] == 1){ $objectCursos->certificacion_id = $inputs['certificacion_id']; }else { $objectCursos->certificacion_id = null; }
                 $objectCursos->consejo = $inputs['consejo'];
-                $objectCursos->idioma_id = $inputs['idioma_id'];
-                $objectCursos->nivel_idioma_id = $inputs['nivel_idioma_id'];
-                $objectCursos->lengua_indigena_id = $inputs['lengua_indigena_id'];
-                $objectCursos->nivel_lengua_id = $inputs['nivel_lengua_id'];
-                $objectCursos->lenguaje_senias = $inputs['lenguaje_senias'];
+               
                 $objectCursos->anio_cursa_id = $inputs['anio_cursa_id'];
                 $objectCursos->save();
             }

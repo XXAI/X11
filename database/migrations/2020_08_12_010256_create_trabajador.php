@@ -37,8 +37,14 @@ class CreateTrabajador extends Migration
             $table->string('no_exterior',20)->nullable();
             $table->string('calle')->nullable();
             $table->smallInteger("validado")->default(0)->unsigned()->comments("1 = si, 0 = no");
-            $table->smallInteger('estatus')->default(0)->unsigned()->comments("0 = activo, 1 inactivo");;
+            $table->smallInteger('estatus')->default(0)->unsigned()->comments("0 = activo, 1 inactivo");
+            $table->smallInteger('idioma_id')->unsigned()->nullable();
+            $table->smallInteger('nivel_idioma_id')->unsigned()->nullable();
+            $table->smallInteger('lengua_indigena_id')->unsigned()->nullable();
+            $table->smallInteger('nivel_lengua_id')->unsigned()->nullable();
+            $table->smallInteger('lenguaje_senias')->unsigned()->comments("1 = si, 0 = no")->default(0);
             $table->text('observacion')->nullable();
+           
 
             //Estos creo que no van
             $table->smallInteger('entidad_federativa_id')->unsigned()->nullable();

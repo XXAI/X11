@@ -25,11 +25,7 @@ class CreateRelTrabajadorEscolaridadCursante extends Migration
             $table->smallInteger('certificacion')->unsigned()->comments("1 = si, 0 = no")->default(0);
             $table->smallInteger('certificacion_id')->unsigned()->nullable();
             $table->string('consejo', 254)->nullable();
-            $table->smallInteger('idioma_id')->unsigned()->nullable();
-            $table->smallInteger('nivel_idioma_id')->unsigned()->nullable();
-            $table->smallInteger('lengua_indigena_id')->unsigned()->nullable();
-            $table->smallInteger('nivel_lengua_id')->unsigned()->nullable();
-            $table->smallInteger('lenguaje_senias')->unsigned()->comments("1 = si, 0 = no")->default(0);
+           
             $table->timestamps();
             $table->softDeletes();
         });

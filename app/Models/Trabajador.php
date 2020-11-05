@@ -20,8 +20,13 @@ class Trabajador extends Model
     }
 
     public function datoslaborales(){
-        return $this->hasOne('App\Models\RelDatosLaborales');
+        return $this->hasOne('App\Models\RelDatosLaborales')->with('clues_adscripcion');
     }
+    
+    public function datoslaboralesnomina(){
+        return $this->hasOne('App\Models\RelDatosLaboralesNomina')->with('clues', 'cr');
+    }
+    
 
     public function escolaridad(){
         return $this->hasMany('App\Models\RelEscolaridad')->with('grado_academico', 'institucion', 'nombre_estudio');

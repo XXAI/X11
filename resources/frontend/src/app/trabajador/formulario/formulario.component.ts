@@ -23,7 +23,7 @@ import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.comp
 import { CapacitacionDialogComponent } from '../capacitacion-dialog/capacitacion-dialog.component';
 import { ComisionDialogComponent } from '../comision-dialog/comision-dialog.component';
 import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
-//import { count } from 'console';
+
 
 
 @Component({
@@ -53,6 +53,9 @@ export class FormularioComponent implements OnInit {
   datosComision:any = null;
   isLoading:boolean = false;
   dias:number = 0;
+  datos_laborales_nomina:any;
+  imagen_trabajador:string = 'assets/trabajador.jpg';
+
 
   trabajador_id:string;
   nombre_trabajador:string;
@@ -217,11 +220,15 @@ export class FormularioComponent implements OnInit {
 
   cargarTrabajador(id):void{
     
+    
     this.trabajadorService.buscarTrabajador(id, {}).subscribe(
       response =>{
-        //console.log(response);
+
+
+       
         let trabajador = response;
-        
+        this.datos_laborales_nomina = trabajador.datoslaboralesnomina;
+
         this.verificar_curp(trabajador.curp);
         this.nombre_trabajador= trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+trabajador.nombre;
         this.trabajadorForm.patchValue(trabajador);  //carga datos de trabajador
@@ -255,7 +262,6 @@ export class FormularioComponent implements OnInit {
         }
         
         this.datosLaborelesForm.patchValue({fecha_ingreso: ingreso, fecha_ingreso_federal: ingreso_federal}); 
-        //this.datosLaborelesForm.patchValue( {seguro_salud: 1, licencia_maternidad: 0, seguro_retiro: 0, recurso_formacion:0, tiene_fiel:0});
         //Caga datos dehorario
         let datos_horario = trabajador.horario;
         this.datosHorarioForm.patchValue({jornada_id: datos_laborales.jornada_id});
@@ -280,7 +286,7 @@ export class FormularioComponent implements OnInit {
         }
 
         //Escolaridad
-        this.datosEscolaresForm.patchValue({ nivel_maximo_id: trabajador.nivel_maximo_id});
+        /*this.datosEscolaresForm.patchValue({ nivel_maximo_id: trabajador.nivel_maximo_id});
         let datos_escolares = trabajador.escolaridad;
         
         for(let i = 0; i < datos_escolares.length; i++)
@@ -301,8 +307,7 @@ export class FormularioComponent implements OnInit {
         }
         this.datosEstudios = datos_escolares;
         this.dataSourceEstudios.data = datos_escolares;
-        //this.datosEscolaresForm.patchValue(datos_escolares);
-
+        
         //Capacitacion
         let Capacitacion = trabajador.capacitacion;
         let CapacitacionDetalles = trabajador.capacitacion_detalles;
@@ -328,7 +333,31 @@ export class FormularioComponent implements OnInit {
         this.datosCursosForm.patchValue(datosEscolaridadCursante);
         //console.log(datosEscolaridadCursante.colegiacion);
         this.tiene_colegio(datosEscolaridadCursante.colegiacion);
-        this.tiene_certificado(datosEscolaridadCursante.certificacion);
+        this.tiene_certificado(datosEscolaridadCursante.certificacion);*/
+
+        this.trabajadorService.getDatosCredencial(trabajador.clave_credencial).subscribe(
+          response => {
+            
+            if(response.length > 0){
+              let datosCredencial = response[0];
+              if(datosCredencial.tieneFoto == '1'){
+                this.imagen_trabajador = 'http://credencializacion.saludchiapas.gob.mx/images/credenciales/'+datosCredencial.id+'.'+datosCredencial.tipoFoto;
+                console.log(this.imagen_trabajador);
+              }
+            }/*else{
+              this.datosCredencial = undefined;
+            }
+            this.isLoadingCredential = false;*/
+          }
+        ),
+        errorResponse =>{
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+          
+        };
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -535,7 +564,7 @@ export class FormularioComponent implements OnInit {
     if(curp.length == 18)
     {
       let rfc = this.trabajadorForm.get('rfc').value;
-      console.log(rfc);
+      //console.log(rfc);
       if(rfc.length == 0)
       {
         this.trabajadorForm.patchValue({rfc: curp.substring(0, 10)}); 
@@ -598,12 +627,12 @@ export class FormularioComponent implements OnInit {
       data = this.datosCursosForm.value;
       //data.datos = this.datosEstudios;
     }
-    console.log(this.datosEstudios);
+    //console.log(this.datosEstudios);
 
     this.isLoading = true;
     //data.trabajador_id = this.trabajador_id;
     data.tipo_dato = tipo;
-    console.log(data); 
+    //console.log(data); 
     this.trabajadorService.guardarTrabajador(this.trabajador_id, data).subscribe(
       response =>{
         //console.log(response);
@@ -641,7 +670,7 @@ export class FormularioComponent implements OnInit {
     const dialogRef = this.dialog.open(JornadaDialogComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
-      console.log(valid);
+      
       if(valid){
         if(valid.estatus){
           for (let index = 0; index < valid.dias.length; index++) {
@@ -655,7 +684,7 @@ export class FormularioComponent implements OnInit {
   showEstudiosDialog(index_editable = null){
     let configDialog = {};
     let index = index_editable;
-    //console.log(index_editable);
+    
     if(this.mediaSize == 'xs'){
       configDialog = {
         maxWidth: '100vw',
@@ -675,7 +704,7 @@ export class FormularioComponent implements OnInit {
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
         if(valid.estatus){
-          console.log(index);
+         
           if(index != null)
           {
             this.datosEstudios[index] = valid.datos;  
@@ -689,7 +718,7 @@ export class FormularioComponent implements OnInit {
     });
   }
   
-  showCapacitacionDialog(index_editable = null){
+  /*showCapacitacionDialog(index_editable = null){
     let configDialog = {};
     let index = index_editable;
     if(this.mediaSize == 'xs'){
@@ -717,13 +746,12 @@ export class FormularioComponent implements OnInit {
           }else{
             this.datosCapacitacion.push(valid.datos);
           }
-          //console.log(this.datosCapacitacion);
-          console.log(valid.datos);
+         
           this.dataSourceCapacitacion.data = this.datosCapacitacion;
         }
       }
     });
-  }
+  }*/
 
   showComisionDialog(){
     let configDialog = {};
@@ -747,7 +775,7 @@ export class FormularioComponent implements OnInit {
       if(valid){
         if(valid.estatus){
           this.datosComision = valid.datos;
-          console.log(this.datosComision);
+          
         }
       }
     });
@@ -793,22 +821,23 @@ export class FormularioComponent implements OnInit {
   }
 
   idioma(valor):void{
+    
     if(valor == '0')
     {
-      this.datosLaborelesForm.get('nivel_idioma_id').disable();
+      this.trabajadorForm.get('nivel_idioma_id').disable();
     }else if(valor != '0')
     {
-      this.datosLaborelesForm.get('nivel_idioma_id').enable();
+      this.trabajadorForm.get('nivel_idioma_id').enable();
     }
   }
 
   lengua(valor):void{
     if(valor == '0')
     {
-      this.datosLaborelesForm.get('nivel_lengua_id').disable();
+      this.trabajadorForm.get('nivel_lengua_id').disable();
     }else if(valor != '0')
     {
-      this.datosLaborelesForm.get('nivel_lengua_id').enable();
+      this.trabajadorForm.get('nivel_lengua_id').enable();
     }
   }
   
@@ -835,7 +864,7 @@ export class FormularioComponent implements OnInit {
     }   
   }
 
-  tiene_capacitacion(valor):void{
+  /*tiene_capacitacion(valor):void{
     if(valor == '0')
     {
       this.datosCapacitacionForm.get('grado_academico_id').disable();
@@ -848,12 +877,7 @@ export class FormularioComponent implements OnInit {
       this.datosCapacitacionForm.get('otro_institucion_educativa').disable();
     }else if(valor == '1')
     {
-      //console.log(this.datosCapacitacionForm.get('otro_institucion_educativa'));
       this.datosCapacitacionForm.get('grado_academico_id').enable();
-      //this.datosCapacitacionForm.get('titulo_capacitacion').enable();
-      //this.datosCapacitacionForm.get('otro_nombre_titulo').enable();
-      //this.datosCapacitacionForm.get('institucion').enable();
-      //this.datosCapacitacionForm.get('otro_nombre_institucion').enable();
       this.datosCapacitacionForm.get('ciclo_id').enable();
       this.datosCapacitacionForm.get('otro_estudio_capacitacion').enable();
       this.datosCapacitacionForm.get('otro_institucion_educativa').enable();
@@ -881,7 +905,7 @@ export class FormularioComponent implements OnInit {
     {
       this.datosCursosForm.get('certificacion_id').enable();
     }
-  }
+  }*/
 
   jornada(key, valor, inicio:any = null, fin:any = null)
   {
@@ -1041,7 +1065,7 @@ export class FormularioComponent implements OnInit {
     });
   }
   
-  eliminarCapacitacion(index)
+  /*eliminarCapacitacion(index)
   {
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
@@ -1054,7 +1078,7 @@ export class FormularioComponent implements OnInit {
         this.dataSourceCapacitacion.data = this.datosCapacitacion;
       }
     });
-  }
+  }*/
 
   /* Displays functions */
   displayMunicipioFn(item: any) {
