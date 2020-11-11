@@ -16,7 +16,7 @@ class CreateTableCatalogoEntidadNacimiento extends Migration
         Schema::create('catalogo_entidad_nacimiento', function (Blueprint $table) {
             $table->smallIncrements('id')->unsigned();
             $table->string('descripcion', 256);
-            $table->smallInteger('clave_sinergias')->unsigned();
+            
             $table->timestamps();
             $table->softDeletes();
         });

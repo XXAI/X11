@@ -31,6 +31,7 @@ Route::group([
 });
 
 Route::post('signin',   'API\Auth\AuthController@login');
+Route::post('register',   'API\Admin\RegistroController@register');
 Route::post('refresh',  'API\Auth\AuthController@refresh');
 
 Route::group(['middleware'=>'auth'],function($router){

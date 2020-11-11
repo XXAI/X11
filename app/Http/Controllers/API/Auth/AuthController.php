@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Permission;
+use App\Models\Trabajador;
 
 class AuthController extends Controller{
     /**
@@ -115,4 +116,6 @@ class AuthController extends Controller{
 
         return response()->json($response);
     }
+
+    
 }

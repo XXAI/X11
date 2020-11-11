@@ -1,0 +1,46 @@
+<section class="login" >
+  
+    <form fxLayout fxLayoutAlign="center center" [formGroup]="registroForm" fxFlex="100">
+      <mat-card fxFlex.xs="100%" fxFlex="400px">
+        <mat-card-title fxLayoutAlign="center"> <span *ngIf="!isLoading">REGISTRO</span> <span *ngIf="isLoading">Conectando...</span></mat-card-title>
+        <div><img style="width:30%" src="assets/Logo SIRH en salud 2019-03.png" alt=""></div>
+        <mat-divider></mat-divider>
+        <mat-card-content fxLayout="column">
+            <br>
+            <section fxFlex fxLayout="row" fxLayoutAlign="space-evenly center">
+              <!--<section fxFlex="30" class="mat-elevation-z1">
+                  <img style="width:50%" src="assets/Logo SIRH en salud 2019-03.png" alt="">
+              </section>-->
+              <section fxFlex="100" fxLayout="column">
+                <mat-spinner *ngIf="isLoading"  [diameter]="90" fxFlexAlign="center" ></mat-spinner>
+                <mat-form-field fxFlex *ngIf="!isLoading" appearance="outline">
+                  <mat-label>Usuario (rfc)</mat-label>
+                    <input type="text" matInput #username placeholder="Usuario" formControlName="rfc" autocomplete="off" minlength="13">
+                    <mat-error *ngIf="registroForm.get('rfc').invalid && (registroForm.get('rfc').dirty || registroForm.get('rfc').touched)">
+                      <span *ngIf="registroForm.get('rfc').errors.required">Campo obligatorio</span>
+                      <span *ngIf="registroForm.get('rfc').errors.minlength">Este campo requiere 13 caracteres</span>
+                    </mat-error>
+                    <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+                <mat-form-field fxFlex *ngIf="!isLoading" appearance="outline">
+                    <mat-label>Contraseña</mat-label>
+                    <input type="password" matInput placeholder="Tu contraseña" formControlName="password"autocomplete="off" minlength="8">
+                    <mat-error *ngIf="registroForm.get('password').invalid && (registroForm.get('password').dirty || registroForm.get('password').touched)">
+                      <span *ngIf="registroForm.get('password').errors.required">Campo obligatorio</span>
+                      <span *ngIf="registroForm.get('password').errors.minlength">Este campo requiere 8 caracteres</span>
+                    </mat-error>
+                    <mat-icon matSuffix>vpn_key</mat-icon>
+                </mat-form-field>
+                
+              </section>
+            </section>
+        </mat-card-content>
+        
+        <mat-card-actions fxLayout="column" fxAlignItems="center" fxLayoutGap="10px" *ngIf="!isLoading">
+            <button  type="button" mat-raised-button color="primary" (click)="enviar()" [disabled]="registroForm.invalid">REGISTRAR</button>
+            <a mat-button  routerLink="/login" style='color:blue'>Regresar al Login</a>        
+                       
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </section>

@@ -14,10 +14,9 @@ class CreateCatalogoCursos extends Migration
     public function up()
     {
         Schema::create('catalogo_cursos', function (Blueprint $table) {
-            $table->smallIncrements('id')->unsigned();
+            $table->mediumIncrements('id')->unsigned();
             $table->string('descripcion', 256);
-            $table->smallInteger('entidad_id')->unsigned();;
-            $table->mediumInteger('clave_sinergias')->unsigned();
+            $table->smallInteger('entidad_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

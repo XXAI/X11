@@ -20,7 +20,7 @@ class Trabajador extends Model
     }
 
     public function datoslaborales(){
-        return $this->hasOne('App\Models\RelDatosLaborales')->with('clues_adscripcion');
+        return $this->hasOne('App\Models\RelDatosLaborales')->with('clues_fisico', 'cr_fisico');
     }
     
     public function datoslaboralesnomina(){

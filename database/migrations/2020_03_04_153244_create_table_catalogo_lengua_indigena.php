@@ -16,7 +16,6 @@ class CreateTableCatalogoLenguaIndigena extends Migration
         Schema::create('catalogo_lengua_indigena', function (Blueprint $table) {
             $table->smallIncrements('id')->unsigned();
             $table->string('descripcion', 256);
-            $table->smallInteger('clave_sinergias')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

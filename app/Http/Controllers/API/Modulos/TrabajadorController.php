@@ -19,6 +19,7 @@ use App\Models\Entidad;
 use App\Models\Municipio;
 use App\Models\Nacionalidad;
 use App\Models\EstadoConyugal;
+use App\Models\EstudiosAcademicos;
 use App\Models\Sexo;
 use App\Models\Codigo;
 use App\Models\Rama;
@@ -54,6 +55,7 @@ use App\Models\RelEscolaridad;
 use App\Models\RelEscolaridadCursante;
 use App\Models\RelHorario;
 use App\Models\RelNomina;
+use App\Models\User;
 
 use App\Exports\DevReportExport;
 
@@ -67,9 +69,10 @@ class TrabajadorController extends Controller
 
         try{
             $access = $this->getUserAccessData();
-            
+            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
+
             $parametros = Input::all();
-            $trabajador = Trabajador::select('trabajador.*')/*->where("rfc", "=", 'VIDM870128TJA')/*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
+            $trabajador = Trabajador::select('trabajador.*')/*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
                                 if(!$access->is_admin){
@@ -77,9 +80,18 @@ class TrabajadorController extends Controller
                                 }
                             })*/;
             
+            foreach ($permisos->roles as $key => $value) {
+                foreach ($value->permissions as $key2 => $value2) {
+                    if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
+                    {
+                        $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
+                    }
+                }
+            }
+            
             //filtro de valores por permisos del usuario
             /*if(!$access->is_admin){
-                $empleados = $empleados->where(function($query){
+                $trabajador = $trabajador->where(function($query){
                     $query->whereIn('empleados.estatus',[1,4]);
                 })->where(function($query)use($access){
                     $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
@@ -88,7 +100,7 @@ class TrabajadorController extends Controller
                         });
                 });
             }
-
+            
             //Sacamos totales para el estatus de las cantidades validadas
             $estatus_validacion = clone $empleados;
             $estatus_validacion = $estatus_validacion->select(DB::raw('sum(IF(empleados.estatus = 1 OR empleados.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(empleados.estatus = 1 AND empleados.validado = 1,1,0)) as total_validados'),DB::raw('count(empleados.id) as total_registros'))->first();
@@ -228,11 +240,21 @@ class TrabajadorController extends Controller
     public function show($id)
     {
         try{
-            $access = $this->getUserAccessData();
-
+            $loggedUser = auth()->userOrFail();
+            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
             $params = Input::all();
 
-            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'datoslaboralesnomina'/*, 'capacitacionDetalles'*/)->where("id", "=", $id)->first();
+            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'datoslaboralesnomina'/*, 'capacitacionDetalles'*/)->where("id", "=", $id);
+
+            foreach ($permisos->roles as $key => $value) {
+                foreach ($value->permissions as $key2 => $value2) {
+                    if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
+                    {
+                        $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
+                    }
+                }
+            }
+            $trabajador = $trabajador->first();
 
             if($trabajador){
                 $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
@@ -273,6 +295,9 @@ class TrabajadorController extends Controller
                 'municipio_nacimiento_id'   => 'required',
                 'estado_conyugal_id'        => 'required',
                 'sexo'                      => 'required',
+                'idioma_id'                 => 'required',
+                'lengua_indigena_id'        => 'required',
+                'lenguaje_senias'           => 'required',
             ];
             
             if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
@@ -287,7 +312,6 @@ class TrabajadorController extends Controller
                 'area_trabajo_id'           => 'required',
                 'tipo_personal_id'         => 'required',
                 'fecha_ingreso'             => 'required',
-                'unidad_administradora_id'  => 'required',
                 'seguro_salud'              => 'required',
                 'licencia_maternidad'       => 'required',
                 'seguro_retiro'             => 'required',
@@ -324,11 +348,7 @@ class TrabajadorController extends Controller
                 'certificacion'             => 'required',
                 //'certificacion_id'              => 'required',
                 'consejo'                   => 'required',
-                'idioma_id'                 => 'required',
-                'nivel_idioma_id'           => 'required',
-                'lengua_indigena_id'        => 'required',
-                'nivel_lengua_id'           => 'required',
-                'lenguaje_senias'           => 'required',
+                
             ];
         }
 
@@ -421,7 +441,7 @@ class TrabajadorController extends Controller
                 $objectRL->tipo_personal_id         = $inputs['tipo_personal_id'];
                 $objectRL->fecha_ingreso            = $inputs['fecha_ingreso'];
                 $objectRL->fecha_ingreso_federal    = $inputs['fecha_ingreso_federal'];
-                $objectRL->unidad_administradora_id = $inputs['unidad_administradora_id'];
+                //$objectRL->unidad_administradora_id = $inputs['unidad_administradora_id'];
                 $objectRL->seguro_salud             = $inputs['seguro_salud'];
                 $objectRL->licencia_maternidad      = $inputs['licencia_maternidad'];
                 $objectRL->seguro_retiro            = $inputs['seguro_retiro'];
@@ -491,10 +511,13 @@ class TrabajadorController extends Controller
                         $objectEscolaridad->institucion_id = $dato['institucion']['id'];
                         $objectEscolaridad->otro_nombre_institucion = null;
                     }
+
                     $objectEscolaridad->cedula = $dato['cedula'];
-                    if($dato['otro_institucion'] == 1)
+                    if($dato['cedula'] == 1)
                     {
                         $objectEscolaridad->no_cedula = $dato['no_cedula'];
+                    }else{
+                        $objectEscolaridad->no_cedula = null;
                     }
                     $objectEscolaridad->save();
                     $indice_escolaridad++;
@@ -566,6 +589,9 @@ class TrabajadorController extends Controller
                 $objectCursos->save();
             }
             
+            $object->estatus = 1;
+            $object->save();
+
             return response()->json($object,HttpResponse::HTTP_OK);
 
         } catch (\Exception $e) {
@@ -592,6 +618,7 @@ class TrabajadorController extends Controller
             $catalogos['ur']         = UR::all();
             $catalogos['jornada']         = Jornada::orderBy("descripcion")->get();
             $catalogos['grado_academico']         = GradoAcademico::all();
+            $catalogos['grado_academico_estudios']         = GradoAcademico::whereIn("id", [2039843,2039848,2039849, 2039850, 2039851, 2039852, 2039853,2039854,2039855, 2039856])->get();
             $catalogos['institucion_educativa']         = InstitucionEducativa::all();
             $catalogos['anio_cursa']         = AnioCursa::all();
             $catalogos['ciclo_formacion']         = CicloFormacion::all();
@@ -620,8 +647,10 @@ class TrabajadorController extends Controller
                 break;
                 
                 case 2:
-                $obj = Profesion::where("descripcion", "like", "%".$parametros['query']."%")
-                ->where("tipo_profesion_id", "=", $parametros['grado_academico']);
+                /*$obj = Profesion::where("descripcion", "like", "%".$parametros['query']."%")
+                ->where("tipo_profesion_id", "=", $parametros['grado_academico']);*/
+                $obj = EstudiosAcademicos::where("descripcion", "like", "%".$parametros['query']."%")
+                ->where("grado_academico_id", "=", $parametros['grado_academico']);
                 break;
                 case 3:
                 $obj = InstitucionEducativa::where("descripcion", "like", "%".$parametros['query']."%");

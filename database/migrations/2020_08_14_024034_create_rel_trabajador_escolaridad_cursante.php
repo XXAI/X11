@@ -16,14 +16,14 @@ class CreateRelTrabajadorEscolaridadCursante extends Migration
         Schema::create('rel_trabajador_escolaridad_cursante', function (Blueprint $table) {
             $table->Increments('id')->unsigned();
             $table->smallInteger('trabajador_id')->unsigned();
-            $table->smallInteger('tipo_ciclo_formacion_id')->unsigned()->nullable();
-            $table->smallInteger('carrera_ciclo_id')->unsigned()->nullable();
-            $table->smallInteger('institucion_ciclo_id')->unsigned()->nullable();
-            $table->smallInteger('anio_cursa_id')->unsigned()->nullable();
+            $table->mediumInteger('tipo_ciclo_formacion_id')->unsigned()->nullable();
+            $table->mediumInteger('carrera_ciclo_id')->unsigned()->nullable();
+            $table->mediumInteger('institucion_ciclo_id')->unsigned()->nullable();
+            $table->mediumInteger('anio_cursa_id')->unsigned()->nullable();
             $table->smallInteger('colegiacion')->unsigned()->comments("1 = si, 0 = no")->default(0);
-            $table->smallInteger('colegio_id')->unsigned()->nullable();
+            $table->mediumInteger('colegio_id')->unsigned()->nullable();
             $table->smallInteger('certificacion')->unsigned()->comments("1 = si, 0 = no")->default(0);
-            $table->smallInteger('certificacion_id')->unsigned()->nullable();
+            $table->mediumInteger('certificacion_id')->unsigned()->nullable();
             $table->string('consejo', 254)->nullable();
            
             $table->timestamps();

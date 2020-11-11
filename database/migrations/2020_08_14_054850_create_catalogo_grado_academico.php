@@ -14,9 +14,8 @@ class CreateCatalogoGradoAcademico extends Migration
     public function up()
     {
         Schema::create('catalogo_grado_academico', function (Blueprint $table) {
-            $table->smallIncrements('id')->unsigned();
+            $table->mediumIncrements('id')->unsigned();
             $table->string('descripcion', 256);
-            $table->smallInteger('clave_sinergias')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

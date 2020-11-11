@@ -16,7 +16,6 @@ class CreateTableCatalogoPaisNacimiento extends Migration
         Schema::create('catalogo_pais_nacimiento', function (Blueprint $table) {
             $table->smallIncrements('id')->unsigned();
             $table->string('descripcion', 256);
-            $table->smallInteger('clave_sinergias')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

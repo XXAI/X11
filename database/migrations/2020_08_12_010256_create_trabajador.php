@@ -25,9 +25,9 @@ class CreateTrabajador extends Migration
             $table->smallInteger('entidad_nacimiento_id')->unsigned()->nullable();
             $table->smallInteger('municipio_nacimiento_id')->unsigned()->nullable();         
             $table->smallInteger('edad')->unsigned()->nullable();
-            $table->smallInteger('nacionalidad_id')->unsigned()->nullable();
-            $table->smallInteger('estado_conyugal_id')->unsigned()->nullable();
-            $table->smallInteger('sexo_id')->unsigned()->nullable();
+            $table->mediumInteger('nacionalidad_id')->unsigned()->nullable();
+            $table->mediumInteger('estado_conyugal_id')->unsigned()->nullable();
+            $table->mediumInteger('sexo_id')->unsigned()->nullable();
             $table->string('telefono_fijo',50)->nullable();
             $table->string('telefono_celular',50)->nullable();
             $table->string('correo_electronico', 100)->nullable();
@@ -38,10 +38,10 @@ class CreateTrabajador extends Migration
             $table->string('calle')->nullable();
             $table->smallInteger("validado")->default(0)->unsigned()->comments("1 = si, 0 = no");
             $table->smallInteger('estatus')->default(0)->unsigned()->comments("0 = activo, 1 inactivo");
-            $table->smallInteger('idioma_id')->unsigned()->nullable();
-            $table->smallInteger('nivel_idioma_id')->unsigned()->nullable();
+            $table->mediumInteger('idioma_id')->unsigned()->nullable();
+            $table->mediumInteger('nivel_idioma_id')->unsigned()->nullable();
             $table->smallInteger('lengua_indigena_id')->unsigned()->nullable();
-            $table->smallInteger('nivel_lengua_id')->unsigned()->nullable();
+            $table->mediumInteger('nivel_lengua_id')->unsigned()->nullable();
             $table->smallInteger('lenguaje_senias')->unsigned()->comments("1 = si, 0 = no")->default(0);
             $table->text('observacion')->nullable();
            

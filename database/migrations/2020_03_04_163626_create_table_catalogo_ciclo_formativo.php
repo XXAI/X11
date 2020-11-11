@@ -14,9 +14,8 @@ class CreateTableCatalogoCicloFormativo extends Migration
     public function up()
     {
         Schema::create('catalogo_ciclo_formativo', function (Blueprint $table) {
-            $table->smallIncrements('id')->unsigned();
+            $table->mediumIncrements('id')->unsigned();
             $table->string('descripcion', 256);
-            $table->mediumInteger('clave_sinergias')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

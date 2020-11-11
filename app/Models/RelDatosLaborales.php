@@ -13,7 +13,7 @@ class RelDatosLaborales extends Model
     protected $table = 'rel_trabajador_datos_laborales';
 
 
-    public function clues_adscripcion(){
+    public function clues_fisico(){
         return $this->belongsTo('App\Models\Clues', 'clues_adscripcion_fisica', 'clues');
     }
 
@@ -31,6 +31,8 @@ class RelDatosLaborales extends Model
     public function cr_fisico(){
         return $this->belongsTo('App\Models\Cr', 'cr_fisico_id', 'cr');
     }
+
+    
     // public function motivo(){
     //     return $this->belongsTo('App\Models\Motivo');
     // }

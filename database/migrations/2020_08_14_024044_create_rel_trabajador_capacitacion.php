@@ -18,11 +18,11 @@ class CreateRelTrabajadorCapacitacion extends Migration
             $table->smallInteger('trabajador_id')->unsigned();
             $table->smallInteger('capacitacion_anual')->unsigned()->comments("1 = si, 0 = no")->default(0);
             $table->smallInteger('grado_academico')->unsigned()->comments("1 = si, 0 = no")->default(0);
-            $table->smallInteger('titulo_diploma_id')->unsigned()->nullable();
+            $table->mediumInteger('titulo_diploma_id')->unsigned()->nullable();
             $table->string('otro_nombre_titulo', 254)->nullable();
-            $table->smallInteger('institucion_id')->unsigned()->nullable();
+            $table->mediumInteger('institucion_id')->unsigned()->nullable();
             $table->string('otro_nombre_institucion', 254)->nullable();
-            $table->smallInteger('ciclo_id')->unsigned()->nullable();
+            $table->mediumInteger('ciclo_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

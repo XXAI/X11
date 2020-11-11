@@ -17,7 +17,6 @@ class CreateTableCatalogoMunicipioNacimiento extends Migration
             $table->smallIncrements('id')->unsigned();
             $table->smallInteger('entidad_id')->unsigned();
             $table->string('descripcion', 256);
-            $table->smallInteger('clave_sinergias')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 

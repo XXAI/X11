@@ -170,5 +170,10 @@ export class VerComponent implements OnInit {
   }
 
   
+  loadPrevious():void{
 
+  }
+  loadNext():void{
+    
+  }
 }

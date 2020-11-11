@@ -53,9 +53,11 @@ export class FormularioComponent implements OnInit {
   datosComision:any = null;
   isLoading:boolean = false;
   dias:number = 0;
-  datos_laborales_nomina:any;
+  datos_laborales:any = { cr: []};
+  datos_personales:any;
+  datos_laborales_nomina:any = { clues: []};
   imagen_trabajador:string = 'assets/trabajador.jpg';
-
+  selectedItemIndex: number = -1;
 
   trabajador_id:string;
   nombre_trabajador:string;
@@ -223,12 +225,16 @@ export class FormularioComponent implements OnInit {
     
     this.trabajadorService.buscarTrabajador(id, {}).subscribe(
       response =>{
-
-
-       
+        if(response.length == 0)
+        {
+          //this.router.navigate(['/login']);
+        }
         let trabajador = response;
+        this.datos_personales = response;
         this.datos_laborales_nomina = trabajador.datoslaboralesnomina;
 
+        this.idioma(trabajador.idioma_id);
+        this.lengua(trabajador.lengua_id);
         this.verificar_curp(trabajador.curp);
         this.nombre_trabajador= trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+trabajador.nombre;
         this.trabajadorForm.patchValue(trabajador);  //carga datos de trabajador
@@ -237,26 +243,27 @@ export class FormularioComponent implements OnInit {
         /* Fech de ingreso */ // Carga datos laborales
         let ingreso;
         this.datosLaborelesForm.patchValue(trabajador.datoslaborales);
-        let datos_laborales = trabajador.datoslaborales;
-        let anio = datos_laborales.fecha_ingreso.substring(0,4);
-        let mes = (parseInt(datos_laborales.fecha_ingreso.substring(5,7)) - 1);
-        let dia = parseInt(datos_laborales.fecha_ingreso.substring(8,10));
+        
+        this.datos_laborales = trabajador.datoslaborales;
+        let anio = this.datos_laborales.fecha_ingreso.substring(0,4);
+        let mes = (parseInt(this.datos_laborales.fecha_ingreso.substring(5,7)) - 1);
+        let dia = parseInt(this.datos_laborales.fecha_ingreso.substring(8,10));
         ingreso = new Date(anio,+mes,dia);
 
         let ingreso_federal;
-        let anio_federal = datos_laborales.fecha_ingreso_federal.substring(0,4);
-        let mes_federal = (parseInt(datos_laborales.fecha_ingreso_federal.substring(5,7)) - 1);
-        let dia_federal = parseInt(datos_laborales.fecha_ingreso_federal.substring(8,10));
+        let anio_federal = this.datos_laborales.fecha_ingreso_federal.substring(0,4);
+        let mes_federal = (parseInt(this.datos_laborales.fecha_ingreso_federal.substring(5,7)) - 1);
+        let dia_federal = parseInt(this.datos_laborales.fecha_ingreso_federal.substring(8,10));
         
         ingreso_federal = new Date(anio_federal,mes_federal,dia_federal);
 
-        if(datos_laborales.vigencia_fiel != null)
+        if(this.datos_laborales.vigencia_fiel != null)
         {
-          this.fiel(datos_laborales.tiene_fiel);
+          this.fiel(this.datos_laborales.tiene_fiel);
           let vigencia_fiel;
-          let anio_fiel = datos_laborales.vigencia_fiel.substring(0,4);
-          let mes_fiel = (parseInt(datos_laborales.vigencia_fiel.substring(5,7)) - 1)
-          let dia_fiel = parseInt(datos_laborales.vigencia_fiel.substring(8,10));
+          let anio_fiel = this.datos_laborales.vigencia_fiel.substring(0,4);
+          let mes_fiel = (parseInt(this.datos_laborales.vigencia_fiel.substring(5,7)) - 1)
+          let dia_fiel = parseInt(this.datos_laborales.vigencia_fiel.substring(8,10));
           vigencia_fiel = new Date(anio_fiel,+mes_fiel,dia_fiel);
           this.datosLaborelesForm.patchValue({vigencia_fiel: vigencia_fiel}); 
         }
@@ -264,7 +271,7 @@ export class FormularioComponent implements OnInit {
         this.datosLaborelesForm.patchValue({fecha_ingreso: ingreso, fecha_ingreso_federal: ingreso_federal}); 
         //Caga datos dehorario
         let datos_horario = trabajador.horario;
-        this.datosHorarioForm.patchValue({jornada_id: datos_laborales.jornada_id});
+        this.datosHorarioForm.patchValue({jornada_id: this.datos_laborales.jornada_id});
         let dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo", "festivo"];
         for(let i = 0; i < datos_horario.length; i++)
         {
@@ -286,7 +293,7 @@ export class FormularioComponent implements OnInit {
         }
 
         //Escolaridad
-        /*this.datosEscolaresForm.patchValue({ nivel_maximo_id: trabajador.nivel_maximo_id});
+        this.datosEscolaresForm.patchValue({ nivel_maximo_id: trabajador.nivel_maximo_id});
         let datos_escolares = trabajador.escolaridad;
         
         for(let i = 0; i < datos_escolares.length; i++)
@@ -307,7 +314,7 @@ export class FormularioComponent implements OnInit {
         }
         this.datosEstudios = datos_escolares;
         this.dataSourceEstudios.data = datos_escolares;
-        
+        /*
         //Capacitacion
         let Capacitacion = trabajador.capacitacion;
         let CapacitacionDetalles = trabajador.capacitacion_detalles;
@@ -537,8 +544,8 @@ export class FormularioComponent implements OnInit {
   }
 
   cargarDatosDefault():void{
-    let datos = { colegiacion:0, certificacion:0, capacitacion_anual:0};
-    this.trabajadorForm.patchValue(datos);
+    //let datos = { colegiacion:0, certificacion:0, capacitacion_anual:0};
+    //this.trabajadorForm.patchValue(datos);
   }
 
   cargarCatalogos():void{
@@ -583,19 +590,19 @@ export class FormularioComponent implements OnInit {
       
       if(sexo == "H")
       {
-        this.trabajadorForm.patchValue({sexo: 1});
+        this.trabajadorForm.patchValue({sexo: 2029389});
       }else if(sexo == "M")
       {
-          this.trabajadorForm.patchValue({sexo: 2});
+          this.trabajadorForm.patchValue({sexo: 2029390});
       }
       if(estado == "NE")
       {
         this.trabajadorForm.get('municipio').disable();
-        this.trabajadorForm.patchValue({nacionalidad_id: 2, entidad_nacimiento_id:2499 });
+        this.trabajadorForm.patchValue({nacionalidad_id: 2047952, entidad_nacimiento_id:2499 });
         
       }else{
         this.trabajadorForm.get('municipio').enable();
-        this.trabajadorForm.patchValue({nacionalidad_id: 1, pais_nacimiento_id:142, entidad_nacimiento_id:7});
+        this.trabajadorForm.patchValue({nacionalidad_id: 2047951, pais_nacimiento_id:142, entidad_nacimiento_id:7});
 
       }
     }
@@ -691,13 +698,13 @@ export class FormularioComponent implements OnInit {
         maxHeight: '100vh',
         height: '100%',
         width: '100%',
-        data:{scSize:this.mediaSize, catalogos: this.catalogo['grado_academico'], editable: this.datosEstudios[index_editable] },
+        data:{scSize:this.mediaSize, catalogos: this.catalogo['grado_academico_estudios'], editable: this.datosEstudios[index_editable] },
       };
     }else{
       
       configDialog = {
         width: '95%',
-        data:{ catalogos: this.catalogo['grado_academico'], editable: this.datosEstudios[index_editable] },
+        data:{ catalogos: this.catalogo['grado_academico_estudios'], editable: this.datosEstudios[index_editable] },
       }
     }
     const dialogRef = this.dialog.open(EstudiosDialogComponent, configDialog);
@@ -709,7 +716,14 @@ export class FormularioComponent implements OnInit {
           {
             this.datosEstudios[index] = valid.datos;  
           }else{
-            this.datosEstudios.push(valid.datos);
+            if(this.datosEstudios.length == 4)
+            {
+              let mensaje = "Solo se puede agregar hasta 4 grados escolares";
+              this.sharedService.showSnackBar(mensaje, "ERROR", 3000);
+            }else{
+              this.datosEstudios.push(valid.datos);
+            }
+            
           }
           this.dataSourceEstudios.data = this.datosEstudios;
           

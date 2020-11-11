@@ -22,6 +22,7 @@ export class EstudiosDialogComponent implements OnInit {
   filteredInstitucion: Observable<any[]>;
   resultado:any = { estatus: false, datos:{}, dias:[]};
   texto_grado_seleccionado:string = "";
+  tituloIsLoading:boolean = false;
   
   constructor(
     private sharedService: SharedService, 

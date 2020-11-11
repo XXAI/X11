@@ -14,10 +14,10 @@ class CreateRelTrabajadorCapacitacionDetalles extends Migration
     public function up()
     {
         Schema::create('rel_trabajador_capacitacion_detalles', function (Blueprint $table) {
-            $table->Increments('id')->unsigned();
+            $table->mediumIncrements('id')->unsigned();
             $table->smallInteger('trabajador_id')->unsigned();
             $table->smallInteger('entidad_id')->unsigned()->nullable();
-            $table->smallInteger('nombre_curso_id')->unsigned()->nullable();
+            $table->mediumInteger('nombre_curso_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
