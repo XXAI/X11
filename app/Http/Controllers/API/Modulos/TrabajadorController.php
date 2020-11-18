@@ -79,12 +79,13 @@ class TrabajadorController extends Controller
                                     $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                 }
                             })*/;
-            
-            foreach ($permisos->roles as $key => $value) {
-                foreach ($value->permissions as $key2 => $value2) {
-                    if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
-                    {
-                        $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
+            if(!$access->is_admin){
+                foreach ($permisos->roles as $key => $value) {
+                    foreach ($value->permissions as $key2 => $value2) {
+                        if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
+                        {
+                            $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
+                        }
                     }
                 }
             }
