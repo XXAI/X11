@@ -1,4 +1,7 @@
-<section fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly start" style="padding-top:5px;">
+<div *ngIf="isLoadingPage">
+    <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+</div>
+<section fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly start" style="padding-top:5px;" *ngIf="!isLoadingPage">
     <!--<section  fxFlex="15" fxFlex.xs="100" *ngIf="trabajador_id != 0">-->
     <section  fxFlex="15" fxFlex.xs="100">
         <mat-card>
@@ -16,18 +19,10 @@
                 <span *ngIf="datos_personales.validado == 1" style="font-weight: bold; color: blue;">VERIFICADO</span>
                 
             </mat-card-content>
-            <!--<mat-card-actions>
-                <mat-select placeholder="Acciones Generales">
-                    <mat-option [value]="0">Acciones Generales</mat-option>
-                    <mat-option [value]="1" color="warn"> Desligar</mat-option>
-                    <mat-option [value]="2" (click)="showBajaDialog()"> Dar de Baja</mat-option>
-                    <mat-option [value]="3" (click)="showComisionDialog()"> Agregar Comisión</mat-option>
-                </mat-select>
-                    
-              </mat-card-actions>-->
+
         </mat-card>
     </section>    
-    <section  fxFlex="83" fxFlex.xs="100" >
+    <section  fxFlex="83" fxFlex.xs="100">
         <mat-card>
             <mat-tab-group>
                 <mat-tab label="Datos Personales" [formGroup]="trabajadorForm">

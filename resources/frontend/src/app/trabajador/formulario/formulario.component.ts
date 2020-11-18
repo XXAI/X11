@@ -54,10 +54,11 @@ export class FormularioComponent implements OnInit {
   isLoading:boolean = false;
   dias:number = 0;
   datos_laborales:any = { cr: []};
-  datos_personales:any;
+  datos_personales:any = { estatus : 0};
   datos_laborales_nomina:any = { clues: []};
   imagen_trabajador:string = 'assets/trabajador.jpg';
   selectedItemIndex: number = -1;
+  isLoadingPage: boolean = true;
 
   trabajador_id:string;
   nombre_trabajador:string;
@@ -216,6 +217,8 @@ export class FormularioComponent implements OnInit {
 
       if(this.trabajador_id){
         this.cargarTrabajador(this.trabajador_id);
+      }else{
+        this.isLoadingPage = false;
       }
     });
   }
@@ -225,6 +228,7 @@ export class FormularioComponent implements OnInit {
     
     this.trabajadorService.buscarTrabajador(id, {}).subscribe(
       response =>{
+        
         if(response.length == 0)
         {
           //this.router.navigate(['/login']);
@@ -341,7 +345,7 @@ export class FormularioComponent implements OnInit {
         //console.log(datosEscolaridadCursante.colegiacion);
         this.tiene_colegio(datosEscolaridadCursante.colegiacion);
         this.tiene_certificado(datosEscolaridadCursante.certificacion);*/
-
+        
         this.trabajadorService.getDatosCredencial(trabajador.clave_credencial).subscribe(
           response => {
             
@@ -365,8 +369,10 @@ export class FormularioComponent implements OnInit {
           this.sharedService.showSnackBar(errorMessage, null, 3000);
           
         };
+        this.isLoadingPage = false;
       },
       errorResponse =>{
+        this.isLoadingPage = false;
         var errorMessage = "Ocurrió un error.";
         if(errorResponse.status == 409){
           errorMessage = errorResponse.error.error.message;
