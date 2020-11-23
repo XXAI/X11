@@ -448,7 +448,11 @@ class TrabajadorController extends Controller
                 $objectRL->seguro_retiro            = $inputs['seguro_retiro'];
                 $objectRL->recurso_formacion        = $inputs['recurso_formacion'];
                 $objectRL->tiene_fiel               = $inputs['tiene_fiel'];
-                $objectRL->vigencia_fiel            = $inputs['vigencia_fiel'];
+                if($objectRL->tiene_fiel == 1)
+                {
+                    $objectRL->vigencia_fiel            = $inputs['vigencia_fiel'];
+                }
+                
                 $objectRL->actividades              = $inputs['actividades'];
                 $objectRL->rama_id                  = $inputs['rama_id'];
                 $objectRL->save();
