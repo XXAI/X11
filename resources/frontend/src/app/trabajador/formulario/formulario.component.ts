@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TrabajadorService } from '../trabajador.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, combineLatest, of, forkJoin } from 'rxjs';
 import { startWith, map, throwIfEmpty, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
@@ -59,9 +59,15 @@ export class FormularioComponent implements OnInit {
   imagen_trabajador:string = 'assets/trabajador.jpg';
   selectedItemIndex: number = -1;
   isLoadingPage: boolean = true;
+  actualizado:number = 0;
+
+  finalizarActualizacion:boolean = true;
+
+  indexTab:number = 0;
 
   trabajador_id:string;
   nombre_trabajador:string;
+  tab_proceso:number = 1;
 
   constructor(
     private sharedService: SharedService, 
@@ -70,7 +76,8 @@ export class FormularioComponent implements OnInit {
     private route: ActivatedRoute, 
     private fb: FormBuilder,
     public dialog: MatDialog,
-    public mediaObserver: MediaObserver
+    public mediaObserver: MediaObserver,
+    public router: Router
   ) { }
   
   public trabajadorForm = this.fb.group({
@@ -107,27 +114,27 @@ export class FormularioComponent implements OnInit {
 
   public datosLaborelesForm = this.fb.group({
     //Datos laborales
-    'fecha_ingreso': [],
+    'fecha_ingreso': ['',[Validators.required]],
     'fecha_ingreso_federal': [],
-    'codigo_puesto_id': [],
-    'rama_id': [],
+    //'codigo_puesto_id': [],
+    'rama_id': ['',[Validators.required]],
 
-    'actividad_id': [],
+    'actividad_id': ['',[Validators.required]],
     'actividad_voluntaria_id': [],
-    'area_trabajo_id': [],
-    'tipo_personal_id': [],
+    'area_trabajo_id': ['',[Validators.required]],
+    'tipo_personal_id': ['',[Validators.required]],
     
-    'unidad_administradora_id': [],
-    'seguro_salud': [],
-    'licencia_maternidad': [],
-    'seguro_retiro': [],
+    //'unidad_administradora_id': [],
+    'seguro_salud': ['',[Validators.required]],
+    'licencia_maternidad': ['',[Validators.required]],
+    'seguro_retiro': ['',[Validators.required]],
 
-    'programa_id': [],
-    'recurso_formacion': [],
-    'tiene_fiel': [],
+    //'programa_id': [],
+    //'recurso_formacion': [],
+    'tiene_fiel': ['',[Validators.required]],
     'vigencia_fiel': [{ value:'', disabled:true}, Validators.required],
     //'ur': [],
-    'actividades': [],
+    'actividades': ['',[Validators.required]],
     
   });
   
@@ -223,26 +230,43 @@ export class FormularioComponent implements OnInit {
     });
   }
 
+  retroceder(number):void{
+    this.tab_proceso = number;
+    this.indexTab = number - 1;
+    
+  }
+
+  avanzar(number):void
+  {
+    console.log(this.tab_proceso);
+    console.log(this.indexTab);
+      this.tab_proceso = number + 1;
+      this.indexTab = number;
+  }
   cargarTrabajador(id):void{
-    
-    
     this.trabajadorService.buscarTrabajador(id, {}).subscribe(
       response =>{
         
         if(response.length == 0)
         {
-          //this.router.navigate(['/login']);
+          this.router.navigate(['/trabajadores']);
         }
         let trabajador = response;
+        this.actualizado = trabajador.actualizado;
         this.datos_personales = response;
         this.datos_laborales_nomina = trabajador.datoslaboralesnomina;
 
         this.idioma(trabajador.idioma_id);
-        this.lengua(trabajador.lengua_id);
+        this.lengua(trabajador.lengua_indigena_id);
         this.verificar_curp(trabajador.curp);
         this.nombre_trabajador= trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+trabajador.nombre;
         this.trabajadorForm.patchValue(trabajador);  //carga datos de trabajador
 
+        if(trabajador.idioma_id == null)
+        {
+            this.trabajadorForm.patchValue({idioma_id: 0});
+        }
+        console.log(trabajador.idioma_id);
         this.trabajadorForm.patchValue({municipio: trabajador.municipio_nacimiento});
         /* Fech de ingreso */ // Carga datos laborales
         let ingreso;
@@ -651,6 +675,32 @@ export class FormularioComponent implements OnInit {
         //console.log(response);
         this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
         this.isLoading = false;
+        if(tipo != 4)
+        {
+          this.tab_proceso = tipo + 1;
+          this.indexTab = tipo;
+        }else{
+          this.finalizarActualizacion = false;
+        }
+      },
+      errorResponse =>{
+        this.isLoading = false;
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
+        
+      }
+    );
+  }
+
+  accionFinalizar()
+  {
+    this.trabajadorService.guardarFinalizarTrabajador(this.trabajador_id).subscribe(
+      response =>{
+        this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
+        this.router.navigate(['/trabajadores']);
       },
       errorResponse =>{
         this.isLoading = false;
@@ -841,8 +891,7 @@ export class FormularioComponent implements OnInit {
   }
 
   idioma(valor):void{
-    
-    if(valor == '0')
+    if(valor == '0' || valor == null)
     {
       this.trabajadorForm.get('nivel_idioma_id').disable();
     }else if(valor != '0')
@@ -852,10 +901,12 @@ export class FormularioComponent implements OnInit {
   }
 
   lengua(valor):void{
-    if(valor == '0')
+    console.log("entro");
+    console.log(valor);
+    if(valor == '102')
     {
       this.trabajadorForm.get('nivel_lengua_id').disable();
-    }else if(valor != '0')
+    }else if(valor != '102')
     {
       this.trabajadorForm.get('nivel_lengua_id').enable();
     }

@@ -66,6 +66,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('trabajador',                'API\Modulos\TrabajadorController');
     Route::get('catalogo-trabajador',               'API\Modulos\TrabajadorController@getCatalogos');
     Route::get('buscador-datos-trabajador',         'API\Modulos\TrabajadorController@getBuscador');
+    Route::put('trabajador_finalizar/{id}',         'API\Modulos\TrabajadorController@FinalizarCaptura');
 
     Route::get('ver-info-trabajador/{id}',          'API\Servicios\TrabajadorServiceController@detalleTrabajador');
     /* Fin trabajador */

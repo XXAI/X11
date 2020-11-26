@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 export class TrabajadorService {
 
   url           = `${environment.base_url}/trabajador`;
+  url_finalizar = `${environment.base_url}/trabajador_finalizar`;
   url_catalogos = `${environment.base_url}/catalogo-trabajador`;
   url_buscador = `${environment.base_url}/buscador-datos-trabajador`;
 
@@ -74,6 +75,14 @@ export class TrabajadorService {
 
   guardarTrabajador(id:any, payload:any):Observable<any> {
     return this.http.put<any>(this.url + "/" + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  
+  guardarFinalizarTrabajador(id:any):Observable<any> {
+    return this.http.put<any>(this.url_finalizar + "/" + id, []).pipe(
       map( (response: any) => {        
         return response;
       }

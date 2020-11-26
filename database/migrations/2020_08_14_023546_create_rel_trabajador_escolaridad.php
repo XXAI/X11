@@ -22,7 +22,7 @@ class CreateRelTrabajadorEscolaridad extends Migration
             $table->mediumInteger('institucion_id')->unsigned()->nullable();
             $table->string('otro_nombre_institucion', 254)->nullable();
             $table->smallInteger('cedula')->default(0)->unsigned()->comments("1 = si, 0 = no");
-            $table->smallInteger('no_cedula')->unsigned()->nullable();
+            $table->mediumInteger('no_cedula')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

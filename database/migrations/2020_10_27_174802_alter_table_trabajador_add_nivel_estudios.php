@@ -14,7 +14,7 @@ class AlterTableTrabajadorAddNivelEstudios extends Migration
     public function up()
     {
         Schema::table('trabajador', function (Blueprint $table) {
-            $table->smallinteger('nivel_maximo_id')->nullable()->unsigned()->after('municipio_federativo_id');
+            $table->mediumInteger('nivel_maximo_id')->nullable()->unsigned()->after('municipio_federativo_id');
         });
     }
 

@@ -12,8 +12,8 @@
             <img mat-card-image src="{{ imagen_trabajador }}" alt="Photo of a Shiba Inu">
             <mat-card-content>{{ nombre_trabajador }}</mat-card-content>
             <mat-card-content>
-                <span *ngIf="datos_personales.estatus == 0" style="color: red; font-weight: bold;">NO ACTUALIZADO</span>
-                <span *ngIf="datos_personales.estatus == 1" style="font-weight: bold; color: blue;">ACTUALIZADO</span>
+                <span *ngIf="datos_personales.actualizado == 0" style="color: red; font-weight: bold;">NO ACTUALIZADO</span>
+                <span *ngIf="datos_personales.actualizado == 1" style="font-weight: bold; color: blue;">ACTUALIZADO</span>
                 <br>
                 <span *ngIf="datos_personales.validado == 0" style="color: red; font-weight: bold;">NO VERIFICADO</span>
                 <span *ngIf="datos_personales.validado == 1" style="font-weight: bold; color: blue;">VERIFICADO</span>
@@ -24,8 +24,8 @@
     </section>    
     <section  fxFlex="83" fxFlex.xs="100">
         <mat-card>
-            <mat-tab-group>
-                <mat-tab label="Datos Personales" [formGroup]="trabajadorForm">
+            <mat-tab-group [(selectedIndex)]="indexTab">
+                <mat-tab label="Datos Personales" [formGroup]="trabajadorForm"  [disabled]='(tab_proceso != 1)'>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -50,7 +50,7 @@
                                     </mat-error>
                                 </mat-form-field>
                                 <mat-form-field fxFlex="20" fxFlex.xs="100">
-                                    <input matInput id="rfc" formControlName="rfc" placeholder="rfc"  autocomplete="off" minlength="13">
+                                    <input matInput id="rfc" formControlName="rfc" placeholder="rfc"  autocomplete="off" minlength="13" readonly="readonly">
                                     <mat-error *ngIf="trabajadorForm.get('rfc').invalid && (trabajadorForm.get('rfc').dirty || trabajadorForm.get('rfc').touched)">
                                         <span *ngIf="trabajadorForm.get('rfc').errors.required">Campo obligatorio</span>
                                         <span *ngIf="trabajadorForm.get('rfc').errors.minlength">Este campo requiere 13 caracteres</span>
@@ -230,7 +230,6 @@
                                     <mat-label>Lengua Indigena</mat-label>
                                     
                                     <mat-select formControlName="lengua_indigena_id" #lengua_select (selectionChange) = "lengua(lengua_select.value)"  required>
-                                        <mat-option [value]="0">NO</mat-option>
                                         <mat-option *ngFor="let item of catalogo['lengua']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
@@ -262,13 +261,16 @@
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" style="margin-bottom: 3px; border-bottom: 1px solid #999;">
                                 <textarea matInput formControlName="observacion" placeholder="Observacion" rowSpan="5"></textarea>
                             </div>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" *ngIf="actualizado == 0">
                                 <button mat-raised-button (click)="accionGuardar(1)" color="success" [disabled]="!trabajadorForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
+                            </div>      
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" *ngIf="actualizado == 1">
+                                <button mat-raised-button (click)="avanzar(1)" color="success"><mat-icon>keyboard_arrow_right</mat-icon> Siguiente</button>
                             </div>      
                         </div>
                     </div>
                 </mat-tab>
-                <mat-tab label="Datos Laborales"  [formGroup]="datosLaborelesForm">
+                <mat-tab label="Datos Laborales"  [formGroup]="datosLaborelesForm" [disabled]='(tab_proceso != 2)' class="finalizado">
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top: 10px;">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -290,7 +292,7 @@
                                     </mat-error>
                                 </mat-form-field>
                              
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                <mat-form-field fxFlex="50" fxFlex.xs="100">
                                     <mat-label>Rama (Segun Actividades)</mat-label>
                                     <mat-select formControlName="rama_id" required>
                                         <mat-option *ngFor="let item of catalogo['rama']" [value]="item.id">
@@ -302,13 +304,13 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field fxFlex="25" fxFlex.xs="100">
+                                <!--<mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Recursos Humanos en formación</mat-label>
                                     <mat-select formControlName="recurso_formacion" required>
                                         <mat-option  [value]="1">SI</mat-option>
                                         <mat-option  [value]="0">NO</mat-option>  
                                     </mat-select>
-                                </mat-form-field>     
+                                </mat-form-field>-->     
                             </div>
                         </div>
                     </div>        
@@ -329,6 +331,7 @@
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Actividad Voluntaria</mat-label>
                                     <mat-select formControlName="actividad_voluntaria_id" required>
+                                        <mat-option [value]="0">NO</mat-option>
                                         <mat-option *ngFor="let item of catalogo['actividad_voluntaria']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
@@ -395,7 +398,7 @@
                                     </mat-select>
                                 </mat-form-field> 
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
-                                    <mat-label>Seguro de Retino</mat-label>
+                                    <mat-label>Seguro de Retiro</mat-label>
                                     <mat-select formControlName="seguro_retiro" required>
                                         <mat-option  [value]="1">SI</mat-option>
                                         <mat-option  [value]="0">NO</mat-option>  
@@ -523,11 +526,15 @@
                             </mat-accordion> 
                         </div>
                     </div>
-                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px"  *ngIf="actualizado == 0">
                         <button mat-raised-button (click)="accionGuardar(2)" color="success" [disabled]="!datosLaborelesForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
                     </div>             
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" *ngIf="actualizado == 1">
+                        <button mat-raised-button (click)="retroceder(1)" color="success"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button>
+                        <button mat-raised-button (click)="avanzar(2)" color="success"><mat-icon>keyboard_arrow_right</mat-icon> Siguiente</button>
+                    </div> 
                 </mat-tab>
-                <mat-tab label="Horario Laboral" [formGroup]="datosHorarioForm">
+                <mat-tab label="Horario Laboral" [formGroup]="datosHorarioForm"  [disabled]='(tab_proceso != 3)'>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             
@@ -685,13 +692,17 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" *ngIf="actualizado == 0">
                                 <button mat-raised-button (click)="accionGuardar(3)" color="success" [disabled]="dias == 0 || (!datosHorarioForm.valid || isLoading)"><mat-icon>save</mat-icon> Guardar</button>
+                            </div> 
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" *ngIf="actualizado == 1">
+                                <button mat-raised-button (click)="retroceder(2)" color="success"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button>
+                                <button mat-raised-button (click)="avanzar(3)" color="success"><mat-icon>keyboard_arrow_right</mat-icon> Siguiente</button>
                             </div> 
                         </div>
                     </div>
                 </mat-tab>
-                <mat-tab label="Escolaridad"  [formGroup]="datosEscolaresForm">
+                <mat-tab label="Escolaridad"  [formGroup]="datosEscolaresForm" [disabled]='(tab_proceso != 4)'>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -788,9 +799,14 @@
                         </div>
                         
                     </div> 
-                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                        <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(!datosEscolaresForm.valid || isLoading)"><mat-icon>save</mat-icon> Guardar</button>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px"  *ngIf="actualizado == 0">
+                        <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(!datosEscolaresForm.valid || isLoading) || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>
+                        <button mat-raised-button (click)="accionFinalizar()" color="success" [disabled]="finalizarActualizacion"><mat-icon>save</mat-icon> Finalizar Actualización</button>
                     </div>             
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" *ngIf="actualizado == 1">
+                        <button mat-raised-button (click)="retroceder(3)" color="success"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button>
+                        
+                    </div> 
                 </mat-tab>
                 <!--<mat-tab label="Capacitación"  [formGroup]="datosCapacitacionForm">
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">

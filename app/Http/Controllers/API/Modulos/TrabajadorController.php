@@ -266,6 +266,21 @@ class TrabajadorController extends Controller
         }
     }
 
+    public function FinalizarCaptura(Request $request, $id)
+    {
+        $object = Trabajador::find($id);
+        DB::beginTransaction();
+        try {
+            $object->actualizado = 1;
+            $object->save();
+            DB::commit();
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }   
+    }
     public function update(Request $request, $id)
     {
         $mensajes = [
@@ -281,7 +296,7 @@ class TrabajadorController extends Controller
         {
 
             $reglas = [
-                'rfc'                       => 'required',
+                //'rfc'                       => 'required',
                 'curp'                      => 'required',
                 'nombre'                    => 'required',
                 'calle'                     => 'required',
@@ -316,7 +331,7 @@ class TrabajadorController extends Controller
                 'seguro_salud'              => 'required',
                 'licencia_maternidad'       => 'required',
                 'seguro_retiro'             => 'required',
-                'recurso_formacion'         => 'required',
+                //'recurso_formacion'         => 'required',
                 'tiene_fiel'                => 'required',
                 'actividades'               => 'required',
                 'rama_id'                   => 'required',
@@ -377,7 +392,7 @@ class TrabajadorController extends Controller
         DB::beginTransaction();
         try {
             
-            DB::commit();
+            
             if($inputs['tipo_dato'] == 1)
             {
                 $fecha_actual = Carbon::now();
@@ -386,7 +401,7 @@ class TrabajadorController extends Controller
                 $object->nombre                     = strtoupper($inputs['nombre']);
                 $object->apellido_paterno           = strtoupper($inputs['apellido_paterno']);
                 $object->apellido_materno           = strtoupper($inputs['apellido_materno']);
-                $object->rfc                        = strtoupper($inputs['rfc']);
+                //$object->rfc                        = strtoupper($inputs['rfc']);
                 $object->curp                       = $inputs['curp'];
                 $object->sexo_id                    = $inputs['sexo'];
                 $object->calle                      = strtoupper($inputs['calle']);
@@ -404,8 +419,6 @@ class TrabajadorController extends Controller
                 $object->estado_conyugal_id         = $inputs['estado_conyugal_id'];
                 $object->entidad_federativa_id      = 7;
                 $object->municipio_federativo_id    = 186;
-                $object->validado                   = 0;
-                $object->estatus                    = 0;
                 $object->edad                       = $edad;
                 $object->observacion                = $inputs['observacion'];
                 if($inputs['idioma_id'] != 0)
@@ -416,12 +429,12 @@ class TrabajadorController extends Controller
                     $object->idioma_id = null;
                     $object->nivel_idioma_id = null;
                 }
-                if($inputs['lengua_indigena_id'] != 0)
+                if($inputs['lengua_indigena_id'] != 102)
                 {
                     $object->lengua_indigena_id = $inputs['lengua_indigena_id'];
                     $object->nivel_lengua_id = $inputs['nivel_lengua_id'];
                 }else{
-                    $object->lengua_indigena_id = null;
+                    $object->lengua_indigena_id = $inputs['lengua_indigena_id'];
                     $object->nivel_lengua_id = null;
                 }
                 
@@ -446,7 +459,7 @@ class TrabajadorController extends Controller
                 $objectRL->seguro_salud             = $inputs['seguro_salud'];
                 $objectRL->licencia_maternidad      = $inputs['licencia_maternidad'];
                 $objectRL->seguro_retiro            = $inputs['seguro_retiro'];
-                $objectRL->recurso_formacion        = $inputs['recurso_formacion'];
+                $objectRL->recurso_formacion        = 0;
                 $objectRL->tiene_fiel               = $inputs['tiene_fiel'];
                 if($objectRL->tiene_fiel == 1)
                 {
@@ -594,9 +607,9 @@ class TrabajadorController extends Controller
                 $objectCursos->save();
             }
             
-            $object->estatus = 1;
             $object->save();
-
+            
+            DB::commit();
             return response()->json($object,HttpResponse::HTTP_OK);
 
         } catch (\Exception $e) {
