@@ -20,7 +20,18 @@ import { VerComponent } from '../ver/ver.component';
 @Component({
   selector: 'app-lista',
   templateUrl: './lista.component.html',
-  styleUrls: ['./lista.component.css']
+  styleUrls: ['./lista.component.css'],
+  animations: [
+    trigger('buttonInOut', [
+        transition('void => *', [
+            style({opacity: '1'}),
+            animate(200)
+        ]),
+        transition('* => void', [
+            animate(200, style({opacity: '0'}))
+        ])
+    ])
+  ],
 })
 export class ListaComponent implements OnInit {
 
@@ -72,7 +83,7 @@ export class ListaComponent implements OnInit {
     'grupos': [undefined]
   });
 
-  displayedColumns: string[] = ['estatus','Nombre','RFC','Clues','actions']; //'Agente',
+  displayedColumns: string[] = ['estatus','RFC','CURP','Nombre','actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, private trabajadorService: TrabajadorService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
@@ -88,8 +99,7 @@ export class ListaComponent implements OnInit {
     });
 
     let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','paginator','filter']);
-    console.log(appStoredData);
-
+    
     if(appStoredData['searchQuery']){
       this.searchQuery = appStoredData['searchQuery'];
     }
@@ -119,7 +129,36 @@ export class ListaComponent implements OnInit {
     }
 
     this.loadEmpleadosData(event);
-    //this.loadFilterCatalogs();
+    this.loadFilterCatalogs();
+  }
+
+  public loadFilterCatalogs(){
+    this.trabajadorService.getFilterCatalogs().subscribe(
+      response => {
+        console.log(response);
+        this.filterCatalogs = {
+          'clues': response.data.clues,
+          'cr': response.data.cr,
+          'estatus': response.data.estatus,
+          'rama': response.data.rama
+        };
+
+        this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
+        this.filteredCatalogs['cr'] = this.filterForm.controls['cr'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'cr','descripcion')));
+
+        if(response.data.grupos){
+          this.filterCatalogs.grupos = response.data.grupos;
+          this.filteredCatalogs['grupos'] = this.filterForm.controls['grupos'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'grupos','descripcion')));
+        }
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+      }
+    );
   }
 
   verEmpleado(id: number, index: number){
@@ -267,4 +306,51 @@ export class ListaComponent implements OnInit {
     this.sharedService.setDataToCurrentApp('paginator',paginator);
   }
 
+  getDisplayFn(label: string){
+    return (val) => this.displayFn(val,label);
+  }
+
+  displayFn(value: any, valueLabel: string){
+    return value ? value[valueLabel] : value;
+  }
+
+  toggleAdvancedFilter(status){
+    if(status){
+      this.advancedFilter.open();
+    }else{
+      this.advancedFilter.close();
+    }
+  }
+
+  private _filter(value: any, catalog: string, valueField: string): string[] {
+    let filterValue = '';
+    if(value){
+      if(typeof(value) == 'object'){
+        filterValue = value[valueField].toLowerCase();
+      }else{
+        filterValue = value.toLowerCase();
+      }
+    }
+    return this.filterCatalogs[catalog].filter(option => option[valueField].toLowerCase().includes(filterValue));
+  }
+
+  applyFilter(){
+    this.selectedItemIndex = -1;
+    this.paginator.pageIndex = 0;
+    this.paginator.pageSize = this.pageSize;
+    this.loadEmpleadosData(null);
+  }
+
+  cleanFilter(filter){
+    filter.value = '';
+    //filter.closePanel();
+  }
+
+  compareRamaSelect(op,value){
+    return op.id == value.id;
+  }
+
+  compareEstatusSelect(op,value){
+    return op.id == value.id;
+  }
 }

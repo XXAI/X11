@@ -13,6 +13,7 @@ export class TrabajadorService {
   url_finalizar = `${environment.base_url}/trabajador_finalizar`;
   url_catalogos = `${environment.base_url}/catalogo-trabajador`;
   url_buscador = `${environment.base_url}/buscador-datos-trabajador`;
+  url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
 
   url_info_trabajador = `${environment.base_url}/ver-info-trabajador/`;
 
@@ -104,6 +105,14 @@ export class TrabajadorService {
         return response;
       }
     ));
+  }
+
+  getFilterCatalogs():Observable<any>{
+    return this.http.get<any>(this.url_filter_catalogs).pipe(
+      map(response => {
+        return response;
+      })
+    );
   }
 
   
