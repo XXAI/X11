@@ -232,7 +232,7 @@ export class ReportePersonalActivo{
             let espacios:any[] = [];
             let arreglo_firmantes:any[] = [];
             let arreglo_espacios:any[] = [];
-            let obj_espacios:any = { text: " \n\n\n\n"};
+            let obj_espacios:any = { text: " \n"};
             for(let i = 0; i < num_firmantes; i++){
               
               if(i!=0)
