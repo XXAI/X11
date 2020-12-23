@@ -723,7 +723,17 @@ class EmpleadosController extends Controller
         DB::beginTransaction();
         try {
             
-            //$object->codigo_id              = $inputs['codigo_id'];
+            if($object->codigo_id == null)
+            {
+                $object->codigo_id              = $inputs['codigo_id'];
+            }
+            
+            if($object->ur == null)
+            {
+                $object->ur              = $inputs['ur'];
+            }
+
+            //
             $object->comision_sindical_id   = $inputs['comision_sindical_id'];
             $object->cr_id                  = $inputs['cr_id'];
             $object->curp                   = $inputs['curp'];
