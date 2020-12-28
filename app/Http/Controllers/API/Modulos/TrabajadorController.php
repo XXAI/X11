@@ -46,6 +46,7 @@ use App\Models\Idioma;
 use App\Models\Lengua;
 use App\Models\Sindicato;
 use App\Models\TipoBaja;
+use App\Models\GrupoUnidades;
 
 //Relacionales
 use App\Models\RelCapacitacion;
@@ -69,47 +70,60 @@ class TrabajadorController extends Controller
 
         try{
             $access = $this->getUserAccessData();
+            //return response()->json(['data'=>$access],HttpResponse::HTTP_OK);
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
             $parametros = Input::all();
-            $trabajador = Trabajador::select('trabajador.*')/*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
+            $trabajador = Trabajador:://with("datoslaborales")//select('trabajador.*')
+                            join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+            /*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
                                 if(!$access->is_admin){
                                     $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                                 }
                             })*/;
+
+            $permison_individual = false;                
             if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
                     foreach ($value->permissions as $key2 => $value2) {
                         if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
                         {
                             $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
+                            $permison_individual = true;
                         }
                     }
                 }
             }
             
+            
             //filtro de valores por permisos del usuario
-            /*if(!$access->is_admin){
+            if(!$access->is_admin && $permison_individual == false){
                 $trabajador = $trabajador->where(function($query){
-                    $query->whereIn('empleados.estatus',[1,4]);
+                    $query->whereIn('trabajador.estatus',[1,4]);
                 })->where(function($query)use($access){
-                    $query->whereIn('empleados.clues',$access->lista_clues)->whereIn('empleados.cr_id',$access->lista_cr)
-                        ->orWhere(function($query2)use($access){
+                    $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr)
+                        /*->orWhere(function($query2)use($access){
                             $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
-                        });
+                        })*/;
                 });
             }
             
             //Sacamos totales para el estatus de las cantidades validadas
-            $estatus_validacion = clone $empleados;
-            $estatus_validacion = $estatus_validacion->select(DB::raw('sum(IF(empleados.estatus = 1 OR empleados.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(empleados.estatus = 1 AND empleados.validado = 1,1,0)) as total_validados'),DB::raw('count(empleados.id) as total_registros'))->first();
-            $estatus_validacion->porcentaje = intval(($estatus_validacion->total_validados*100)/$estatus_validacion->total_activos);
+            $estatus_validacion = clone $trabajador;
+            $estatus_validacion = $estatus_validacion->select(DB::raw('sum(IF(trabajador.estatus = 1 OR trabajador.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(trabajador.estatus = 1 AND trabajador.validado = 1,1,0)) as total_validados'),DB::raw('count(trabajador.id) as total_registros'))->first();
+            if($estatus_validacion->total_activos == 0)
+            {
+                $estatus_validacion->porcentaje = 0;
+            }else{
+                $estatus_validacion->porcentaje = intval(($estatus_validacion->total_validados*100)/$estatus_validacion->total_activos);
+            }
+            
 
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
-                $empleados = $empleados->where(function($query)use($parametros){
+                $trabajador = $trabajador->where(function($query)use($parametros){
                     return $query//->where('nombre','LIKE','%'.$parametros['query'].'%')
                                 ->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
                                 ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
@@ -119,24 +133,23 @@ class TrabajadorController extends Controller
 
             if(isset($parametros['active_filter']) && $parametros['active_filter']){
                 if(isset($parametros['clues']) && $parametros['clues']){
-                    $empleados = $empleados->where('empleados.clues',$parametros['clues']);
+                    $trabajador = $trabajador->where('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$parametros['clues']);
                 }
 
                 if(isset($parametros['cr']) && $parametros['cr']){
-                    $empleados = $empleados->where('empleados.cr_id',$parametros['cr']);
+                    $trabajador = $trabajador->where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
+                }
+
+                if(isset($parametros['rama']) && $parametros['rama']){
+                    $trabajador = $trabajador->where('rama_id',$parametros['rama']);
                 }
 
                 if(isset($parametros['estatus']) && $parametros['estatus']){
                     $estatus = explode('-',$parametros['estatus']);
-                    $empleados = $empleados->where('empleados.estatus',$estatus[0]);
+                    $trabajador = $trabajador->where('trabajador.estatus',$estatus[0]);
                     if(isset($estatus[1])){
-                        $empleados = $empleados->where('empleados.validado',$estatus[1]);
+                        $trabajador = $trabajador->where('trabajador.validado',$estatus[1]);
                     }
-                }
-
-            
-                if(isset($parametros['rama']) && $parametros['rama']){
-                    $empleados = $empleados->where('rama_id',$parametros['rama']);
                 }
 
                 if($access->is_admin){
@@ -144,15 +157,15 @@ class TrabajadorController extends Controller
                         $grupo = GrupoUnidades::with('listaCR')->find($parametros['grupos']);
                         $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
 
-                        $empleados = $empleados->where(function($query)use($lista_cr){
-                            $query->whereIn('empleados.cr_id',$lista_cr)
+                        $trabajador = $trabajador->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$lista_cr);/*->where(function($query)use($lista_cr){
+                            $query->whereIn('trabajador.cr_fisico_id',$lista_cr)
                                 ->orWhere(function($query2)use($lista_cr){
                                     $query2->whereIn('permuta_adscripcion.cr_destino_id',$lista_cr);
                                 });
-                        });
+                        });*/
                     }
                 }
-            }*/
+            }
 
             if(isset($parametros['page'])){
                 $trabajador = $trabajador->orderBy('nombre');
@@ -193,7 +206,7 @@ class TrabajadorController extends Controller
                             if(isset($parametros['nombre_archivo']) && $parametros['nombre_archivo']){
                                 $filename = $parametros['nombre_archivo'];
                             }else{
-                                $filename = 'reporte-personal-activo';
+                                7$filename = 'reporte-personal-activo';
                             }
                             
                             return (new DevReportExport($empleados,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
@@ -220,7 +233,7 @@ class TrabajadorController extends Controller
                     }
                 }
             }
-
+*/
             if(!$loggedUser->gruposUnidades){
                 $loggedUser->load('gruposUnidades');
             }
@@ -229,10 +242,11 @@ class TrabajadorController extends Controller
             }else{
                 $estatus = ['grupo_usuario'=>false];
             }
-            $estatus['estatus_validacion'] = $estatus_validacion;*/
+            $estatus['estatus_validacion'] = $estatus_validacion;
             
 
-            return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$trabajador, 'firmantes'=> $firmantes, 'responsables'=>$responsable_clues, 'estatus'=>$estatus],HttpResponse::HTTP_OK);
+            //return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
