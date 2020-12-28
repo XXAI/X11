@@ -153,6 +153,9 @@ class EmpleadosController extends Controller
                         //DB::raw("IF(cr_id!=cr_adscripcion_id, (select descripcion_actualizada from catalogo_cr where cr = empleados.cr_adscripcion_id),'') as COMISION_INTERNA"),
                         'empleados.rfc as RFC'
                         ,'empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'), 'tipo_trab.descripcion as TIPO_TRABAJADOR',
+                        
+                        'empleados.telefono_celular',
+                        'empleados.correo_personal',
                         'empleados.calle',
                         'empleados.no_exterior',
                         'empleados.no_interior',
