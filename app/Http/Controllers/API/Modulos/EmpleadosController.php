@@ -152,7 +152,14 @@ class EmpleadosController extends Controller
                         DB::raw("(select descripcion from catalogo_sindicato where id in (select ce.sindicato_id from comision_empleado ce, comision_detalle cd where ce.comision_detalle_id=cd.id and ce.tipo_comision='CS' and cd.fecha_fin > '".$carbon->format('Y-m-d')."' and ce.empleado_id=empleados.id  ) limit 1) as COMISION_SINDICAL"),
                         //DB::raw("IF(cr_id!=cr_adscripcion_id, (select descripcion_actualizada from catalogo_cr where cr = empleados.cr_adscripcion_id),'') as COMISION_INTERNA"),
                         'empleados.rfc as RFC'
-                        ,'empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'), 'tipo_trab.descripcion as TIPO_TRABAJADOR','codigos.codigo as CODIGO',
+                        ,'empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'), 'tipo_trab.descripcion as TIPO_TRABAJADOR',
+                        'empleados.calle',
+                        'empleados.no_exterior',
+                        'empleados.no_interior',
+                        'empleados.cp',
+                        'empleados.colonia',
+
+                        'codigos.codigo as CODIGO',
                         'codigos.descripcion as DESC_CODIGO',
                                                         'LIC_DET.descripcion as LICENCIATURA','TEC_DET.descripcion as TECNICA','turnos.descripcion as TURNO', 'empleados.hora_entrada as HORA_ENTRADA','empleados.hora_salida as HORA_SALIDA','empleados.area_servicio as AREA_SERVICIO',
                                                         'funciones.grupo as FUNCION','empleados.observaciones as OBSERVACIONES')
