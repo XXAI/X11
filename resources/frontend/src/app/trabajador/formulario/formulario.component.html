@@ -24,8 +24,13 @@
     </section>    
     <section  fxFlex="83" fxFlex.xs="100">
         <mat-card>
-            <mat-tab-group [(selectedIndex)]="indexTab">
-                <mat-tab label="Datos Personales" [formGroup]="trabajadorForm"  [disabled]='(tab_proceso != 1)'>
+            <mat-tab-group  mat-stretch-tabs [(selectedIndex)]="indexTab">
+               
+                <mat-tab [formGroup]="trabajadorForm"  [disabled]='(tab_proceso != 1)'>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">person_pin</mat-icon>
+                        <div class="mobile-pc">Datos Personales</div>
+                    </ng-template>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -270,7 +275,11 @@
                         </div>
                     </div>
                 </mat-tab>
-                <mat-tab label="Datos Laborales"  [formGroup]="datosLaborelesForm" [disabled]='(tab_proceso != 2)' class="finalizado">
+                <mat-tab [formGroup]="datosLaborelesForm" [disabled]='(tab_proceso != 2)' class="finalizado">
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">person_pin</mat-icon>
+                        <div class="mobile-pc">Datos Laborales</div>
+                    </ng-template>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top: 10px;">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -1086,8 +1095,11 @@
                         <button mat-raised-button (click)="accionGuardar(6)" color="success" [disabled]="(!datosCursosForm.valid || isLoading)"><mat-icon>save</mat-icon> Guardar</button>
                     </div>
                 </mat-tab>-->
+                
             </mat-tab-group>
-            
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <button mat-raised-button (click)="retroceder(1)"><mat-icon>keyboard_arrow_left</mat-icon> Regresar a la lista</button>
+            </div>
         </mat-card>   
         
     </section>

@@ -128,7 +128,7 @@ export class ListaComponent implements OnInit {
       this.filterForm.patchValue(appStoredData['filter']);
     }
 
-    this.loadEmpleadosData(event);
+    this.loadTrabajadorData(event);
     this.loadFilterCatalogs();
   }
 
@@ -197,7 +197,7 @@ export class ListaComponent implements OnInit {
     });
   }
 
-  public loadEmpleadosData(event?:PageEvent){
+  public loadTrabajadorData(event?:PageEvent){
     this.isLoading = true;
     let params:any;
     if(!event){
@@ -218,7 +218,7 @@ export class ListaComponent implements OnInit {
     let filterFormValues = this.filterForm.value;
     let countFilter = 0;
 
-    //this.loadFilterChips(filterFormValues);
+    this.loadFilterChips(filterFormValues);
 
     for(let i in filterFormValues){
       if(filterFormValues[i]){
@@ -265,12 +265,12 @@ export class ListaComponent implements OnInit {
           }else{
             this.puedeFinalizar = false;
             this.capturaFinalizada = false;
-          }
+          }*/
 
           this.countPersonalActivo = response.estatus.estatus_validacion.total_activos;
           this.countPersonalValidado = response.estatus.estatus_validacion.total_validados;
           this.percentPersonalValidado = response.estatus.estatus_validacion.porcentaje;
-          */
+          
           this.dataSource = [];
           this.resultsLength = 0;
           if(response.data.total > 0){
@@ -298,6 +298,36 @@ export class ListaComponent implements OnInit {
       }
     );
     return event;
+  }
+
+  loadFilterChips(data){
+    this.filterChips = [];
+    for(let i in data){
+      if(data[i]){
+        let item = {
+          id: i,
+          tag: '',
+          tooltip: i.toUpperCase() + ': ',
+          active: true
+        };
+        if(i == 'clues'){
+          item.tag = data[i].clues;
+          item.tooltip += data[i].nombre_unidad;
+        }else if(i == 'cr'){
+          item.tag = data[i].cr;
+          item.tooltip += data[i].descripcion;
+        }else{
+          if(data[i].descripcion.length > 30){
+            item.tag = data[i].descripcion.slice(0,20) + '...';
+            item.tooltip += data[i].descripcion;
+          }else{
+            item.tag = data[i].descripcion;
+            item.tooltip = i.toUpperCase();
+          }
+        }
+        this.filterChips.push(item);
+      }
+    }
   }
 
   editTrabajador(index){
@@ -338,7 +368,7 @@ export class ListaComponent implements OnInit {
     this.selectedItemIndex = -1;
     this.paginator.pageIndex = 0;
     this.paginator.pageSize = this.pageSize;
-    this.loadEmpleadosData(null);
+    this.loadTrabajadorData(null);
   }
 
   cleanFilter(filter){

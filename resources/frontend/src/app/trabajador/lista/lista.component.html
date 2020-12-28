@@ -1,5 +1,15 @@
 <section class="profile" >
-    
+    <mat-toolbar class="employee-advance-bar" [class.mat-elevation-z2]="true">
+        <mat-toolbar-row>
+            <mat-icon aria-hidden="false" aria-label="Estatus Empleado">speed</mat-icon>
+            <span><small>Estatus: Activos {{countPersonalActivo | number: '2.'}} / Validados {{countPersonalValidado | number: '2.'}}</small></span>
+            <span class="spacer"></span>
+            <span>{{ percentPersonalValidado }}% Validado</span>
+            <span class="spacer"></span>
+            <!--<button *ngIf="puedeFinalizar && !capturaFinalizada" mat-raised-button color="primary" (click)="endValiations()"><mat-icon>verified_user</mat-icon> Finalizar</button>
+            <button *ngIf="puedeFinalizar && capturaFinalizada" mat-button color="primary">Captura Finalizada</button>-->
+        </mat-toolbar-row>
+    </mat-toolbar>
 
     <div fxLayout="row" fxLayoutAlign="space-evenly center">
         <section fxFlex="95" fxLayout="column" fxLayoutAlign="center">
@@ -154,7 +164,7 @@
                             <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
                         </table>
                     </div>
-                    <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadEmpleadosData($event)"></mat-paginator>
+                    <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadTrabajadorData($event)"></mat-paginator>
                 </div>                
             </mat-card>
         </section>
