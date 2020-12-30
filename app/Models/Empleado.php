@@ -98,6 +98,10 @@ class Empleado extends Model
         return $this->hasOne('App\Models\Turno', "id", "turno_id");
     }
 
+    public function cpInfo(){
+        return $this->hasOne('App\Models\CodigoPostal', "cp", "cp");
+    }
+
     public function empleado_comision(){
         return $this->hasMany('App\Models\ComisionEmpleado')->where("estatus", "=", "A");
     }
