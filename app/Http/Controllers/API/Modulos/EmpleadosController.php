@@ -103,7 +103,7 @@ class EmpleadosController extends Controller
                 }*/
 
                 if(isset($parametros['rama']) && $parametros['rama']){
-                    $empleados = $empleados->where('rama_id',$parametros['rama']);
+                    $empleados = $empleados->where('empleados.rama_id',$parametros['rama']);
                 }
 
                 if($access->is_admin){
