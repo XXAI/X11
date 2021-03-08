@@ -103,7 +103,7 @@ class EmpleadosController extends Controller
                 }*/
 
                 if(isset($parametros['rama']) && $parametros['rama']){
-                    $empleados = $empleados->where('rama_id',$parametros['rama']);
+                    $empleados = $empleados->where('empleados.rama_id',$parametros['rama']);
                 }
 
                 if($access->is_admin){
@@ -161,7 +161,8 @@ class EmpleadosController extends Controller
                         'empleados.no_interior',
                         'empleados.cp',
                         'empleados.colonia',
-
+                        'CP_INFO.municipio',
+                        'CP_INFO.entidad',
                         'codigos.codigo as CODIGO',
                         'codigos.descripcion as DESC_CODIGO',
                                                         'LIC_DET.descripcion as LICENCIATURA','TEC_DET.descripcion as TECNICA','turnos.descripcion as TURNO', 'empleados.hora_entrada as HORA_ENTRADA','empleados.hora_salida as HORA_SALIDA','empleados.area_servicio as AREA_SERVICIO',
@@ -174,7 +175,8 @@ class EmpleadosController extends Controller
                                                     $join->on('TEC.empleado_id','=','empleados.id')->where('TEC.tipo_estudio','TEC')->whereNull('TEC.deleted_at');
                                                 })
                                                 ->leftjoin('catalogo_profesion as TEC_DET','TEC_DET.id','TEC.profesion_id')
-                                                ->leftjoin('catalogo_tipo_trabajador as tipo_trab','tipo_trab.id','empleados.tipo_trabajador_id');
+                                                ->leftjoin('catalogo_tipo_trabajador as tipo_trab','tipo_trab.id','empleados.tipo_trabajador_id')
+                                                ->leftjoin('catalogo_cp as CP_INFO','CP_INFO.cp','empleados.cp');
     
                         try{
                             $empleados = $empleados->get();
