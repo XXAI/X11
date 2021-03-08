@@ -31,6 +31,7 @@ Route::group([
 });
 
 Route::post('signin',   'API\Auth\AuthController@login');
+Route::post('register',   'API\Admin\RegistroController@register');
 Route::post('refresh',  'API\Auth\AuthController@refresh');
 
 Route::group(['middleware'=>'auth'],function($router){
@@ -61,11 +62,19 @@ Route::group(['middleware'=>'auth'],function($router){
      * Rutas para el Modulo de Empleados
      */
     Route::apiResource('empleados',                 'API\Modulos\EmpleadosController');
+    /* Trabajador */
+    Route::apiResource('trabajador',                'API\Modulos\TrabajadorController');
+    Route::get('catalogo-trabajador',               'API\Modulos\TrabajadorController@getCatalogos');
+    Route::get('buscador-datos-trabajador',         'API\Modulos\TrabajadorController@getBuscador');
+    Route::put('trabajador_finalizar/{id}',         'API\Modulos\TrabajadorController@FinalizarCaptura');
+
+    Route::get('ver-info-trabajador/{id}',          'API\Servicios\TrabajadorServiceController@detalleTrabajador');
+    /* Fin trabajador */
     Route::apiResource('firmantes',                 'API\Modulos\FirmantesController');
     Route::apiResource('clues',                     'API\Modulos\CluesController');
-
+    
     Route::put('transferir-empleado/{id}',          'API\Modulos\EmpleadosController@transferEmployee');
-    Route::get('obtener-datos-transferencia/{id}',  'API\Modulos\EmpleadosController@getEmployeeTransferData');
+    
     Route::put('finalizar-transferencia/{id}',      'API\Modulos\EmpleadosController@finishTransferEmployee');
     Route::put('liberar-empleado/{id}',             'API\Modulos\EmpleadosController@unlinkEmployee');
     Route::put('activar-empleado/{id}',             'API\Modulos\EmpleadosController@activateEmployee');

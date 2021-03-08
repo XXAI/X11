@@ -12,6 +12,7 @@ use Validator;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Trabajador;
 
 use DB;
 
@@ -211,4 +212,7 @@ class UserController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    
+    
 }

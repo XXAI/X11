@@ -1,0 +1,56 @@
+<section  fxFlex="100" fxFlex.xs="100" [formGroup]="BajaForm">
+    <mat-card>
+        <mat-card-title>Comisión</mat-card-title>
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <mat-label>Tipo de Baja </mat-label>
+                    <mat-select formControlName="tipo_baja_id" #tipoComision required>
+                        <mat-option *ngFor="let item of tipo_baja" [value]="item.id">
+                            {{item.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="BajaForm.get('tipo_baja_id').invalid && (BajaForm.get('tipo_baja_id').dirty || BajaForm.get('tipo_baja_id').touched)">
+                        <span *ngIf="BajaForm.get('tipo_baja_id').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <mat-label>Baja </mat-label>
+                    <mat-select formControlName="baja_id"  required>
+                        <mat-option *ngFor="let item of catalogo_baja" [value]="item.id">
+                            {{item.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="BajaForm.get('baja_id').invalid && (BajaForm.get('baja_id').dirty || BajaForm.get('baja_id').touched)">
+                        <span *ngIf="BajaForm.get('baja_id').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <input matInput [matDatepicker]="fecha_baja_picker"  autocomplete="off" (click)="fecha_baja_picker.open()" formControlName="fecha_baja" placeholder="Fecha Baja" >
+                    <mat-datepicker-toggle matPrefix [for]="fecha_baja_picker"></mat-datepicker-toggle>
+                    <mat-datepicker #fecha_baja_picker [disabled]="false"></mat-datepicker>
+                    <mat-error *ngIf="BajaForm.get('fecha_baja').invalid && (BajaForm.get('fecha_baja').dirty || BajaForm.get('fecha_baja').touched)">
+                        <span *ngIf="BajaForm.get('fecha_baja').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                
+                <mat-form-field fxFlex="100" fxFlex.xs="100">
+                    <textarea matInput autocomplete="off" formControlName="observacion" placeholder="Observacion" rows="5" ></textarea>
+                    <mat-error *ngIf="BajaForm.get('observacion').invalid && (BajaForm.get('observacion').dirty || BajaForm.get('observacion').touched)">
+                        <span *ngIf="BajaForm.get('observacion').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                    
+                </mat-form-field>
+            </div>
+            
+                    
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="cancelar()">Cancelar</button>
+            <button mat-raised-button color="primary" [disabled]="!BajaForm.valid" (click)="guardar()">Agregar</button>
+        </mat-card-actions>
+    </mat-card>
+</section>        

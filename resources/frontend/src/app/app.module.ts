@@ -40,6 +40,10 @@ import { SelectorCrDialogComponent } from './utils/selector-cr-dialog/selector-c
 //Cuestionario solo por un tiempo
 import { CuestionarioDengueModule } from './cuestionario-dengue/cuestionario-dengue.module';
 
+//Modulos Nuevos
+import { TrabajadorModule } from './trabajador/trabajador.module';
+import { RegistroModule } from './registro/registro.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +64,8 @@ import { CuestionarioDengueModule } from './cuestionario-dengue/cuestionario-den
     AppsListModule,
     UsersModule,
     EmpleadosModule,
+    TrabajadorModule,
+    RegistroModule,
     DashboardModule,
     SecurityModule,
     DevToolsModule,
