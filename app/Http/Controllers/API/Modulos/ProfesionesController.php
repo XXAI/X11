@@ -7,8 +7,6 @@ use Illuminate\Http\Response as HttpResponse;
 
 use App\Http\Requests;
 
-use Illuminate\Support\Facades\Input;
-
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 
@@ -23,10 +21,10 @@ use App\Models\User;*/
 
 class ProfesionesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             $profesiones = Profesion::with('tipoProfesion','rama')->orderBy('tipo_profesion_id')->orderBy('descripcion');
             
             if(isset($parametros['query'])){
@@ -81,7 +79,7 @@ class ProfesionesController extends Controller
             return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
         }
 
-        $inputs = Input::all();
+        $inputs = $request->all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {
@@ -127,7 +125,7 @@ class ProfesionesController extends Controller
 
         $object = new Profesion();
         
-        $inputs = Input::all();
+        $inputs = $request->all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {

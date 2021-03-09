@@ -7,8 +7,6 @@ use Illuminate\Http\Response as HttpResponse;
 
 use App\Http\Requests;
 
-use Illuminate\Support\Facades\Input;
-
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 
@@ -29,10 +27,10 @@ use App\Models\RelDatosLaborales;
 
 class TrabajadorServiceController extends Controller
 {
-    public function detalleTrabajador($id){
+    public function detalleTrabajador(Request $request, $id){
 
         try {
-            $params = Input::all();
+            $params = $request->all();
             
             $trabajador = Trabajador::select('trabajador.*')->where('id',$id)
                          ->with('capacitacion',
@@ -68,7 +66,7 @@ class TrabajadorServiceController extends Controller
 
         // try{
         //     $access = $this->getUserAccessData();
-        //     $params = Input::all();
+        //     $params = $request->all();
 
         //     $returnData = [];
 
@@ -182,11 +180,11 @@ class TrabajadorServiceController extends Controller
         // }
     }
 
-    public function listadoEmpleados()
+    public function listadoEmpleados(Request $request)
     {
         try{
             $access = $this->getUserAccessData();
-            $parametros = Input::all();
+            $parametros = $request->all();
             
             if(!$access->lista_cr){
                 throw new \Exception("Error: Debe estar asignado a un grupo para poder acceder a esta información.", 1);

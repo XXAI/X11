@@ -7,8 +7,6 @@ use Illuminate\Http\Response as HttpResponse;
 
 use App\Http\Requests;
 
-use Illuminate\Support\Facades\Input;
-
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 
@@ -16,10 +14,10 @@ use App\Models\GrupoUnidades;
 
 class GrupoUnidadesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             $grupos = GrupoUnidades::orderBy('descripcion');
 
             $elementos_por_grupo = DB::table('rel_clues_grupo_unidades')
@@ -85,7 +83,7 @@ class GrupoUnidadesController extends Controller
             return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
         }
 
-        $inputs = Input::all();
+        $inputs = $request->all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {
@@ -129,7 +127,7 @@ class GrupoUnidadesController extends Controller
 
         $object = new GrupoUnidades();
         
-        $inputs = Input::all();
+        $inputs = $request->all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {

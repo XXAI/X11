@@ -7,8 +7,6 @@ use Illuminate\Http\Response as HttpResponse;
 
 use App\Http\Requests;
 
-use Illuminate\Support\Facades\Input;
-
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 
@@ -31,7 +29,7 @@ use App\Exports\DevReportExport;
 
 class EmpleadosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         /*if (\Gate::denies('has-permission', \Permissions::VER_ROL) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_ROL)){
             return response()->json(['message'=>'No esta autorizado para ver este contenido'],HttpResponse::HTTP_FORBIDDEN);
@@ -43,7 +41,7 @@ class EmpleadosController extends Controller
         try{
             $access = $this->getUserAccessData();
             
-            $parametros = Input::all();
+            $parametros = $request->all();
             $empleados = Empleado::select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
@@ -233,12 +231,12 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         try{
             $access = $this->getUserAccessData();
 
-            $params = Input::all();
+            $params = $request->all();
 
             $empleado = Empleado::with('escolaridad','escolaridadDetalle.profesion', 'clues', 'cluesAdscripcion','codigo.grupoFuncion','profesion','permutaAdscripcionActiva.cluesDestino','permutaAdscripcionActiva.crDestino','adscripcionActiva.clues','adscripcionActiva.cr', 'empleado_comision.detalle', 'empleado_comision.clues', 'empleado_comision.cr', 'empleado_comision.sindicato', 'cr', 'crAdscripcion')->find($id);
 
@@ -388,7 +386,7 @@ class EmpleadosController extends Controller
 
         ];
 
-        $inputs = Input::all();
+        $inputs = $request->all();
 
         if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
         {   
@@ -712,7 +710,7 @@ class EmpleadosController extends Controller
             return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
         }
 
-        $inputs = Input::all();
+        $inputs = $request->all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
@@ -987,9 +985,9 @@ class EmpleadosController extends Controller
 
     }
 
-    public function getEmployeeTransferData($id){
+    public function getEmployeeTransferData(Request $request, $id){
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             
             $datos_transferencia = PermutaAdscripcion::with('cluesOrigen','cluesDestino','crOrigen','crDestino')->where('empleado_id',$id)->where('estatus',1)->first();
             
@@ -999,10 +997,10 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function transferEmployee($id){
+    public function transferEmployee(Request $request, $id){
         try{
             //['empleado_id', 'user_origen_id', 'clues_origen', 'user_destino_id', 'clues_destino', 'observacion', 'estatus', 'user_id']
-            $parametros = Input::all();
+            $parametros = $request->all();
             $empleado = Empleado::find($id);
             $loggedUser = auth()->userOrFail();
             $access = $this->getUserAccessData();
@@ -1053,9 +1051,9 @@ class EmpleadosController extends Controller
         }
     }
     
-    public function finishTransferEmployee($id){
+    public function finishTransferEmployee(Request $request, $id){
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             $loggedUser = auth()->userOrFail();
             $access = $this->getUserAccessData();
 
@@ -1107,9 +1105,9 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function requestTransferEmployee($id){
+    public function requestTransferEmployee(Request $request, $id){
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             
             //$datos_transferencia = PermutaAdscripcion::where('empleado_id',$id)->first();
             $empleado = Empleado::find($id);
@@ -1177,10 +1175,10 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function shutDownEmployee($id){
+    public function shutDownEmployee(Request $request, $id){
         try{
             //$loggedUser = auth()->userOrFail();
-            $parametros = Input::all();
+            $parametros = $request->all();
 
             $empleado = Empleado::with('adscripcionActiva','permutaAdscripcionActiva')->find($id);
 
@@ -1255,9 +1253,9 @@ class EmpleadosController extends Controller
         }
     }
     
-    public function comisionEmployee($id){
+    public function comisionEmployee(Request $request, $id){
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             $empleado = Empleado::find($id);
             
             DB::beginTransaction();
@@ -1410,10 +1408,10 @@ class EmpleadosController extends Controller
         //return ['userData'=>$loggedUser,'access'=>['clues'=>$lista_clues, 'cr'=>$lista_cr]];
     }
 
-    public function getEmpleadosComplete()
+    public function getEmpleadosComplete(Request $request)
     {
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
 
             $access = $this->getUserAccessData();
             
@@ -1448,10 +1446,10 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function getResponsableComplete()
+    public function getResponsableComplete(Request $request)
     {
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
 
             $access = $this->getUserAccessData();
             
@@ -1482,10 +1480,10 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function getCrComplete()
+    public function getCrComplete(Request $request)
     {
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             
             $access = $this->getUserAccessData();
             if($access->is_admin)
@@ -1501,10 +1499,10 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function getCrAdscripcionComplete()
+    public function getCrAdscripcionComplete(Request $request)
     {
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             $cr = Cr::with("clues")->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->get();
             $cr_nuevo = Cr::whereNull("deleted_at")->get();
             return response()->json(['data'=>$cr, 'datos'=>$cr_nuevo],HttpResponse::HTTP_OK);
@@ -1528,12 +1526,12 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function getEmployeeAreaData()
+    public function getEmployeeAreaData(Request $request)
     {
         try{
             $access = $this->getUserAccessData();
             
-            $parametros = Input::all();
+            $parametros = $request->all();
             $empleados = Empleado::select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);

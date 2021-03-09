@@ -7,7 +7,6 @@ use Illuminate\Http\Response as HttpResponse;
 
 use App\Http\Requests;
 
-use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DevReportExport;
 
@@ -20,7 +19,7 @@ use App\Models\ParticipanteCuestionario;
 
 class ParticipantesController extends Controller
 {
-    function saveParticipante()
+    function saveParticipante(Request $request)
     {
         $mensajes = [
             'required'           => "required",
@@ -40,7 +39,7 @@ class ParticipantesController extends Controller
 
         $object = new Participante();
         
-        $inputs = Input::all();
+        $inputs = $request->all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {
@@ -71,7 +70,7 @@ class ParticipantesController extends Controller
             return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
         }
     }
-    function saveCuestionario()
+    function saveCuestionario(Request $request)
     {
         $mensajes = [
             'required'           => "required",
@@ -92,7 +91,7 @@ class ParticipantesController extends Controller
 
         $object = new ParticipanteCuestionario();
         
-        $inputs = Input::all();
+        $inputs = $request->all();
         $v = Validator::make($inputs, $reglas, $mensajes);
 
         if ($v->fails()) {
@@ -142,10 +141,10 @@ class ParticipantesController extends Controller
         }
     }
 
-    function verificarCuestionario()
+    function verificarCuestionario(Request $request)
     {
         try{
-            $inputs = Input::all();
+            $inputs = $request->all();
             $participante = Participante::find($inputs['participante']);
             $resultado = $participante->realizado;
             $participante->realizado = 1;
@@ -156,10 +155,10 @@ class ParticipantesController extends Controller
         }
     }
 
-    function actualizarParticipante()
+    function actualizarParticipante(Request $request)
     {
         try{
-            $inputs = Input::all();
+            $inputs = $request->all();
             $participante = Participante::find($inputs['participante']);
             if($inputs['video'] == 1)
             {
@@ -188,10 +187,10 @@ class ParticipantesController extends Controller
         }
     }
 
-    function verificarAvance()
+    function verificarAvance(Request $request)
     {
         try{
-            $inputs = Input::all();
+            $inputs = $request->all();
             $participante = Participante::where("rfc", "=", $inputs['rfc'])->first();
            
             if($participante)
@@ -210,11 +209,11 @@ class ParticipantesController extends Controller
         }
     }
 
-    function verConstancia()
+    function verConstancia(Request $request)
     {
         try{
 
-            $inputs = Input::all();
+            $inputs = $request->all();
             $participante = Participante::find($inputs['participante']);
            
             return response()->json(['data'=>$participante],HttpResponse::HTTP_OK);

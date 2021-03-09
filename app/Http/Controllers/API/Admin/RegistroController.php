@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response as HttpResponse;
 
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use Validator;
 use DB;
@@ -16,7 +15,7 @@ use App\Models\Trabajador;
 
 class RegistroController extends Controller
 {
-    public function register(){
+    public function register(Request $request){
         try{
             $validation_rules = [
                 'rfc' => 'required',
@@ -28,7 +27,7 @@ class RegistroController extends Controller
                 'contrasenia.required' => 'la contraseña es obligatoria'
             ];
 
-            $parametros = Input::all();
+            $parametros = $request->all();
 
             $resultado = Validator::make($parametros,$validation_rules,$validation_eror_messages);
 

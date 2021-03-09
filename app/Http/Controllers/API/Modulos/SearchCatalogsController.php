@@ -5,8 +5,6 @@ namespace App\Http\Controllers\API\Modulos;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 
-use Illuminate\Support\Facades\Input;
-
 use App\Http\Controllers\Controller;
 
 use App\Models\Clues;
@@ -21,14 +19,14 @@ use App\Models\TipoProfesion;
 
 class SearchCatalogsController extends Controller
 {
-    public function getProfesionAutocomplete()
+    public function getProfesionAutocomplete(Request $request)
     {
         /*if (\Gate::denies('has-permission', \Permissions::VER_ROL) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_ROL)){
             return response()->json(['message'=>'No esta autorizado para ver este contenido'],HttpResponse::HTTP_FORBIDDEN);
         }*/
 
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             $profesiones = Profesion::select('id', 'descripcion');
             
             //Filtros, busquedas, ordenamiento
@@ -77,14 +75,14 @@ class SearchCatalogsController extends Controller
         }
     }
 
-    public function getCodigoAutocomplete()
+    public function getCodigoAutocomplete(Request $request)
     {
         /*if (\Gate::denies('has-permission', \Permissions::VER_ROL) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_ROL)){
             return response()->json(['message'=>'No esta autorizado para ver este contenido'],HttpResponse::HTTP_FORBIDDEN);
         }*/
 
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             $codigos = Codigo::select('codigo', 'descripcion', 'grupo_funcion_id')->with('grupoFuncion');
             
             //Filtros, busquedas, ordenamiento
@@ -108,14 +106,14 @@ class SearchCatalogsController extends Controller
         }
     }
 
-    public function getCluesAutocomplete()
+    public function getCluesAutocomplete(Request $request)
     {
         /*if (\Gate::denies('has-permission', \Permissions::VER_ROL) && \Gate::denies('has-permission', \Permissions::SELECCIONAR_ROL)){
             return response()->json(['message'=>'No esta autorizado para ver este contenido'],HttpResponse::HTTP_FORBIDDEN);
         }*/
 
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             $unidades = Clues::select('clues', 'cve_jurisdiccion', 'nombre_unidad', 'estatus', 'clave_estatus', 'nivel_atencion', 'clave_nivel', 'estatus_acreditacion')->with('cr');
             
             //Filtros, busquedas, ordenamiento

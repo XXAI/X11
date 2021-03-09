@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 
 use Validator;
@@ -23,11 +22,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index(Request $request){
         try{
             $loggedUser = auth()->userOrFail();
 
-            $parametros = Input::all();
+            $parametros = $request->all();
             $usuarios = User::getModel();
 
             if(!$loggedUser->is_superuser){
@@ -76,7 +75,7 @@ class UserController extends Controller
                 'email.required' => 'Es correo electronico es obligatorio'
             ];
 
-            $parametros = Input::all();
+            $parametros = $request->all();
 
             $resultado = Validator::make($parametros,$validation_rules,$validation_eror_messages);
 
@@ -150,7 +149,7 @@ class UserController extends Controller
 
             $usuario = User::find($id);
 
-            $parametros = Input::all();
+            $parametros = $request->all();
 
             $resultado = Validator::make($parametros,$validation_rules,$validation_eror_messages);
 

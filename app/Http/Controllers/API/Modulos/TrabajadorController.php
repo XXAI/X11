@@ -7,8 +7,6 @@ use Illuminate\Http\Response as HttpResponse;
 
 use App\Http\Requests;
 
-use Illuminate\Support\Facades\Input;
-
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 use Carbon\Carbon;
@@ -62,7 +60,7 @@ use App\Exports\DevReportExport;
 
 class TrabajadorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $firmantes = array();
         $responsable_clues = array();
@@ -73,7 +71,7 @@ class TrabajadorController extends Controller
             //return response()->json(['data'=>$access],HttpResponse::HTTP_OK);
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
-            $parametros = Input::all();
+            $parametros = $request->all();
             $trabajador = Trabajador:://with("datoslaborales")//select('trabajador.*')
                             join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
             /*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
@@ -252,12 +250,12 @@ class TrabajadorController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try{
             $loggedUser = auth()->userOrFail();
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
-            $params = Input::all();
+            $params = $request->all();
 
             $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'datoslaboralesnomina'/*, 'capacitacionDetalles'*/)->where("id", "=", $id);
 
@@ -303,7 +301,7 @@ class TrabajadorController extends Controller
             'email'         => "email",
             'unique'        => "unique"
         ];
-        $inputs = Input::all();
+        $inputs = $request->all();
         $reglas = [];
 
         if($inputs['tipo_dato'] == 1)
@@ -668,10 +666,10 @@ class TrabajadorController extends Controller
         }
     }
 
-    public function getBuscador()
+    public function getBuscador(Request $request)
     {
         try{
-            $parametros = Input::all();
+            $parametros = $request->all();
             switch ($parametros['tipo']) {
                 case 1:
                     $obj = Municipio::where("descripcion", "like", "%".$parametros['query']."%")
