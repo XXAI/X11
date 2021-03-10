@@ -22,12 +22,12 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class CuestionarioComponent implements OnInit {
 
-  @ViewChild('primer_video', {static: false})   videoplayer1: ElementRef;
-  @ViewChild('segundo_video', {static: false})  videoplayer2: ElementRef;
-  @ViewChild('tercer_video', {static: false})   videoplayer3: ElementRef;
-  @ViewChild('cuarto_video', {static: false})   videoplayer4: ElementRef;
-  @ViewChild('quinto_video', {static: false})   videoplayer5: ElementRef;
-  @ViewChild('sexto_video', {static: false})   videoplayer6: ElementRef;
+  @ViewChild('primer_video')   videoplayer1: ElementRef;
+  @ViewChild('segundo_video')  videoplayer2: ElementRef;
+  @ViewChild('tercer_video')   videoplayer3: ElementRef;
+  @ViewChild('cuarto_video')   videoplayer4: ElementRef;
+  @ViewChild('quinto_video')   videoplayer5: ElementRef;
+  @ViewChild('sexto_video')   videoplayer6: ElementRef;
 
   participante = 0;
   calificacion_participante = 0;

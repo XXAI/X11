@@ -100,9 +100,9 @@ export class ListaComponent implements OnInit {
   //showAdvancedFilter:boolean = false;
   constructor(private sharedService: SharedService, private empleadosService: EmpleadosService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatTable, {static:false}) usersTable: MatTable<any>;
-  @ViewChild(MatExpansionPanel, {static:false}) advancedFilter: MatExpansionPanel;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatTable) usersTable: MatTable<any>;
+  @ViewChild(MatExpansionPanel) advancedFilter: MatExpansionPanel;
 
   ngOnInit() {
     this.mediaObserver.media$.subscribe(

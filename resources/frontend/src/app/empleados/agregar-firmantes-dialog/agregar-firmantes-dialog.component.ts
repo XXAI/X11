@@ -49,9 +49,9 @@ export class AgregarFirmantesDialogComponent implements OnInit {
     private fb: FormBuilder,
      @Inject(MAT_DIALOG_DATA) public data: AgregarFirmanteDialogData ) { }
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatTable, {static:false}) usersTable: MatTable<any>;
-  @ViewChild(MatExpansionPanel, {static:false}) advancedFilter: MatExpansionPanel;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatTable) usersTable: MatTable<any>;
+  @ViewChild(MatExpansionPanel) advancedFilter: MatExpansionPanel;
 
   
 
