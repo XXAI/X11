@@ -5,7 +5,9 @@ import { CluesRoutingModule } from './clues-routing.module';
 import { ListaComponent } from './lista/lista.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
-import { MatPaginatorIntl, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE  } from '@angular/material';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getEspPaginatorIntl } from '../../esp-paginator-intl';
 import { EditarComponent } from './editar/editar.component';
 

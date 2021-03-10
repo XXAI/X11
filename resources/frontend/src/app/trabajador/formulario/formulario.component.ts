@@ -12,7 +12,7 @@ import { BREAKPOINT, validateBasis } from '@angular/flex-layout';
 import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { MediaObserver } from '@angular/flex-layout';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 
 /* Utilerias */
 
