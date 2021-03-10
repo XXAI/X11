@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog.component';
 
@@ -6,7 +6,7 @@ describe('AgregarFirmantesDialogComponent', () => {
   let component: AgregarFirmantesDialogComponent;
   let fixture: ComponentFixture<AgregarFirmantesDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AgregarFirmantesDialogComponent ]
     })
