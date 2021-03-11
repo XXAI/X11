@@ -372,6 +372,10 @@ export class ListaComponent implements OnInit {
     this.loadTrabajadorData(null);
   }
 
+  cleanSearch(){
+    this.searchQuery = '';
+  }
+
   cleanFilter(filter){
     filter.value = '';
     //filter.closePanel();
