@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { App } from 'src/app/apps-list/apps';
 import { AppsListService } from 'src/app/apps-list/apps-list.service';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { filter } from 'rxjs/internal/operators/filter';
+import { filter } from 'rxjs/operators';
 import { SharedService } from '../../shared/shared.service';
 
 @Component({

@@ -4,12 +4,14 @@ namespace App\Http\Controllers\API\Modulos;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Database\Eloquent\Collection;
 
 use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB;
 use Carbon\Carbon;
+
 
 use App\Models\Trabajador;
 use App\Models\Pais;
@@ -749,5 +751,28 @@ class TrabajadorController extends Controller
         }
 
         return $accessData;
+    }
+
+    public function unlinkTrabajador($id){
+        try{
+            
+            $trabajador = Trabajador::find($id);
+            $trabajador->estatus = 3;
+            
+
+            $trabajador_datos_laborales =  RelDatosLaborales::where("trabajador_id", "=", $trabajador->id)->first();
+            
+            $loggedUser = auth()->userOrFail();
+            
+            $trabajador_datos_laborales->clues_adscripcion_fisica = null;
+            $trabajador_datos_laborales->cr_fisico_id = null;
+            
+            $trabajador->save();
+            $trabajador_datos_laborales->save();
+
+            return response()->json(['datos_trabajador'=>$trabajador, 'datos_laborales'=>$trabajador_datos_laborales],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
     }
 }

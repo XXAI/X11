@@ -69,6 +69,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::put('trabajador_finalizar/{id}',         'API\Modulos\TrabajadorController@FinalizarCaptura');
 
     Route::get('ver-info-trabajador/{id}',          'API\Servicios\TrabajadorServiceController@detalleTrabajador');
+    Route::put('liberar-trabajador/{id}',           'API\Modulos\TrabajadorController@unlinkTrabajador');
     /* Fin trabajador */
     Route::apiResource('firmantes',                 'API\Modulos\FirmantesController');
     Route::apiResource('clues',                     'API\Modulos\CluesController');

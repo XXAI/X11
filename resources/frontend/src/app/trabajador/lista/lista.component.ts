@@ -94,6 +94,7 @@ export class ListaComponent implements OnInit {
   @ViewChild(MatExpansionPanel) advancedFilter: MatExpansionPanel;
 
   ngOnInit() {
+    console.log("asdads");
     this.mediaObserver.media$.subscribe(
       response => {
         this.mediaSize = response.mqAlias;
@@ -198,7 +199,41 @@ export class ListaComponent implements OnInit {
     });
   }
 
+  liberarTrabajador(id: number)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Liberar Trabajador',dialogMessage:'¿Realmente desea liberar al trabajador de su clues y cr Física? Escriba LIBERAR a continuación para realizar el proceso.',validationString:'LIBERAR',btnColor:'primary',btnText:'Liberar'}
+    });
+    this.isLoading = true;
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.trabajadorService.desligarEmpleado(id).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {
+              this.loadTrabajadorData();
+            }
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }
+    });
+  }
+  
+
   public loadTrabajadorData(event?:PageEvent){
+    
     this.isLoading = true;
     let params:any;
     if(!event){
@@ -255,18 +290,19 @@ export class ListaComponent implements OnInit {
 
     this.trabajadorService.getTrabajadorList(params).subscribe(
       response =>{
+        console.log("aca",response);
         if(response.error) {
           let errorMessage = response.error.message;
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
 
-          /*if(response.estatus.grupo_usuario){
+          if(response.estatus.grupo_usuario){
             this.puedeFinalizar = true;
             this.capturaFinalizada = response.estatus.finalizado;
           }else{
             this.puedeFinalizar = false;
             this.capturaFinalizada = false;
-          }*/
+          }
 
           this.countPersonalActivo = response.estatus.estatus_validacion.total_activos;
           this.countPersonalValidado = response.estatus.estatus_validacion.total_validados;

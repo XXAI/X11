@@ -19,6 +19,8 @@ export class TrabajadorService {
 
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
 
+  url_unlink = `${environment.base_url}/liberar-trabajador/`;
+
   constructor(private http: HttpClient) { }
 
   getTrabajadorList(payload):Observable<any> {
@@ -97,6 +99,14 @@ export class TrabajadorService {
         return response;
       })
     );
+  }
+
+  desligarEmpleado(id:any):Observable<any> {
+    return this.http.put<any>(this.url_unlink + id, {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
   }
 
   getDatosCredencial(clave_credencial:string):Observable<any> {

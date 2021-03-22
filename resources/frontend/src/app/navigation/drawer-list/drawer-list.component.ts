@@ -4,7 +4,7 @@ import { App } from 'src/app/apps-list/apps';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AppsListService } from 'src/app/apps-list/apps-list.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/internal/operators/filter';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'drawer-list',
