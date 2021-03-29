@@ -654,7 +654,7 @@ export class ListaComponent implements OnInit {
     this.empleadosService.getEmpleadosList(params).subscribe(
       response => {
         //FileSaver.saveAs(response);
-        FileSaver.saveAs(response,'reportePersonalActivo');
+        //FileSaver.saveAs(response,'reportePersonalActivo');
         this.isLoadingExcel = false;
       },
       errorResponse =>{

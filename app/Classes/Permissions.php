@@ -24,6 +24,7 @@ class Permissions{
 
     //Permisos para Modulo de Personal Activo
     const MODULO_PERSONAL_ACTIVO = '8QnE1cYkjjNAmM7qHSf1CSlPMJiQeqr5';
+    //const MODULO_PERSONAL_ACTIVO = 'VguUicBQPIYqZgocJaOHdhMbfnzVqJ7k';
     const ADMIN_PERSONAL_ACTIVO = 'dmcnXs5gK1qHzn30WvGXDzFimcrVJZ9Z';
     const AGREGAR_EMPLEADO = 'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm';
 }

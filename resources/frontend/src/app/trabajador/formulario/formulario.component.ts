@@ -1,28 +1,22 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { SharedService } from 'src/app/shared/shared.service';
-import { TrabajadorService } from '../trabajador.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { Observable, combineLatest, of, forkJoin } from 'rxjs';
-import { startWith, map, throwIfEmpty, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
-import { AuthService } from 'src/app/auth/auth.service';
-import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
-import { BREAKPOINT, validateBasis } from '@angular/flex-layout';
-import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Component, OnInit } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/auth.service';
+import { SharedService } from 'src/app/shared/shared.service';
+import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
+import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
+import { ComisionDialogComponent } from '../comision-dialog/comision-dialog.component';
+import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.component';
 /* Utilerias */
-
-
 /*Dialogs */
 import { JornadaDialogComponent } from '../jornada-dialog/jornada-dialog.component';
-import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.component';
-import { CapacitacionDialogComponent } from '../capacitacion-dialog/capacitacion-dialog.component';
-import { ComisionDialogComponent } from '../comision-dialog/comision-dialog.component';
-import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
+import { TrabajadorService } from '../trabajador.service';
+
 
 
 
@@ -52,20 +46,23 @@ export class FormularioComponent implements OnInit {
   datosCapacitacion:any = [];
   datosComision:any = null;
   isLoading:boolean = false;
+  crIsLoading: boolean = false;
   dias:number = 0;
-  datos_laborales:any = { cr: []};
+  datos_laborales:any;
   datos_personales:any = { estatus : 0};
-  datos_laborales_nomina:any = { clues: []};
+  datos_laborales_nomina:any;
   imagen_trabajador:string = 'assets/trabajador.jpg';
   selectedItemIndex: number = -1;
   isLoadingPage: boolean = true;
-  actualizado:number = 0;
+  actualizado:boolean = false;
+  editable = true;
 
+  filteredCr: Observable<any[]>;
   finalizarActualizacion:boolean = true;
 
   indexTab:number = 0;
 
-  trabajador_id:string;
+  trabajador_id:string = "";
   nombre_trabajador:string;
   tab_proceso:number = 1;
 
@@ -90,7 +87,7 @@ export class FormularioComponent implements OnInit {
     'pais_nacimiento_id': ['',[Validators.required]],
     'entidad_nacimiento_id': ['',[Validators.required]],
     'municipio': [{ value:'', disabled:true}, Validators.required],
-    'municipio_nacimiento_id': ['', [Validators.required]],
+    //'municipio_nacimiento_id': ['', [Validators.required]],
     'nacionalidad_id': ['',[Validators.required]],
     'fecha_nacimiento': ['',[Validators.required]],
     //'edad': ['',[Validators.required]],
@@ -117,6 +114,9 @@ export class FormularioComponent implements OnInit {
     'fecha_ingreso': ['',[Validators.required]],
     'fecha_ingreso_federal': [],
     //'codigo_puesto_id': [],
+    'cr': [''],
+    'cr_id': [''],
+    'clues': [''],
     'rama_id': ['',[Validators.required]],
 
     'actividad_id': ['',[Validators.required]],
@@ -218,16 +218,29 @@ export class FormularioComponent implements OnInit {
       response => {
         this.mediaSize = response.mqAlias;
     });
-
+    this.isLoadingPage = false;
     this.route.paramMap.subscribe(params => {
       this.trabajador_id = params.get('id');
-
+      
       if(this.trabajador_id){
+        console.log("entra");
         this.cargarTrabajador(this.trabajador_id);
+        
+        if(parseInt(params.get('step')))
+        {
+          this.avanzar(parseInt(params.get('step')));
+        }
+        
       }else{
-        this.isLoadingPage = false;
+        //this.trabajadorForm.get('rfc').enable();
+        this.editable = false;
       }
     });
+  }
+
+  checar()
+  {
+    console.log(this.trabajadorForm);
   }
 
   retroceder(number):void{
@@ -238,11 +251,54 @@ export class FormularioComponent implements OnInit {
 
   avanzar(number):void
   {
-    console.log(this.tab_proceso);
-    console.log(this.indexTab);
+    //console.log(this.tab_proceso);
+    //console.log(this.indexTab);
       this.tab_proceso = number + 1;
       this.indexTab = number;
   }
+
+  confirmUnlinkTrabajador(){
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Liberar Empleado',dialogMessage:'¿Realmente desea liberar el trabajador de su clues? Escriba LIBERAR a continuación para realizar el proceso.',validationString:'LIBERAR',btnColor:'primary',btnText:'Liberar'}
+    });
+
+    /*let id = this.datos_empleado.id;
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.empleadosService.desligarEmpleado(id).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {
+              console.log(response);
+              this.loadEmpleadoData(id);
+
+              let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+              if(paginator.selectedIndex > 0){
+                paginator.selectedIndex -= 1;
+              }else{
+                paginator.selectedIndex = paginator.pageSize-1;
+              }
+              this.sharedService.setDataToCurrentApp('paginator',paginator);
+            }
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }
+    });*/
+  }
+
   cargarTrabajador(id):void{
     this.trabajadorService.buscarTrabajador(id, {}).subscribe(
       response =>{
@@ -252,10 +308,18 @@ export class FormularioComponent implements OnInit {
           this.router.navigate(['/trabajadores']);
         }
         let trabajador = response;
-        this.actualizado = trabajador.actualizado;
+        if(trabajador.actualizado == 1)
+        {
+          this.actualizado = true;  
+        }else if(trabajador.actualizado == 0)
+        {
+          this.actualizado = false;
+        }
+        //this.actualizado = trabajador.actualizado;
         this.datos_personales = response;
+        //console.log(trabajador);
         this.datos_laborales_nomina = trabajador.datoslaboralesnomina;
-
+        console.log(this.datos_laborales_nomina);
         this.idioma(trabajador.idioma_id);
         this.lengua(trabajador.lengua_indigena_id);
         this.verificar_curp(trabajador.curp);
@@ -273,50 +337,59 @@ export class FormularioComponent implements OnInit {
         this.datosLaborelesForm.patchValue(trabajador.datoslaborales);
         
         this.datos_laborales = trabajador.datoslaborales;
-        let anio = this.datos_laborales.fecha_ingreso.substring(0,4);
-        let mes = (parseInt(this.datos_laborales.fecha_ingreso.substring(5,7)) - 1);
-        let dia = parseInt(this.datos_laborales.fecha_ingreso.substring(8,10));
-        ingreso = new Date(anio,+mes,dia);
-
-        let ingreso_federal;
-        let anio_federal = this.datos_laborales.fecha_ingreso_federal.substring(0,4);
-        let mes_federal = (parseInt(this.datos_laborales.fecha_ingreso_federal.substring(5,7)) - 1);
-        let dia_federal = parseInt(this.datos_laborales.fecha_ingreso_federal.substring(8,10));
-        
-        ingreso_federal = new Date(anio_federal,mes_federal,dia_federal);
-
-        if(this.datos_laborales.vigencia_fiel != null)
+        if(this.datos_laborales != null)
         {
-          this.fiel(this.datos_laborales.tiene_fiel);
-          let vigencia_fiel;
-          let anio_fiel = this.datos_laborales.vigencia_fiel.substring(0,4);
-          let mes_fiel = (parseInt(this.datos_laborales.vigencia_fiel.substring(5,7)) - 1)
-          let dia_fiel = parseInt(this.datos_laborales.vigencia_fiel.substring(8,10));
-          vigencia_fiel = new Date(anio_fiel,+mes_fiel,dia_fiel);
-          this.datosLaborelesForm.patchValue({vigencia_fiel: vigencia_fiel}); 
-        }
-        
-        this.datosLaborelesForm.patchValue({fecha_ingreso: ingreso, fecha_ingreso_federal: ingreso_federal}); 
-        //Caga datos dehorario
-        let datos_horario = trabajador.horario;
-        this.datosHorarioForm.patchValue({jornada_id: this.datos_laborales.jornada_id});
-        let dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo", "festivo"];
-        for(let i = 0; i < datos_horario.length; i++)
-        {
-          let indice_dia = datos_horario[i].dia;
-          this.jornada(indice_dia, false); 
-          switch (indice_dia) {
-            case 1: this.datosHorarioForm.patchValue({horario_lunes: true, hora_inicio_lunes: datos_horario[i].entrada, hora_fin_lunes: datos_horario[i].salida }); break;
-            case 2: this.datosHorarioForm.patchValue({horario_martes: true, hora_inicio_martes: datos_horario[i].entrada, hora_fin_martes: datos_horario[i].salida }); break;
-            case 3: this.datosHorarioForm.patchValue({horario_miercoles: true, hora_inicio_miercoles: datos_horario[i].entrada, hora_fin_miercoles: datos_horario[i].salida }); break;
-            case 4: this.datosHorarioForm.patchValue({horario_jueves: true, hora_inicio_jueves: datos_horario[i].entrada, hora_fin_jueves: datos_horario[i].salida }); break;
-            case 5: this.datosHorarioForm.patchValue({horario_viernes: true, hora_inicio_viernes: datos_horario[i].entrada, hora_fin_viernes: datos_horario[i].salida }); break;
-            case 6: this.datosHorarioForm.patchValue({horario_sabado: true, hora_inicio_sabado: datos_horario[i].entrada, hora_fin_sabado: datos_horario[i].salida }); break;
-            case 7: this.datosHorarioForm.patchValue({horario_domingo: true, hora_inicio_domingo: datos_horario[i].entrada, hora_fin_domingo: datos_horario[i].salida }); break;
-            case 8: this.datosHorarioForm.patchValue({horario_festivo: true, hora_inicio_festivo: datos_horario[i].entrada, hora_fin_festivo: datos_horario[i].salida }); break;
+          let anio = this.datos_laborales.fecha_ingreso.substring(0,4);
+          let mes = (parseInt(this.datos_laborales.fecha_ingreso.substring(5,7)) - 1);
+          let dia = parseInt(this.datos_laborales.fecha_ingreso.substring(8,10));
+          ingreso = new Date(anio,+mes,dia);
+
+          let ingreso_federal;
+          let anio_federal = this.datos_laborales.fecha_ingreso_federal.substring(0,4);
+          let mes_federal = (parseInt(this.datos_laborales.fecha_ingreso_federal.substring(5,7)) - 1);
+          let dia_federal = parseInt(this.datos_laborales.fecha_ingreso_federal.substring(8,10));
           
-            default:
-              break;
+          ingreso_federal = new Date(anio_federal,mes_federal,dia_federal);
+
+          if(this.datos_laborales.vigencia_fiel != null)
+          {
+            this.fiel(this.datos_laborales.tiene_fiel);
+            let vigencia_fiel;
+            let anio_fiel = this.datos_laborales.vigencia_fiel.substring(0,4);
+            let mes_fiel = (parseInt(this.datos_laborales.vigencia_fiel.substring(5,7)) - 1)
+            let dia_fiel = parseInt(this.datos_laborales.vigencia_fiel.substring(8,10));
+            vigencia_fiel = new Date(anio_fiel,+mes_fiel,dia_fiel);
+            this.datosLaborelesForm.patchValue({vigencia_fiel: vigencia_fiel}); 
+          }
+          
+          this.datosLaborelesForm.patchValue({fecha_ingreso: ingreso, fecha_ingreso_federal: ingreso_federal}); 
+          //Caga datos dehorario
+         
+        }
+        let datos_horario = trabajador.horario;
+        
+        if(datos_horario != "")
+        {
+          
+          this.datosHorarioForm.patchValue({jornada_id: this.datos_laborales.jornada_id});
+          let dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo", "festivo"];
+          for(let i = 0; i < datos_horario.length; i++)
+          {
+            let indice_dia = datos_horario[i].dia;
+            this.jornada(indice_dia, false); 
+            switch (indice_dia) {
+              case 1: this.datosHorarioForm.patchValue({horario_lunes: true, hora_inicio_lunes: datos_horario[i].entrada, hora_fin_lunes: datos_horario[i].salida }); break;
+              case 2: this.datosHorarioForm.patchValue({horario_martes: true, hora_inicio_martes: datos_horario[i].entrada, hora_fin_martes: datos_horario[i].salida }); break;
+              case 3: this.datosHorarioForm.patchValue({horario_miercoles: true, hora_inicio_miercoles: datos_horario[i].entrada, hora_fin_miercoles: datos_horario[i].salida }); break;
+              case 4: this.datosHorarioForm.patchValue({horario_jueves: true, hora_inicio_jueves: datos_horario[i].entrada, hora_fin_jueves: datos_horario[i].salida }); break;
+              case 5: this.datosHorarioForm.patchValue({horario_viernes: true, hora_inicio_viernes: datos_horario[i].entrada, hora_fin_viernes: datos_horario[i].salida }); break;
+              case 6: this.datosHorarioForm.patchValue({horario_sabado: true, hora_inicio_sabado: datos_horario[i].entrada, hora_fin_sabado: datos_horario[i].salida }); break;
+              case 7: this.datosHorarioForm.patchValue({horario_domingo: true, hora_inicio_domingo: datos_horario[i].entrada, hora_fin_domingo: datos_horario[i].salida }); break;
+              case 8: this.datosHorarioForm.patchValue({horario_festivo: true, hora_inicio_festivo: datos_horario[i].entrada, hora_fin_festivo: datos_horario[i].salida }); break;
+            
+              default:
+                break;
+            }
           }
         }
 
@@ -571,6 +644,24 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredColegio = items);
     
+      this.datosLaborelesForm.get('cr').valueChanges
+      .pipe(
+        debounceTime(300),
+        tap( () => {
+          this.crIsLoading = true;
+        } ),
+        switchMap(value => {
+            if(!(typeof value === 'object')){
+              return this.trabajadorService.buscarCr({query:value}).pipe(
+                finalize(() => this.crIsLoading = false )
+              );
+            }else{
+              this.crIsLoading = false;
+              return [];
+            }
+          }
+        ),
+      ).subscribe(items => this.filteredCr = items);
   }
 
   cargarDatosDefault():void{
@@ -615,9 +706,10 @@ export class FormularioComponent implements OnInit {
       let anio = fecha_nacimiento.substring(0,2);
       let mes = parseInt(fecha_nacimiento.substring(2,4));
       let dia = parseInt(fecha_nacimiento.substring(4,6));
-      
+      console.log(new Date(anio+"-"+mes+"-"+dia));
       this.trabajadorForm.patchValue({fecha_nacimiento: new Date(anio+"-"+mes+"-"+dia)}); 
       
+
       if(sexo == "H")
       {
         this.trabajadorForm.patchValue({sexo: 2029389});
@@ -648,6 +740,11 @@ export class FormularioComponent implements OnInit {
     }else if(tipo == 2)
     {
       data = this.datosLaborelesForm.value;
+      if(data.cr != null)
+      {
+        data.cr_id = data.cr.cr;
+        data.clues = data.clues.clues;
+      }
     }else if(tipo == 3)
     {
       data = this.datosHorarioForm.value;
@@ -664,35 +761,56 @@ export class FormularioComponent implements OnInit {
       data = this.datosCursosForm.value;
       //data.datos = this.datosEstudios;
     }
-    //console.log(this.datosEstudios);
-
+    
     this.isLoading = true;
-    //data.trabajador_id = this.trabajador_id;
     data.tipo_dato = tipo;
-    //console.log(data); 
-    this.trabajadorService.guardarTrabajador(this.trabajador_id, data).subscribe(
-      response =>{
-        //console.log(response);
-        this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
-        this.isLoading = false;
-        if(tipo != 4)
-        {
-          this.tab_proceso = tipo + 1;
-          this.indexTab = tipo;
-        }else{
-          this.finalizarActualizacion = false;
+    if(this.trabajador_id != null)
+    {
+      this.trabajadorService.guardarTrabajador(this.trabajador_id, data).subscribe(
+        response =>{
+          //console.log(response);
+          this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
+          this.isLoading = false;
+          if(tipo != 4)
+          {
+            this.tab_proceso = tipo + 1;
+            this.indexTab = tipo;
+          }else{
+            this.finalizarActualizacion = false;
+          }
+        },
+        errorResponse =>{
+          this.isLoading = false;
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
+          
         }
-      },
-      errorResponse =>{
-        this.isLoading = false;
-        var errorMessage = "Ocurrió un error.";
-        if(errorResponse.status == 409){
-          errorMessage = errorResponse.error.error.message;
+      );
+    }else
+    {
+      this.trabajadorService.guardarNuevoTrabajador( data).subscribe(
+        response =>{
+          //console.log(response);
+          this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
+          this.isLoading = false;
+          this.router.navigate(['/trabajadores/editar/'+response.id+"/1"]);
+        },
+        errorResponse =>{
+          this.isLoading = false;
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
+          
         }
-        this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
-        
-      }
-    );
+      );
+      
+    }
+    
   }
 
   accionFinalizar()
@@ -1152,6 +1270,10 @@ export class FormularioComponent implements OnInit {
   }*/
 
   /* Displays functions */
+  displayCrFn(item: any) {
+    if (item) { return item.descripcion; }
+  }
+
   displayMunicipioFn(item: any) {
     if (item) { return item.descripcion; }
   }

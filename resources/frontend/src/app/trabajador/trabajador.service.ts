@@ -14,12 +14,15 @@ export class TrabajadorService {
   url_catalogos = `${environment.base_url}/catalogo-trabajador`;
   url_buscador = `${environment.base_url}/buscador-datos-trabajador`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
-
+  url_trabajadores = `${environment.base_url}/busqueda-trabajadores`;
   url_info_trabajador = `${environment.base_url}/ver-info-trabajador/`;
+  url_asistencia = 'http://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
 
   url_unlink = `${environment.base_url}/liberar-trabajador/`;
+
+  url_cr = `${environment.base_url}/busqueda-cr`;
 
   constructor(private http: HttpClient) { }
 
@@ -59,6 +62,13 @@ export class TrabajadorService {
   };
 
   
+  buscarTrabajadores(payload):Observable<any>{
+    return this.http.get<any>(this.url_trabajadores,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
 
   getCatalogoSindicato():Observable<any> {
     return this.http.get<any>(this.url_catalogos, {}).pipe(
@@ -70,6 +80,14 @@ export class TrabajadorService {
 
   bajaTrabajador(id:any, payload:any):Observable<any> {
     return this.http.put<any>(this.url + "/" + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  guardarNuevoTrabajador(payload:any):Observable<any> {
+    return this.http.post<any>(this.url, payload).pipe(
       map( (response: any) => {        
         return response;
       }
@@ -124,6 +142,22 @@ export class TrabajadorService {
       })
     );
   }
+  
+  getDatosAsistencia(payload):Observable<any> {
+    return this.http.get<any>(this.url_asistencia, {params: payload}).pipe(
+      map( (response: any) => {
+        return response;
+      }
+    ));
+  }
 
+  buscarCr(payload):Observable<any>{
+    return this.http.get<any>(this.url_cr,{params:payload}).pipe(
+      map( response => {
+        console.log(response);
+        return response.data;
+      })
+    );
+  };
   
 }

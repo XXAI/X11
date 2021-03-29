@@ -20,5 +20,15 @@ class RelDatosLaboralesNomina extends Model
     public function cr(){
         return $this->belongsTo('App\Models\Cr', 'cr_nomina_id', 'cr');
     }
+
+   
+
+    public function codigo(){
+        return $this->belongsTo('App\Models\Codigo', 'codigo_puesto_id', 'codigo');
+    }
+
+    public function tipoNomina(){
+        return $this->belongsTo('App\Models\TipoNomina', 'tipo_nomina_id', 'id');
+    }
     
 }

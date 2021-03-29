@@ -11,12 +11,11 @@ import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
-//import { AgregarEmpleadoDialogComponent } from '../agregar-empleado-dialog/agregar-empleado-dialog.component';
-//import { AgregarFirmantesDialogComponent } from '../agregar-firmantes-dialog/agregar-firmantes-dialog.component';
 import { PermissionsList } from '../../auth/models/permissions-list';
 import { MediaObserver } from '@angular/flex-layout';
 import { TrabajadorService } from '../trabajador.service';
 import { VerComponent } from '../ver/ver.component';
+import { BuscarTrabajadorDialogComponent } from '../buscar-trabajador-dialog/buscar-trabajador-dialog.component';
 
 @Component({
   selector: 'app-lista',
@@ -94,7 +93,7 @@ export class ListaComponent implements OnInit {
   @ViewChild(MatExpansionPanel) advancedFilter: MatExpansionPanel;
 
   ngOnInit() {
-    console.log("asdads");
+    
     this.mediaObserver.media$.subscribe(
       response => {
         this.mediaSize = response.mqAlias;
@@ -113,7 +112,7 @@ export class ListaComponent implements OnInit {
       event = appStoredData['paginator'];
 
       if(event.selectedIndex >= 0){
-        console.log(event);
+        //console.log(event);
         this.selectedItemIndex = event.selectedIndex;
       }
     }else{
@@ -137,7 +136,7 @@ export class ListaComponent implements OnInit {
   public loadFilterCatalogs(){
     this.trabajadorService.getFilterCatalogs().subscribe(
       response => {
-        console.log(response);
+        //console.log(response);
         this.filterCatalogs = {
           'clues': response.data.clues,
           'cr': response.data.cr,
@@ -164,6 +163,7 @@ export class ListaComponent implements OnInit {
   }
 
   verEmpleado(id: number, index: number){
+    
     this.selectedItemIndex = index;
     
     let paginator = this.sharedService.getDataFromCurrentApp('paginator');
@@ -187,6 +187,8 @@ export class ListaComponent implements OnInit {
         data:{id: id, puedeEditar: !this.capturaFinalizada}
       }
     }
+
+    console.log(configDialog);
 
     const dialogRef = this.dialog.open(VerComponent, configDialog);
 
@@ -290,7 +292,7 @@ export class ListaComponent implements OnInit {
 
     this.trabajadorService.getTrabajadorList(params).subscribe(
       response =>{
-        console.log("aca",response);
+        
         if(response.error) {
           let errorMessage = response.error.message;
           this.sharedService.showSnackBar(errorMessage, null, 3000);
@@ -312,6 +314,7 @@ export class ListaComponent implements OnInit {
           this.resultsLength = 0;
           if(response.data.total > 0){
             this.dataSource = response.data.data;
+            
             this.resultsLength = response.data.total;
           }
           if(event){
@@ -365,6 +368,31 @@ export class ListaComponent implements OnInit {
         this.filterChips.push(item);
       }
     }
+  }
+
+  showAddEmployeDialog(){
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+        data:{}
+      }
+    }
+    const dialogRef = this.dialog.open(BuscarTrabajadorDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log(valid);
+      }
+    });
   }
 
   editTrabajador(index){

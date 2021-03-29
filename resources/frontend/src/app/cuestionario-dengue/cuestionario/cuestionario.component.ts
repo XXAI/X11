@@ -429,7 +429,7 @@ perfiles:any = [
     this.estatusReporte = true;
     this.cuestionarioService.generar_reporte().subscribe(
       respuesta => {
-        FileSaver.saveAs(respuesta,'reporte-dengue');
+        //FileSaver.saveAs(respuesta,'reporte-dengue');
         this.estatusReporte = false;
       },
       errorResponse =>{

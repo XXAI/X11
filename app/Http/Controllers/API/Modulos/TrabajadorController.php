@@ -632,6 +632,160 @@ class TrabajadorController extends Controller
         }
 
     }
+
+    public function store(Request $request)
+    {
+        $mensajes = [
+            
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = $request->all();
+        $reglas = [];
+
+        if($inputs['tipo_dato'] == 1)
+        {
+
+            $reglas = [
+                //'rfc'                       => 'required',
+                'curp'                      => 'required',
+                'nombre'                    => 'required',
+                'calle'                     => 'required',
+                'no_exterior'               => 'required',
+                'colonia'                   => 'required',
+                'cp'                        => 'required',
+                'correo_electronico'        => 'required|email',
+                'telefono_celular'          => 'required',
+                'nacionalidad_id'           => 'required',
+                'pais_nacimiento_id'        => 'required',
+                'entidad_nacimiento_id'     => 'required',
+                'municipio_nacimiento_id'   => 'required',
+                'estado_conyugal_id'        => 'required',
+                'sexo'                      => 'required',
+                'idioma_id'                 => 'required',
+                'lengua_indigena_id'        => 'required',
+                'lenguaje_senias'           => 'required',
+            ];
+            
+            if(trim($inputs['apellido_paterno']) == "" && trim($inputs['apellido_materno']) == "")
+            {   
+                throw new \Exception("Debe de escribir al menos un apellido, por favor verificar", 1);
+            }
+        }
+
+        
+        $object = new Trabajador();
+        
+        $v = Validator::make($inputs, $reglas, $mensajes);
+        
+       
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+
+        DB::beginTransaction();
+        try {
+            
+            
+            if($inputs['tipo_dato'] == 1)
+            {
+                $fecha_actual = Carbon::now();
+                $fecha = Carbon::parse($inputs['fecha_nacimiento']);
+                $edad = $fecha_actual->diffInYears($fecha);  
+                $object->nombre                     = strtoupper($inputs['nombre']);
+                $object->apellido_paterno           = strtoupper($inputs['apellido_paterno']);
+                $object->apellido_materno           = strtoupper($inputs['apellido_materno']);
+                $object->rfc                        = strtoupper($inputs['rfc']);
+                $object->curp                       = $inputs['curp'];
+                $object->sexo_id                    = $inputs['sexo'];
+                $object->calle                      = strtoupper($inputs['calle']);
+                $object->no_exterior                = $inputs['no_exterior'];
+                $object->no_interior                = $inputs['no_interior'];
+                $object->colonia                    = strtoupper($inputs['colonia']);
+                $object->cp                         = $inputs['cp'];
+                $object->telefono_fijo              = $inputs['telefono_fijo'];
+                $object->telefono_celular           = $inputs['telefono_celular'];
+                $object->correo_electronico         = $inputs['correo_electronico'];
+                $object->pais_nacimiento_id         = $inputs['pais_nacimiento_id'];
+                $object->entidad_nacimiento_id      = $inputs['entidad_nacimiento_id'];
+                $object->municipio_nacimiento_id    = $inputs['municipio_nacimiento_id'];
+                $object->nacionalidad_id            = $inputs['nacionalidad_id'];
+                $object->estado_conyugal_id         = $inputs['estado_conyugal_id'];
+                $object->entidad_federativa_id      = 7;
+                $object->municipio_federativo_id    = 186;
+                $object->edad                       = $edad;
+                $object->observacion                = $inputs['observacion'];
+                if($inputs['idioma_id'] != 0)
+                {
+                    $object->idioma_id = $inputs['idioma_id'];
+                    $object->nivel_idioma_id = $inputs['nivel_idioma_id'];
+                }else{
+                    $object->idioma_id = null;
+                    $object->nivel_idioma_id = null;
+                }
+                if($inputs['lengua_indigena_id'] != 102)
+                {
+                    $object->lengua_indigena_id = $inputs['lengua_indigena_id'];
+                    $object->nivel_lengua_id = $inputs['nivel_lengua_id'];
+                }else{
+                    $object->lengua_indigena_id = $inputs['lengua_indigena_id'];
+                    $object->nivel_lengua_id = null;
+                }
+                
+                $object->lenguaje_senias = $inputs['lenguaje_senias'];
+                $object->save();
+            }
+            
+            $object->save();
+            //$object ->id = 1;
+            DB::commit();
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
+
+    public function getTrabajadoresComplete(Request $request)
+    {
+        try{
+            $parametros = $request->all();
+
+            $access = $this->getUserAccessData();
+            
+            $trabajador = Trabajador::with("rel_datos_laborales", "rel_datos_laborales_nomina")->where(function($query)use($parametros){
+                return $query->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
+                            ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                            ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
+            });
+
+            /*if(!$access->is_admin){
+                $trabajador = $trabajador->select('id','clues','cr_id',DB::raw('concat(apellido_paterno, " ", apellido_materno," ",nombre ) as nombre'),'rfc','curp','estatus','validado',DB::raw('IF(cr_id IN ('.implode(',',$access->lista_cr).'),1,0) as empleado_propio'));
+            }else{
+                $trabajador = $trabajador->select('id','clues','cr_id',DB::raw('concat(apellido_paterno, " ", apellido_materno," ",nombre ) as nombre'),'rfc','curp','estatus','validado',DB::raw('1 as empleado_propio'));
+            }*/
+            
+            if(isset($parametros['page'])){
+                $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
+    
+                $trabajador = $trabajador->paginate($resultadosPorPagina);
+            } else {
+
+                $trabajador = $trabajador->get();
+            }
+
+            $trabajador->map(function($trabajador){
+                return $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
+            });
+
+            return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
     public function getCatalogos()
     {
         try{

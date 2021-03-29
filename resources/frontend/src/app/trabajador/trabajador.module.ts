@@ -18,6 +18,7 @@ import { ComisionDialogComponent } from './comision-dialog/comision-dialog.compo
 
 import { FormatoFechaPipe } from '../utils/classes/fecha/formato-fecha.pipe'
 import { VerComponent } from './ver/ver.component';
+import { BuscarTrabajadorDialogComponent } from './buscar-trabajador-dialog/buscar-trabajador-dialog.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { VerComponent } from './ver/ver.component';
     BajaDialogComponent,
     ComisionDialogComponent,
     FormatoFechaPipe,
-    VerComponent
+    VerComponent,
+    BuscarTrabajadorDialogComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +47,8 @@ import { VerComponent } from './ver/ver.component';
     CapacitacionDialogComponent,
     BajaDialogComponent, 
     ComisionDialogComponent,
-    VerComponent
+    VerComponent,
+    BuscarTrabajadorDialogComponent
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

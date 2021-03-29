@@ -109,55 +109,25 @@ table {
     border-left-width: 1px;
     border-left-style: solid;
     border-left-color: rgba(0,0,0,.12);
+    
 }
 
-.tarjeta-info-empleado p span.label{
+span.label{
     color: rgba(0,0,0,.87);
     font-weight: bold;
     border-bottom: thick;
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: rgba(0,0,0,.50);
+    font-size: 9pt;
 }
 
-.tarjeta-info-empleado p span.value{
+span.value{
     padding: 0 5px 0 5px;
 }
 
-/**Nuevo **/
-
-.form-loading-shade {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.15);
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+th{
+    color: blue;
+    font-weight: bold;
+    font-size: 12pt;
 }
-  
-.form-container {
-    position: relative;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    padding:10px;
-}
- .form-input {
-    font-size:15px;
- }
-
- .datos-carta {
-    box-shadow: 0 2px 1px -1px rgba(0,0,0,1), 
-                0 1px 1px 0 rgba(0,0,0,1), 
-                0 1px 3px 0 rgba(0,0,0,1);
- }
- /* .datos-foto {
-    height: 170px;
-    width: 170px;
-    margin: 0 auto 0 auto;
-    border-radius: 50%;
- } */

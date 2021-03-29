@@ -82,7 +82,11 @@ class Trabajador extends Model
         return $this->hasMany('App\Models\RelCapacitacionDetalles')->with('entidad_nacimiento', 'cursos');
     }
     public function rel_datos_laborales(){
-        return $this->hasOne('App\Models\RelDatosLaborales')->with('clues_adscripcion','actividad','actividad_voluntaria','area_trabajo','cr_fisico','programa','rama');
+        return $this->hasOne('App\Models\RelDatosLaborales')->with('actividad','actividad_voluntaria','area_trabajo','cr_fisico','programa','rama');
+    }
+
+    public function rel_datos_laborales_nomina(){
+        return $this->hasOne('App\Models\RelDatosLaboralesNomina')->with('codigo', 'clues', 'cr', 'tipoNomina');#'area_trabajo','cr_fisico','programa','rama');
     }
 
     public function rel_trabajador_escolaridad(){

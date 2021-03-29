@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'trabajadores', component: ListaComponent, canActivate: [AuthGuard] },
   { path: 'trabajadores/nuevo', component: FormularioComponent, canActivate: [AuthGuard] },
   { path: 'trabajadores/editar/:id', component: FormularioComponent, canActivate: [AuthGuard] },
+  { path: 'trabajadores/editar/:id/:step', component: FormularioComponent, canActivate: [AuthGuard] },
 
   { path: 'trabajadores/ver/:id', component: VerComponent, canActivate: [AuthGuard] },
 ];

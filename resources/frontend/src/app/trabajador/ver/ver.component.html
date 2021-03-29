@@ -1,464 +1,340 @@
-<section class="profile">
-
-    <div class="form-loading-shade" *ngIf="isLoading"><mat-spinner></mat-spinner></div>
-    <div class="form-loading-shade" *ngIf="!isLoading && !dataTrabajador">No se encontraron los datos del Trabajador</div>
-
-
-    <!-- <mat-card>
-        <mat-grid-list cols="4" rowHeight="2:2" *ngIf="!isLoading && dataTrabajador">
-            <mat-grid-tile>{{dataTrabajador.rfc}}</mat-grid-tile>
-            <mat-grid-tile>2</mat-grid-tile>
-            <mat-grid-tile>3</mat-grid-tile>
-            <mat-grid-tile>4</mat-grid-tile>
-        </mat-grid-list>
-    </mat-card> -->
-
-    <mat-card *ngIf="!isLoading && dataTrabajador">
-
-        <mat-card-content>
-
-            <mat-card class="datos-carta">
-
-
-                    <!-- <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="!isLoadingCredential">
-
-                        <div fxLayout="column" class="datos-foto" fxFlex="30">
-                            <div fxFlex>
-                                <img mat-card-image src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
-                            </div>
-                        </div>
-
-                        <div fxFlex="100">
-                            <h1 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
-                            <h2 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.cr)?dataTrabajador.cr.descripcion:'CR físico no asignado' }}</h2>
-                        </div>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="50">
-                            <mat-label>Nombre: </mat-label>
-                            <input matInput id="nombre" value="{{dataTrabajador.nombre}} {{dataTrabajador.apellido_paterno}} {{dataTrabajador.apellido_materno}}" placeholder="Nombre" readonly>
-                        </mat-form-field>
-
-                    </div> -->
-
-                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="!isLoadingCredential">
-
-
-                        <div fxFlex="20" fxLayout="column">
-                            <div fxFlex>
-                                <img mat-card-image style="width: 90%; height: 90%; margin: 0 auto 0 auto; object-fit: contain;" src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
-                            </div>
-                        </div>
-
-                        <div fxFlex="80"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
-                            <div fxFlex>
-                                <h1 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
-                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">({{ (dataTrabajador.rel_datos_laborales != null)?dataTrabajador.rel_datos_laborales.clues_adscripcion.clues:'Clues no asignada' }})</h2>
-                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales != null)?dataTrabajador.rel_datos_laborales.clues_adscripcion.nombre_unidad:'Clues no asignada' }}</h2>
-                                <h2 fxLayoutAlign="center stretch" style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales != null)?dataTrabajador.rel_datos_laborales.fecha_ingreso:'Fecha de ingreso no asignada' | date: 'dd/MM/yyyy'}}</h2>
-                            </div>
-                            <br><br>
-                            <div fxFlex>
-                                <mat-chip-list aria-label="Fish selection" fxLayoutAlign="center stretch">
-                                    <mat-chip color="primary" [selected]="dataTrabajador.validado == 1"><mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
-                                    <mat-chip color="primary" [selected]="dataTrabajador.estatus == 1">{{(dataTrabajador.estatus == 1)?'Activo':'Inactivo'}}</mat-chip>
-                                    <!-- <mat-chip color="warn"    selected *ngIf="dataTrabajador.estatus == 2">BAJA <span *ngIf="dataTrabajador.baja && dataTrabajador.baja[0].tipo_baja">: {{ dataTrabajador.baja[0].tipo_baja.descripcion }}</span></mat-chip>
-                                    <mat-chip color="primary" selected *ngIf="dataTrabajador.comision">{{ dataTrabajador.comision }}</mat-chip> -->
-                                    <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
-                                </mat-chip-list>
-                            </div>
-                            <!-- <div fxFlex fxLayout="row">
-                                <div fxFlex>
-                                    <h4 style="margin-bottom:0px;">
-                                        <strong>Turno: </strong><span>{{ (dataTrabajador.turno)?dataTrabajador.turno.descripcion:'' }}</span><br>
-                                        <strong>Hora Entrada: </strong><span>{{ dataTrabajador.hora_entrada | date:'shortTime' }}</span>&nbsp;&nbsp;
-                                        <strong>Hora Salida: </strong><span>{{ dataTrabajador.hora_salida | date:'shortTime' }}</span>
-                                    </h4>
-                                    
-                                </div>
-                                <button *ngIf="puedeEditar" mat-button (click)="editarEmpleado()" color="accent"><mat-icon>edit</mat-icon> Editar</button>
-                            </div> -->
-                        </div>
-                        
-                    </div>
-                    <br><br><br>
-                    <mat-divider></mat-divider>
-                    <br><br>
-
-
-                <mat-card-content>
-
-                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="10" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>Edad: </mat-label>
-                            <input matInput id="edad" value="{{dataTrabajador.edad}} Años" placeholder="Sexo" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="10" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.sexo != null">
-                            <mat-label>Sexo: </mat-label>
-                            <input matInput id="sexo" value="{{dataTrabajador.sexo.descripcion}}" placeholder="Sexo" fxFlex.xs="100" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="40" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>RFC: </mat-label>
-                            <input matInput id="rfc" value="{{dataTrabajador.rfc}}" placeholder="RFC" readonly>
-                        </mat-form-field>
-        
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="40" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>CURP: </mat-label>
-                            <input matInput id="curp" value="{{dataTrabajador.curp}}" placeholder="CURP" readonly>
-                        </mat-form-field>
-        
-                    </div>
-        
-                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
-        
-        
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.sexo != null">
-                            <mat-label>Nacionalidad: </mat-label>
-                            <input matInput id="nacionalidad" value="{{dataTrabajador.nacionalidad.descripcion}}" placeholder="Sexo" readonly>
-                        </mat-form-field>
-        
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.pais_nacimiento != null">
-                            <mat-label>Pais de Nacimiento: </mat-label>
-                            <input matInput id="nacionalidad" value="{{dataTrabajador.pais_nacimiento.descripcion}}" placeholder="Sexo" readonly>
-                        </mat-form-field>
-        
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.entidad_nacimiento != null">
-                            <mat-label>Entidad de Nacimiento: </mat-label>
-                            <input matInput id="nacionalidad" value="{{dataTrabajador.entidad_nacimiento.descripcion}}" placeholder="Sexo" readonly>
-                        </mat-form-field>
-        
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.municipio_nacimiento != null">
-                            <mat-label>Municipio de Nacimiento: </mat-label>
-                            <input matInput id="nacionalidad" value="{{dataTrabajador.municipio_nacimiento.descripcion}}" placeholder="Sexo" readonly>
-                        </mat-form-field>
-        
-                    </div>
-        
-                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
-        
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.estado_conyugal != null">
-                            <mat-label>Estado Conyugal: </mat-label>
-                            <input matInput id="conyugal" value="{{dataTrabajador.estado_conyugal.descripcion}}" placeholder="Estado Conyugal" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.estado_conyugal != null">
-                            <mat-label>Correo Electrónico: </mat-label>
-                            <input matInput id="email" value="{{dataTrabajador.correo_electronico}}" placeholder="Correo" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.estado_conyugal != null">
-                            <mat-label>Teléfono Fijo: </mat-label>
-                            <input matInput id="telefono" value="{{dataTrabajador.telefono_fijo}}" placeholder="Telefono" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngIf="dataTrabajador.estado_conyugal != null">
-                            <mat-label>Teléfono celular: </mat-label>
-                            <input matInput id="celular" value="{{dataTrabajador.telefono_celular}}" placeholder="Celular" readonly>
-                        </mat-form-field>
-        
-                    </div>
-
-                    <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>Calle:</mat-label>
-                            <input matInput id="calle" value="{{dataTrabajador.calle}}" placeholder="Calle" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>N° Interior:</mat-label>
-                            <input matInput id="interior" value="{{dataTrabajador.no_interior}}" placeholder="N° Interior" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>N° Exterior:</mat-label>
-                            <input matInput id="exterior" value="{{dataTrabajador.no_exterior}}" placeholder="N° Exterior" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>Colonia:</mat-label>
-                            <input matInput id="colonia" value="{{dataTrabajador.colonia}}" placeholder="Colonia" readonly>
-                        </mat-form-field>
-
-                        <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                            <mat-label>C.P:</mat-label>
-                            <input matInput id="cp" value="{{dataTrabajador.cp}}" placeholder="Código Postal" readonly>
-                        </mat-form-field>
-
-                    </div>
-
-                </mat-card-content>
-            </mat-card>
-            <br>
-            <mat-card class="datos-carta">
-
-                <h1>Escolaridad</h1>
-
-                <div fxLayoutAlign="center center" *ngIf="dataTrabajador.rel_trabajador_escolaridad.length == 0">
-                    <i color="primary"><mat-icon color="primary">school</mat-icon>&nbsp;No tiene escolaridad asignada</i>
-                </div>
-
-                <mat-accordion *ngIf="dataTrabajador.rel_trabajador_escolaridad.length > 0">
-                    <mat-expansion-panel *ngFor="let esco of dataTrabajador.rel_trabajador_escolaridad; let i = index" (click)='panelEscolaridad=panelEscolaridad?false:true'>
-                        <mat-expansion-panel-header>
-
-                            <mat-panel-title>
-                                
-                                <p class="form-input"><mat-icon color="primary" >school</mat-icon>&nbsp;Escolaridad N°: {{ i+1 }}</p>
-                                
-                            </mat-panel-title>
-
-                            <!-- <mat-panel-description>
-                                <p>Escolaridad</p>
-                            </mat-panel-description> -->
-            
-                        </mat-expansion-panel-header>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
-
-                            <mat-form-field class="form-input" fxFlex appearance="outline" >
-                                <mat-label>Grado Academico: </mat-label>
-                                <input matInput value="{{ (esco.grado_academico != null)?esco.grado_academico.descripcion:'No Asignado' }}" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" fxFlex appearance="outline" *ngIf="esco.institucion != null">
-                                <mat-label>Instituciòn: </mat-label>
-                                <input matInput value="{{ (esco.institucion != null)?esco.institucion.descripcion:'N/A' }}" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" fxFlex appearance="outline" *ngIf="esco.nombre_estudio != null">
-                                <mat-label>Nombre del Estudio: </mat-label>
-                                <input matInput value="{{ (esco.nombre_estudio != null)?esco.nombre_estudio.descripcion:'N/A' }}" readonly>
-                            </mat-form-field>
-
-                            <!--OTRO-->
-                            <mat-form-field class="form-input" fxFlex appearance="outline" *ngIf="esco.otro_nombre_institucion != null">
-                                <mat-label>Instituciòn: </mat-label>
-                                <input matInput value="{{ (esco.otro_nombre_institucion != null)?esco.otro_nombre_institucion:'N/A' }}" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" fxFlex appearance="outline" *ngIf="esco.otro_nombre_estudio != null">
-                                <mat-label>Nombre del Estudio: </mat-label>
-                                <input matInput value="{{ (esco.otro_nombre_estudio != null)?esco.otro_nombre_estudio:'N/A' }}" readonly>
-                            </mat-form-field>
-            
-                        </div>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
-
-                            <mat-form-field class="form-input" fxFlex appearance="outline">
-                                <mat-label>Cedula: </mat-label>
-                                <input matInput value="{{ (esco.cedula != null)?esco.cedula:'N/A' }}" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" fxFlex appearance="outline" >
-                                <mat-label>Nº Cedula: </mat-label>
-                                <input matInput value="{{ (esco.no_cedula != null)?esco.no_cedula:'N/A' }}" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                    </mat-expansion-panel>
-                </mat-accordion>
-
-                <br>
-
-                <h1>Cursos</h1>
-
-                <div fxLayoutAlign="center center" *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante == null">
-                    <i color="primary"><mat-icon color="primary">class</mat-icon>&nbsp;No tiene cursos</i>
-                </div>
-
-                <mat-accordion *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante != null">
-                    <mat-expansion-panel (click)='panelCursos=panelCursos?false:true'>
-                        <mat-expansion-panel-header>
-
-                            <mat-panel-title>
-                                
-                                <p class="form-input"><mat-icon color="primary" >class</mat-icon>&nbsp;Curso</p>
-                                
-                            </mat-panel-title>
-
-                            <!-- <mat-panel-description>
-                                <p>Escolaridad</p>
-                            </mat-panel-description> -->
-            
-                        </mat-expansion-panel-header>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>Año que Cursa:</mat-label>
-                                <input matInput id="anio_cursa" value="{{dataTrabajador.rel_trabajador_escolaridad_cursante.anio_cursa.descripcion}}" placeholder="Año que Cursa" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="80" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>Institución Educativa Formadora:</mat-label>
-                                <input matInput id="anio_cursa" value="{{dataTrabajador.rel_trabajador_escolaridad_cursante.institucion_ciclo.descripcion}}" placeholder="Institución Educativa Formadora" readonly>
-                            </mat-form-field>
-
-            
-                        </div>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante.colegiacion == 1">
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>¿Colegiación?:</mat-label>
-                                <input matInput id="colegiacion" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.colegiacion == 1)?'Si':'No'}}" placeholder="Colegiación" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>Nombre del Colegio:</mat-label>
-                                <input matInput id="nombre_colegio" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.colegio != null )?dataTrabajador.rel_trabajador_escolaridad_cursante.colegio.descripcion:'No Tiene'}}" placeholder="Colegiación" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" *ngIf="dataTrabajador.rel_trabajador_escolaridad_cursante.certificacion == 1">
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>¿Certificación?:</mat-label>
-                                <input matInput id="certificacion" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.certificacion == 1)?'Si':'No'}}" placeholder="Certificación" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>Nombre de la Certificación:</mat-label>
-                                <input matInput id="nombre_certificacion" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.certificado != null )?dataTrabajador.rel_trabajador_escolaridad_cursante.certificado.descripcion:'No Tiene'}}" placeholder="Nombre Certificación:" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>Idioma:</mat-label>
-                                <input matInput id="idioma" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.idioma != null)?dataTrabajador.rel_trabajador_escolaridad_cursante.idioma.descripcion:'N/A'}}" placeholder="Idioma" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>Nivel de Dominio:</mat-label>
-                                <input matInput id="nivel_dominio" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.nivel_idioma != null )?dataTrabajador.rel_trabajador_escolaridad_cursante.nivel_idioma.descripcion:'N/A'}}" placeholder="Nivel de Dominio:" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="20" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>Lengua Indigena:</mat-label>
-                                <input matInput id="idioma" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.lengua_indigena != null)?dataTrabajador.rel_trabajador_escolaridad_cursante.lengua_indigena.descripcion:'N/A'}}" placeholder="Lengua" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100">
-                                <mat-label>Nivel de la Lengua:</mat-label>
-                                <input matInput id="nivel_dominio" value=" {{(dataTrabajador.rel_trabajador_escolaridad_cursante.nivel_lengua != null )?dataTrabajador.rel_trabajador_escolaridad_cursante.nivel_lengua.descripcion:'N/A'}}" placeholder="Nivel de Lengua:" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px">
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
-                                <mat-label>Lenguaje de Señas:</mat-label>
-                                <input matInput id="señas" value=" {{ (dataTrabajador.rel_trabajador_escolaridad_cursante.lenguaje_senias == 1)?'Si':'No' }}" placeholder="Lenguaje de Señales" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                    </mat-expansion-panel>
-                </mat-accordion>
-
-                <br>
-
-                <h1>Capacitación</h1>
-
-                <div fxLayoutAlign="center center" *ngIf="dataTrabajador.rel_trabajador_capacitacion == null">
-                    <i color="primary"><mat-icon color="primary">class</mat-icon>&nbsp;No tiene capacitación</i>
-                </div>
-
-                <mat-accordion *ngIf="dataTrabajador.rel_trabajador_capacitacion != null">
-                    <mat-expansion-panel (click)='panelCursos=panelCursos?false:true'>
-                        <mat-expansion-panel-header>
-
-                            <mat-panel-title>
-                                
-                                <p class="form-input"><mat-icon color="primary" >class</mat-icon>&nbsp;Capacitación</p>
-                                
-                            </mat-panel-title>
-
-                            <!-- <mat-panel-description>
-                                <p>Escolaridad</p>
-                            </mat-panel-description> -->
-            
-                        </mat-expansion-panel-header>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
-                                <mat-label>¿Tiene capacitación anual?:</mat-label>
-                                <input matInput id="capacitacion_anual" value="{{ (dataTrabajador.rel_trabajador_capacitacion.capacitacion_anual == 1)?'Si':'No' }}" placeholder="Capacitación anual" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
-                                <mat-label>Grado Academico:</mat-label>
-                                <input matInput id="capacitacion_anual" value="{{ (dataTrabajador.rel_trabajador_capacitacion.grado_academico)?dataTrabajador.rel_trabajador_capacitacion.grado_academico.descripcion:'No' }}" placeholder="Capacitación anual" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
-                            
-                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
-                                <mat-label>Titulo ó Diploma:</mat-label>
-                                <input matInput id="titulo_diploma" value="{{ (dataTrabajador.rel_trabajador_capacitacion.titulo_diploma)?dataTrabajador.rel_trabajador_capacitacion.titulo_diploma.descripcion:'N/A' }}" placeholder="Titulo ó Diploma" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
-                                <mat-label>Otro Titulo ó Diploma:</mat-label>
-                                <input matInput id="otro_titulo_diploma" value="{{ (dataTrabajador.rel_trabajador_capacitacion.otro_nombre_titulo)?dataTrabajador.rel_trabajador_capacitacion.otro_nombre_titulo:'N/A' }}" placeholder="Otro Titulo ó Diploma" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                        <div fxLayout.gt-sm="row" fxLayout="column" fxLayoutGap.gt-sm="10px" >
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
-                                <mat-label>Institución:</mat-label>
-                                <input matInput id="institucion_capacitacion" value="{{ (dataTrabajador.rel_trabajador_capacitacion.institucion)?dataTrabajador.rel_trabajador_capacitacion.institucion.descripcion:'N/A' }}" placeholder="Institución Capacitación" readonly>
-                            </mat-form-field>
-
-                            <mat-form-field class="form-input" appearance="outline" fxFlex.xs="100" fxFlex.sm="100" fxFlex>
-                                <mat-label>Otro Titulo ó Diploma:</mat-label>
-                                <input matInput id="otro_titulo_diploma" value="{{ (dataTrabajador.rel_trabajador_capacitacion.otro_nombre_titulo)?dataTrabajador.rel_trabajador_capacitacion.otro_nombre_titulo:'N/A' }}" placeholder="Otro Titulo ó Diploma" readonly>
-                            </mat-form-field>
-
-                        </div>
-
-                    </mat-expansion-panel>
-                </mat-accordion>
-
-
-
-
-
-            </mat-card>
-
-        </mat-card-content>
-
-    </mat-card>
-
-    <div>
-        <section *ngIf="miniPagination.total > 0">
-            <button mat-raised-button [disabled]="miniPagination.previous == 0" (click)="loadPrevious()"><mat-icon>navigate_before</mat-icon> <span fxHide.xs="true">Anterior</span></button>
-            &nbsp;
-            <span><small>{{miniPagination.current}}/{{miniPagination.total}}</small></span>
-            &nbsp;
-            <button mat-raised-button [disabled]="miniPagination.next == 0" (click)="loadNext()"><span fxHide.xs="true">Siguiente</span> <mat-icon>navigate_next</mat-icon></button>
-        </section>
-        <span fxFlex></span>
-        <!-- <button mat-button (click)='cancel()'>Cerrar</button> -->
+<div mat-dialog-title class="mat-typography">
+    <div class="credential-loading-shade" *ngIf="isLoadingCredential">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
+        <span>Cargando los datos de la credencial del empleado</span>    
     </div>
 
-</section>
+
+    
+    <div fxLayout="row"  *ngIf="!isLoadingCredential">
+        <div fxFlex="20" fxLayout="column">
+            <div fxFlex style="height: 161px;">
+                <img mat-card-image style="width: 100%; height: 100%; margin: 0 auto 0 auto; object-fit: contain;" src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
+            </div>
+        </div>
+        <div fxFlex="90"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
+            <div fxFlex>
+                <h1 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
+                <h2 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales.cr_fisico)?dataTrabajador.rel_datos_laborales.cr_fisico.descripcion:'CR físico no asignado' }}</h2>
+            </div>
+            <div fxFlex>
+                <mat-chip-list aria-label="Fish selection">
+                    <mat-chip color="primary" [selected]="dataTrabajador.validado == 1"><mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
+                    <mat-chip color="primary" [selected]="dataTrabajador.estatus == 1">{{(dataTrabajador.estatus == 1)?'Activo':'Inactivo'}}</mat-chip>
+                    <!--<mat-chip color="warn"    selected *ngIf="dataTrabajador.estatus == 2">BAJA <span *ngIf="dataTrabajador.baja && dataTrabajador.baja[0].tipo_baja">: {{ dataTrabajador.baja[0].tipo_baja.descripcion }}</span></mat-chip>
+                    <mat-chip color="primary" selected *ngIf="dataTrabajador.comision">{{ dataTrabajador.comision }}</mat-chip>-->
+                    <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
+                </mat-chip-list>
+            </div>
+            <mat-divider></mat-divider>
+            <div fxFlex fxLayout="row" *ngIf="dataTrabajador.horario.length > 0">
+                <div fxFlex="100" fxFlex.xs="100" style="text-align: center; font-size: 9pt; background-color: #3f51b5; color: white;">HORARIO LABORAL</div>
+            </div>
+            <div fxFlex fxLayout="row">
+                <div fxFlex>
+                    <div fxFlex="100" fxFlex.xs="100" *ngFor="let horario of dataTrabajador.horario">
+                        <span class="label">{{ daysLabels[horario.dia] }} </span><br><span class="value">{{ horario.entrada.substr(0,5)}} - {{ horario.salida.substr(0,5)}}</span>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        <div fxFlex="10"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
+            <button *ngIf="puedeEditar" mat-raised-button (click)="editarEmpleado()" color="accent" style="top: 50%;"><mat-icon>edit</mat-icon> Editar</button>
+        </div>
+    </div>
+</div>
+<div mat-dialog-content style="max-height: 49vh; height:375px;">
+    <section fxLayout="column">
+        <section fxFlex="100">
+            <div class="loading-shade" *ngIf="isLoading"><mat-spinner *ngIf="isLoading"></mat-spinner></div>
+            <div class="loading-shade" *ngIf="!isLoading && !dataTrabajador">No se encontraron los datos del empleado</div>
+            <section *ngIf="!isLoading && dataTrabajador">
+                <mat-tab-group dynamicHeight animationDuration="0ms" (selectedTabChange)="dataTabChange($event)"  [(selectedIndex)]="navTabSelected" [color]="'accent'" [backgroundColor]="'primary'">
+                    <mat-tab label="Datos Generales">
+                        <div fxLayout="row" class="tarjeta-info-empleado">
+                            <div fxFlex="50">
+                                <div style="text-align: center; padding: 10px;  /*background-color: rgba(200,200,200,0.5);*/ border-bottom: 1px solid #E21800; color: blue; font-weight: 500;">DATOS PERSONALES</div>
+                                <div style="background-color: rgba(220, 220, 233, 0.3);padding: 10px;">
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">
+                                            <span class="label">CURP: </span><br><span class="value">{{ dataTrabajador.curp }}</span>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <span class="label">RFC: </span><br><span class="value">{{ dataTrabajador.rfc }}</span><br>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">
+                                            <span class="label">SEXO: </span><br><span class="value">{{ (dataTrabajador.sexo)? dataTrabajador.sexo.descripcion: 'NO REGISTRADO' }}</span>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <span class="label">ESTADO CIVIL: </span><br><span class="value">{{ (dataTrabajador.estado_conyugal)? dataTrabajador.estado_conyugal.descripcion: 'NO REGISTRADO' }}</span>
+                                        </div>
+                                    </div>
+    
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">
+                                            <span class="label">NACIONALIDAD: </span><br><span class="value">{{ (dataTrabajador.nacionalidad)? dataTrabajador.nacionalidad.descripcion: 'NO REGISTRADO' }}</span>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <span class="label">PAIS DE NACIMIENTO: </span><br><span class="value">{{ (dataTrabajador.pais_nacimiento)? dataTrabajador.pais_nacimiento.descripcion: 'NO REGISTRADO' }}</span>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">
+                                            <span class="label">ESTADO DE NACIMIENTO: </span><br><span class="value">{{ (dataTrabajador.entidad_nacimiento)? dataTrabajador.entidad_nacimiento.descripcion: 'NO REGISTRADO' }}</span>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <span class="label">MUNICIPIO DE NACIMIENTO: </span><br><span class="value">{{ (dataTrabajador.municipio_nacimiento)? dataTrabajador.municipio_nacimiento.descripcion: 'NO REGISTRADO' }}</span>
+                                    
+                                        </div>
+                                    </div>
+    
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">
+                                            <span class="label">TELÉFONO FIJO: </span><br><span class="value">{{ (dataTrabajador.telefono_fijo)?dataTrabajador.telefono_fijo:'NO REGISTRADO' }}</span>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <span class="label">TELÉFONO CELULAR: </span><br><span class="value">{{ dataTrabajador.telefono_celular }}</span>
+                                    
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex="100">
+                                            <span class="label">CORREO: </span><br><span class="value">{{ (dataTrabajador.correo_electronico!='')?dataTrabajador.correo_electronico:'NO REGISTRADO' }}</span>
+                                        </div>
+                                        
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex="100">
+                                            <span class="label">DIRECCIÓN: </span><br><span class="value">{{ dataTrabajador.calle }}  
+                                                {{ (dataTrabajador.no_exterior)? '#'+dataTrabajador.no_exterior:'' }}
+                                                {{ (dataTrabajador.no_interior)? 'Int. '+dataTrabajador.no_exterior:'' }}
+                                                {{ (dataTrabajador.colonia)? 'Col. '+dataTrabajador.colonia:'' }}
+                                                {{ (dataTrabajador.cp)? 'C.P. '+dataTrabajador.cp:'' }}</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                            <div fxFlex="50">
+                                <div style="text-align: center; padding: 10px; /*background-color: rgba(200,200,200,0.5);*/ border-bottom: 1px solid #E21800; color: blue; font-weight: 500;">DATOS LABORALES</div>
+                                <div style="background-color: rgba(0,0,78,0.15);padding: 10px;">
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">
+                                            <span class="label">FECHA INGRESO A SSA: </span><br><span class="value">{{ dataTrabajador.rel_datos_laborales.fecha_ingreso }}</span>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <span class="label">FECHA INGRESO GOBIERNO FEDERAL: </span><br><span class="value">{{ dataTrabajador.rel_datos_laborales.fecha_ingreso_federal }}</span><br>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">
+                                            <span class="label">TIPO DE NOMINA: </span><br><span class="value">{{ dataTrabajador.rel_datos_laborales_nomina.tipo_nomina.descripcion }}</span>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <span class="label">UR: </span><br><span class="value">{{ dataTrabajador.rel_datos_laborales_nomina.ur }}</span>
+                                        </div>
+                                        
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex="50">
+                                            <span class="label">RAMA: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales.rama)?dataTrabajador.rel_datos_laborales.rama.descripcion:'NO REGISTRADO'}} </span>
+                                        </div>
+                                        <div fxFlex="50">
+                                            <span class="label">CODIGO: </span><br><span class="value">{{ dataTrabajador.rel_datos_laborales_nomina.codigo.codigo}} {{ dataTrabajador.rel_datos_laborales_nomina.codigo.descripcion }}</span>
+                                        </div>
+                                       
+                                    </div>
+                                    <div fxLayout="row">
+                                        
+                                        <div fxFlex="25">
+                                            <span class="label">SEGURO RETIRO: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina.seguro_retiro)? 'NO REGISTRADO': (dataTrabajador.rel_datos_laborales_nomina.seguro_retiro == 1)?'SI':'NO' }}</span>
+                                        </div>
+                                        <div fxFlex="25">
+                                            <span class="label">SEGURO DE SALUD: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina.seguro_salud)? 'NO REGISTRADO': (dataTrabajador.rel_datos_laborales_nomina.seguro_salud == 1)?'SI':'NO' }}</span>
+                                        </div>
+                                        <div fxFlex="25">
+                                            <span class="label">TIENE FIEL: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina.tiene_fiel)? 'NO REGISTRADO': (dataTrabajador.rel_datos_laborales_nomina.tiene_fiel == 1)?'SI':'NO' }}</span>
+                                        </div>
+                                        <div fxFlex="25">
+                                            <span class="label">LICENCIA MATERNIDAD: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales.licencia_maternidad)? 'NO REGISTRADO': (dataTrabajador.rel_datos_laborales.licencia_maternidad == 1)?'SI':'NO' }}</span>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex="100">
+                                            <span class="label">CENTRO DE RESPONSABILIDAD DE ADSCRIPCIÓN: </span><br><span class="value">{{ dataTrabajador.rel_datos_laborales_nomina.cr.clues }} {{ dataTrabajador.rel_datos_laborales_nomina.cr.descripcion }}</span>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                            
+                        </div>
+                    </mat-tab>    
+                    <mat-tab label="Escolaridad">
+                        <div fxLayout="row">
+                            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                                <ng-container matColumnDef="institucion">
+                                  <th mat-header-cell *matHeaderCellDef> INSTITUCIÓN </th>
+                                  <td mat-cell *matCellDef="let element"> {{(element.institucion)?element.institucion.descripcion:element.otro_nombre_institucion}} </td>
+                                </ng-container>
+                              
+                                <ng-container matColumnDef="grado">
+                                  <th mat-header-cell *matHeaderCellDef> GRADO </th>
+                                  <td mat-cell *matCellDef="let element"> {{element.grado_academico.descripcion}} </td>
+                                </ng-container>
+                              
+                                <ng-container matColumnDef="descripcion">
+                                  <th mat-header-cell *matHeaderCellDef> DESCRIPCIÓN </th>
+                                  <td mat-cell *matCellDef="let element"> {{(element.nombre_estudio)?element.nombre_estudio.descripcion: element.otro_nombre_institucion}} </td>
+                                </ng-container>
+                              
+                                <ng-container matColumnDef="cedula">
+                                  <th mat-header-cell *matHeaderCellDef> CÉDULA </th>
+                                  <td mat-cell *matCellDef="let element"> {{(element.cedula == 1)?element.no_cedula: 'PASANTE'}} </td>
+                                </ng-container>
+                              
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                              </table>
+
+                        </div>
+                          
+                    </mat-tab>
+                    
+                    <!--<mat-tab label="Datos Adscripción">
+                        <table class="info-adscripcion-activa">
+                            <tr><th class="titulo-largo">Lugar de Adscripción</th></tr>
+                            <tr>
+                                <section fxFlex fxLayout="row wrap">
+                                    <div fxFlex="25"><strong>CLUES: </strong> {{ dataTrabajador.clues_adscripcion.clues }}</div>
+                                    <div fxFlex="75"><strong>Nombre Unidad: </strong> {{ dataTrabajador.clues_adscripcion.nombre_unidad }}</div>
+                                    <div fxFlex="25"><strong>CR: </strong> {{ dataTrabajador.cr_adscripcion.cr }}</div>
+                                    <div fxFlex="75"><strong>Descripción CR: </strong> {{ dataTrabajador.cr_adscripcion.descripcion }}</div>
+                                </section>
+                            </tr>
+                        </table>
+                        <br>
+                        <mat-divider></mat-divider>
+                        <br>
+                        <table *ngIf="dataTrabajador.comision" class="info-adscripcion-activa">
+                            <tr><th class="titulo-largo">{{dataTrabajador.comision}}</th></tr>
+                            <tr  *ngFor="let item of dataTrabajador.empleado_comision">
+                                <section fxFlex fxLayout="row wrap"  *ngIf="item.tipo_comision == 'CI'">
+                                    <div fxFlex="25"><strong>CLUES: </strong> {{ item.clues.clues }}</div>
+                                    <div fxFlex="75"><strong>Nombre Unidad: </strong> {{ item.clues.nombre_unidad }}</div>
+                                    <div fxFlex="25"><strong>CR: </strong> {{ item.cr.cr }}</div>
+                                    <div fxFlex="75"><strong>Descripción CR: </strong> {{ item.cr.descripcion }}</div>
+                                    <div fxFlex="25"><strong>Fecha Inicio: </strong> {{ item.detalle.fecha_inicio }}</div>
+                                    <div fxFlex="25"><strong>Fecha Fin: </strong> {{ item.detalle.fecha_fin }}</div>
+                                    <div fxFlex="25"><strong>No. Oficio: </strong> {{ item.detalle.no_oficio }}</div>
+                                </section>
+                                <section fxFlex fxLayout="row wrap"  *ngIf="item.tipo_comision == 'CS'">
+                                    <div fxFlex="25"><strong>Sección: </strong> {{ item.sindicato.descripcion }}</div>
+                                    <div fxFlex="33"><strong>Fecha Inicio: </strong> {{ item.detalle.fecha_inicio }}</div>
+                                    <div fxFlex="33"><strong>Fecha Fin: </strong> {{ item.detalle.fecha_fin }}</div>
+                                    <div fxFlex="33"><strong>No. Oficio: </strong> {{ item.detalle.no_oficio }}</div>
+                                </section>
+                                <section fxFlex fxLayout="row wrap"  *ngIf="item.tipo_comision == 'LH'">
+                                    <div fxFlex="33"><strong>Fecha Inicio: </strong> {{ item.detalle.fecha_inicio }}</div>
+                                    <div fxFlex="33"><strong>Fecha Fin: </strong> {{ item.detalle.fecha_fin }}</div>
+                                    <div fxFlex="33"><strong>No. Oficio: </strong> {{ item.detalle.no_oficio }}</div>
+                                </section>
+                            </tr>
+                        </table>
+                    </mat-tab>-->
+                    <mat-tab label="Registro Asistencia" *ngIf="puedeVerAsistencias">
+                        <div class="loading-shade" *ngIf="isLoadingAsistencia">
+                            <mat-spinner mode="indeterminate" *ngIf="isLoadingAsistencia"></mat-spinner>
+                        </div>
+                        <br>
+                        <section fxLayout="row" fxLayoutGap="5px" *ngIf="!isLoadingAsistencia">
+                            <mat-form-field fxFlex="20">
+                                <input matInput [matDatepicker]="fechaInicioAsistPicker" placeholder="Fecha Inicio"  [(ngModel)]="fechaInicioAsist" readonly [ngModelOptions]="{standalone: true}">
+                                <mat-datepicker-toggle matSuffix [for]="fechaInicioAsistPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #fechaInicioAsistPicker disabled="false"></mat-datepicker>
+                                <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="20">
+                                <input matInput [matDatepicker]="fechaFinAsistPicker" placeholder="Fecha Fin"  [(ngModel)]="fechaFinAsist" readonly [ngModelOptions]="{standalone: true}">
+                                <mat-datepicker-toggle matSuffix [for]="fechaFinAsistPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #fechaFinAsistPicker disabled="false"></mat-datepicker>
+                                <mat-hint align="end">seleccionar fecha <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
+                            </mat-form-field>
+                            <button fxFlex mat-raised-button color="accent" (click)="buscarFechasAssitencia()"><mat-icon>search</mat-icon></button>
+                            <div fxFlex="40" class="tarjeta-info-empleado">
+                                <p class="mat-typography" *ngIf="verifData" style="margin-top:0px;">
+                                    <span class="label">ID: </span><span class="value">{{ verifData.id }}</span><br>
+                                    <span class="label">Faltas: </span><span class="value">{{ verifData.faltas }}</span><br>
+                                    <span class="label">Retardos: </span><span class="value">{{ verifData.retardos }}</span><br>
+                                </p>
+                            </div>
+                            <!--<button fxFlex mat-raised-button color="info" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF" (click)="reporteAsistencias()"><mat-icon>insert_drive_file</mat-icon></button>-->
+                        </section>
+                        <div class="asistencia-table-container" *ngIf="!isLoadingAsistencia">
+                            <table #asistenciaTable mat-table [dataSource]="assistSource" class="data-table" matSort>
+                                <ng-container matColumnDef="dia">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Dia </th>
+                                    <td mat-cell *matCellDef="let row"> {{ daysLabels[row.numero_dia] }} </td>
+                                </ng-container>
+                        
+                                <ng-container matColumnDef="fecha">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.fecha}} </td>
+                                </ng-container>
+                        
+                                <ng-container matColumnDef="hora_entrada" >
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora Entrada </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.checado_entrada}} <span matTooltip="Entrada Fuera de Horario" *ngIf="row.checado_entrada == 'SIN REGISTRO'" style="display:block; color:red;">[ {{(row.checado_entrada_fuera)?row.checado_entrada_fuera:'--:--'}} ]</span></td>
+                                </ng-container>
+                        
+                                <ng-container matColumnDef="hora_salida" >
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora Salida </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.checado_salida}} <span matTooltip="Salida Fuera de Horario" *ngIf="row.checado_salida == 'SIN REGISTRO'" style="display:block; color:red;">[ {{(row.checado_salida_fuera)?row.checado_salida_fuera:'--:--'}} ]</span></td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="justificado">
+                                    <th mat-header-cell *matHeaderCellDef>Justificado</th>
+                                    <td mat-cell width="1" *matCellDef="let row; let i = index"> <mat-icon [color]="(row.validacion)?'primary':'warn'">{{(row.validacion)?'check_circle':'remove_circle'}}</mat-icon> </td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="noResultsFound">
+                                    <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedScheduleColumns.length">
+                                        No se encontraron registros 
+                                    </td>
+                                </ng-container>
+                                
+                                <tr mat-header-row *matHeaderRowDef="displayedScheduleColumns; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; let i = index; columns: displayedScheduleColumns;"></tr>
+    
+                                <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(assistSource!=null && assistSource.length==0)}"></tr>
+                            </table>                                        
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </section>
+        </section>
+    </section>
+</div>
+<div mat-dialog-actions>
+    <button  mat-button (click)='cancelar()'>Cerrar</button>
+</div>
+    <!--<div mat-dialog-actions>
+    <section *ngIf="miniPagination.total > 0">
+        <button mat-raised-button [disabled]="miniPagination.previous == 0" (click)="loadPrevious()"><mat-icon>navigate_before</mat-icon> <span fxHide.xs="true">Anterior</span></button>
+        &nbsp;
+        <span><small>{{miniPagination.current}}/{{miniPagination.total}}</small></span>
+        &nbsp;
+        <button mat-raised-button [disabled]="miniPagination.next == 0" (click)="loadNext()"><span fxHide.xs="true">Siguiente</span> <mat-icon>navigate_next</mat-icon></button>
+    </section>
+    <span fxFlex></span>
+    <button mat-button (click)='cancel()'>Cerrar</button>
+</div>-->

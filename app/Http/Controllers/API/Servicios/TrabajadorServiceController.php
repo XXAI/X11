@@ -45,12 +45,13 @@ class TrabajadorServiceController extends Controller
                                 'sexo',
                                 'entidad_federativa',
                                 'municipio_federativo',
-                                'rel_trabajador_capacitacion',
-                                'rel_trabajador_capacitacion_detalles',
+                                //'rel_trabajador_capacitacion',
+                                //'rel_trabajador_capacitacion_detalles',
                                 'rel_datos_laborales',
-                                'rel_trabajador_escolaridad',
-                                'rel_trabajador_escolaridad_cursante',
-                                'rel_trabajador_horario'
+                                'rel_datos_laborales_nomina'
+                                //'rel_trabajador_escolaridad',
+                                //'rel_trabajador_escolaridad_cursante',
+                                //'rel_trabajador_horario'
                          )->first();
             
 
