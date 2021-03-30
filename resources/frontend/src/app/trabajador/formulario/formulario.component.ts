@@ -257,13 +257,13 @@ export class FormularioComponent implements OnInit {
       this.indexTab = number;
   }
 
-  confirmUnlinkTrabajador(){
+ /*confirmUnlinkTrabajador(){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
       data:{dialogTitle:'Liberar Empleado',dialogMessage:'¿Realmente desea liberar el trabajador de su clues? Escriba LIBERAR a continuación para realizar el proceso.',validationString:'LIBERAR',btnColor:'primary',btnText:'Liberar'}
     });
 
-    /*let id = this.datos_empleado.id;
+    let id = this.datos_empleado.id;
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
@@ -296,8 +296,8 @@ export class FormularioComponent implements OnInit {
           }
         );
       }
-    });*/
-  }
+    });
+  }*/
 
   cargarTrabajador(id):void{
     this.trabajadorService.buscarTrabajador(id, {}).subscribe(
@@ -1250,6 +1250,41 @@ export class FormularioComponent implements OnInit {
       if(valid){
         this.datosEstudios.splice(index, 1);
         this.dataSourceEstudios.data = this.datosEstudios;
+      }
+    });
+  }
+
+  desligarTrabajador()
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Liberar Trabajador',dialogMessage:'¿Realmente desea liberar al trabajador de su clues y cr Física? Escriba LIBERAR a continuación para realizar el proceso.',validationString:'LIBERAR',btnColor:'primary',btnText:'Liberar'}
+    });
+    
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.isLoading = true;
+        this.trabajadorService.desligarEmpleado(this.trabajador_id).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {
+              this.sharedService.showSnackBar("Se ha desligado al trabajador de su Clues y CR Física", 'Cerrar', 4000);
+              this.router.navigate(['/trabajadores']);
+              //this.cargarTrabajador(this.trabajador_id);
+            }
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
       }
     });
   }
