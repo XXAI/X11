@@ -117,7 +117,7 @@ export class FormularioComponent implements OnInit {
     'cr': [''],
     'cr_id': [''],
     'clues': [''],
-    'rama_id': ['',[Validators.required]],
+    'rama_id': ['',],
 
     'actividad_id': ['',[Validators.required]],
     'actividad_voluntaria_id': [],
@@ -240,7 +240,7 @@ export class FormularioComponent implements OnInit {
 
   checar()
   {
-    console.log(this.trabajadorForm);
+    console.log(this.datosLaborelesForm);
   }
 
   retroceder(number):void{
