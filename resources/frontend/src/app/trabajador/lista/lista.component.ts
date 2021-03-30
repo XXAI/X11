@@ -229,6 +229,9 @@ export class ListaComponent implements OnInit {
             this.isLoading = false;
           }
         );
+      }else
+      {
+        this.isLoading = false;
       }
     });
   }
