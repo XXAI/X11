@@ -461,6 +461,8 @@ class TrabajadorController extends Controller
                 {
                     $objectRL = new RelDatosLaborales();
                     $objectRL->trabajador_id = $id;
+                    $objectRL->cr_fisico_id = $inputs['cr_id'];
+                    $objectRL->clues_adscripcion_fisica = $inputs['clues'];
                 }
                 
                 $objectRL->actividad_id             = $inputs['actividad_id'];
