@@ -42,6 +42,7 @@
         </div>
         <div fxFlex="10"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
             <button *ngIf="puedeEditar" mat-raised-button (click)="editarEmpleado()" color="accent" style="top: 50%;"><mat-icon>edit</mat-icon> Editar</button>
+            <button  mat-raised-button (click)='cancelar()'>Cerrar</button>
         </div>
     </div>
 </div>
@@ -251,7 +252,7 @@
                             </tr>
                         </table>
                     </mat-tab>-->
-                    <mat-tab label="Registro Asistencia" *ngIf="puedeVerAsistencias">
+                    <mat-tab label="Registro Asistencia">
                         <div class="loading-shade" *ngIf="isLoadingAsistencia">
                             <mat-spinner mode="indeterminate" *ngIf="isLoadingAsistencia"></mat-spinner>
                         </div>
@@ -324,9 +325,9 @@
         </section>
     </section>
 </div>
-<div mat-dialog-actions>
+<!--<div mat-dialog-actions>
     <button  mat-button (click)='cancelar()'>Cerrar</button>
-</div>
+</div>-->
     <!--<div mat-dialog-actions>
     <section *ngIf="miniPagination.total > 0">
         <button mat-raised-button [disabled]="miniPagination.previous == 0" (click)="loadPrevious()"><mat-icon>navigate_before</mat-icon> <span fxHide.xs="true">Anterior</span></button>

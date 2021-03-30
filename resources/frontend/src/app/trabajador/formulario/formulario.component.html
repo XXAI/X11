@@ -277,7 +277,7 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <button mat-raised-button (click)="accionGuardar(1)" color="success" [disabled]="!trabajadorForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
-                                <button mat-raised-button (click)="checar()" color="success"><mat-icon>save</mat-icon> Guardar</button>
+                                
                             </div>
                             
                             <!--<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" *ngIf="actualizado == 1">
@@ -469,7 +469,7 @@
                         </div>
                     </div>      
                     
-                    <mat-form-field fxFlex="100" fxFlex.xs="100">
+                    <mat-form-field fxFlex="100" fxFlex.xs="100" *ngIf="datos_laborales == null">
                         <input matInput placeholder="Cr Físico" [matAutocomplete]="crAutocomplete" formControlName='cr' required>
                         <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="displayCrFn" [panelWidth]="'auto'">
                             <mat-option *ngIf="crIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
