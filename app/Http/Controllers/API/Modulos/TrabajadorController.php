@@ -76,6 +76,7 @@ class TrabajadorController extends Controller
             $parametros = $request->all();
             $trabajador = Trabajador:://with("datoslaborales")//select('trabajador.*')
                             join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+                            ->select("trabajador.*")
             /*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
@@ -676,7 +677,7 @@ class TrabajadorController extends Controller
             }
         }
 
-        
+        DB::beginTransaction();
         $object = new Trabajador();
         
         $v = Validator::make($inputs, $reglas, $mensajes);
@@ -686,7 +687,7 @@ class TrabajadorController extends Controller
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
 
-        DB::beginTransaction();
+        
         try {
             
             
@@ -718,6 +719,7 @@ class TrabajadorController extends Controller
                 $object->municipio_federativo_id    = 186;
                 $object->edad                       = $edad;
                 $object->observacion                = $inputs['observacion'];
+                $object->estatus                    = 1;
                 if($inputs['idioma_id'] != 0)
                 {
                     $object->idioma_id = $inputs['idioma_id'];
@@ -740,8 +742,21 @@ class TrabajadorController extends Controller
             }
             
             $object->save();
+
+            //return Response::json(['error' => $inputs['cr']['clues']['clues']], HttpResponse::HTTP_CONFLICT);
+            $objectRL = new RelDatosLaborales();
+            $objectRL->trabajador_id = $object->id;
+            $objectRL->cr_fisico_id = $inputs['cr']['cr'];
+            $objectRL->clues_adscripcion_fisica = $inputs['cr']['clues']['clues'];
+            $objectRL->seguro_salud = 0;
+            $objectRL->licencia_maternidad = 0;
+            $objectRL->seguro_retiro = 0;
+            $objectRL->tiene_fiel = 0;
+
+            $objectRL->save();
             //$object ->id = 1;
             DB::commit();
+            
             return response()->json($object,HttpResponse::HTTP_OK);
 
         } catch (\Exception $e) {

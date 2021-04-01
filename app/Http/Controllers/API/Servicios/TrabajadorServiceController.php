@@ -54,7 +54,7 @@ class TrabajadorServiceController extends Controller
                                 //'rel_trabajador_horario'
                          )->first();
             
-
+            //return response()->json($id,HttpResponse::HTTP_CONFLICT);
             $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
 
 

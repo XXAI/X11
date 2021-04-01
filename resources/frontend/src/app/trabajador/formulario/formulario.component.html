@@ -35,7 +35,7 @@
         <mat-card>
             <mat-tab-group  mat-stretch-tabs [(selectedIndex)]="indexTab">
                
-                <mat-tab [formGroup]="trabajadorForm"  [disabled]='(tab_proceso != 1)'>
+                <mat-tab [formGroup]="trabajadorForm"  [disabled]='(tab_proceso != 1 && !actualizado)'>
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">person_pin</mat-icon>
                         <div class="mobile-pc">Datos Personales</div>
@@ -275,6 +275,22 @@
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" style="margin-bottom: 3px; border-bottom: 1px solid #999;">
                                 <textarea matInput formControlName="observacion" placeholder="Observacion" rowSpan="5"></textarea>
                             </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" style="margin-bottom: 3px; border-bottom: 1px solid #999;"  *ngIf="datos_laborales == null">
+                                <mat-form-field fxFlex="100" fxFlex.xs="100">
+                                    <input matInput placeholder="Cr Físico" [matAutocomplete]="crAutocomplete" formControlName='cr'>
+                                    <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="displayCrFn" [panelWidth]="'auto'">
+                                        <mat-option *ngIf="crIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
+                                        <ng-container *ngIf="!crIsLoading">
+                                            <mat-option *ngFor="let item of filteredCr" [value]="item">
+                                                [{{item.cr}}] {{ item.descripcion }} 
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                    <input type="hidden" formControlName='cr_id'>
+                                    <mat-hint align="start" *ngIf="(trabajadorForm.get('cr').value && trabajadorForm.get('cr').value.grupo_funcion)">[{{trabajadorForm.get('cr').value.grupo_funcion.grupo}}]</mat-hint>
+                                    <mat-hint align="end" *ngIf="trabajadorForm.get('cr').value">[{{trabajadorForm.get('cr').value.cr}}]</mat-hint>
+                                </mat-form-field>
+                            </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <button mat-raised-button (click)="accionGuardar(1)" color="success" [disabled]="!trabajadorForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
                                 
@@ -373,6 +389,7 @@
                                     </mat-error>
                                 </mat-form-field> 
                                 
+                                
                             </div>
                         </div>
                     </div>
@@ -469,20 +486,7 @@
                         </div>
                     </div>      
                     
-                    <mat-form-field fxFlex="100" fxFlex.xs="100" *ngIf="datos_laborales == null">
-                        <input matInput placeholder="Cr Físico" [matAutocomplete]="crAutocomplete" formControlName='cr'>
-                        <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="displayCrFn" [panelWidth]="'auto'">
-                            <mat-option *ngIf="crIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
-                            <ng-container *ngIf="!crIsLoading">
-                                <mat-option *ngFor="let item of filteredCr" [value]="item">
-                                    [{{item.cr}}] {{ item.descripcion }} 
-                                </mat-option>
-                            </ng-container>
-                        </mat-autocomplete>
-                        <input type="hidden" formControlName='cr_id'>
-                        <mat-hint align="start" *ngIf="(datosLaborelesForm.get('cr').value && datosLaborelesForm.get('cr').value.grupo_funcion)">[{{datosLaborelesForm.get('cr').value.grupo_funcion.grupo}}]</mat-hint>
-                        <mat-hint align="end" *ngIf="datosLaborelesForm.get('cr').value">[{{datosLaborelesForm.get('cr').value.cr}}]</mat-hint>
-                    </mat-form-field>
+                    
                     
                   
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">

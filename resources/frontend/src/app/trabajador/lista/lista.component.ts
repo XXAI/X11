@@ -188,7 +188,7 @@ export class ListaComponent implements OnInit {
       }
     }
 
-    console.log(configDialog);
+    //console.log(configDialog);
 
     const dialogRef = this.dialog.open(VerComponent, configDialog);
 

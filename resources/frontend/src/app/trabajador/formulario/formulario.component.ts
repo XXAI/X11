@@ -107,6 +107,10 @@ export class FormularioComponent implements OnInit {
     'lengua_indigena_id':[],
     'nivel_lengua_id':[{ value:'', disabled:true}, Validators.required],
     'lenguaje_senias':[],
+    'cr': ['',[Validators.required]],
+    'cr_id': [''],
+    'clues': [''],
+    'rama_id': ['',],
   });
 
   public datosLaborelesForm = this.fb.group({
@@ -114,10 +118,7 @@ export class FormularioComponent implements OnInit {
     'fecha_ingreso': ['',[Validators.required]],
     'fecha_ingreso_federal': [],
     //'codigo_puesto_id': [],
-    'cr': [''],
-    'cr_id': [''],
-    'clues': [''],
-    'rama_id': ['',],
+    rama_id: ['',[Validators.required]],
 
     'actividad_id': ['',[Validators.required]],
     'actividad_voluntaria_id': [],
@@ -223,9 +224,9 @@ export class FormularioComponent implements OnInit {
       this.trabajador_id = params.get('id');
       
       if(this.trabajador_id){
-        console.log("entra");
+        //console.log("entra");
         this.cargarTrabajador(this.trabajador_id);
-        
+        this.trabajadorForm.get("cr").disable();
         if(parseInt(params.get('step')))
         {
           this.avanzar(parseInt(params.get('step')));
@@ -644,7 +645,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredColegio = items);
     
-      this.datosLaborelesForm.get('cr').valueChanges
+      this.trabajadorForm.get('cr').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -737,14 +738,16 @@ export class FormularioComponent implements OnInit {
     {
       data = this.trabajadorForm.value;
       data.municipio_nacimiento_id = data.municipio.id;
-    }else if(tipo == 2)
-    {
-      data = this.datosLaborelesForm.value;
-      if(data.cr != null)
+      
+      /*if(data.cr != null)
       {
         data.cr_id = data.cr.cr;
         data.clues = data.clues.clues;
-      }
+      }*/
+    }else if(tipo == 2)
+    {
+      data = this.datosLaborelesForm.value;
+     
     }else if(tipo == 3)
     {
       data = this.datosHorarioForm.value;
@@ -791,23 +794,28 @@ export class FormularioComponent implements OnInit {
       );
     }else
     {
-      this.trabajadorService.guardarNuevoTrabajador( data).subscribe(
-        response =>{
-          //console.log(response);
-          this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
-          this.isLoading = false;
-          this.router.navigate(['/trabajadores/editar/'+response.id+"/1"]);
-        },
-        errorResponse =>{
-          this.isLoading = false;
-          var errorMessage = "Ocurrió un error.";
-          if(errorResponse.status == 409){
-            errorMessage = errorResponse.error.error.message;
+      if(data.cr != null)
+      {
+        this.trabajadorService.guardarNuevoTrabajador( data).subscribe(
+          response =>{
+            //console.log(response);
+            this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
+            this.isLoading = false;
+            this.router.navigate(['/trabajadores/editar/'+response.id+"/1"]);
+          },
+          errorResponse =>{
+            this.isLoading = false;
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
+            
           }
-          this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
-          
-        }
-      );
+        );
+      }else{
+        this.sharedService.showSnackBar("DEBE DE SELECCIONAR UN CENTRO DE RESPONSABILIDAD", "ERROR", 3000);
+      }
       
     }
     

@@ -119,7 +119,7 @@ export class VerComponent implements OnInit {
         this.dataTrabajador = response;
         //console.log(this.dataTrabajador);
         this.dataSource = this.dataTrabajador.escolaridad;
-        console.log(this.dataTrabajador.escolaridad);
+        console.log(this.dataTrabajador);
         /*if(this.dataEmpleado.figf){
           this.dataEmpleado.figf = new Date(this.dataEmpleado.figf.substring(0,4),(this.dataEmpleado.figf.substring(5,7)-1), this.dataEmpleado.figf.substring(8,10),12,0,0,0);
         }
