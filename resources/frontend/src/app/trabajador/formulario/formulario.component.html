@@ -595,6 +595,11 @@
                                 </div>
                             </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <div fxFlex="100" fxFlex.xs="100" style="color: red;">
+                                   El Horario deberá ser el que se estipula en el contrato, es decir sin tomar en cuenta la media hora de comida, hora de lactancia y cualquier permiso que pueda tener el trabajador.
+                                </div> 
+                            </div>    
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <div fxFlex="10" fxFlex.xs="100">
                                     <br>
                                     <mat-checkbox formControlName="horario_lunes" #horario_lunes (click)="jornada(1, horario_lunes.checked)">Lunes</mat-checkbox>

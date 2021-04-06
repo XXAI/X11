@@ -23,6 +23,8 @@ export class TrabajadorService {
   url_unlink = `${environment.base_url}/liberar-trabajador/`;
 
   url_cr = `${environment.base_url}/busqueda-cr`;
+  url_activacion = `${environment.base_url}/activar-trabajador/`;
+  url_validacion = `${environment.base_url}/validar-trabajador/`;
 
   constructor(private http: HttpClient) { }
 
@@ -159,5 +161,21 @@ export class TrabajadorService {
       })
     );
   };
+
+  activarTrabajador(id:any, payload:any):Observable<any> {
+    return this.http.put<any>(this.url_activacion + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  validarTrabajador(id:any):Observable<any> {
+    return this.http.put<any>(this.url_validacion + id, {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
   
 }

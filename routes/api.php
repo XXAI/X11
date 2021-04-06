@@ -87,6 +87,8 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::put('finalizar-captura/{id?}',             'API\Modulos\GrupoUnidadesController@finalizarCaptura');
 
     Route::put('solicitar-transferencia/{id}',      'API\Modulos\EmpleadosController@requestTransferEmployee');
+    Route::put('activar-trabajador/{id}',           'API\Modulos\TrabajadorController@requestTransferEmployee');
+    Route::put('validar-trabajador/{id}',           'API\Modulos\TrabajadorController@validateTrabajador');
 
     Route::get('ejecutar-query',                    'API\Admin\DevReporterController@executeQuery');
     Route::get('exportar-query',                    'API\Admin\DevReporterController@exportExcel');

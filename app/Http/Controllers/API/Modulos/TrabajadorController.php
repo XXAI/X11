@@ -929,11 +929,11 @@ class TrabajadorController extends Controller
             
             $trabajador = Trabajador::find($id);
             $trabajador->estatus = 3;
-            
-
+            $trabajador->validado = 0;
+            $trabajador->actualizado = 0;
             $trabajador_datos_laborales =  RelDatosLaborales::where("trabajador_id", "=", $trabajador->id)->first();
             
-            $loggedUser = auth()->userOrFail();
+            //$loggedUser = auth()->userOrFail();
             
             $trabajador_datos_laborales->clues_adscripcion_fisica = null;
             $trabajador_datos_laborales->cr_fisico_id = null;
@@ -943,6 +943,55 @@ class TrabajadorController extends Controller
 
             return response()->json(['datos_trabajador'=>$trabajador, 'datos_laborales'=>$trabajador_datos_laborales],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function validateTrabajador($id){
+        try{
+            
+            $trabajador = Trabajador::find($id);
+            $trabajador->validado = 1;
+            $trabajador->save();
+            
+            return response()->json(['datos_trabajador'=>$trabajador],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function requestTransferEmployee(Request $request, $id){
+        try{
+            $parametros = $request->all();
+            
+            //$datos_transferencia = PermutaAdscripcion::where('empleado_id',$id)->first();
+            $trabajador = Trabajador::find($id);
+
+            $clues_destino = $parametros['clues'];
+            $cr_destino = $parametros['cr'];
+            
+            DB::beginTransaction();
+
+            if(true){ //aceptado por ahora
+                $loggedUser = auth()->userOrFail();
+                //$trabajador_datos_laborales =  RelDatosLaborales::where("trabajador_id", "=", $trabajador->id)->first();
+                $trabajador_datos_laborales =  RelDatosLaborales::firstOrCreate(['trabajador_id'=> $trabajador->id]);
+                                                                
+                $trabajador_datos_laborales->clues_adscripcion_fisica = $clues_destino;
+                $trabajador_datos_laborales->cr_fisico_id = $cr_destino;
+                $trabajador_datos_laborales->save();
+
+                $trabajador->estatus = 1;
+               
+                $trabajador->save();
+
+            }
+
+            DB::commit();
+
+            return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            DB::rollback();
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }

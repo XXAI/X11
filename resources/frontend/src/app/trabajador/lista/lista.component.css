@@ -184,3 +184,8 @@ table {
 .employee-advance-bar .spacer {
   flex: 1 1 auto;
 }
+
+.actualizacion_completa
+{
+  color: green;
+}

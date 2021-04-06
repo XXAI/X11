@@ -42,8 +42,16 @@
                                     <ng-container matColumnDef="clues">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> CLUES / CR </th>
                                         <td mat-cell *matCellDef="let row" fxHide.xs="true"> 
-                                            {{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.clues:'Sin CLUES asignado'}}
-                                            <br> <small>{{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.descripcion:'Sin CR asignado'}}</small> 
+                                            <div *ngIf="row.estatus == 2 or row.estatus == 1">
+                                                {{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.clues:'Sin CLUES asignado'}}
+                                                <br> <small>{{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.descripcion:'Sin CR asignado'}}</small> 
+                                            </div>
+                                           
+                                            <div *ngIf="row.estatus == 3">
+                                                Sin CLUES asignado
+                                                <br> <small>Sin CR asignado</small> 
+                                            </div>
+                                            
                                         </td>
                                        
                                     </ng-container>
@@ -51,7 +59,7 @@
                                     <ng-container matColumnDef="actions">
                                         <th mat-header-cell *matHeaderCellDef>Acciones</th>
                                         <td mat-cell *matCellDef="let row; let i = index">
-                                            <!--<button *ngIf="row.estatus == 3"                                mat-raised-button color="primary"   (click)="activarEmpleado(row)"   matTooltip="Activar Empleado"   [matTooltipPosition]="'before'">
+                                            <button *ngIf="row.estatus == 3" mat-raised-button color="primary"   (click)="activarEmpleado(row)"   matTooltip="Activar Empleado"   [matTooltipPosition]="'before'">
                                                 <mat-icon>link</mat-icon>
                                             </button>
                                             <button *ngIf="row.estatus != 3 && row.empleado_propio == 0"    mat-raised-button color="accent"    (click)="solicitarEmpleado(row)" matTooltip="Solicitar Empleado" [matTooltipPosition]="'before'">
@@ -59,7 +67,7 @@
                                             </button>
                                             <button *ngIf="row.estatus != 3 && row.empleado_propio == 1"    mat-raised-button color="info"      (click)="editarEmpleado()"    matTooltip="Editar"             [matTooltipPosition]="'before'" routerLink="/Trabajadores/editar/{{row.id}}">
                                                 <mat-icon>edit</mat-icon>
-                                            </button>-->
+                                            </button>
                                             <!--button mat-raised-button color="primary"><mat-icon>swap_horiz</mat-icon></button-->
                                         </td>
                                     </ng-container>
@@ -117,14 +125,14 @@
                             <section fxFlex class="mat-elevation-z2">
                                 <table class="tabla-info-transferencia">
                                     <tr *ngIf="itemSelected">
-                                        <th>Nombre</th><td>{{itemSelected.nombre}}</td><td width="1" fxHide.xs="true">{{itemSelected.rfc}}</td>
+                                        <th>Nombre</th><td>{{itemSelected.nombre}} {{itemSelected.apellido_paterno}} {{itemSelected.apellido_materno}}</td><td width="1" fxHide.xs="true">{{itemSelected.rfc}}</td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <th>CLUES</th><td>{{cluesOrigen.nombre_unidad}}</td><td width="1" fxHide.xs="true">{{cluesOrigen.clues}}</td>
                                     </tr>
                                     <tr *ngIf="crOrigen">
                                         <th>CR</th><td>{{crOrigen.descripcion}}</td><td fxHide.xs="true">{{crOrigen.cr}}</td>
-                                    </tr>
+                                    </tr>-->
                                 </table>
                             </section>
                     

@@ -27,4 +27,5 @@ class Permissions{
     //const MODULO_PERSONAL_ACTIVO = 'VguUicBQPIYqZgocJaOHdhMbfnzVqJ7k';
     const ADMIN_PERSONAL_ACTIVO = 'dmcnXs5gK1qHzn30WvGXDzFimcrVJZ9Z';
     const AGREGAR_EMPLEADO = 'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm';
+    const VALIDAR_TRABAJADOR = '6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo';
 }

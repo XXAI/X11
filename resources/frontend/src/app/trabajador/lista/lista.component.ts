@@ -63,12 +63,19 @@ export class ListaComponent implements OnInit {
   selectedItemIndex: number = -1;
 
   statusIcon:any = {
-    '1-0':'help', //activo
-    '1-1':'verified_user', //activo verificado 
-    '2':'remove_circle', //baja
-    '3':'warning', // No identificado
-    '4':'swap_horizontal_circle' //en transferencia
+    '1':'remove_circle', //inactivo
+    '2':'person_remove', //activo verificado 
+    '3':'block', //baja
+    //'3':'warning', // No identificado
+    //'4':'swap_horizontal_circle' //en transferencia
   };
+
+  validateIcon:any = {
+    '0':'check', //no validado
+    '1':'check_circle', //validado 
+  };
+
+  
 
   filterCatalogs:any = {};
   filteredCatalogs:any = {};
@@ -211,6 +218,41 @@ export class ListaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
         this.trabajadorService.desligarEmpleado(id).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {
+              this.loadTrabajadorData();
+            }
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }else
+      {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  validateTrabajador(id: number)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Validar Trabajador',dialogMessage:'¿Realmente desea validar al trabajador ? Escriba VALIDAR a continuación para realizar el proceso.',validationString:'VALIDAR',btnColor:'primary',btnText:'Validar'}
+    });
+    this.isLoading = true;
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.trabajadorService.validarTrabajador(id).subscribe(
           response =>{
             if(response.error) {
               let errorMessage = response.error.message;
@@ -395,6 +437,7 @@ export class ListaComponent implements OnInit {
       if(valid){
         console.log(valid);
       }
+      this.loadTrabajadorData();
     });
   }
 

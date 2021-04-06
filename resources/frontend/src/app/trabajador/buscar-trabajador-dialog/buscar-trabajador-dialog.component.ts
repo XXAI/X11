@@ -222,7 +222,7 @@ export class BuscarTrabajadorDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
-        /*this.TrabajadoresService.solicitarTransfer(id,params).subscribe(
+        this.TrabajadoresService.activarTrabajador(id,params).subscribe(
           response =>{
             this.isLoading = false;
             if(response.error) {
@@ -242,7 +242,7 @@ export class BuscarTrabajadorDialogComponent implements OnInit {
             this.sharedService.showSnackBar(errorMessage, null, 3000);
             this.isLoading = false;
           }
-        );*/
+        );
       }
     });
   }

@@ -21,6 +21,7 @@
                 <mat-chip-list aria-label="Fish selection">
                     <mat-chip color="primary" [selected]="dataTrabajador.validado == 1"><mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
                     <mat-chip color="primary" [selected]="dataTrabajador.estatus == 1">{{(dataTrabajador.estatus == 1)?'Activo':'Inactivo'}}</mat-chip>
+                    <mat-chip color="warn" *ngIf="dataTrabajador.estatus == 2" [selected]="dataTrabajador.estatus == 2">Baja</mat-chip>
                     <!--<mat-chip color="warn"    selected *ngIf="dataTrabajador.estatus == 2">BAJA <span *ngIf="dataTrabajador.baja && dataTrabajador.baja[0].tipo_baja">: {{ dataTrabajador.baja[0].tipo_baja.descripcion }}</span></mat-chip>
                     <mat-chip color="primary" selected *ngIf="dataTrabajador.comision">{{ dataTrabajador.comision }}</mat-chip>-->
                     <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
@@ -41,7 +42,7 @@
             </div>
         </div>
         <div fxFlex="10"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
-            <button *ngIf="puedeEditar" mat-raised-button (click)="editarEmpleado()" color="accent" style="top: 50%;"><mat-icon>edit</mat-icon> Editar</button>
+            <button *ngIf="puedeEditar && dataTrabajador.estatus==1" mat-raised-button (click)="editarEmpleado()" color="accent" style="top: 50%;"><mat-icon>edit</mat-icon> Editar</button>
             <button  mat-raised-button (click)='cancelar()'>Cerrar</button>
         </div>
     </div>
