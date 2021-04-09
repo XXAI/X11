@@ -173,7 +173,7 @@
                                 <td mat-cell *matCellDef="let row"> {{row.nombre}}  {{ row.apellido_paterno }} {{ row.apellido_materno }}</td>
                             </ng-container>
 
-                            <ng-container matColumnDef="actions">
+                            <ng-container matColumnDef="actions" >
                                 <th mat-header-cell *matHeaderCellDef>Acciones</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
                                     <!--<button mat-stroked-button color="primary" matTooltip="Editar Trabajador" (click)="editTrabajador(i)" routerLink="/trabajadores/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>&nbsp;-->
@@ -182,24 +182,10 @@
                                     <mat-menu #menu="matMenu">
                                         <button mat-menu-item *ngIf="row.estatus != 3"  (click)="verEmpleado(row.id,i)"><mat-icon color="primary">remove_red_eye</mat-icon>Detalles</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && row.validado == 0  && row.actualizado == 1"  [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="validateTrabajador(row.id)"><mat-icon  color="primary">check_cirlce</mat-icon>Validar</button>
-                                        <button mat-menu-item *ngIf="!capturaFinalizada && row.estatus == 1" fxHide.xs="true" (click)="liberarTrabajador(row.id)"><mat-icon color="warn">link_off</mat-icon>Desligar</button>
+                                        <button mat-menu-item #lista *ngIf="row.estatus == 1" fxHide.xs="true"  [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="liberarTrabajador(row.id)"><mat-icon color="warn">link_off</mat-icon>Desligar</button>
+                                        <button mat-menu-item *ngIf="row.estatus == 1" fxHide.xs="true" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="BajaTrabajador(row)"><mat-icon color="warn">person_remove</mat-icon>Dar de Baja</button>     
                                     </mat-menu>
-                                    <!--
-                                        Mario
-                                        <button *ngIf="row.estatus == 1" mat-raised-button color="primary" (click)="verEmpleado(row.id,i)"><mat-icon>remove_red_eye</mat-icon></button>
-                                    <button *ngIf="row.estatus == 1 and permisoValidar" mat-raised-button color="primary" (click)="verEmpleado(row.id,i)"><mat-icon>check_cirlce</mat-icon></button>
-
-                                    <button *ngIf="!capturaFinalizada && row.estatus == 1" mat-icon-button color="warn" fxHide.xs="true" (click)="liberarTrabajador(row.id)"><mat-icon>link_off</mat-icon></button>
-                                    -->
                                     
-                                    
-                                    <!--<button mat-icon-button color="accent"><mat-icon>swap_horizontal_circle</mat-icon></button>-->
-                                    <!--<button mat-stroked-button color="primary" matTooltip="Detalles del Trabajador" *ngIf="row.validado == 1" routerLink="/trabajadores/ver/{{row.id}}"><mat-icon>remove_red_eye</mat-icon></button>
-
-                                     <button *ngIf="!capturaFinalizada && row.validado != 1 && row.estatus != 2" mat-raised-button color="primary" (click)="editTrabajador(i)" routerLink="/trabajadores/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>
-                                    <button *ngIf="row.validado == 1 || capturaFinalizada || row.estatus == 2" mat-raised-button color="primary" (click)="verEmpleado(row.id,i)"><mat-icon>remove_red_eye</mat-icon></button>
-                                    <button *ngIf="!capturaFinalizada && row.permuta_activa_clues" mat-icon-button color="accent" (click)="confirmTransferEmploye(row.id,i)"><mat-icon>swap_horizontal_circle</mat-icon></button>
-                                    <button *ngIf="!capturaFinalizada && row.estatus == 1" mat-icon-button color="warn" fxHide.xs="true" (click)="confirmUntieEmploye(row.id)"><mat-icon>link_off</mat-icon></button> -->
                                 </td>
                             </ng-container>
 

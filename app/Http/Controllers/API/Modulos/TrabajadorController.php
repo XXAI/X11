@@ -56,6 +56,7 @@ use App\Models\RelEscolaridad;
 use App\Models\RelEscolaridadCursante;
 use App\Models\RelHorario;
 use App\Models\RelNomina;
+use App\Models\RelBaja;
 use App\Models\User;
 
 use App\Exports\DevReportExport;
@@ -953,6 +954,29 @@ class TrabajadorController extends Controller
             $trabajador = Trabajador::find($id);
             $trabajador->validado = 1;
             $trabajador->save();
+            
+            return response()->json(['datos_trabajador'=>$trabajador],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function bajaTrabajador($id, Request $request){
+        try{
+            $parametros = $request->all();
+
+            $trabajador = Trabajador::find($id);
+            $baja = new RelBaja();
+            $baja->trabajador_id = $trabajador->id;
+            $baja->tipo_baja_id = $parametros['tipo_baja_id'];
+            $baja->baja_id = $parametros['baja_id'];
+            $baja->fecha_baja = $parametros['fecha_baja'];
+            $baja->observacion = $parametros['observacion'];
+            $baja->save();
+            $trabajador->estatus = 2;
+            $trabajador->save();
+            //$trabajador->validado = 1;
+            //$trabajador->save();
             
             return response()->json(['datos_trabajador'=>$trabajador],HttpResponse::HTTP_OK);
         }catch(\Exception $e){

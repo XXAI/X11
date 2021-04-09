@@ -12,10 +12,12 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { PermissionsList } from '../../auth/models/permissions-list';
+import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { MediaObserver } from '@angular/flex-layout';
 import { TrabajadorService } from '../trabajador.service';
 import { VerComponent } from '../ver/ver.component';
 import { BuscarTrabajadorDialogComponent } from '../buscar-trabajador-dialog/buscar-trabajador-dialog.component';
+import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
 
 @Component({
   selector: 'app-lista',
@@ -169,6 +171,34 @@ export class ListaComponent implements OnInit {
     );
   }
 
+  BajaTrabajador(objeto:any)
+  {
+    let configDialog = {};
+    let nombre = objeto.nombre+" "+objeto.apellido_paterno+" "+objeto.apellido_materno;
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize, id: objeto.id, nombre_completo: nombre}
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+        data:{ id: objeto.id, nombre_completo: nombre }
+      }
+    }
+    const dialogRef = this.dialog.open(BajaDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log(valid);
+      }
+      this.loadTrabajadorData();
+    });
+  }
+  
   verEmpleado(id: number, index: number){
     
     this.selectedItemIndex = index;

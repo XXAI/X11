@@ -25,6 +25,7 @@ export class TrabajadorService {
   url_cr = `${environment.base_url}/busqueda-cr`;
   url_activacion = `${environment.base_url}/activar-trabajador/`;
   url_validacion = `${environment.base_url}/validar-trabajador/`;
+  url_baja = `${environment.base_url}/baja-trabajador`;
 
   constructor(private http: HttpClient) { }
 
@@ -81,7 +82,7 @@ export class TrabajadorService {
   }
 
   bajaTrabajador(id:any, payload:any):Observable<any> {
-    return this.http.put<any>(this.url + "/" + id, payload).pipe(
+    return this.http.put<any>(this.url_baja + "/" + id, payload).pipe(
       map( (response: any) => {        
         return response;
       }

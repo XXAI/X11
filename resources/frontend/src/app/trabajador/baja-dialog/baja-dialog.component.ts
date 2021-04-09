@@ -9,6 +9,10 @@ import { Observable } from 'rxjs';
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
+export interface VerEmpleadoData {
+  id: number;
+  nombre_completo?:string;
+}
 
 @Component({
   selector: 'app-baja-dialog',
@@ -20,11 +24,15 @@ export class BajaDialogComponent implements OnInit {
   tipo_baja:any = [{id:1, descripcion: "Baja Temporal"},{id:2, descripcion: "Baja Permanente"}];
   resultado:any = { estatus: false, datos:{}};
   catalogo_baja:any = [];
+  catalogo_baja_temporal:any = [];
+  catalogo_baja_definitiva:any = [];
+  nombre_trabajador:string;
 
   constructor(
     private sharedService: SharedService, 
     private fb: FormBuilder,
     public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: VerEmpleadoData,
     public dialogRef: MatDialogRef<BajaDialogComponent>,
     private trabajadorService: TrabajadorService,
     public mediaObserver: MediaObserver,
@@ -39,13 +47,25 @@ export class BajaDialogComponent implements OnInit {
 
   ngOnInit() {
     this.cargarBuscadores();
+    console.log(this.data);
+    this.nombre_trabajador = this.data.nombre_completo;
   }
 
   cargarBuscadores():void{
     this.trabajadorService.buscar({tipo:11, query:''}).subscribe(
       response =>{
         
-        this.catalogo_baja = response;
+        //this.catalogo_baja = response;
+        response.forEach(element => {
+          console.log(element.tipo_baja);
+          if(element.tipo_baja == 1)
+          {
+            this.catalogo_baja_temporal.push(element);
+          }if(element.tipo_baja == 2)
+          {
+            this.catalogo_baja_definitiva.push(element);
+          }
+        });
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -58,6 +78,17 @@ export class BajaDialogComponent implements OnInit {
     );
   }
 
+  seleccionarBaja(index)
+  {
+    
+    if(index == 1)
+    {
+      this.catalogo_baja = this.catalogo_baja_temporal;
+    }else{
+      this.catalogo_baja = this.catalogo_baja_definitiva;
+    }
+  }
+
   cancelar(): void {
     this.dialogRef.close(false);
   }
@@ -66,7 +97,7 @@ export class BajaDialogComponent implements OnInit {
     
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
-      data:{dialogTitle:'Dar de Baja',dialogMessage:'¿Realmente desea dar de baja al empleado? Escriba ACEPTAR a continuación para realizar el proceso.',validationString:'ACEPTAR',btnColor:'primary',btnText:'Guardar'}
+      data:{dialogTitle:'Dar de Baja',dialogMessage:'¿Realmente desea dar de baja al trabajador? Escriba ACEPTAR a continuación para realizar el proceso.',validationString:'ACEPTAR',btnColor:'primary',btnText:'Guardar'}
     });
 
     dialogRef.afterClosed().subscribe(valid => {
@@ -79,7 +110,7 @@ export class BajaDialogComponent implements OnInit {
   }
 
   BajaTrabajador():void{
-    this.trabajadorService.bajaTrabajador(1, this.BajaForm.value).subscribe(
+    this.trabajadorService.bajaTrabajador(this.data.id, this.BajaForm.value).subscribe(
       response =>{
         this.dialogRef.close(true);
         

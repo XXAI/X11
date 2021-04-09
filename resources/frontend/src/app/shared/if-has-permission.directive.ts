@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, QueryList, Renderer2, ViewChild  } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 
 @Directive({
@@ -7,19 +7,24 @@ import { AuthService } from '../auth/auth.service';
 export class IfHasPermissionDirective implements OnInit{
 
   @Input() ifHasPermission: string;
+  
 
   constructor(
     private elementRef: ElementRef<any>,
-    private authService: AuthService
+    private authService: AuthService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit() {
     let permission = `${this.ifHasPermission}`;
     let userPermissions = JSON.parse(localStorage.getItem('permissions'));
-
+    //console.log(userPermissions);
+    //console.log(permission);
     if (!this.authService.isAuth() || !userPermissions[permission]) {
-      //this.elementRef.nativeElement.style.display = 'none';
-      this.elementRef.nativeElement.remove();
+      
+      this.renderer.addClass(this.elementRef.nativeElement, 'hide')
+      this.renderer.removeChild(this.renderer, this.elementRef.nativeElement);
+      //this.renderer.destroy();
     }
   }
 

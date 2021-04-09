@@ -189,3 +189,7 @@ table {
 {
   color: green;
 }
+
+.hide{
+  display: none;
+}
