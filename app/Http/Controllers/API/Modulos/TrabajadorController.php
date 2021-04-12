@@ -175,7 +175,93 @@ class TrabajadorController extends Controller
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
-            } /*else {
+            }else{
+                if(isset($parametros['reporte'])){
+                    $trabajador = $trabajador
+                                    //leftJoin("rel_trabajador_datos_laborales as datos_laborales", "datos_laborales.trabajador_id", "trabajador.id")
+                                    
+                                    ->leftJoin("catalogo_rama as rama", "rama.id", "rel_trabajador_datos_laborales.rama_id")
+                                    ->leftJoin("catalogo_jornada as jornada", "jornada.id", "rel_trabajador_datos_laborales.jornada_id")
+                                    ->leftJoin("catalogo_clues as clues", "clues.clues", "rel_trabajador_datos_laborales.clues_adscripcion_fisica")
+                                    ->leftJoin("catalogo_cr as cr", "cr.cr", "rel_trabajador_datos_laborales.cr_fisico_id")
+                                    
+                                    ->leftJoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "trabajador.id")
+                                    ->leftJoin("catalogo_ur as ur", "ur.llave", "datos_nominales.ur")
+                                    ->leftJoin("catalogo_codigo as codigo", "codigo.codigo", "datos_nominales.codigo_puesto_id")
+                                    ->leftJoin("catalogo_grupo_funcion as funcion", "funcion.id", "codigo.grupo_funcion_id")
+                                    
+                                    ->leftJoin("catalogo_sexo", "catalogo_sexo.id", "trabajador.sexo_id")
+                                    ->leftJoin("catalogo_estado_conyugal", "catalogo_estado_conyugal.id", "trabajador.estado_conyugal_id")
+                                    ->where("trabajador.estatus", "=", 1)
+                                    ->select(
+                                        "trabajador.rfc",
+                                        "trabajador.curp",
+                                        db::raw("concat(trabajador.apellido_paterno,' ',trabajador.apellido_materno,' ', trabajador.nombre) as nombre"),
+                                        "catalogo_sexo.descripcion as sexo",
+                                        "catalogo_estado_conyugal.descripcion as estado_conyugal",
+                                        "trabajador.telefono_celular",
+                                        "trabajador.correo_electronico",
+                                        db::raw("concat(trabajador.calle,' ', trabajador.no_exterior,' Col.',trabajador.colonia,' C.P. ', trabajador.cp) as calle"),
+                                        "rel_trabajador_datos_laborales.fecha_ingreso",
+                                        "rel_trabajador_datos_laborales.fecha_ingreso_federal",
+                                        "codigo.codigo",
+                                        "codigo.descripcion as descripcion_codigo",
+                                        "ur.descripcion as ur",
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 1) as lunes"),
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 2) as martes"),
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 3) as miercoles"),
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 4) as jueves"),
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 5) as viernes"),
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 6) as sabado"),
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 7) as domingo"),
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 8) as festivo"),
+                                        "rel_trabajador_datos_laborales.clues_adscripcion_fisica",
+                                        "rel_trabajador_datos_laborales.cr_fisico_id",
+                                        "clues.nombre_unidad",
+                                        "cr.descripcion as cr",
+                                        "rel_trabajador_datos_laborales.fecha_ingreso",
+                                        "rel_trabajador_datos_laborales.fecha_ingreso_federal",
+                                        "funcion.grupo as grupo",
+                                        "rama.descripcion as rama_trabajo",
+                                        "jornada.descripcion as jornada",
+                                        db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where rel_trabajador_horario.trabajador_id=trabajador.id limit 1) as horario"),
+                                        "trabajador.observacion")
+                                        ->orderby("rel_trabajador_datos_laborales.clues_adscripcion_fisica");
+                                    //->get();
+                    if(isset($parametros['export_excel']) && $parametros['export_excel']){
+                        try{
+                            ini_set('memory_limit', '-1');
+                            $trabajador = $trabajador->get();
+                            $columnas = array_keys(collect($trabajador[0])->toArray());
+
+                            if(isset($parametros['nombre_archivo']) && $parametros['nombre_archivo']){
+                                $filename = $parametros['nombre_archivo'];
+                            }else{
+                                $filename = 'reporte-personal-activo';
+                            }
+                            
+                            return (new DevReportExport($trabajador,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
+                        }catch(\Exception $e){
+                            return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
+                        }
+                    }else{
+                        $trabajador = $trabajador->get();
+                        $loggedUser->load('gruposUnidades.listaFirmantes.trabajador',"gruposUnidades.listaCR.clues.responsable");
+                        if(count($loggedUser->gruposUnidades) > 0){
+                            $firmantes = $loggedUser->gruposUnidades[0]->listaFirmantes;
+                            $responsable_clues = $loggedUser->gruposUnidades[0]->listaCR;
+                        }else if(isset($parametros['grupos']) && $parametros['grupos']){
+                            $grupo = GrupoUnidades::with('listaFirmantes.trabajador','listaCR.clues.responsable')->find($parametros['grupos']);
+                            if($grupo){
+                                $firmantes = $grupo->listaFirmantes;
+                                $responsable_clues = $grupo->listaCR;
+                            }
+                        }
+                    }
+                }
+            } 
+            
+            /*else {
                 if(isset($parametros['reporte'])){
                     //Reporte Personal Activo
                     $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion', "codigos.descripcion as codigo")

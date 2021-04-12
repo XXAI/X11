@@ -19,7 +19,7 @@
                 <span *ngIf="datos_personales.validado == 1" style="font-weight: bold; color: blue;">VERIFICADO</span>
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px" *ngIf="trabajador_id != null">
                     <div fxFlex="100" fxFlex.xs="100">
-                        <button mat-raised-button color="warn" style="width: 100%;"  (click)="desligarTrabajador()"><mat-icon>link_off</mat-icon> Desligar</button>
+                        <button mat-raised-button color="warn" style="width: 100%;" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'"  (click)="desligarTrabajador()"><mat-icon>link_off</mat-icon> Desligar</button>
                     </div>
                 </div>
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">    

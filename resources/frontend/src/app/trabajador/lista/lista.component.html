@@ -48,16 +48,65 @@
                     </div>
                     <!--<button mat-raised-button color="info" (click)="showAddFirmanteDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>people</mat-icon> Agregar Firmantes</button>-->
                     &nbsp;
-                    <button *ngIf="!capturaFinalizada" mat-raised-button color="info" (click)="showAddEmployeDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>keyboard</mat-icon> Buscar Trabajador</button>
-                    &nbsp;
-                    <!--<button mat-icon-button (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" color="{{(showReportForm)?'primary':''}}" [disabled]="isLoadingPDF">
-                        <mat-icon fontSet="{{(!showReportForm)?'material-icons-outlined':''}}">{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="reportePersonalActivoArea()" [ifHasPermission]="'1dDMX0O5llW4ZxMqW0JDI4wozLMktGDp'"  [class.button-spinner]="isLoadingPDFArea" [disabled]="isLoadingPDFArea">
-                        <mat-icon>description</mat-icon>
-                    </button>-->
+                    <button mat-raised-button  color="primary"  [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'" [matMenuTriggerFor]="menuAction"><mat-icon>handyman</mat-icon> Acciones</button>
+                    <mat-menu #menuAction="matMenu">
+                        <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddEmployeDialog()" ><mat-icon>person_search</mat-icon> Buscar Trabajador</button>
+                        <mat-divider></mat-divider>
+                        <button *ngIf="!capturaFinalizada" mat-menu-item routerLink="/trabajadores/nuevo/" ><mat-icon>person_add_alt</mat-icon> Agregar Trabajador</button>
+                        <!--<button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddSignerDialog()"><mat-icon>create</mat-icon> Agregar Firmantes</button>
+                        <mat-divider></mat-divider>
+                        <button mat-menu-item (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF"  [disabled]="isLoadingPDF">
+                            <mat-icon fontSet="{{(!showReportForm)?'material-icons-outlined':''}}">{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon> Reporte
+                        </button>-->
+                    </mat-menu>
+
+                    <!--<button *ngIf="!capturaFinalizada" mat-raised-button color="info" (click)="showAddEmployeDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>keyboard</mat-icon> Buscar Trabajador</button>-->
+                    
+
+                    <!--<button mat-raised-button [matMenuTriggerFor]="menuGeneral">Reportes</button>
+                    <mat-menu #menuGeneral="matMenu">
+                        <button mat-menu-item (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF"  [disabled]="isLoadingPDF">
+                            <mat-icon fontSet="{{(!showReportForm)?'material-icons-outlined':''}}">{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon> Reporte PDF
+                        </button>
+                        <button mat-menu-item (click)="reportePersonalActivoArea()" [ifHasPermission]="'1dDMX0O5llW4ZxMqW0JDI4wozLMktGDp'" [class.button-spinner]="isLoadingPDFArea" [disabled]="isLoadingPDFArea">
+                            <mat-icon>description</mat-icon> Reporte Excel
+                        </button>
+                    </mat-menu>-->
+                    
+                   
                 </div>
             </mat-card>    
+            <div *ngIf="showReportForm || showMyStepper">
+                <div *ngIf="showReportForm">
+                    <section fxLayout="row">
+                        <mat-form-field fxFlex>
+                            <input matInput [(ngModel)]="reportTitle" type="text" placeholder="Titulo del Reporte">
+                        </mat-form-field>
+                        <section fxFlex="none">
+                            <mat-checkbox [(ngModel)]="reportIncludeSigns" class="check-box">Incluir Firmas</mat-checkbox>
+                        </section>
+                        <button mat-stroked-button (click)="reportePersonalActivo()" color="primary"><mat-icon>insert_drive_file</mat-icon>Generar PDF</button>
+                        <button mat-button (click)="reportePersonalActivoExcel()" color="accent" [class.button-spinner]="isLoadingExcel" [disabled]="isLoadingExcel"><mat-icon fontSet="material-icons-outlined">insert_drive_file</mat-icon>Excel</button>
+                    </section>
+                </div>
+                <div class="my-stepper" *ngIf="showMyStepper">
+                    <ng-container *ngFor="let step of stepperConfig.steps; let i = index">
+                        <div class="my-step" [class.my-step-active]="step.status == 2" [class.my-step-done]="step.status == 3" [class.my-step-error]="step.status == 0">
+                            <mat-icon>{{step.icon}}</mat-icon>
+                            <div class="my-step-label">
+                                {{(step.status < 2)?step.label.standBy:((step.status == 2)?step.label.active:step.label.done)}} <mat-progress-bar *ngIf="step.status == 2" mode="indeterminate"></mat-progress-bar>
+                                <small *ngIf="step.status == 0" class="my-step-error-message">{{step.errorMessage}}</small>
+                            </div>
+                            <mat-icon *ngIf="step.status == 3">done</mat-icon>
+                            <mat-icon *ngIf="step.status == 0">error</mat-icon>
+                        </div>
+                        <div *ngIf="(i+1) < stepperConfig.steps.length" class="my-step-separator"></div>
+                    </ng-container>
+                </div>
+                
+            </div>
+
+            <mat-divider [inset]="true"></mat-divider>
 
             <mat-accordion class="advanced-filter-container">
                 <mat-expansion-panel #advancedFilter  class="advanced-filter" [formGroup]="filterForm">

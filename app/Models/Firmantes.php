@@ -14,4 +14,8 @@ class Firmantes extends Model
     public function empleado(){
         return $this->hasOne('App\Models\Empleado', 'id', "firmante_id");
     }
+    
+    public function trabajador(){
+        return $this->hasOne('App\Models\Trabajador', 'id', "firmante_id");
+    }
 }

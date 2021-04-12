@@ -11,6 +11,7 @@ import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
+import { AgregarFirmantesDialogComponent } from '../agregar-firmantes-dialog/agregar-firmantes-dialog.component';
 import { PermissionsList } from '../../auth/models/permissions-list';
 import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { MediaObserver } from '@angular/flex-layout';
@@ -18,6 +19,8 @@ import { TrabajadorService } from '../trabajador.service';
 import { VerComponent } from '../ver/ver.component';
 import { BuscarTrabajadorDialogComponent } from '../buscar-trabajador-dialog/buscar-trabajador-dialog.component';
 import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
+import { ReportWorker } from '../../web-workers/report-worker';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-lista',
@@ -140,6 +143,318 @@ export class ListaComponent implements OnInit {
 
     this.loadTrabajadorData(event);
     this.loadFilterCatalogs();
+  }
+
+  toggleReportPanel(){
+    this.reportIncludeSigns = false;
+    this.reportTitle = 'Listado de Personal Activo';
+
+    this.stepperConfig = {
+      steps:[
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Cargar Datos', active: 'Cargando Datos', done: 'Datos Cargados' },
+          icon: 'settings_remote',
+          errorMessage: '',
+        },
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Generar PDF', active: 'Generando PDF', done: 'PDF Generado' },
+          icon: 'settings_applications',
+          errorMessage: '',
+        },
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Descargar Archivo', active: 'Descargando Archivo', done: 'Archivo Descargado' },
+          icon: 'save_alt',
+          errorMessage: '',
+        },
+      ],
+      currentIndex: 0
+    }
+
+    this.showReportForm = !this.showReportForm;
+    if(this.showReportForm){
+      this.showMyStepper = false;
+    }
+    //this.showMyStepper = !this.showMyStepper;
+  }
+
+  showAddSignerDialog()
+  {
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+        data:{}
+      }
+    }
+    const dialogRef = this.dialog.open(AgregarFirmantesDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        console.log(valid);
+      }
+    });
+  }
+
+  reportePersonalActivo(){
+    //this.showMyStepper = true;
+    this.isLoadingPDF = true;
+    this.showMyStepper = true;
+    this.showReportForm = false;
+
+    let params:any = {};
+    let countFilter = 0;
+
+    let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','filter']);
+    console.log(appStoredData);
+
+    params.reporte = 'personal-activo';
+
+    if(appStoredData['searchQuery']){
+      params.query = appStoredData['searchQuery'];
+    }
+
+    for(let i in appStoredData['filter']){
+      if(appStoredData['filter'][i]){
+        if(i == 'clues'){
+          params[i] = appStoredData['filter'][i].clues;
+        }else if(i == 'cr'){
+          params[i] = appStoredData['filter'][i].cr;
+        }else{ //profesion y rama
+          params[i] = appStoredData['filter'][i].id;
+        }
+        countFilter++;
+      }
+    }
+
+    if(countFilter > 0){
+      params.active_filter = true;
+    }
+    
+    this.stepperConfig.steps[0].status = 2;
+
+    this.trabajadorService.getTrabajadorList(params).subscribe(
+      response =>{
+        
+        if(response.error) {
+          let errorMessage = response.error.message;
+          this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+          this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+          this.isLoading = false;
+          //this.sharedService.showSnackBar(errorMessage, null, 3000);
+        } else {
+            this.stepperConfig.steps[0].status = 3;
+            this.stepperConfig.steps[1].status = 2;
+            this.stepperConfig.currentIndex = 1;
+
+            const reportWorker = new ReportWorker();
+            reportWorker.onmessage().subscribe(
+              data => {
+                this.stepperConfig.steps[1].status = 3;
+                this.stepperConfig.steps[2].status = 2;
+                this.stepperConfig.currentIndex = 2;
+
+                console.log(data);
+                FileSaver.saveAs(data.data,'PersonalActivo');
+                reportWorker.terminate();
+
+                this.stepperConfig.steps[2].status = 3;
+                this.isLoadingPDF = false;
+                this.showMyStepper = false;
+            });
+
+            reportWorker.onerror().subscribe(
+              (data) => {
+                //this.sharedService.showSnackBar('Error: ' + data.message,null, 3000);
+                this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+                this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = data.message;
+                this.isLoadingPDF = false;
+                //console.log(data);
+                reportWorker.terminate();
+              }
+            );
+            
+            let config = {
+              title: this.reportTitle,
+              showSigns: this.reportIncludeSigns, 
+            };
+            console.log(response.data);
+            reportWorker.postMessage({data:{items: response.data, config:config, firmantes: response.firmantes, responsables: response.responsables},reporte:'trabajador/personal-activo'});
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+        this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+        //this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+        
+      }
+    );
+  }
+
+  reportePersonalActivoExcel(){
+    this.isLoadingExcel = true;
+    let params:any = {};
+    let countFilter = 0;
+
+    let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','filter']);
+
+    params.reporte = 'personal-activo';
+    params.export_excel = true;
+
+    if(appStoredData['searchQuery']){
+      params.query = appStoredData['searchQuery'];
+    }
+
+    for(let i in appStoredData['filter']){
+      if(appStoredData['filter'][i]){
+        if(i == 'clues'){
+          params[i] = appStoredData['filter'][i].clues;
+        }else if(i == 'cr'){
+          params[i] = appStoredData['filter'][i].cr;
+        }else{ //profesion y rama
+          params[i] = appStoredData['filter'][i].id;
+        }
+        countFilter++;
+      }
+    }
+
+    if(countFilter > 0){
+      params.active_filter = true;
+    }
+
+    this.trabajadorService.getTrabajadorList(params).subscribe(
+      response => {
+        console.log(response);
+        FileSaver.saveAs(response);
+        FileSaver.saveAs(response,'reportePersonalActivo');
+        this.isLoadingExcel = false;
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoadingExcel = false;
+      }
+    );
+  }
+
+
+  reportePersonalActivoArea(){
+    this.showMyStepper = true;
+    this.showReportForm = false;
+    this.isLoadingPDFArea = true;
+    
+    let params:any = {};
+    let countFilter = 0;
+
+    this.stepperConfig = {
+      steps:[
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Cargar Datos', active: 'Cargando Datos', done: 'Datos Cargados' },
+          icon: 'settings_remote',
+          errorMessage: '',
+        },
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Generar PDF', active: 'Generando PDF', done: 'PDF Generado' },
+          icon: 'settings_applications',
+          errorMessage: '',
+        },
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Descargar Archivo', active: 'Descargando Archivo', done: 'Archivo Descargado' },
+          icon: 'save_alt',
+          errorMessage: '',
+        },
+      ],
+      currentIndex: 0
+    }
+   
+    this.stepperConfig.steps[0].status = 2;
+
+    /*this.empleadosService.getEmpleadosAreaList(params).subscribe(
+      response =>{
+        //console.log(response);
+        //console.log(response);
+        if(response.error) {
+          let errorMessage = response.error.message;
+          this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+          this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+          //this.sharedService.showSnackBar(errorMessage, null, 3000);
+        } else {
+            this.stepperConfig.steps[0].status = 3;
+            this.stepperConfig.steps[1].status = 2;
+            this.stepperConfig.currentIndex = 1;
+
+            const reportWorker = new ReportWorker();
+            reportWorker.onmessage().subscribe(
+              data => {
+                this.stepperConfig.steps[1].status = 3;
+                this.stepperConfig.steps[2].status = 2;
+                this.stepperConfig.currentIndex = 2;
+
+                //console.log(data);
+                FileSaver.saveAs(data.data,'PersonalActivoArea');
+                reportWorker.terminate();
+
+                this.stepperConfig.steps[2].status = 3;
+                this.isLoadingPDFArea = false;
+                this.showMyStepper = false;
+            });
+
+            reportWorker.onerror().subscribe(
+              (data) => {
+                //this.sharedService.showSnackBar('Error: ' + data.message,null, 3000);
+                this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+                this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = data.message;
+                this.isLoadingPDFArea = false;
+                //console.log(data);
+                reportWorker.terminate();
+              }
+            );
+            
+            let config = {
+              title: "Reporte Personal Activo por Área",
+              
+            };
+
+            reportWorker.postMessage({data:{items: response.data, config:config, firmantes: response.firmantes, responsables: response.responsables},reporte:'empleados/personal-activo-area'});
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+        this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+        //this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+      }
+    );*/
+
   }
 
   public loadFilterCatalogs(){

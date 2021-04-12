@@ -11,10 +11,12 @@ export class TrabajadorService {
 
   url           = `${environment.base_url}/trabajador`;
   url_finalizar = `${environment.base_url}/trabajador_finalizar`;
+  url_firmantes = `${environment.base_url}/firmantes`;
   url_catalogos = `${environment.base_url}/catalogo-trabajador`;
   url_buscador = `${environment.base_url}/buscador-datos-trabajador`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
   url_trabajadores = `${environment.base_url}/busqueda-trabajadores`;
+  url_trabajador = `${environment.base_url}/busqueda-firmantes`;
   url_info_trabajador = `${environment.base_url}/ver-info-trabajador/`;
   url_asistencia = 'http://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
@@ -39,6 +41,14 @@ export class TrabajadorService {
           })
       );
   }
+
+  getFirmantesList():Observable<any> {
+    return this.http.get<any>(this.url_firmantes,{}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
   
   getCatalogos():Observable<any> {
       return this.http.get<any>(this.url_catalogos, {}).pipe(
@@ -47,6 +57,7 @@ export class TrabajadorService {
           })
       );
   }
+
 
   buscar(payload):Observable<any>{
     return this.http.get<any>(this.url_buscador,{params:payload}).pipe(
@@ -178,5 +189,29 @@ export class TrabajadorService {
       }
     ));
   }
+
+  agregarFirmante(payload) {
+    return this.http.post<any>(this.url_firmantes,payload).pipe(
+      map( (response) => {
+        return response;
+      }
+    ));
+  }
+
+  deleteFirmante(id){
+    return this.http.delete<any>(this.url_firmantes+'/'+id,{}).pipe(
+      map( (response: any) => {
+        return response;
+      }
+    ));
+  }
+
+  buscarResponsable(payload):Observable<any>{
+    return this.http.get<any>(this.url_trabajador,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
   
 }

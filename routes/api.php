@@ -106,6 +106,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('busqueda-codigos',           'API\Modulos\SearchCatalogsController@getCodigoAutocomplete');
     Route::get('busqueda-profesiones',       'API\Modulos\SearchCatalogsController@getProfesionAutocomplete');
     Route::get('busqueda-empleados',         'API\Modulos\EmpleadosController@getEmpleadosComplete');
+    Route::get('busqueda-firmantes',         'API\Modulos\FirmantesController@getTrabajadorComplete');
     Route::get('busqueda-trabajadores',      'API\Modulos\TrabajadorController@getTrabajadoresComplete');
     Route::get('busqueda-responsable',       'API\Modulos\EmpleadosController@getResponsableComplete');
     Route::get('busqueda-cr-adscripcion',    'API\Modulos\EmpleadosController@getCrAdscripcionComplete');

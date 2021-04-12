@@ -19,6 +19,7 @@ import { ComisionDialogComponent } from './comision-dialog/comision-dialog.compo
 import { FormatoFechaPipe } from '../utils/classes/fecha/formato-fecha.pipe'
 import { VerComponent } from './ver/ver.component';
 import { BuscarTrabajadorDialogComponent } from './buscar-trabajador-dialog/buscar-trabajador-dialog.component';
+import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog/agregar-firmantes-dialog.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { BuscarTrabajadorDialogComponent } from './buscar-trabajador-dialog/busc
     ComisionDialogComponent,
     FormatoFechaPipe,
     VerComponent,
-    BuscarTrabajadorDialogComponent
+    BuscarTrabajadorDialogComponent,
+    AgregarFirmantesDialogComponent
   ],
   imports: [
     CommonModule,
