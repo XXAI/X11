@@ -6,28 +6,36 @@
 
 
     
-    <div fxLayout="row"  *ngIf="!isLoadingCredential">
-        <div fxFlex="20" fxLayout="column">
-            <div fxFlex style="height: 161px;">
-                <img mat-card-image style="width: 100%; height: 100%; margin: 0 auto 0 auto; object-fit: contain;" src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
-            </div>
+    <div fxLayout="row wrap" fxLayoutGap="10px"  *ngIf="!isLoadingCredential">
+        <div fxFlex.xs="100" fxFlex="10" >
+            <img mat-card-image style="width: 100%; height: 100%; margin: 0 auto 0 auto; object-fit: contain;" src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
         </div>
-        <div fxFlex="90"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
+        <div fxLayout="row wrap" fxFlex.xs="100" fxFlex="75"  *ngIf="dataTrabajador">
             <div fxFlex>
                 <h1 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
                 <h2 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales.cr_fisico)?dataTrabajador.rel_datos_laborales.cr_fisico.descripcion:'CR físico no asignado' }}</h2>
             </div>
-            <div fxFlex>
+            <div fxFlex fxHide.xs="true">
                 <mat-chip-list aria-label="Fish selection">
                     <mat-chip color="primary" [selected]="dataTrabajador.validado == 1"><mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
                     <mat-chip color="primary" [selected]="dataTrabajador.estatus == 1">{{(dataTrabajador.estatus == 1)?'Activo':'Inactivo'}}</mat-chip>
                     <mat-chip color="warn" *ngIf="dataTrabajador.estatus == 2" [selected]="dataTrabajador.estatus == 2">Baja</mat-chip>
-                    <!--<mat-chip color="warn"    selected *ngIf="dataTrabajador.estatus == 2">BAJA <span *ngIf="dataTrabajador.baja && dataTrabajador.baja[0].tipo_baja">: {{ dataTrabajador.baja[0].tipo_baja.descripcion }}</span></mat-chip>
-                    <mat-chip color="primary" selected *ngIf="dataTrabajador.comision">{{ dataTrabajador.comision }}</mat-chip>-->
+                    <mat-chip color="primary" *ngIf="dataTrabajador.rel_datos_comision != null" [selected]="true" >COMISIÓN SINDICAL</mat-chip>
                     <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
                 </mat-chip-list>
             </div>
-            <mat-divider></mat-divider>
+            <div fxFlex="100">
+                <div fxFlex="100" fxFlex.xs="100" style="text-align: center; font-size: 9pt; background-color: #3f51b5; color: white;">HORARIO LABORAL</div>
+            </div>
+            <div fxFlex="100" *ngIf="dataTrabajador.horario.length == 0">
+                <div fxFlex="100" fxFlex.xs="100" style="text-align: center; font-size: 9pt; color: grey;">HORARIO LABORAL NO REGISTRADO</div>
+            </div>
+            <div fxFlex="100" fxLayout="row wrap">
+                <div fxFlex fxFlex.xs="50" *ngFor="let horario of dataTrabajador.horario">
+                    <span class="label">{{ daysLabels[horario.dia] }} </span><br><span class="value">{{ horario.entrada.substr(0,5)}} - {{ horario.salida.substr(0,5)}}</span>
+                </div>
+            </div>
+            <!--<mat-divider></mat-divider>
             <div fxFlex fxLayout="row" *ngIf="dataTrabajador.horario.length > 0">
                 <div fxFlex="100" fxFlex.xs="100" style="text-align: center; font-size: 9pt; background-color: #3f51b5; color: white;">HORARIO LABORAL</div>
             </div>
@@ -39,12 +47,13 @@
                     
                 </div>
                 
-            </div>
+            </div>-->
         </div>
-        <div fxFlex="10"  fxLayout="column" style="padding-left:10px;" *ngIf="dataTrabajador">
-            <button *ngIf="puedeEditar && dataTrabajador.estatus==1" mat-raised-button (click)="editarEmpleado()" color="accent" style="top: 50%;"><mat-icon>edit</mat-icon> Editar</button>
-            <button  mat-raised-button (click)='cancelar()'>Cerrar</button>
+        <div fxLayout="row wrap" fxFlex="10" fxFlex.xs="100" fxLayoutAlign="center center" *ngIf="dataTrabajador">
+            <button fxFlex="100" *ngIf="puedeEditar && dataTrabajador.estatus==1" mat-raised-button (click)="editarEmpleado()" color="accent" style="margin-bottom: 10px;"><mat-icon>edit</mat-icon> Editar</button>
+            <button  fxFlex="100" mat-raised-button (click)='cancelar()'>Cerrar</button>
         </div>
+        
     </div>
 </div>
 <div mat-dialog-content style="max-height: 49vh; height:375px;">
@@ -55,15 +64,15 @@
             <section *ngIf="!isLoading && dataTrabajador">
                 <mat-tab-group dynamicHeight animationDuration="0ms" (selectedTabChange)="dataTabChange($event)"  [(selectedIndex)]="navTabSelected" [color]="'accent'" [backgroundColor]="'primary'">
                     <mat-tab label="Datos Generales">
-                        <div fxLayout="row" class="tarjeta-info-empleado">
-                            <div fxFlex="50">
-                                <div style="text-align: center; padding: 10px;  /*background-color: rgba(200,200,200,0.5);*/ border-bottom: 1px solid #E21800; color: blue; font-weight: 500;">DATOS PERSONALES</div>
+                        <div fxLayout="row wrap" class="tarjeta-info-empleado">
+                            <div fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50"  fxFlex.xl="50" fxFlex.xs="100">
+                                <div style="text-align: center; padding: 10px; border-bottom: 1px solid #E21800; color: blue; font-weight: 500;">DATOS PERSONALES</div>
                                 <div style="background-color: rgba(220, 220, 233, 0.3);padding: 10px;">
-                                    <div fxLayout="row">
-                                        <div fxFlex="50">
+                                    <div fxLayout="row wrap">
+                                        <div fxFlex.sm="50" fxFlex.xs="100">
                                             <span class="label">CURP: </span><br><span class="value">{{ dataTrabajador.curp }}</span>
                                         </div>
-                                        <div fxFlex="50">
+                                        <div fxFlex.sm="50" fxFlex.xs="100">
                                             <span class="label">RFC: </span><br><span class="value">{{ dataTrabajador.rfc }}</span><br>
                                         </div>
                                     </div>
@@ -123,7 +132,7 @@
                                 
                             </div>
                             
-                            <div fxFlex="50">
+                            <div fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50"  fxFlex.xl="50" >
                                 <div style="text-align: center; padding: 10px; /*background-color: rgba(200,200,200,0.5);*/ border-bottom: 1px solid #E21800; color: blue; font-weight: 500;">DATOS LABORALES</div>
                                 <div style="background-color: rgba(0,0,78,0.15);padding: 10px;">
                                     <div fxLayout="row">
@@ -143,11 +152,11 @@
                                         </div>
                                         
                                     </div>
-                                    <div fxLayout="row">
-                                        <div fxFlex="50">
+                                    <div fxLayout="row wrap">
+                                        <div fxFlex.sm="50"  fxFlex.xs="100">
                                             <span class="label">RAMA: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales.rama)?dataTrabajador.rel_datos_laborales.rama.descripcion:'NO REGISTRADO'}} </span>
                                         </div>
-                                        <div fxFlex="50">
+                                        <div fxFlex.sm="50" fxFlex.xs="100">
                                             <span class="label">CODIGO: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.codigo.codigo:'NO REGISTRADO'}} {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.codigo.descripcion:'' }}</span>
                                         </div>
                                        
@@ -170,6 +179,12 @@
                                     <div fxLayout="row">
                                         <div fxFlex="100">
                                             <span class="label">CENTRO DE RESPONSABILIDAD DE ADSCRIPCIÓN: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.cr.clues:'NO REGISTRADO' }} {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.cr.descripcion:'' }}</span>
+                                        </div>
+                                        
+                                    </div>
+                                    <div fxLayout="row" *ngIf="dataTrabajador.rel_datos_comision != null">
+                                        <div fxFlex="100">
+                                            <span class="label">COMISIÓN SINDICAL: </span><br><span class="value"> SINDICATO {{ dataTrabajador.rel_datos_comision.sindicato.descripcion }}</span>
                                         </div>
                                         
                                     </div>
@@ -253,7 +268,7 @@
                             </tr>
                         </table>
                     </mat-tab>-->
-                    <mat-tab label="Registro Asistencia">
+                    <mat-tab label="Registro Asistencia" >
                         <div class="loading-shade" *ngIf="isLoadingAsistencia">
                             <mat-spinner mode="indeterminate" *ngIf="isLoadingAsistencia"></mat-spinner>
                         </div>

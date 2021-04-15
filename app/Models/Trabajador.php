@@ -84,6 +84,10 @@ class Trabajador extends Model
     public function rel_datos_laborales(){
         return $this->hasOne('App\Models\RelDatosLaborales')->with('actividad','actividad_voluntaria','area_trabajo','cr_fisico','programa','rama');
     }
+    
+    public function rel_datos_comision(){
+        return $this->hasOne('App\Models\RelComision')->where("estatus", "A")->with('sindicato');
+    }
 
     public function rel_datos_laborales_nomina(){
         return $this->hasOne('App\Models\RelDatosLaboralesNomina')->with('codigo', 'clues', 'cr', 'tipoNomina');#'area_trabajo','cr_fisico','programa','rama');

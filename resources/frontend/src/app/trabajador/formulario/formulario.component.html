@@ -3,7 +3,7 @@
 </div>
 <section fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly start" style="padding-top:5px;" *ngIf="!isLoadingPage">
     <!--<section  fxFlex="15" fxFlex.xs="100" *ngIf="trabajador_id != 0">-->
-    <section  fxFlex="15" fxFlex.xs="100">
+    <section  fxFlex="100" fxFlex.xs="100">
         <mat-card>
             <mat-card-header fxShow.xs="true" fxHide="true">
                 <mat-icon>account_circle</mat-icon>
@@ -304,7 +304,7 @@
                 </mat-tab>
                 <mat-tab [formGroup]="datosLaborelesForm" [disabled]='(tab_proceso != 2 && !actualizado)' class="finalizado">
                     <ng-template mat-tab-label>
-                        <mat-icon class="example-tab-icon">person_pin</mat-icon>
+                        <mat-icon class="example-tab-icon">engineering</mat-icon>
                         <div class="mobile-pc">Datos Laborales</div>
                     </ng-template>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top: 10px;">
@@ -572,7 +572,11 @@
                     </div>
                     
                 </mat-tab>
-                <mat-tab label="Horario Laboral" [formGroup]="datosHorarioForm"  [disabled]='(tab_proceso != 3 && !actualizado)'>
+                <mat-tab  [formGroup]="datosHorarioForm"  [disabled]='(tab_proceso != 3 && !actualizado)'>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">calendar_today</mat-icon>
+                        <div class="mobile-pc">Horario Laboral</div>
+                    </ng-template>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             
@@ -596,7 +600,7 @@
                             </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <div fxFlex="100" fxFlex.xs="100" style="color: red;">
-                                   El Horario deberá ser el que se estipula en el contrato, es decir sin tomar en cuenta la media hora de comida, hora de lactancia y cualquier permiso que pueda tener el trabajador.
+                                   El Horario deberá ser el que se estipula en el contrato o nombramiento, es decir sin tomar en cuenta la media hora de comida, hora de lactancia y cualquier permiso que pueda tener el trabajador.
                                 </div> 
                             </div>    
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -747,7 +751,11 @@
                         </div>
                     </div>
                 </mat-tab>
-                <mat-tab label="Escolaridad"  [formGroup]="datosEscolaresForm" [disabled]='(tab_proceso != 4 && !actualizado)'>
+                <mat-tab   [formGroup]="datosEscolaresForm" [disabled]='(tab_proceso != 4 && !actualizado)'>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">book</mat-icon>
+                        <div class="mobile-pc">Escolaridad</div>
+                    </ng-template>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">

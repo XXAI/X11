@@ -78,6 +78,11 @@ class TrabajadorController extends Controller
             $trabajador = Trabajador:://with("datoslaborales")//select('trabajador.*')
                             join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                             ->select("trabajador.*")
+                            ->whereRaw(" trabajador.id not in (select trabajador_id from rel_trabajador_baja)");
+                            //
+            
+            
+                           
             /*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
@@ -192,6 +197,12 @@ class TrabajadorController extends Controller
                                     
                                     ->leftJoin("catalogo_sexo", "catalogo_sexo.id", "trabajador.sexo_id")
                                     ->leftJoin("catalogo_estado_conyugal", "catalogo_estado_conyugal.id", "trabajador.estado_conyugal_id")
+                                    ->leftjoin('rel_trabajador_comision  as datos_comision', function ($join) {
+                                        $join->on('datos_comision.trabajador_id', '=', 'trabajador.id')
+                                             ->where('datos_comision.estatus', '=', 'A');
+                                    })
+                                    //->leftJoin("rel_trabajador_comision as datos_comision", "datos_comision.trabajador_id", "trabajador.id")
+                                    //->leftJoin("sindicato", "sindicato.id", "datos_comision.sindicato_id")
                                     ->where("trabajador.estatus", "=", 1)
                                     ->select(
                                         "trabajador.rfc",
@@ -224,6 +235,7 @@ class TrabajadorController extends Controller
                                         "funcion.grupo as grupo",
                                         "rama.descripcion as rama_trabajo",
                                         "jornada.descripcion as jornada",
+                                        "datos_comision.id as comision",
                                         db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where rel_trabajador_horario.trabajador_id=trabajador.id limit 1) as horario"),
                                         "trabajador.observacion")
                                         ->orderby("rel_trabajador_datos_laborales.clues_adscripcion_fisica");
@@ -261,67 +273,6 @@ class TrabajadorController extends Controller
                 }
             } 
             
-            /*else {
-                if(isset($parametros['reporte'])){
-                    //Reporte Personal Activo
-                    $empleados = $empleados->select('empleados.*','turnos.descripcion as turno','funciones.grupo as funcion','clues.nombre_unidad as clues_descripcion','cr.descripcion as cr_descripcion', "codigos.descripcion as codigo")
-                                        ->leftjoin('catalogo_turno as turnos','turnos.id','empleados.turno_id')
-                                        ->leftjoin('catalogo_codigo as codigos','codigos.codigo','empleados.codigo_id')
-                                        ->leftjoin('catalogo_grupo_funcion as funciones','funciones.id','codigos.grupo_funcion_id')
-                                        ->leftjoin('catalogo_clues as clues','clues.clues','empleados.clues')
-                                        ->leftjoin('catalogo_cr as cr','cr.cr','empleados.cr_id')
-                                        ->orderBy('clues','asc')
-                                        ->orderBy('cr_id','asc');
-                    
-                    if(isset($parametros['export_excel']) && $parametros['export_excel']){
-                        ini_set('memory_limit', '-1');
-                        $empleados = $empleados->select('empleados.clues as CLUES','empleados.cr_id as CR','cr.descripcion as CR_DESC','empleados.rfc as RFC','empleados.curp as CURP',DB::raw('concat_ws(" ",empleados.apellido_paterno,empleados.apellido_materno,empleados.nombre) as NOMBRE'),'codigos.codigo as CODIGO','codigos.descripcion as DESC_CODIGO',
-                                                        'LIC_DET.descripcion as LICENCIATURA','TEC_DET.descripcion as TECNICA','turnos.descripcion as TURNO', 'empleados.hora_entrada as HORA_ENTRADA','empleados.hora_salida as HORA_SALIDA','empleados.area_servicio as AREA_SERVICIO',
-                                                        'funciones.grupo as FUNCION','empleados.observaciones as OBSERVACIONES')
-                                                ->leftjoin('empleado_escolaridad_detalles as LIC',function($join){
-                                                    $join->on('LIC.empleado_id','=','empleados.id')->where('LIC.tipo_estudio','LIC')->whereNull('LIC.deleted_at');
-                                                })
-                                                ->leftjoin('catalogo_profesion as LIC_DET','LIC_DET.id','LIC.profesion_id')
-                                                ->leftjoin('empleado_escolaridad_detalles as TEC',function($join){
-                                                    $join->on('TEC.empleado_id','=','empleados.id')->where('TEC.tipo_estudio','TEC')->whereNull('TEC.deleted_at');
-                                                })
-                                                ->leftjoin('catalogo_profesion as TEC_DET','TEC_DET.id','TEC.profesion_id');
-    
-                        try{
-                            $empleados = $empleados->get();
-                            $columnas = array_keys(collect($empleados[0])->toArray());
-    
-                            if(isset($parametros['nombre_archivo']) && $parametros['nombre_archivo']){
-                                $filename = $parametros['nombre_archivo'];
-                            }else{
-                                7$filename = 'reporte-personal-activo';
-                            }
-                            
-                            return (new DevReportExport($empleados,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
-                        }catch(\Exception $e){
-                            return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
-                        }
-                    }else{
-                        $empleados = $empleados->with(['escolaridadDetalle'=>function($query){
-                                            $query->whereIn('tipo_estudio',['LIC','TEC']);
-                                        },'escolaridadDetalle.profesion']);
-                    }
-                }
-                $empleados = $empleados->get();
-
-                $loggedUser->load('gruposUnidades.listaFirmantes.empleado',"gruposUnidades.listaCR.clues.responsable");
-                if(count($loggedUser->gruposUnidades) > 0){
-                    $firmantes = $loggedUser->gruposUnidades[0]->listaFirmantes;
-                    $responsable_clues = $loggedUser->gruposUnidades[0]->listaCR;
-                }else if(isset($parametros['grupos']) && $parametros['grupos']){
-                    $grupo = GrupoUnidades::with('listaFirmantes.empleado','listaCR.clues.responsable')->find($parametros['grupos']);
-                    if($grupo){
-                        $firmantes = $grupo->listaFirmantes;
-                        $responsable_clues = $grupo->listaCR;
-                    }
-                }
-            }
-*/
             if(!$loggedUser->gruposUnidades){
                 $loggedUser->load('gruposUnidades');
             }

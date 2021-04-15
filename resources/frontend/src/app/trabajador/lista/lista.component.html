@@ -53,11 +53,11 @@
                         <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddEmployeDialog()" ><mat-icon>person_search</mat-icon> Buscar Trabajador</button>
                         <mat-divider></mat-divider>
                         <button *ngIf="!capturaFinalizada" mat-menu-item routerLink="/trabajadores/nuevo/" ><mat-icon>person_add_alt</mat-icon> Agregar Trabajador</button>
-                        <!--<button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddSignerDialog()"><mat-icon>create</mat-icon> Agregar Firmantes</button>
+                        <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddSignerDialog()"><mat-icon>create</mat-icon> Agregar Firmantes</button>
                         <mat-divider></mat-divider>
                         <button mat-menu-item (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF"  [disabled]="isLoadingPDF">
                             <mat-icon fontSet="{{(!showReportForm)?'material-icons-outlined':''}}">{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon> Reporte
-                        </button>-->
+                        </button>
                     </mat-menu>
 
                     <!--<button *ngIf="!capturaFinalizada" mat-raised-button color="info" (click)="showAddEmployeDialog()" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'"><mat-icon>keyboard</mat-icon> Buscar Trabajador</button>-->

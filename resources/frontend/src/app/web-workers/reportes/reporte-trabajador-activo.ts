@@ -116,7 +116,7 @@ export class ReporteTrabajadorActivo{
                   headerRows:2,
                   dontBreakRows: true,
                   keepWithHeaderRows: 1,
-                  widths: [ 43, 60, 110, 60, 30, 100, 100,'*', 80,'*' ],
+                  widths: [ 43, 60, 110, 60, 30, 100, 100,100, 80,'*' ],
                   margin: [0,0,0,0],
                   body: [
                     [{text: "["+trabajador.clues_adscripcion_fisica+"] "+trabajador.nombre_unidad, colSpan: 10, style: 'cabecera'},{},{},{},{},{},{},{},{},{}],
@@ -158,7 +158,20 @@ export class ReporteTrabajadorActivo{
                   }
               }
           }*/
-
+          let comision_sindical = "";
+          if(trabajador.comision != null)
+          {
+            comision_sindical = "* Comisión Sindical";
+          }
+          let jornada_horario = "";
+          if(trabajador.jornada != null)
+          {
+            jornada_horario += trabajador.jornada;
+          }
+          if(trabajador.horario != null)
+          {
+            jornada_horario += " "+trabajador.horario;
+          }
           datos.content[indice_actual].table.body.push([
             { text: trabajador.rfc, style: 'tabla_datos' },
             { text: trabajador.curp , style: 'tabla_datos'},
@@ -166,10 +179,10 @@ export class ReporteTrabajadorActivo{
             { text: trabajador.ur , style: 'tabla_datos'},
             { text: trabajador.codigo , style: 'tabla_datos'},
             { text: trabajador.descripcion_codigo , style: 'tabla_datos'},
-            { text: (trabajador.jornada!=null)?trabajador.jornada:''+" "+(trabajador.horario!=null)?trabajador.horario:'' , style: 'tabla_datos'},
+            { text: jornada_horario , style: 'tabla_datos'},
             { text: trabajador.rama_trabajo , style: 'tabla_datos'},
             { text: trabajador.grupo , style: 'tabla_datos'},
-            { text: trabajador.observacion , style: 'tabla_datos'}
+            { text: trabajador.observacion +"\n"+comision_sindical , style: 'tabla_datos'}
           ]);
         }
 
