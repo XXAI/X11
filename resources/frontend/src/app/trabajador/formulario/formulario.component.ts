@@ -173,7 +173,7 @@ export class FormularioComponent implements OnInit {
     'hora_inicio_festivo':[{ value:'', disabled:true}, Validators.required], 
     'hora_fin_festivo':[{ value:'', disabled:true}, Validators.required], 
   });
-  public datosCursosForm = this.fb.group({
+  /*public datosCursosForm = this.fb.group({
     //Cursos
     'tipo_ciclo_formacion_id':[],
     'carrera_ciclo':[],
@@ -204,7 +204,7 @@ export class FormularioComponent implements OnInit {
     'institucion_id':[],
     'otro_nombre_institucion':[{ value:'', disabled:true}, Validators.required],
     'ciclo_id':[{ value:'', disabled:true}, Validators.required],
-  });
+  });*/
 
   displayedColumns: string[] = ['tipo','descripcion','institucion','cedula','actions'];
   displayedColumnsCursos: string[] = ['entidad','nombre_curso','actions'];
@@ -215,6 +215,13 @@ export class FormularioComponent implements OnInit {
     this.cargarDatosDefault();
     this.cargarCatalogos();
     this.cargarBuscadores();
+
+    this.trabajadorForm.markAllAsTouched();
+    this.trabajadorForm.updateValueAndValidity();
+    this.datosLaborelesForm.markAllAsTouched();
+    this.datosLaborelesForm.updateValueAndValidity();
+    this.datosHorarioForm.markAllAsTouched();
+    this.datosHorarioForm.updateValueAndValidity();
     this.mediaObserver.media$.subscribe(
       response => {
         this.mediaSize = response.mqAlias;
@@ -510,7 +517,7 @@ export class FormularioComponent implements OnInit {
         ),
       ).subscribe(items => this.filteredMunicipio = items);
     
-      this.datosCapacitacionForm.get('titulo_capacitacion').valueChanges
+      /*this.datosCapacitacionForm.get('titulo_capacitacion').valueChanges
       .pipe(
         debounceTime(300),
         tap( () => {
@@ -643,7 +650,7 @@ export class FormularioComponent implements OnInit {
             }
           }
         ),
-      ).subscribe(items => this.filteredColegio = items);
+      ).subscribe(items => this.filteredColegio = items);*/
     
       this.trabajadorForm.get('cr').valueChanges
       .pipe(
@@ -755,7 +762,7 @@ export class FormularioComponent implements OnInit {
     {
       data = this.datosEscolaresForm.value;
       data.datos = this.datosEstudios;
-    }else if(tipo == 5)
+    }/*else if(tipo == 5)
     {
       data = this.datosCapacitacionForm.value;
       data.datos = this.datosCapacitacion;
@@ -763,7 +770,7 @@ export class FormularioComponent implements OnInit {
     {
       data = this.datosCursosForm.value;
       //data.datos = this.datosEstudios;
-    }
+    }*/
     
     this.isLoading = true;
     data.tipo_dato = tipo;
@@ -1040,25 +1047,25 @@ export class FormularioComponent implements OnInit {
   
   activar_otro_titulo(valor)
   {
-    if(valor){
+    /*if(valor){
       this.datosCapacitacionForm.get('titulo_capacitacion').enable();
       this.datosCapacitacionForm.get('otro_nombre_titulo').disable();
     }else{
       this.datosCapacitacionForm.get('titulo_capacitacion').disable();
       this.datosCapacitacionForm.get('otro_nombre_titulo').enable();
-    }  
+    } */ 
     
   }
 
   activar_otro_institucion(valor)
   {
-    if(valor){
+    /*if(valor){
       this.datosCapacitacionForm.get('institucion').enable();
       this.datosCapacitacionForm.get('otro_nombre_institucion').disable();
     }else{
       this.datosCapacitacionForm.get('institucion').disable();
       this.datosCapacitacionForm.get('otro_nombre_institucion').enable();
-    }   
+    } */  
   }
 
   /*tiene_capacitacion(valor):void{

@@ -20,6 +20,7 @@ export class FormularioComponent implements OnInit {
    
     'rfc': ['',[Validators.required, Validators.minLength(13)]],
     'password': ['',[Validators.required, Validators.minLength(8)]],
+    'correo_electronico': ['',[Validators.required, Validators.email]],
     //'password_confirmacion': ['',[Validators.required, Validators.minLength(8)]],
     
   });
@@ -31,7 +32,8 @@ export class FormularioComponent implements OnInit {
               public dialog: MatDialog) { }
 
   ngOnInit() {
-    
+    this.registroForm.markAllAsTouched();
+    this.registroForm.updateValueAndValidity();
   }
 
   enviar(){
@@ -60,7 +62,7 @@ export class FormularioComponent implements OnInit {
   onSave(){
     
     this.isLoading = true;
-    this.registroService.registroTrabajador(this.registroForm.value.rfc, this.registroForm.value.password ).subscribe(
+    this.registroService.registroTrabajador(this.registroForm.value.rfc, this.registroForm.value.correo_electronico, this.registroForm.value.password ).subscribe(
       response => {
         this.router.navigate(['/login']);
         this.sharedService.showSnackBar("Se ha registrado correctamente, intente ingresar", null, 3000);
@@ -70,6 +72,9 @@ export class FormularioComponent implements OnInit {
         var errorMessage = "Error: Credenciales inválidas.";
         if(error.status != 401){
           errorMessage = "Verificar que no haya creado la cuenta previamente";
+        }
+        if(error.status != 409){
+          errorMessage = error.errores;
         }
         this.sharedService.showSnackBar(errorMessage, "Error", 3000);
         this.isLoading = false;

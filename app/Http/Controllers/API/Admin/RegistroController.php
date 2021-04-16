@@ -19,11 +19,14 @@ class RegistroController extends Controller
         try{
             $validation_rules = [
                 'rfc' => 'required',
+                'correo_electronico'        => 'required|email',
                 'contrasenia' => 'required'                
             ];
         
             $validation_eror_messages = [
                 'rfc.required' => 'El rfc es obligatorio',
+                'correo_electronico.required' => 'El correo es obligatorio',
+                'correo_electronico.email' => 'El correo no es valido',
                 'contrasenia.required' => 'la contraseña es obligatoria'
             ];
 
@@ -35,15 +38,17 @@ class RegistroController extends Controller
                 DB::beginTransaction();
 
                 $trabajador = Trabajador::where("rfc", "=", $parametros['rfc'])->first();
-                   
+                $trabajador->correo_electronico = $parametros['correo_electronico'];
+                $trabajador->save();
                 $usuario = new User();
                 $usuario->name = $trabajador->apellido_paterno." ".$trabajador->apellido_materno." ".$trabajador->nombre;
-                if($trabajador->correo_electronico != null)
+                $usuario->email = $parametros['correo_electronico'];
+                /*if($trabajador->correo_electronico != null)
                 {
                     $usuario->email = $trabajador->correo_electronico;
                 }else{
                     $usuario->email = "saludchiapas@hotmail.com"; 
-                }
+                }*/
                 $usuario->username = strtoupper($trabajador->rfc);
                 $usuario->password = Hash::make($parametros['contrasenia']);
                 $usuario->is_superuser = 0;

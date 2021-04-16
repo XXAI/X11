@@ -23,6 +23,17 @@
                     </mat-error>
                     <mat-icon matSuffix>person</mat-icon>
                 </mat-form-field>
+
+                <mat-form-field fxFlex *ngIf="!isLoading" appearance="outline">
+                  <mat-label>Correo</mat-label>
+                    <input type="text" matInput #username placeholder="Usuario" formControlName="correo_electronico" autocomplete="off">
+                    <mat-error *ngIf="registroForm.get('correo_electronico').invalid && (registroForm.get('correo_electronico').dirty || registroForm.get('correo_electronico').touched)">
+                      <span *ngIf="registroForm.get('correo_electronico').errors.required">Campo obligatorio</span>
+                      <span *ngIf="registroForm.get('correo_electronico').errors.email">Formato de Correo invalido</span>
+                    </mat-error>
+                    <mat-icon matSuffix>mark_as_unread</mat-icon>
+                </mat-form-field>
+
                 <mat-form-field fxFlex *ngIf="!isLoading" appearance="outline">
                     <mat-label>Contraseña</mat-label>
                     <input type="password" matInput placeholder="Tu contraseña" formControlName="password"autocomplete="off" minlength="8">

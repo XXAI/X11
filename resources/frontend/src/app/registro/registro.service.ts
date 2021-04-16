@@ -14,8 +14,8 @@ export class RegistroService {
 
   constructor(private http: HttpClient) { }
 
-  registroTrabajador(username: string, password: string) {
-    return this.http.post<any>(this.url, { 'rfc':username, 'contrasenia':password}).pipe(
+  registroTrabajador(username: string,correo: string, password: string) {
+    return this.http.post<any>(this.url, { 'rfc':username,'correo_electronico':correo, 'contrasenia':password}).pipe(
       map( (response) => {
         return response;
       }
