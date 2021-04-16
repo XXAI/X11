@@ -38,6 +38,18 @@ table {
   min-width: 60px;
 }
 
+.porcentaje
+{
+  font-size: 13pt;
+}
+
+@media only screen and (max-width: 600px){
+  .porcentaje
+  {
+    font-size: 9.5pt;
+  }
+}
+
 .selected-item{
   background-color: lightskyblue;
 }

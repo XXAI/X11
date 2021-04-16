@@ -30,6 +30,8 @@ export class VerComponent implements OnInit {
 
   dataTrabajador: any;
 
+  cluesAsistencia:any = [ 'CSSSA017213', 'CSSSA009162', 'CSSSA019954' ];
+
   datosCredencial:any;
   photoPlaceholder = 'assets/profile-icon.svg';
 
@@ -72,11 +74,12 @@ export class VerComponent implements OnInit {
 
   ngOnInit() {
     let userPermissions = JSON.parse(localStorage.getItem('permissions'));
-    if(userPermissions['NZlDkhi8ikVhdgfT8zVVIGroFNtHfIQe']){
+    /*if(userPermissions['NZlDkhi8ikVhdgfT8zVVIGroFNtHfIQe']){
       this.puedeVerAsistencias = true;
     }else{
       this.puedeVerAsistencias = false;
-    }
+    }*/
+    
 
     if(this.data.puedeEditar){
       this.puedeEditar = this.data.puedeEditar;
@@ -119,50 +122,13 @@ export class VerComponent implements OnInit {
         this.dataTrabajador = response;
         //console.log(this.dataTrabajador);
         this.dataSource = this.dataTrabajador.escolaridad;
-        console.log(this.dataTrabajador);
-        /*if(this.dataEmpleado.figf){
-          this.dataEmpleado.figf = new Date(this.dataEmpleado.figf.substring(0,4),(this.dataEmpleado.figf.substring(5,7)-1), this.dataEmpleado.figf.substring(8,10),12,0,0,0);
-        }
+        //console.log(this.dataTrabajador);
 
-        if(this.dataEmpleado.fissa){
-          this.dataEmpleado.fissa = new Date(this.dataEmpleado.fissa.substring(0,4),(this.dataEmpleado.fissa.substring(5,7)-1), this.dataEmpleado.fissa.substring(8,10),12,0,0,0);
+        if(this.verificarAsistencia(this.dataTrabajador.rel_datos_laborales.cr_fisico.clues))
+        {
+          this.puedeVerAsistencias = true;
         }
-
-        if(this.dataEmpleado.hora_entrada){
-          this.dataEmpleado.hora_entrada = new Date(1,1,1,this.dataEmpleado.hora_entrada.substring(0,2),(this.dataEmpleado.hora_entrada.substring(3,5)),0,0);
-        }
-        
-        if(this.dataEmpleado.hora_salida){
-          this.dataEmpleado.hora_salida = new Date(1,1,1,this.dataEmpleado.hora_salida.substring(0,2),(this.dataEmpleado.hora_salida.substring(3,5)),0,0);
-        }
-
-        if(this.dataEmpleado.tipo_comision == 'CI'){
-          this.dataEmpleado.comision = 'Comisión Interna';
-        }else if(this.dataEmpleado.tipo_comision == 'CS'){
-          this.dataEmpleado.comision = 'Comisión Sindical';
-        }else if(this.dataEmpleado.tipo_comision == 'LH'){
-          this.dataEmpleado.comision = 'Licencia Humanitaria';
-        }
-
-        if(response.pagination){
-          let paginator = this.sharedService.getDataFromCurrentApp('paginator');
-
-          let paginationIndex = response.pagination.next_prev.findIndex(item => item.id == this.dataEmpleado.id);
-          //Aqui verificar estatus
-          if(paginationIndex < 0){
-            this.miniPagination.next = (response.pagination.next_prev[1])?response.pagination.next_prev[1].id:0;
-            this.miniPagination.previous = (response.pagination.next_prev[0])?response.pagination.next_prev[0].id:0;
-          }else{
-            this.miniPagination.next = (response.pagination.next_prev[paginationIndex+1])?response.pagination.next_prev[paginationIndex+1].id:0;
-            this.miniPagination.previous = (response.pagination.next_prev[paginationIndex-1])?response.pagination.next_prev[paginationIndex-1].id:0;
-          }
-          
-          this.miniPagination.total = response.pagination.total;
-          this.miniPagination.current = (paginator.pageSize*paginator.pageIndex)+paginator.selectedIndex+1;
-        }else{
-          this.miniPagination.total = 0;
-        }
-        */
+    
         if(this.dataTrabajador.clave_credencial){
           this.trabajadorService.getDatosCredencial(this.dataTrabajador.clave_credencial).subscribe(
             response => {
@@ -185,17 +151,23 @@ export class VerComponent implements OnInit {
             }
           );
         }
-        /*
-        if(this.navTabSelected == 2){
-          this.asistenciasCargadas = false;
-          this.cargarAssistencias(this.dataTrabajador.clave_credencial);
-        }else{
-          this.assistSource = [];
-          this.asistenciasCargadas = false;
-        }*/
 
         this.isLoading = false;
       });
+  }
+
+  verificarAsistencia(obj:any)
+  {
+    //console.log(obj);
+    let bandera:boolean = false;
+    this.cluesAsistencia.forEach(element => {
+      if(element == obj)
+      {
+        bandera = true;
+      }
+    });
+    console.log();
+    return bandera;
   }
 
   loadNext(){

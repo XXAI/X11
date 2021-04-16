@@ -1,8 +1,8 @@
 <section class="profile" >
-    <mat-toolbar class="employee-advance-bar" [class.mat-elevation-z2]="true">
-        <mat-toolbar-row>
+    <mat-toolbar class="employee-advance-bar" [class.mat-elevation-z2]="true" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
+        <mat-toolbar-row class="porcentaje">
             <mat-icon aria-hidden="false" aria-label="Estatus Empleado">speed</mat-icon>
-            <span><small>Estatus: Activos {{countPersonalActivo | number: '2.'}} / Validados {{countPersonalValidado | number: '2.'}}</small></span>
+            <span>Estatus: Activos {{countPersonalActivo | number: '2.'}} / Validados {{countPersonalValidado | number: '2.'}}</span>
             <span class="spacer"></span>
             <span>{{ percentPersonalValidado }}% Validado</span>
             <span class="spacer"></span>
