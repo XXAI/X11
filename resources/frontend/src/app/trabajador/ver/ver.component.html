@@ -219,7 +219,7 @@
                               
                                 <ng-container matColumnDef="descripcion">
                                   <th mat-header-cell *matHeaderCellDef> DESCRIPCIÓN </th>
-                                  <td mat-cell *matCellDef="let element"> {{(element.nombre_estudio)?element.nombre_estudio.descripcion: element.otro_nombre_institucion}} </td>
+                                  <td mat-cell *matCellDef="let element">{{(element.nombre_estudio)?element.nombre_estudio.descripcion: element.otro_nombre_estudio}} </td>
                                 </ng-container>
                               
                                 <ng-container matColumnDef="cedula">

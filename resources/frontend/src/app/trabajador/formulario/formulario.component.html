@@ -139,7 +139,7 @@
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 
                                 <mat-form-field fxFlex="20" fxFlex.xs="100">
-                                    <mat-label>Estado Conyugal</mat-label>
+                                    <mat-label>Estado Civil</mat-label>
                                     <mat-select formControlName="estado_conyugal_id" required>
                                         <mat-option *ngFor="let item of catalogo['estado_conyugal']" [value]="item.id">
                                             {{item.descripcion}}
