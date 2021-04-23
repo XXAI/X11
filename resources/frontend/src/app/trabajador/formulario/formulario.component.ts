@@ -327,7 +327,6 @@ export class FormularioComponent implements OnInit {
         this.datos_personales = response;
         //console.log(trabajador);
         this.datos_laborales_nomina = trabajador.datoslaboralesnomina;
-        console.log(this.datos_laborales_nomina);
         this.idioma(trabajador.idioma_id);
         this.lengua(trabajador.lengua_indigena_id);
         this.verificar_curp(trabajador.curp);
@@ -338,7 +337,6 @@ export class FormularioComponent implements OnInit {
         {
             this.trabajadorForm.patchValue({idioma_id: 0});
         }
-        console.log(trabajador.idioma_id);
         this.trabajadorForm.patchValue({municipio: trabajador.municipio_nacimiento});
         /* Fech de ingreso */ // Carga datos laborales
         let ingreso;

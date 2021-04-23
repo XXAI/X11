@@ -57,6 +57,7 @@ use App\Models\RelEscolaridadCursante;
 use App\Models\RelHorario;
 use App\Models\RelNomina;
 use App\Models\RelBaja;
+use App\Models\RelTransaccion;
 use App\Models\User;
 
 use App\Exports\DevReportExport;
@@ -77,12 +78,10 @@ class TrabajadorController extends Controller
             $parametros = $request->all();
             $trabajador = Trabajador:://with("datoslaborales")//select('trabajador.*')
                             join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
-                            ->select("trabajador.*")
+                            ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id")
                             ->whereRaw(" trabajador.id not in (select trabajador_id from rel_trabajador_baja)");
                             //
-            
-            
-                           
+                            
             /*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
@@ -1045,6 +1044,53 @@ class TrabajadorController extends Controller
                 $trabajador->estatus = 1;
                
                 $trabajador->save();
+
+            }
+
+            DB::commit();
+
+            return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function transferTrabajador(Request $request, $id)
+    {
+        try{
+            $parametros = $request->all();
+            
+            $trabajador = Trabajador::with("datoslaborales")->find($id);
+
+            $cr_destino = $parametros['cr'];
+            $observacion = $parametros['observaciones'];
+            
+            //return response()->json(['data'=>$cr_destino],HttpResponse::HTTP_OK);
+            
+            DB::beginTransaction();
+
+            if(true){ //aceptado por ahora
+                $loggedUser = auth()->userOrFail();
+
+                
+
+                $trabajador_laborales =  RelDatosLaborales::where("trabajador_id", "=", $trabajador->id)->first();
+                $transaccion = new RelTransaccion();
+                $transaccion->trabajador_id = $trabajador->id;
+                $transaccion->fecha = Carbon::now()->toDateString();
+                $transaccion->cr_origen = $trabajador_laborales->cr_fisico_id;
+                $transaccion->cr_destino = $cr_destino['cr'];
+                $transaccion->user_id = $loggedUser->id;
+                $transaccion->observacion = $observacion;
+                
+                $transaccion->save();
+
+                $trabajador_datos_laborales =  RelDatosLaborales::firstOrCreate(['trabajador_id'=> $trabajador->id]);
+                                                                
+                $trabajador_datos_laborales->clues_adscripcion_fisica = $cr_destino['clues']['clues'];
+                $trabajador_datos_laborales->cr_fisico_id = $cr_destino['cr'];
+                $trabajador_datos_laborales->save();
 
             }
 

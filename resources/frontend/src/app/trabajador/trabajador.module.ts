@@ -20,6 +20,7 @@ import { FormatoFechaPipe } from '../utils/classes/fecha/formato-fecha.pipe'
 import { VerComponent } from './ver/ver.component';
 import { BuscarTrabajadorDialogComponent } from './buscar-trabajador-dialog/buscar-trabajador-dialog.component';
 import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog/agregar-firmantes-dialog.component';
+import { TransferenciaTrabajadorDialogComponent } from './transferencia-trabajador-dialog/transferencia-trabajador-dialog.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog/agre
     FormatoFechaPipe,
     VerComponent,
     BuscarTrabajadorDialogComponent,
-    AgregarFirmantesDialogComponent
+    AgregarFirmantesDialogComponent,
+    TransferenciaTrabajadorDialogComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,9 @@ import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog/agre
     BajaDialogComponent, 
     ComisionDialogComponent,
     VerComponent,
-    BuscarTrabajadorDialogComponent
+    BuscarTrabajadorDialogComponent,
+    AgregarFirmantesDialogComponent,
+    TransferenciaTrabajadorDialogComponent
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

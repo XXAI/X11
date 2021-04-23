@@ -28,6 +28,9 @@ export class TrabajadorService {
   url_activacion = `${environment.base_url}/activar-trabajador/`;
   url_validacion = `${environment.base_url}/validar-trabajador/`;
   url_baja = `${environment.base_url}/baja-trabajador`;
+  /* Tranferencia */
+  url_transfer = `${environment.base_url}/transferir-trabajador/`;
+  url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
 
   constructor(private http: HttpClient) { }
 
@@ -213,5 +216,23 @@ export class TrabajadorService {
       })
     );
   };
+
+  /* Transferencia de Trabajador */
+  transferirTrabajador(id:any,payload:any):Observable<any> {
+    return this.http.put<any>(this.url_transfer + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  buscarClues(payload):Observable<any>{
+    return this.http.get<any>(this.url_clues_catalogo,{params:payload}).pipe(
+      map( response => {
+        return response.data;
+      })
+    );
+  };
+  /*Fin transferencia */
   
 }

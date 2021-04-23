@@ -9,7 +9,6 @@ import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/
 
 export interface TransferenciaDialogData {
   id: number;
-  cluesActual: string;
   crActual: string;
 }
 
@@ -46,7 +45,6 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
   ngOnInit() {
     if(this.data.id){
       this.id = this.data.id;
-      this.cluesActual = this.data.cluesActual;
       this.crActual = this.data.crActual;
     }
     

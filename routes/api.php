@@ -74,7 +74,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('firmantes',                 'API\Modulos\FirmantesController');
     Route::apiResource('clues',                     'API\Modulos\CluesController');
     
-    Route::put('transferir-empleado/{id}',          'API\Modulos\EmpleadosController@transferEmployee');
+    Route::put('transferir-trabajador/{id}',          'API\Modulos\TrabajadorController@transferTrabajador');
     
     Route::put('finalizar-transferencia/{id}',      'API\Modulos\EmpleadosController@finishTransferEmployee');
     Route::put('liberar-empleado/{id}',             'API\Modulos\EmpleadosController@unlinkEmployee');

@@ -1,24 +1,28 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-//import { EmpleadosService } from '../empleados.service';
 import { SharedService } from '../../shared/shared.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTable } from '@angular/material/table';
+
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
-//import { ConfirmarTransferenciaDialogComponent } from '../confirmar-transferencia-dialog/confirmar-transferencia-dialog.component';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
+
 import { AgregarFirmantesDialogComponent } from '../agregar-firmantes-dialog/agregar-firmantes-dialog.component';
 import { PermissionsList } from '../../auth/models/permissions-list';
 import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { MediaObserver } from '@angular/flex-layout';
 import { TrabajadorService } from '../trabajador.service';
+
 import { VerComponent } from '../ver/ver.component';
 import { BuscarTrabajadorDialogComponent } from '../buscar-trabajador-dialog/buscar-trabajador-dialog.component';
 import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
+import { TransferenciaTrabajadorDialogComponent } from '../transferencia-trabajador-dialog/transferencia-trabajador-dialog.component';
+
+
 import { ReportWorker } from '../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
 
@@ -201,7 +205,7 @@ export class ListaComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
-        console.log(valid);
+        //console.log(valid);
       }
     });
   }
@@ -305,6 +309,37 @@ export class ListaComponent implements OnInit {
         
       }
     );
+  }
+
+  TransferirTrabajador(obj)
+  {
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize}
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+        data:{}
+      }
+    }
+
+    configDialog['data'] = {id:obj.id, crActual: obj.cr_fisico_id};
+    //configDialog['crActual'] = {id:obj.cr_fisico_id};
+//console.log(configDialog);
+    const dialogRef = this.dialog.open(TransferenciaTrabajadorDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        //console.log(valid);
+        this.loadTrabajadorData();
+      }
+    });
   }
 
   reportePersonalActivoExcel(){

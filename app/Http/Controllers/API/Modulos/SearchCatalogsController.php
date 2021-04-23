@@ -114,14 +114,19 @@ class SearchCatalogsController extends Controller
 
         try{
             $parametros = $request->all();
-            $unidades = Clues::select('clues', 'cve_jurisdiccion', 'nombre_unidad', 'estatus', 'clave_estatus', 'nivel_atencion', 'clave_nivel', 'estatus_acreditacion')->with('cr');
-            
+            $unidades = Cr::select('cr', 'descripcion', 'clues', 'area', 'descripcion_actualizada')->with('clues');
+            $access = $this->getUserAccessData();
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
                 $unidades = $unidades->where(function($query)use($parametros){
-                    return $query->where('nombre_unidad','LIKE','%'.$parametros['query'].'%')
+                    return $query->where('descripcion','LIKE','%'.$parametros['query'].'%')
                                 ->orWhere('clues','LIKE','%'.$parametros['query'].'%');
                 });
+            }
+
+            if(!$access->is_admin)
+            {
+                $unidades = $unidades->whereIn("cr", $access->lista_cr);
             }
 
             if(isset($parametros['page'])){
@@ -136,5 +141,34 @@ class SearchCatalogsController extends Controller
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
+    }
+    private function getUserAccessData($loggedUser = null){
+        if(!$loggedUser){
+            $loggedUser = auth()->userOrFail();
+        }
+        
+        $loggedUser->load('gruposUnidades.listaCR', 'gruposUnidades.listaFirmantes');
+        
+        $lista_cr = [];
+        $lista_clues = [];
+        
+        foreach ($loggedUser->gruposUnidades as $grupo) {
+            $lista_unidades = $grupo->listaCR->pluck('clues','cr')->toArray();
+            
+            $lista_clues += $lista_clues + array_values($lista_unidades);
+            $lista_cr += $lista_cr + array_keys($lista_unidades);
+        }
+
+        $accessData = (object)[];
+        $accessData->lista_clues = $lista_clues;
+        $accessData->lista_cr = $lista_cr;
+
+        if (\Gate::allows('has-permission', \Permissions::ADMIN_PERSONAL_ACTIVO)){
+            $accessData->is_admin = true;
+        }else{
+            $accessData->is_admin = false;
+        }
+
+        return $accessData;
     }
 }
