@@ -82,7 +82,7 @@ class Trabajador extends Model
         return $this->hasMany('App\Models\RelCapacitacionDetalles')->with('entidad_nacimiento', 'cursos');
     }
     public function rel_datos_laborales(){
-        return $this->hasOne('App\Models\RelDatosLaborales')->with('actividad','actividad_voluntaria','area_trabajo','cr_fisico','programa','rama');
+        return $this->hasOne('App\Models\RelDatosLaborales')->with('actividad','actividad_voluntaria','area_trabajo','cr_fisico','programa','rama', 'jornada');
     }
     
     public function rel_datos_comision(){

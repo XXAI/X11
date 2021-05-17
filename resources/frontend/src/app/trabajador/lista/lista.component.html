@@ -233,7 +233,7 @@
                                         <button mat-menu-item *ngIf="row.estatus == 1 && row.validado == 0  && row.actualizado == 1"  [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="validateTrabajador(row.id)"><mat-icon  color="primary">check_cirlce</mat-icon>Validar</button>
                                         <button mat-menu-item #lista *ngIf="row.estatus == 1" fxHide.xs="true"  [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="liberarTrabajador(row.id)"><mat-icon color="warn">link_off</mat-icon>Desligar</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1" fxHide.xs="true" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="BajaTrabajador(row)"><mat-icon color="warn">person_remove</mat-icon>Dar de Baja</button>     
-                                        <button mat-menu-item *ngIf="row.estatus == 1" fxHide.xs="true" (click)="TransferirTrabajador(row)"><mat-icon color="primary">360</mat-icon>Transferir</button>     
+                                        <button mat-menu-item *ngIf="row.estatus == 1" fxHide.xs="true" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="TransferirTrabajador(row)"><mat-icon color="primary">360</mat-icon>Transferir</button>     
                                     </mat-menu>
                                     
                                 </td>

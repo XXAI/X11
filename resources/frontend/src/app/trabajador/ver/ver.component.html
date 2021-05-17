@@ -306,7 +306,7 @@
                                     <span class="label">Retardos: </span><span class="value">{{ verifData.retardos }}</span><br>
                                 </p>
                             </div>
-                            <!--<button fxFlex mat-raised-button color="info" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF" (click)="reporteAsistencias()"><mat-icon>insert_drive_file</mat-icon></button>-->
+                            <button fxFlex mat-raised-button color="info" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF" (click)="reporteAsistencias()"><mat-icon>insert_drive_file</mat-icon></button>
                         </section>
                         <div class="asistencia-table-container" *ngIf="!isLoadingAsistencia">
                             <table #asistenciaTable mat-table [dataSource]="assistSource" class="data-table" matSort>

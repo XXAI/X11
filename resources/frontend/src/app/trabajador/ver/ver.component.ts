@@ -308,6 +308,15 @@ export class VerComponent implements OnInit {
         break;
     }
 
+    //console.log(this.dataTrabajador.rel_datos_laborales.jornada.descripcion);
+    
+   let datohorario = "";
+   
+   if(this.dataTrabajador.horario.length >0)
+    {
+      datohorario = 'de ' + this.dataTrabajador.horario[0].entrada.substr(0,5)+" al "+ this.dataTrabajador.horario[0].salida.substr(0,5);
+    }
+
     let reportData = {
       fecha_inicial: this.fechaInicioAsist.toISOString().substring(0,10),
       fecha_final: this.fechaFinAsist.toISOString().substring(0,10),
@@ -316,13 +325,13 @@ export class VerComponent implements OnInit {
       curp: this.dataTrabajador.curp,
       id: this.verifData.id,
       estatus: estatus_empleado,
-      lugar:(this.dataTrabajador.cr)?this.dataTrabajador.cr.descripcion:'',
-      turno:(this.dataTrabajador.turno)?this.dataTrabajador.turno.descripcion:'',
-      horario:'de ' + this.dataTrabajador.hora_entrada.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + ' a ' + this.dataTrabajador.hora_salida.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
+      lugar:(this.dataTrabajador.rel_datos_laborales)?this.dataTrabajador.rel_datos_laborales.cr_fisico.descripcion:'',
+      turno:(this.dataTrabajador.rel_datos_laborales.jornada)?this.dataTrabajador.rel_datos_laborales.jornada.descripcion:'',
+      horario: datohorario,
       resumen: this.resumenAsistencias
     };
-    
     console.log(reportData);
+    //console.log(reportData);
     reportWorker.postMessage({data:{items: this.assistSource, data: reportData },reporte:'empleados/personal-asistencia'});
   }
 

@@ -32,6 +32,10 @@ class RelDatosLaborales extends Model
         return $this->belongsTo('App\Models\Cr', 'cr_fisico_id', 'cr');
     }
 
+    public function jornada(){
+        return $this->belongsTo('App\Models\Jornada', 'jornada_id');
+    }
+
     
     // public function motivo(){
     //     return $this->belongsTo('App\Models\Motivo');
