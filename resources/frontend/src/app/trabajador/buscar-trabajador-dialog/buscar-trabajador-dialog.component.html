@@ -24,13 +24,13 @@
                             <div style="padding-bottom:5px; overflow: auto;">
                                 <table #usersTable mat-table [dataSource]="dataSource" class="employees-table" matSort>
                                     <ng-container matColumnDef="estatus">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </th>
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header  style="text-align: left;"> Estatus </th>
                                         <td mat-cell *matCellDef="let row"> <mat-icon>{{(row.estatus >= 2)?statusIcon[row.estatus]:statusIcon[row.estatus+'-'+row.validado]}}</mat-icon> </td>
                                     </ng-container>
                 
                                     <!-- Username Column -->
                                     <ng-container matColumnDef="nombre">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre / RFC </th>
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: left;"> Nombre / RFC </th>
                                         <td mat-cell *matCellDef="let row" > {{row.nombre}} {{row.apellido_paterno}} {{row.apellido_materno}} <br> <small>{{row.rfc}}</small> </td>
                                     </ng-container>
                             
@@ -40,9 +40,11 @@
                                     </ng-container-->
                 
                                     <ng-container matColumnDef="clues">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> CLUES / CR </th>
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="text-align: left;"> CLUES / CR </th>
                                         <td mat-cell *matCellDef="let row" fxHide.xs="true"> 
-                                            <div *ngIf="row.estatus == 2 or row.estatus == 1">
+                                            
+                                            <div *ngIf="row.estatus == 2 || row.estatus == 1">
+                                                
                                                 {{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.clues:'Sin CLUES asignado'}}
                                                 <br> <small>{{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.descripcion:'Sin CR asignado'}}</small> 
                                             </div>
@@ -57,7 +59,7 @@
                                     </ng-container>
                 
                                     <ng-container matColumnDef="actions">
-                                        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                                        <th mat-header-cell *matHeaderCellDef  style="text-align: left;">Acciones</th>
                                         <td mat-cell *matCellDef="let row; let i = index">
                                             <button *ngIf="row.estatus == 3" mat-raised-button color="primary"   (click)="activarEmpleado(row)"   matTooltip="Activar Empleado"   [matTooltipPosition]="'before'">
                                                 <mat-icon>link</mat-icon>
