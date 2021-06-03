@@ -13,17 +13,19 @@ class CreateRelTrabajadorTransaccion extends Migration
      */
     public function up()
     {
-        Schema::create('rel_trabajador_transaccion', function (Blueprint $table) {
-            $table->Increments('id')->unsigned();
-            $table->smallInteger('trabajador_id')->unsigned();
-            $table->date("fecha")->nullable();
-            $table->string("cr_origen")->nullable();
-            $table->string("cr_destino")->nullable();
-            $table->string("user_id")->nullable();
-            $table->text("observacion")->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        if(!Schema::hasTable('rel_trabajador_transaccion')){
+            Schema::create('rel_trabajador_transaccion', function (Blueprint $table) {
+                $table->Increments('id')->unsigned();
+                $table->smallInteger('trabajador_id')->unsigned();
+                $table->date("fecha")->nullable();
+                $table->string("cr_origen")->nullable();
+                $table->string("cr_destino")->nullable();
+                $table->string("user_id")->nullable();
+                $table->text("observacion")->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
