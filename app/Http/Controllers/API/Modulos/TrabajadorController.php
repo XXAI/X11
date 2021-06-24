@@ -118,7 +118,7 @@ class TrabajadorController extends Controller
             
             //Sacamos totales para el estatus de las cantidades validadas
             $estatus_validacion = clone $trabajador;
-            $estatus_validacion = $estatus_validacion->select(DB::raw('sum(IF(trabajador.estatus = 1 OR trabajador.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(trabajador.estatus = 1 AND trabajador.validado = 1,1,0)) as total_validados'),DB::raw('count(trabajador.id) as total_registros'))->first();
+            $estatus_validacion = $estatus_validacion->select(\DB::raw('sum(IF(trabajador.estatus = 1 OR trabajador.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(trabajador.estatus = 1 AND trabajador.validado = 1,1,0)) as total_validados'),DB::raw('count(trabajador.id) as total_registros'))->first();
             if($estatus_validacion->total_activos == 0)
             {
                 $estatus_validacion->porcentaje = 0;
@@ -970,10 +970,11 @@ class TrabajadorController extends Controller
             $trabajador->actualizado = 0;
             $trabajador_datos_laborales =  RelDatosLaborales::where("trabajador_id", "=", $trabajador->id)->first();
             
-            //$loggedUser = auth()->userOrFail();
+            $loggedUser = auth()->userOrFail();
             
             $trabajador_datos_laborales->clues_adscripcion_fisica = null;
             $trabajador_datos_laborales->cr_fisico_id = null;
+            $trabajador->user_last_update = $loggedUser->id;
             
             $trabajador->save();
             $trabajador_datos_laborales->save();
