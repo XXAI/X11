@@ -30,7 +30,7 @@ export class VerComponent implements OnInit {
 
   dataTrabajador: any;
 
-  cluesAsistencia:any = [ 'CSSSA017213', 'CSSSA009162', 'CSSSA019954' ];
+  cluesAsistencia:any = [ 'CSSSA017213', 'CSSSA009162', 'CSSSA019954', 'CSSSA017324' ];
 
   datosCredencial:any;
   photoPlaceholder = 'assets/profile-icon.svg';
@@ -166,7 +166,7 @@ export class VerComponent implements OnInit {
         bandera = true;
       }
     });
-    console.log();
+    //console.log();
     return bandera;
   }
 
@@ -238,7 +238,7 @@ export class VerComponent implements OnInit {
 
     this.trabajadorService.getDatosAsistencia(payload).subscribe(
       response => {
-        console.log(response);
+        //console.log(response);
         let conversionAsistencia = [];
 
         for(let i in response.data){
