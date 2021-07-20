@@ -38,7 +38,9 @@ export class VerComponent implements OnInit {
   puedeVerAsistencias: boolean = false;
   puedeEditar:boolean = false;
   dataSource = [];
+  dataTramites = [];
   displayedColumns: string[] = ['institucion','grado','descripcion','cedula']; //'Agente',
+  displayedColumnsTramite: string[] = ['tramite','periodo', 'archivo', 'estatus']; //'Agente',
   navTabSelected:number = 0;
 
   //Para el listado de las asistencias
@@ -206,7 +208,8 @@ export class VerComponent implements OnInit {
   }
 
   dataTabChange(event){
-    if(event.index == 2 && !this.asistenciasCargadas){
+    
+    if(event.index == 2 && this.puedeVerAsistencias){
       console.log('corriendo listado de asistencia');
       this.cargarAssistencias(this.dataTrabajador.clave_credencial);
     }

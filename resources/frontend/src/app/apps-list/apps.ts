@@ -31,6 +31,7 @@ export const APPS:App [] = [
         { name:'Profesiones',route:'catalogos/profesiones', icon:'school', permission:"NBhsLjYRsIJmDa9igB4sKBxd91thtxWr" },
       ],
     },
+    { name:'Tramites',      route: "tramites",  icon: "assets/icons/trabajador.svg"/*,  permission:"VguUicBQPIYqZgocJaOHdhMbfnzVqJ7k"*/ },
     /*
     { name: "Seguridad", route: "seguridad", icon: "assets/icons/security-shield.svg", 
         children: [

@@ -42,6 +42,7 @@ import { CuestionarioDengueModule } from './cuestionario-dengue/cuestionario-den
 
 //Modulos Nuevos
 import { TrabajadorModule } from './trabajador/trabajador.module';
+import { TramitesModule } from './tramites/tramites.module';
 import { RegistroModule } from './registro/registro.module';
 
 @NgModule({
@@ -65,6 +66,7 @@ import { RegistroModule } from './registro/registro.module';
     UsersModule,
     EmpleadosModule,
     TrabajadorModule,
+    TramitesModule,
     RegistroModule,
     DashboardModule,
     SecurityModule,
