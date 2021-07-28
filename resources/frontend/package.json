@@ -30,6 +30,7 @@
     "angular-highcharts": "^9.0.11",
     "file-saver": "^2.0.5",
     "highcharts": "^8.2.2",
+    "ngx-captcha": "^9.0.1",
     "pdfmake": "^0.1.70",
     "rxjs": "~6.6.6",
     "tslib": "^2.0.0",

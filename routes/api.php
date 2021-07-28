@@ -34,6 +34,9 @@ Route::post('signin',   'API\Auth\AuthController@login');
 Route::post('register',   'API\Admin\RegistroController@register');
 Route::post('refresh',  'API\Auth\AuthController@refresh');
 
+Route::post('req-password-reset', 'Reset\ResetPwdReqController@reqForgotPassword');
+Route::post('update-password', 'Reset\UpdatePwdController@updatePassword');
+
 Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('user',          'API\Admin\UserController');
     Route::apiResource('permission',    'API\Admin\PermissionController');
