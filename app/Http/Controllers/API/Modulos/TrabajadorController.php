@@ -78,6 +78,7 @@ class TrabajadorController extends Controller
             $parametros = $request->all();
             $trabajador = Trabajador:://with("datoslaborales")//select('trabajador.*')
                             join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+                            ->leftJoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "trabajador.id")
                             ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id")
                             ->whereRaw(" trabajador.id not in (select trabajador_id from rel_trabajador_baja)");
                             //
@@ -158,6 +159,15 @@ class TrabajadorController extends Controller
                     }
                 }
 
+                if(isset($parametros['adscripcion']) && $parametros['adscripcion']){
+                    $adscripcion = $parametros['adscripcion'];
+                    if($adscripcion == 'MU'){
+                        $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica = datos_nominales.clues_adscripcion_nomina');
+                    }else{
+                        $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
+                    }
+                }
+
                 if($access->is_admin){
                     if(isset($parametros['grupos']) && $parametros['grupos']){
                         $grupo = GrupoUnidades::with('listaCR')->find($parametros['grupos']);
@@ -188,8 +198,10 @@ class TrabajadorController extends Controller
                                     ->leftJoin("catalogo_jornada as jornada", "jornada.id", "rel_trabajador_datos_laborales.jornada_id")
                                     ->leftJoin("catalogo_clues as clues", "clues.clues", "rel_trabajador_datos_laborales.clues_adscripcion_fisica")
                                     ->leftJoin("catalogo_cr as cr", "cr.cr", "rel_trabajador_datos_laborales.cr_fisico_id")
+
+                                    ->leftJoin("catalogo_clues as clues_nomina", "clues_nomina.clues", "datos_nominales.clues_adscripcion_nomina")
+                                    ->leftJoin("catalogo_cr as cr_nomina", "cr_nomina.cr", "datos_nominales.cr_nomina_id")
                                     
-                                    ->leftJoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "trabajador.id")
                                     ->leftJoin("catalogo_ur as ur", "ur.llave", "datos_nominales.ur")
                                     ->leftJoin("catalogo_codigo as codigo", "codigo.codigo", "datos_nominales.codigo_puesto_id")
                                     ->leftJoin("catalogo_grupo_funcion as funcion", "funcion.id", "codigo.grupo_funcion_id")
@@ -225,10 +237,18 @@ class TrabajadorController extends Controller
                                         db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 6) as sabado"),
                                         db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 7) as domingo"),
                                         db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where trabajador.id=rel_trabajador_horario.trabajador_id and dia = 8) as festivo"),
+                                        //Inicio Datos Adscripción Fisica
                                         "rel_trabajador_datos_laborales.clues_adscripcion_fisica",
                                         "rel_trabajador_datos_laborales.cr_fisico_id",
-                                        "clues.nombre_unidad",
-                                        "cr.descripcion as cr",
+                                        "clues.nombre_unidad as nombre_unidad_fisica",
+                                        "cr.descripcion as cr_fisico",
+                                        //Fin Datos Adscripción Fisica
+                                        //Inicio Datos Adscripción Nominal
+                                        "datos_nominales.clues_adscripcion_nomina",
+                                        "datos_nominales.cr_nomina_id",
+                                        "clues_nomina.nombre_unidad as nombre_unidad_nomina",
+                                        "cr_nomina.descripcion as cr_nomina",
+                                        //Fin Datos Adscripción Nominal
                                         "rel_trabajador_datos_laborales.fecha_ingreso",
                                         "rel_trabajador_datos_laborales.fecha_ingreso_federal",
                                         "funcion.grupo as grupo",

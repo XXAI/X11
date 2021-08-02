@@ -93,7 +93,7 @@
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
                             <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
                                 <mat-option *ngFor="let item of filteredCatalogs['clues'] | async" [value]="item">
-                                    {{item.nombre_unidad}}
+                                    [{{item.clues}}] {{item.nombre_unidad}}
                                 </mat-option>
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
@@ -137,6 +137,15 @@
                                 </mat-option>
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('grupos').value">{{filterForm.get('grupos').value.descripcion}}</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="15">
+                            <mat-label>Adscripción</mat-label>
+                            <mat-select #adscripcionFilter formControlName="adscripcion" [compareWith]="compareAdscripcionSelect">
+                                <mat-option>Sin Filtro</mat-option>
+                                <mat-option *ngFor="let item of filterCatalogs['adscripcion']" [value]="item">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
                         </mat-form-field>
                         <div fxFlex></div>
                         <div fxFlex="none">

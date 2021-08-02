@@ -96,7 +96,8 @@ export class ListaComponent implements OnInit {
     'cr': [undefined],
     'estatus': [undefined],
     'rama': [undefined],
-    'grupos': [undefined]
+    'grupos': [undefined],
+    'adscripcion': [undefined],
   });
 
   displayedColumns: string[] = ['estatus','RFC','CURP','Nombre','actions']; //'Agente',
@@ -500,7 +501,8 @@ export class ListaComponent implements OnInit {
           'clues': response.data.clues,
           'cr': response.data.cr,
           'estatus': response.data.estatus,
-          'rama': response.data.rama
+          'rama': response.data.rama,
+          'adscripcion': [{id:'MU',descripcion:'De La Misma Unidad'},{id:'OU', descripcion:'De Otras Unidades'}]
         };
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
@@ -876,6 +878,10 @@ export class ListaComponent implements OnInit {
   }
 
   compareEstatusSelect(op,value){
+    return op.id == value.id;
+  }
+
+  compareAdscripcionSelect(op,value){
     return op.id == value.id;
   }
 }
