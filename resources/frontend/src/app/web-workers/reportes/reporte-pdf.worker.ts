@@ -6,6 +6,8 @@ import { ReportePersonalActivoArea } from './reporte-personal-activo-area';
 import { ReportePersonalAsistencia } from './reporte-personal-asistencia';
 import { ReporteTrabajadorActivo } from './reporte-trabajador-activo';
 import { ReporteConstanciaDengue } from './reporte-constancia-dengue';
+import { ReporteComision } from './reporte-comision';
+import { ReporteSolicitudComision } from './reporte-solicitud-comision';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -14,7 +16,9 @@ const reportes = {
   'empleados/personal-activo-area': new ReportePersonalActivoArea(),
   'empleados/personal-asistencia': new ReportePersonalAsistencia(),
   'trabajador/personal-activo': new ReporteTrabajadorActivo(),
-  'participante/constancia': new ReporteConstanciaDengue()
+  'participante/constancia': new ReporteConstanciaDengue(),
+  'archivo/comision': new ReporteComision(),
+  'archivo/solicitudComision': new ReporteSolicitudComision()
 };
 
 addEventListener('message', ({ data }) => {

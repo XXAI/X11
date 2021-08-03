@@ -38,10 +38,11 @@ export class VerComponent implements OnInit {
   puedeVerAsistencias: boolean = false;
   puedeEditar:boolean = false;
   dataSource = [];
-  dataTramites = [];
+  dataTramites = [];//[{tramite:'COMISIÓN', periodo:'---', acuse:'---', estatus:1}];
   displayedColumns: string[] = ['institucion','grado','descripcion','cedula']; //'Agente',
   displayedColumnsTramite: string[] = ['tramite','periodo', 'archivo', 'estatus']; //'Agente',
   navTabSelected:number = 0;
+  pestanaTramites:boolean = false;
 
   //Para el listado de las asistencias
   isLoadingAsistencia:boolean = false;
@@ -50,6 +51,7 @@ export class VerComponent implements OnInit {
   fechaInicioAsist: any;
   fechaFinAsist: any;
   displayedScheduleColumns: string[] = ['dia','fecha','hora_entrada','hora_salida','justificado'];
+  arregloTipoTramite: string[] = ['', 'Comisión'];
   assistSource: any = [];
   resumenAsistencias: any;
   daysLabels: any = {
@@ -125,12 +127,17 @@ export class VerComponent implements OnInit {
         //console.log(this.dataTrabajador);
         this.dataSource = this.dataTrabajador.escolaridad;
         //console.log(this.dataTrabajador);
+        this.verTramites(response.id);
 
         if(this.verificarAsistencia(this.dataTrabajador.rel_datos_laborales.cr_fisico.clues))
         {
           this.puedeVerAsistencias = true;
         }
     
+        if(this.dataTrabajador.rel_datos_laborales.cr_fisico_id != this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id)
+        {
+          this.pestanaTramites = true;
+        }
         if(this.dataTrabajador.clave_credencial){
           this.trabajadorService.getDatosCredencial(this.dataTrabajador.clave_credencial).subscribe(
             response => {
@@ -333,9 +340,85 @@ export class VerComponent implements OnInit {
       horario: datohorario,
       resumen: this.resumenAsistencias
     };
-    console.log(reportData);
+    //console.log(reportData);
     //console.log(reportData);
     reportWorker.postMessage({data:{items: this.assistSource, data: reportData },reporte:'empleados/personal-asistencia'});
+  }
+
+  solicitar(valor:number, trabajador_id:string)
+  {
+    //console.log(valor+" - "+trabajador_id);
+    this.trabajadorService.setTramite(valor, trabajador_id).subscribe(
+      response => {
+        this.sharedService.showSnackBar("Se guardo correctamente", null, 3000);
+        this.verTramites(trabajador_id);
+      },
+      responsError =>{
+        console.log(responsError);
+        this.sharedService.showSnackBar(responsError.error, null, 3000);
+      }
+    );
+  }
+
+  verTramites(trabajador_id)
+  {
+    this.trabajadorService.getTramites(trabajador_id).subscribe(
+      response => {
+        //console.log(response);
+        this.dataTramites = response;
+      },
+      responsError =>{
+        this.sharedService.showSnackBar("Error al cargar los tramites del trabajador", null, 3000);
+      }
+    );
+  }
+
+
+  OficioSolicitud(id)
+  {
+    this.trabajadorService.createFileComision(id).subscribe(
+      response =>{
+        
+        if(response.error) {
+          
+          this.isLoading = false;
+          //this.sharedService.showSnackBar(errorMessage, null, 3000);
+        } else {
+            console.log(response);
+            //return;
+            const reportWorker = new ReportWorker();
+            reportWorker.onmessage().subscribe(
+              data => {
+                FileSaver.saveAs(data.data,'ConstanciaComisión');
+                reportWorker.terminate();
+            });
+
+            reportWorker.onerror().subscribe(
+              (data) => {
+                reportWorker.terminate();
+              }
+            );
+            
+            let config = {
+              //title: this.reportTitle,
+              //showSigns: this.reportIncludeSigns, 
+            };
+
+            reportWorker.postMessage({data:response,reporte:'archivo/solicitudComision'});
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        //this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+        //this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+        //this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+        
+      });
   }
 
   cancel(): void {

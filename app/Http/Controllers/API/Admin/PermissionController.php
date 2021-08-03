@@ -7,6 +7,7 @@ use Illuminate\Http\Response as HttpResponse;
 
 use Illuminate\Support\Facades\Hash;
 
+
 use Validator;
 
 use App\Http\Controllers\Controller;
