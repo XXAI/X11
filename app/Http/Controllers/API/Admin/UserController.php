@@ -95,13 +95,16 @@ class UserController extends Controller
                 if(!$usuario->is_superuser){
                     $roles = $parametros['roles'];
                     $permisos = $parametros['permissions'];
+                    $grupo_unidades = $parametros['grupo_unidades'];
                 }else{
                     $roles = [];
                     $permisos = [];
+                    $grupo_unidades = [];
                 }
                 
                 $usuario->roles()->sync($roles);
                 $usuario->permissions()->sync($permisos);
+                $usuario->gruposUnidades()->sync($grupo_unidades);
 
                 DB::commit();
 
@@ -124,7 +127,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return response()->json(['data'=>User::with('roles','permissions')->find($id)],HttpResponse::HTTP_OK);
+        return response()->json(['data'=>User::with('roles','permissions','gruposUnidades')->find($id)],HttpResponse::HTTP_OK);
     }
 
     /**
@@ -171,13 +174,16 @@ class UserController extends Controller
                 if(!$usuario->is_superuser){
                     $roles = $parametros['roles'];
                     $permisos = $parametros['permissions'];
+                    $grupo_unidades = $parametros['grupo_unidades'];
                 }else{
                     $roles = [];
                     $permisos = [];
+                    $grupo_unidades = [];
                 }
 
                 $usuario->roles()->sync($roles);
                 $usuario->permissions()->sync($permisos);
+                $usuario->gruposUnidades()->sync($grupo_unidades);
 
                 DB::commit();
 

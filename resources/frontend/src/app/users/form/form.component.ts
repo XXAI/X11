@@ -43,7 +43,8 @@ export class FormComponent implements OnInit {
     'is_superuser': [false],
     'avatar': [''],
     'roles': [[]],
-    'permissions': [[]]
+    'permissions': [[]],
+    'grupo_unidades': [[]],
   });
 
   avatarList: any[] = [];
@@ -60,6 +61,16 @@ export class FormComponent implements OnInit {
   assignedPermissions: any[] = [];
   deniedPermissions: any[] = [];
   selectedRoleChipId: number = 0;
+
+  //Para el filtro de Grupos Unidades
+  catalogGrupos: any[] = [];
+  listOfGrupos$: Observable<any[]>;
+  filterInputGrupos: FormControl = new FormControl('');
+  filterInputGrupos$: Observable<string> = this.filterInputGrupos.valueChanges.pipe(startWith(''));
+  filteredGrupos$: Observable<any[]>;
+  selectedGrupo: any;
+  selectedItemGrupo: number = 0;
+  selectedItemGrupoCrList:any[] = [];
 
   selectedAvatar:string = AVATARS[0].file;
 
@@ -79,8 +90,9 @@ export class FormComponent implements OnInit {
 
     let callRolesCatalog = this.usersService.getAllRoles();
     let callPermissionsCatalog = this.usersService.getAllPermissions();
-    
-    let httpCalls = [callRolesCatalog, callPermissionsCatalog];
+    let callGruposUnidades = this.usersService.getAllGruposUnidades();
+
+    let httpCalls = [callRolesCatalog, callPermissionsCatalog, callGruposUnidades];
 
     this.route.paramMap.subscribe(params => {
       if(params.get('id')){
@@ -99,8 +111,7 @@ export class FormComponent implements OnInit {
       //Calls: 0 => Roles, 1 => Permissions, 2 => User
       forkJoin(httpCalls).subscribe(
         results => {
-          console.log(results);
-
+          let total_resultados = results.length - 1;
           //Starts: Roles
           this.catalogRoles = results[0].data;
           this.listOfRoles$ = of(this.catalogRoles);
@@ -125,9 +136,21 @@ export class FormComponent implements OnInit {
           );
           //Ends: Permissions
 
+          //Starts: Grupos Unidades
+          this.catalogGrupos = results[2].data;
+          this.listOfGrupos$ = of(this.catalogGrupos);
+          this.filteredGrupos$ = combineLatest(this.listOfGrupos$,this.filterInputGrupos$).pipe(
+            map(
+              ([grupos,filterString]) => grupos.filter(
+                grupo => (grupo.descripcion.toLowerCase().indexOf(filterString.toLowerCase()) !== -1)
+              )
+            )
+          );
+          //Ends: Grupos Unidades
+
           //Starts: User
-          if(results[2]){
-            this.usuario = results[2];
+          if(results[total_resultados]){
+            this.usuario = results[total_resultados];
             this.usuarioForm.patchValue(this.usuario);
 
             this.selectedAvatar = this.usuario.avatar;
@@ -138,6 +161,10 @@ export class FormComponent implements OnInit {
             }
 
             this.selectedRoleChipId = 0;
+
+            if(this.usuario.grupos_unidades && this.usuario.grupos_unidades.length > 0){
+              this.selectedGrupo = this.usuario.grupos_unidades[0];
+            }
 
             //Load Permissions
             for(let i in this.usuario.permissions){
@@ -262,6 +289,23 @@ export class FormComponent implements OnInit {
     }
   }
 
+  showCRList(grupo){
+    this.selectedItemGrupo = grupo.id;
+    this.selectedItemGrupoCrList = grupo.lista_cr;
+  }
+
+  selectGrupo(grupo){
+    if(this.selectedGrupo && this.selectedGrupo.id == grupo.id){
+      this.selectedGrupo = undefined;
+    }else{
+      this.selectedGrupo = grupo;
+    }
+  }
+
+  clearGruposFilter(){
+    this.filterInputGrupos.setValue('');
+  }
+
   selectPermission(permission){
     if(this.assignedPermissions[permission.id]){
       let permissionIndex = this.selectedPermissions.findIndex(item => item.id == permission.id);
@@ -322,8 +366,14 @@ export class FormComponent implements OnInit {
       }
     }
 
+    let grupo_unidades = [];
+    if(this.selectedGrupo){
+      grupo_unidades = [this.selectedGrupo.id];
+    }
+
     this.usuarioForm.get('permissions').patchValue(permissions);
     this.usuarioForm.get('roles').patchValue(roles);
+    this.usuarioForm.get('grupo_unidades').patchValue(grupo_unidades);
 
     this.usuarioForm.get('avatar').patchValue(this.selectedAvatar);
 

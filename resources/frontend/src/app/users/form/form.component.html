@@ -176,6 +176,58 @@
                                     </div>
                                 </div>
                             </mat-tab>
+                            <mat-tab [disabled]="(usuarioForm.get('is_superuser').value == true)">
+                                <ng-template mat-tab-label>
+                                    <span>Grupo Unidades</span>&nbsp;<mat-icon *ngIf="selectedGrupo">verified</mat-icon>
+                                </ng-template>
+                                <div fxLayout="row" fxLayout.xs="column" class="edit-container">
+                                    <div fxFlex="49" fxFlex.xs="100">
+                                        <div fxLayout="row">
+                                            <mat-form-field fxFlex>
+                                                <input matInput placeholder="Filtrar Grupos" aria-label="filtrar" [formControl]="filterInputGrupos">
+                                                <mat-icon *ngIf="!filterInputGrupos.value" matSuffix>filter_list</mat-icon>
+                                                <button mat-icon-button matSuffix *ngIf="filterInputGrupos.value"  (click)="clearGruposFilter()">
+                                                    <mat-icon>clear</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxLayout="row">
+                                            <mat-action-list fxFlex [ngClass]="'roles-list'" [ngClass.xs]="{'roles-list':false}" [style.xs]="{'height':'auto'}" dense>
+                                                <button mat-list-item *ngFor="let grupo of filteredGrupos$ | async" (click)="showCRList(grupo)">
+                                                    <mat-icon matListIcon *ngIf="(selectedItemGrupo == grupo.id)">arrow_right</mat-icon>
+                                                    <h3 matLine>
+                                                        {{grupo.descripcion}}
+                                                    </h3>
+                                                    <button mat-icon-button (click)="selectGrupo(grupo)">
+                                                        <mat-icon>{{(selectedGrupo && selectedGrupo.id == grupo.id)?'check_box':'check_box_outline_blank'}}</mat-icon>
+                                                    </button>
+                                                    <mat-divider></mat-divider>
+                                                </button>
+                                            </mat-action-list>
+                                        </div>
+                                    </div>
+                                    <div fxFlex></div>
+                                    <div fxFlex="49" fxFlex.xs="100">
+                                        <div fxLayout="column">
+                                            <mat-card fxFlex *ngIf="selectedItemGrupo != 0">
+                                                <mat-card-header>
+                                                    <div fxFlex></div>
+                                                    <button mat-icon-button aria-label="Cerrar lista de cr" (click)="selectedItemGrupo = 0" class="close-card-icon-button">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </mat-card-header>
+                                                <mat-card-content style="max-height: 313px; overflow: auto;">
+                                                    <div fxFlexFill fxLayoutGap class="permissions-edit-list">
+                                                        <span fxFlex="50" *ngFor="let cr of selectedItemGrupoCrList;" class="permission-slide-toggle">
+                                                            <span>{{cr.descripcion}}</span>
+                                                        </span>
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-tab>
                         </mat-tab-group>
                     </div>
                 </mat-card-content>

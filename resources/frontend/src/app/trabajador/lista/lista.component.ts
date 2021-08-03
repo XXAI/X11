@@ -502,7 +502,7 @@ export class ListaComponent implements OnInit {
           'cr': response.data.cr,
           'estatus': response.data.estatus,
           'rama': response.data.rama,
-          'adscripcion': [{id:'MU',descripcion:'Comisionados a la unidad'},{id:'OU', descripcion:'Comisionados de otras unidades'},{id:'EOU', descripcion:'Comisionados a otras unidades'}]
+          'adscripcion': [{id:'MU',descripcion:'Adscrito y Fisico en la unidad'},{id:'OU', descripcion:'Comisionados de otras unidades'},{id:'EOU', descripcion:'Comisionados a otras unidades'}]
         };
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));

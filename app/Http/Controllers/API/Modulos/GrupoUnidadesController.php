@@ -18,7 +18,12 @@ class GrupoUnidadesController extends Controller
     {
         try{
             $parametros = $request->all();
-            $grupos = GrupoUnidad::with('crPrincipal');
+            $grupos = GrupoUnidades::with('crPrincipal');
+
+            if(isset($parametros['lista-cr']) && $parametros['lista-cr']){
+                $grupos = $grupos->with('listaCr');
+            }
+
             //Filtros, busquedas, ordenamiento
             if(isset($parametros['query']) && $parametros['query']){
                 $grupos = $grupos->where(function($query)use($parametros){
