@@ -78,11 +78,11 @@ class TrabajadorController extends Controller
             $parametros = $request->all();
             $trabajador = Trabajador:://with("datoslaborales")//select('trabajador.*')
                             join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
-                            ->leftJoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "trabajador.id")
-                            ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id")
-                            ->whereRaw(" trabajador.id not in (select trabajador_id from rel_trabajador_baja)");
+                            ->leftjoin("rel_trabajador_datos_laborales_nomina", "rel_trabajador_datos_laborales_nomina.trabajador_id", "=", "trabajador.id")
+                            ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "rel_trabajador_datos_laborales_nomina.cr_nomina_id")
+                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja)");
                             //
-                            
+                           
             /*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
                             ->leftJoin('permuta_adscripcion',function($join)use($access){
                                 $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
@@ -137,6 +137,7 @@ class TrabajadorController extends Controller
                                 ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
                 });
             }
+            //$trabajador = $trabajador->where("cr_fisico_id", "!=","cr_nomina_id");
 
             if(isset($parametros['active_filter']) && $parametros['active_filter']){
                 if(isset($parametros['clues']) && $parametros['clues']){
@@ -181,6 +182,11 @@ class TrabajadorController extends Controller
                                                 //    $query->whereIn('datos_nominales.clues_adscripcion_nomina',$filtro_acceso['clues']);
                                                 //});
                     }
+                if(isset($parametros['comisionado']) && $parametros['comisionado'] == 1){
+                    $trabajador = $trabajador->whereRaw("trabajador.id in (select rl.trabajador_id from rel_trabajador_datos_laborales rl, rel_trabajador_datos_laborales_nomina rln where rl.trabajador_id=rln.trabajador_id and rl.cr_fisico_id!=rln.cr_nomina_id)");
+                }
+                if(isset($parametros['e4']) && $parametros['e4'] == 1){
+                    $trabajador = $trabajador->join("rel_trabajador_e4", "rel_trabajador_e4.trabajador_id", "=", "trabajador.id");
                 }
 
                 if($access->is_admin){

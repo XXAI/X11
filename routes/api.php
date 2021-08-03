@@ -116,6 +116,8 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('busqueda-cr',                'API\Modulos\EmpleadosController@getCrComplete');
     Route::get('reporte-empleados-validados',   'API\Modulos\EmpleadosController@reporteValidados');
 
+    Route::apiResource('tramites',       'API\Modulos\TramitesController');
+    Route::get('tramites-trabajador/{id}',    'API\Modulos\TramitesController@ListTramites');
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
 });
 

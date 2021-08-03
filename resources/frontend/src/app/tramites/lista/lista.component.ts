@@ -45,13 +45,19 @@ export class ListaComponent implements OnInit {
   searchQuery: string = '';
 
   pageEvent: PageEvent;
-  resultsLength: number = 0;
+  resultsLengthRecepcion: number = 0;
+  resultsLengthEnvio: number = 0;
+  resultsLengthValidacion: number = 0;
   currentPage: number = 0;
   pageSize: number = 20;
   selectedItemIndex: number = -1;
+  permisoSistematizacion:boolean =false;
+  permisoRh:boolean =false;
 
   displayedColumns: string[] = ['tramite', 'datos_tramite', 'acciones','estatus']; //'Agente',
-  dataSource: any = [];
+  dataSourceRecepcion: any = [];
+  dataSourceEnvio: any = [];
+  dataSourceValidacion: any = [];
 
   constructor(private sharedService: SharedService, private tramitesService: TramitesService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
 
@@ -131,39 +137,38 @@ export class ListaComponent implements OnInit {
     this.tramitesService.getTramitesList(params).subscribe(
       response =>{
         //console.log(response);
-        /*if(response.error) {
+        if(response.error) {
           let errorMessage = response.error.message;
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
-
-          if(response.estatus.grupo_usuario){
-            this.puedeFinalizar = true;
-            this.capturaFinalizada = response.estatus.finalizado;
-          }else{
-            this.puedeFinalizar = false;
-            this.capturaFinalizada = false;
-          }
-
-          this.countPersonalActivo = response.estatus.estatus_validacion.total_activos;
-          this.countPersonalValidado = response.estatus.estatus_validacion.total_validados;
-          this.percentPersonalValidado = response.estatus.estatus_validacion.porcentaje;
-          
-          this.dataSource = [];
-          this.resultsLength = 0;
-          if(response.data.total > 0){
+          this.dataSourceRecepcion = [];
+          this.dataSourceEnvio = [];
+          this.dataSourceValidacion = [];
+          this.resultsLengthRecepcion = 0;
+          console.log(response);
+          this.permisoSistematizacion = response.rh_central;
+          this.permisoRh = response.rh;
+          console.log(this.permisoSistematizacion);
+          this.dataSourceRecepcion = response.data_destino.data;
+          this.dataSourceEnvio = response.data_origen.data;
+          this.dataSourceValidacion = response.data_validacion.data;
+            /*this.resultsLengthRecepcion = response.data_destino.total;
+            this.resultsLengthEnvio = response.data_envio.total;
+            this.resultsLengthValidacion = response.data_validacion.total;*/
+          /*if(response.data.total > 0){
             this.dataSource = response.data.data;
             
             this.resultsLength = response.data.total;
-          }
-          if(event){
+          }*/
+          /*if(event){
             event.length = this.resultsLength;
             this.sharedService.setDataToCurrentApp('paginator',event);
           }else{
             dummyPaginator.length = this.resultsLength;
             this.sharedService.setDataToCurrentApp('paginator',dummyPaginator);
-          }
+          }*/
           
-        }*/
+        }
         this.isLoading = false;
       },
       errorResponse =>{
@@ -176,6 +181,119 @@ export class ListaComponent implements OnInit {
       }
     );
     return event;
+  }
+
+  cambioEstatus(id, tipo, estatus:number){ 
+    this.isLoading = true;
+    console.log(id, estatus);
+    this.tramitesService.setTramiteEstatus(id, tipo, estatus).subscribe(
+      response =>{
+        //console.log(response);
+        if(response.error) {
+          let errorMessage = response.error.message;
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+        } else {
+         
+          this.loadTramitesData();
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+      }
+    );
+    return event;
+  }
+
+  imprimirComprobante(id)
+  {
+
+      //this.showMyStepper = true;
+      /*this.isLoadingPDF = true;
+      this.showMyStepper = true;
+      this.showReportForm = false;
+  
+      let params:any = {};
+      let countFilter = 0;
+  
+      let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','filter']);
+      console.log(appStoredData);
+  
+      params.reporte = 'personal-activo';
+  
+      if(appStoredData['searchQuery']){
+        params.query = appStoredData['searchQuery'];
+      }
+  
+      for(let i in appStoredData['filter']){
+        if(appStoredData['filter'][i]){
+          if(i == 'clues'){
+            params[i] = appStoredData['filter'][i].clues;
+          }else if(i == 'cr'){
+            params[i] = appStoredData['filter'][i].cr;
+          }else{ //profesion y rama
+            params[i] = appStoredData['filter'][i].id;
+          }
+          countFilter++;
+        }
+      }
+  
+      if(countFilter > 0){
+        params.active_filter = true;
+      }
+      
+      this.stepperConfig.steps[0].status = 2;*/
+  
+      this.tramitesService.createFileComision(id).subscribe(
+        response =>{
+          
+          if(response.error) {
+            
+            this.isLoading = false;
+            //this.sharedService.showSnackBar(errorMessage, null, 3000);
+          } else {
+              console.log(response);
+              //return;
+              const reportWorker = new ReportWorker();
+              reportWorker.onmessage().subscribe(
+                data => {
+                  FileSaver.saveAs(data.data,'ConstanciaComisión');
+                  reportWorker.terminate();
+              });
+  
+              reportWorker.onerror().subscribe(
+                (data) => {
+                  reportWorker.terminate();
+                }
+              );
+              
+              let config = {
+                //title: this.reportTitle,
+                //showSigns: this.reportIncludeSigns, 
+              };
+
+              reportWorker.postMessage({data:response,reporte:'archivo/comision'});
+          }
+          this.isLoading = false;
+        },
+        errorResponse =>{
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }
+          //this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+          //this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
+          //this.sharedService.showSnackBar(errorMessage, null, 3000);
+          this.isLoading = false;
+          
+        }
+      );
+    
   }
 
 }

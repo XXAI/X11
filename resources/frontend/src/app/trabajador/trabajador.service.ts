@@ -31,6 +31,8 @@ export class TrabajadorService {
   /* Tranferencia */
   url_transfer = `${environment.base_url}/transferir-trabajador/`;
   url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
+  url_tramite = `${environment.base_url}/tramites`;
+  url_tramite_trabajador = `${environment.base_url}/tramites-trabajador`;
 
   constructor(private http: HttpClient) { }
 
@@ -233,6 +235,28 @@ export class TrabajadorService {
       })
     );
   };
+
+  setTramite(tipo, trabajador):Observable<any>{
+    return this.http.post<any>(this.url_tramite, {params:{tipo_tramite: tipo, trabajador:trabajador}}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  };
   /*Fin transferencia */
-  
+  getTramites(trabajador):Observable<any> {
+    return this.http.get<any>(this.url_tramite_trabajador+"/"+trabajador, {}).pipe(
+      map( (response: any) => {
+        return response;
+      }
+    ));
+  }
+
+  createFileComision(id):Observable<any> {
+    return this.http.get<any>(this.url_tramite + "/"+id , {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
 }

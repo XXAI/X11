@@ -31,7 +31,7 @@ export const APPS:App [] = [
         { name:'Profesiones',route:'catalogos/profesiones', icon:'school', permission:"NBhsLjYRsIJmDa9igB4sKBxd91thtxWr" },
       ],
     },
-    { name:'Tramites',      route: "tramites",  icon: "assets/icons/trabajador.svg"/*,  permission:"VguUicBQPIYqZgocJaOHdhMbfnzVqJ7k"*/ },
+    { name:'Tramites',      route: "tramites",  icon: "assets/icons/documento.png",  permission:"hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt" },
     /*
     { name: "Seguridad", route: "seguridad", icon: "assets/icons/security-shield.svg", 
         children: [

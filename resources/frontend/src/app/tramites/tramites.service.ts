@@ -211,4 +211,18 @@ export class TramitesService {
       })
     );
   };*/
+  setTramiteEstatus(id, tipo, estado):Observable<any> {
+    return this.http.put<any>(this.url + "/" + id, {tipo_comision: tipo, estatus:estado}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  createFileComision(id):Observable<any> {
+    return this.http.get<any>(this.url + "/"+id , {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
 }
