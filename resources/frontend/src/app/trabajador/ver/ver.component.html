@@ -348,32 +348,59 @@
                             </table>                                        
                         </div>
                     </mat-tab>
-                    <mat-tab>
+                    <mat-tab *ngIf="pestanaTramites">
                         <ng-template mat-tab-label>
                             <mat-icon class="example-tab-icon">file_present</mat-icon>
                             <div class="mobile-pc"> Tramites</div>
                         </ng-template>
+                        <div fxLayout="row" style="margin: 5px 0px;">
+                            <button mat-stroked-button color="primary" (click)= "solicitar(1, dataTrabajador.id)">SOLICITAR COMISIÓN</button>
+                        </div>
                         <div fxLayout="row">
                             <table mat-table [dataSource]="dataTramites" class="mat-elevation-z8">
 
                                 <ng-container matColumnDef="tramite">
                                   <th mat-header-cell *matHeaderCellDef fxHide.xs="true"> TRAMITE </th>
-                                  <td mat-cell *matCellDef="let element" fxHide.xs="true">  </td>
+                                  <td mat-cell *matCellDef="let element" fxHide.xs="true"> {{ arregloTipoTramite[element.tipo_tramite_id]}} </td>
                                 </ng-container>
                               
                                 <ng-container matColumnDef="periodo">
-                                  <th mat-header-cell *matHeaderCellDef> PERIDOO </th>
-                                  <td mat-cell *matCellDef="let element">  </td>
+                                  <th mat-header-cell *matHeaderCellDef> PERIODO </th>
+                                  <td mat-cell *matCellDef="let element"> {{ element.fecha_inicio}} - {{ element.fecha_final}} </td>
                                 </ng-container>
                               
                                 <ng-container matColumnDef="archivo">
-                                  <th mat-header-cell *matHeaderCellDef> ARCHIVO </th>
-                                  <td mat-cell *matCellDef="let element"> </td>
+                                  <th mat-header-cell *matHeaderCellDef> ACUSE </th>
+                                  <td mat-cell *matCellDef="let element">
+                                    <button mat-raised-button color="accent" (click)="OficioSolicitud(element.id)">
+                                        <mat-icon>download</mat-icon>
+                                    </button>
+                                  </td>
                                 </ng-container>
                               
                                 <ng-container matColumnDef="estatus">
                                   <th mat-header-cell *matHeaderCellDef fxHide.xs="true"> ESTATUS </th>
-                                  <td mat-cell *matCellDef="let element" fxHide.xs="true"> </td>
+                                    <td mat-cell *matCellDef="let element" fxHide.xs="true">
+                                        <button mat-mini-fab  [disabled]="element.estatus_origen == 0" [color]="element.estatus_origen == 1? 'primary' : 'warn'" >
+                                            <mat-icon>arrow_circle_down</mat-icon>
+                                        </button>
+                                        <button mat-mini-fab  [disabled]="element.estatus_destino == 0" [color]="element.estatus_destino == 1? 'primary' : 'warn'" >
+                                            <mat-icon>arrow_circle_up</mat-icon>
+                                        </button>
+                                        <button mat-mini-fab [disabled]="element.estatus_validacion == 0" [color]="element.estatus_validacion == 1? 'primary' : 'warn'" >
+                                            <mat-icon>check_circle_outline</mat-icon>
+                                        </button>
+                                        <!--<div *ngIf="element.estatus_origen == 0">PENDIENTE RH ORIGEN </div>
+                                        <div *ngIf="element.estatus_origen == 1">ACEPTADO RH ORIGEN </div>
+                                        <div *ngIf="element.estatus_origen == 2">RECHAZADO RH ORIGEN </div>
+                                        <div *ngIf="element.estatus_destino == 0">PENDIENTE RH DESTINO </div>
+                                        <div *ngIf="element.estatus_destino == 1">ACEPTADO RH DESTINO </div>
+                                        <div *ngIf="element.estatus_destino == 2">RECHAZADO RH DESTINO </div>
+                                        <div *ngIf="element.estatus_validacion == 0">PENDIENTE RH OF. CENTRAL </div>
+                                        <div *ngIf="element.estatus_validacion == 1">ACEPTADO RH OF. CENTRAL </div>
+                                        <div *ngIf="element.estatus_validacion == 2">RECHAZADO RH OF. CENTRAL </div>
+                                        -->
+                                    </td>
                                 </ng-container>
                               
                                 <tr mat-header-row *matHeaderRowDef="displayedColumnsTramite"></tr>

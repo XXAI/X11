@@ -95,6 +95,8 @@ export class ListaComponent implements OnInit {
     'clues': [undefined],
     'cr': [undefined],
     'estatus': [undefined],
+    'comisionado': [undefined],
+    'e4': [undefined],
     'rama': [undefined],
     'grupos': [undefined]
   });
@@ -689,6 +691,10 @@ export class ListaComponent implements OnInit {
           params[i] = filterFormValues[i].clues;
         }else if(i == 'cr'){
           params[i] = filterFormValues[i].cr;
+        }else if(i == 'comisionado'){
+          params[i] = filterFormValues[i];
+        }else if(i == 'e4'){
+          params[i] = filterFormValues[i];
         }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
         }
@@ -781,6 +787,10 @@ export class ListaComponent implements OnInit {
         }else if(i == 'cr'){
           item.tag = data[i].cr;
           item.tooltip += data[i].descripcion;
+        }else if(i == 'comisionado'){
+          item.tag = data[i].comisionado;
+        }else if(i == 'e4'){
+          item.tag = data[i].e4;
         }else{
           if(data[i].descripcion.length > 30){
             item.tag = data[i].descripcion.slice(0,20) + '...';
@@ -877,5 +887,74 @@ export class ListaComponent implements OnInit {
 
   compareEstatusSelect(op,value){
     return op.id == value.id;
+  }
+
+  compareComisionSelect(op,value)
+  {
+      op.id = value;
+  }
+  comparee4Select(op,value)
+  {
+      op.id = value;
+  }
+
+  solicitar(valor:number, trabajador_id:string)
+  {
+    //console.log(valor+" - "+trabajador_id);
+    this.trabajadorService.setTramite(valor, trabajador_id).subscribe(
+      response => {
+        this.sharedService.showSnackBar("Se guardo correctamente", null, 3000);
+        this.OficioSolicitud(response.id);
+      },
+      responsError =>{
+        console.log(responsError);
+        this.sharedService.showSnackBar(responsError.error, null, 3000);
+      }
+    );
+  }
+
+  OficioSolicitud(id)
+  {
+    this.trabajadorService.createFileComision(id).subscribe(
+      response =>{
+        
+        if(response.error) {
+          
+          this.isLoading = false;
+          //this.sharedService.showSnackBar(errorMessage, null, 3000);
+        } else {
+            console.log(response);
+            //return;
+            const reportWorker = new ReportWorker();
+            reportWorker.onmessage().subscribe(
+              data => {
+                FileSaver.saveAs(data.data,'ConstanciaComisión');
+                reportWorker.terminate();
+            });
+
+            reportWorker.onerror().subscribe(
+              (data) => {
+                reportWorker.terminate();
+              }
+            );
+            
+            let config = {
+              //title: this.reportTitle,
+              //showSigns: this.reportIncludeSigns, 
+            };
+
+            reportWorker.postMessage({data:response,reporte:'archivo/solicitudComision'});
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+
+        this.isLoading = false;
+        
+      });
   }
 }

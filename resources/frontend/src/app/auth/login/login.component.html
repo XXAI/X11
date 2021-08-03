@@ -42,8 +42,10 @@
       <mat-card-actions fxLayout="column" fxAlignItems="center" fxLayoutGap="10px" *ngIf="!isLoading">
           <button  type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Entrar</button>
           <!--<a mat-button  routerLink="/forgot-password" >Olvidé contraseña</a>-->            
-          <a mat-button  routerLink="/registro" style='color:blue'>Registrarme</a>            
+          <a mat-button  routerLink="/registro" style='color:blue'>Registrarme</a>
+          <!--<a mat-raised-button style="background-color: #74162e; color: white;"  routerLink="/registro"><mat-icon matSuffix>download</mat-icon> Manual de usuario</a>-->
       </mat-card-actions>
+      
     </mat-card>
   </form>
 </section>
