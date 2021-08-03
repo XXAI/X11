@@ -182,6 +182,7 @@ class TrabajadorController extends Controller
                                                 //    $query->whereIn('datos_nominales.clues_adscripcion_nomina',$filtro_acceso['clues']);
                                                 //});
                     }
+                }
                 if(isset($parametros['comisionado']) && $parametros['comisionado'] == 1){
                     $trabajador = $trabajador->whereRaw("trabajador.id in (select rl.trabajador_id from rel_trabajador_datos_laborales rl, rel_trabajador_datos_laborales_nomina rln where rl.trabajador_id=rln.trabajador_id and rl.cr_fisico_id!=rln.cr_nomina_id)");
                 }
