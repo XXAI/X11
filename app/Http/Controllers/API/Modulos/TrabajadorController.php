@@ -140,7 +140,11 @@ class TrabajadorController extends Controller
 
             if(isset($parametros['active_filter']) && $parametros['active_filter']){
                 if(isset($parametros['clues']) && $parametros['clues']){
-                    $trabajador = $trabajador->where('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$parametros['clues']);
+                    if(isset($parametros['adscripcion']) && $parametros['adscripcion'] && $parametros['adscripcion'] == 'EOU'){
+                        $trabajador = $trabajador->where('datos_nominales.clues_adscripcion_nomina',$parametros['clues']);
+                    }else{
+                        $trabajador = $trabajador->where('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$parametros['clues']);
+                    }
                 }
 
                 if(isset($parametros['cr']) && $parametros['cr']){
@@ -163,8 +167,19 @@ class TrabajadorController extends Controller
                     $adscripcion = $parametros['adscripcion'];
                     if($adscripcion == 'MU'){
                         $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica = datos_nominales.clues_adscripcion_nomina');
-                    }else{
+                    }else if($adscripcion == 'OU'){
                         $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
+                    }else if($adscripcion == 'EOU'){
+                        /*$filtro_acceso = [];
+                        if(isset($parametros['clues']) && $parametros['clues']){
+                            $filtro_acceso['clues'] = [$parametros['clues']];
+                        }else{
+                            $filtro_acceso['clues'] = $access->lista_clues;
+                        }*/
+                        $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
+                                                //->where(function($query)use($filtro_acceso){
+                                                //    $query->whereIn('datos_nominales.clues_adscripcion_nomina',$filtro_acceso['clues']);
+                                                //});
                     }
                 }
 

@@ -18,18 +18,9 @@ class GrupoUnidadesController extends Controller
     {
         try{
             $parametros = $request->all();
-            $grupos = GrupoUnidades::orderBy('descripcion');
-
-            $elementos_por_grupo = DB::table('rel_clues_grupo_unidades')
-                   ->select('*', DB::raw('count(distinct cr_id) as conteo_elementos'))
-                   ->whereNull('deleted_at')
-                   ->groupBy('grupo_unidades_id');
-
-            $grupos = $grupos->leftJoinSub($elementos_por_grupo, 'clues_grupo_unidades', function ($join) {
-                            $join->on('grupos_unidades.id', '=', 'clues_grupo_unidades.grupo_unidades_id');
-                        })->select('grupos_unidades.*','clues_grupo_unidades.conteo_elementos');
-            
-            if(isset($parametros['query'])){
+            $grupos = GrupoUnidad::with('crPrincipal');
+            //Filtros, busquedas, ordenamiento
+            if(isset($parametros['query']) && $parametros['query']){
                 $grupos = $grupos->where(function($query)use($parametros){
                     return $query->where('descripcion','LIKE','%'.$parametros['query'].'%');
                 });
@@ -37,8 +28,9 @@ class GrupoUnidadesController extends Controller
 
             if(isset($parametros['page'])){
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
+    
                 $grupos = $grupos->paginate($resultadosPorPagina);
-            }else{
+            } else {
                 $grupos = $grupos->get();
             }
 
@@ -117,38 +109,43 @@ class GrupoUnidadesController extends Controller
      */
     public function store(Request $request)
     {
-        $mensajes = [
-            'required'           => "required",
-        ];
-
-        $reglas = [
-            'descripcion'        => 'required'
-        ];
-
-        $object = new GrupoUnidades();
+        try{
+            $validation_rules = [
+                'descripcion' => 'required',
+            ];
         
-        $inputs = $request->all();
-        $v = Validator::make($inputs, $reglas, $mensajes);
+            $validation_eror_messages = [
+                'descripcion.required' => 'El nombre es requerido',
+            ];
 
-        if ($v->fails()) {
-            return response()->json(['error' => "No se encuentra el recurso que esta buscando."], HttpResponse::HTTP_NOT_FOUND);
-        }
-
-        DB::beginTransaction();
-        try {
+            $parametros = $request->all(); 
             
-            $object->descripcion            = $inputs['descripcion'];
-            $object->finalizado             = $inputs['finalizado'];
+            $resultado = Validator::make($parametros,$validation_rules,$validation_eror_messages);
 
-            $object->save();
-    
-            DB::commit();
-            
-            return response()->json($object,HttpResponse::HTTP_OK);
+            if($resultado->passes()){
+                DB::beginTransaction();
 
-        } catch (\Exception $e) {
+                $parametros['total_elementos'] = count($parametros['lista_cr']);
+
+                $grupo = GrupoUnidad::create($parametros);
+
+                $lista_cr = array_map(function($n){ return [$n['cr']=>['clues'=>$n['clues']]]; },$parametros['lista_cr']);
+
+                if($grupo){
+                    $grupo->listaCR()->sync($lista_cr);
+                    $grupo->save();
+                    DB::commit();
+                    return response()->json(['data'=>$grupo], HttpResponse::HTTP_OK);
+                }else{
+                    DB::rollback();
+                    return response()->json(['error'=>'No se pudo crear el Grupo'], HttpResponse::HTTP_CONFLICT);
+                }
+            }else{
+                return response()->json(['mensaje' => 'Error en los datos del formulario', 'validacion'=>$resultado->passes(), 'errores'=>$resultado->errors()], HttpResponse::HTTP_CONFLICT);
+            }
+        }catch(\Exception $e){
             DB::rollback();
-            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
 

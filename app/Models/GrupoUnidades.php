@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class GrupoUnidades extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['descripcion'];
+    protected $fillable = ['descripcion','cr_principal_id','total_elementos'];
     protected $table = 'grupos_unidades';
+
+    public function crPrincipal(){
+        return $this->belongsTo('App\Models\Cr','cr_principal_id','cr_id');
+    }
 
     public function listaCR(){
         return $this->belongsToMany('App\Models\Cr', 'rel_clues_grupo_unidades', 'grupo_unidades_id', 'cr_id')->withPivot('clues');
