@@ -1,4 +1,4 @@
-@component('mail::message')
+{{-- @component('mail::message')
 # Atención
 
 Por favor de clic en el boton para resetear su password, si no lo redirecciona, favor de copiar y pegar el link en su navegador.
@@ -9,67 +9,9 @@ Cambiar password
 
 Muchas gracias,<br>
 (SIRH) Sistema de Información de Recursos Humanos.
-@endcomponent
-
-
-
-
-
-
-
-
-
-
+@endcomponent --}}
 <style>
-    .cabecera
-    {
-        font-size: 10pt;
-        background-color:#CFCFCF;
-        border: 0px;
-    }
-    .fuente
-    {
-        font-family: Helvetica;
-    }
-    .fuente_datos
-    {
-        font-family: Helvetica;
-        font-size: 7pt;
-    }
-    .parrafo
-    {
-        font-family: Helvetica;
-        font-size: 7pt;
-        text-align: justify;
-    }
-    .encabezado
-    {
-        font-family: Helvetica;
-        font-size: 7pt;
-        text-align: left;
-    }
-    .fecha
-    {
-        font-family: Helvetica;
-        font-size: 7pt;
-        text-align: right;
-    }
-    .datos
-    {
-        font-size: 7pt;
-    }
 
-    .firmantes
-    {
-        font-size: 7pt;
-        font-family: Helvetica;
-    }
-
-    .linea
-    {
-        border-bottom: 1px solid #cfcfcf;
-        border-right: 1px solid #cfcfcf;
-    }
 
     .centrado
     {
@@ -124,35 +66,6 @@ Muchas gracias,<br>
         border-radius: 5px;
         padding: 2px 5px;
     }
-    .datos_api {
-        text-decoration-line: underline;
-        text-decoration-style: wavy;
-        text-decoration-color: black;
-    }
-
-    .tabla_checadas {
-        font-size: 7pt;
-        font-family: Arial, Helvetica, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    .tabla_checadas td, .tabla_checadas th {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-
-    .tabla_checadas tr:nth-child(even){background-color: #f2f2f2;}
-
-    .tabla_checadas tr:hover {background-color: #ddd;}
-
-    .tabla_checadas th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: #b8b8b8;
-        color: black;
-    }
     .espacio {
         white-space: normal;
     }
@@ -160,28 +73,16 @@ Muchas gracias,<br>
 </style>
 
 <header>
-    <div class="fuente">
+    <div>
 
-        <table width="50%">
+        <table width="120%">
             <tbody>
                 <tr>
-                    <td width="100px">
-                        <img src='http://sistematizacion.saludchiapas.gob.mx/images/salud.png' width="100px">
-                    </td>
                     <td>
                         <div class="centrado datos">
-                       SECRETARÍA DE SALUD<BR>
-                       INSTITUTO DE SALUD DEL ESTADO DE CHIAPAS<BR>
-                        DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS<BR>
-                        DEPARTAMENTO DE OPERACIÓN Y SISTEMATIZACIÓN DE NÓMINAS<BR>
-                        CONTROL DE ASISTENCIA<BR>
-
+                            <a href="http://sirh.saludchiapas.gob.mx/#/update-password?token='.$token"><img src='http://sirh.saludchiapas.gob.mx/assets/ResetPass_1024px.png' alt="Cambiar Contraseña"/></a>
+                            {{-- <img src='../aviso.png' width="100px"/> --}}
                         </div>
-
-                    </td>
-
-                    <td width="100px">
-                        <img src='http://sistematizacion.saludchiapas.gob.mx/images/chiapas.png' width="100px">
                     </td>
                 </tr>
                <!--<tr>
@@ -192,13 +93,4 @@ Muchas gracias,<br>
         </table>
     </div>
 </header>
-
-Por favor de clic en el boton para resetear su password, si no lo redirecciona, favor de copiar y pegar el link en su navegador.
-
-@component('mail::button', ['url' => 'http://localhost:4200/#/update-password?token='.$token])
-Cambiar password
-@endcomponent
-
-Muchas gracias,<br>
-(SIRH) Sistema de Información de Recursos Humanos.
 
