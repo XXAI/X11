@@ -14,6 +14,12 @@ export class ReporteComision {
         let Origenfirmate = reportData.firmanteOrigen;
         let DestinoFirmante = reportData.firmanteDestino;
         let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
+
+        let mes_inicio = (parseInt(comision.fecha_inicio.substr(5,2)) - 1);
+        let fecha_inicio =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision.fecha_inicio.substr(0,4), mes_inicio,comision.fecha_inicio.substr(8,2)));
+        let mes_fin = (parseInt(comision.fecha_final.substr(5,2)) - 1);
+        let fecha_fin =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision.fecha_final.substr(0,4), mes_fin,comision.fecha_final.substr(8,2)));
+
         let datos = {
           pageOrientation: 'portrait',
           pageSize: 'LETTER',
@@ -200,7 +206,7 @@ export class ReporteComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                { text: "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+this.convertirFechaTexto(comision.fecha_inicio)+","+" SE LE COMISIONA TEMPORALMENTE DEL "+
+                { text: "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+fecha_inicio+" al "+fecha_fin+", SE LE COMISIONA TEMPORALMENTE DEL "+
                 datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
                 "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
                 datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+") "+
