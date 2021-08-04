@@ -60,12 +60,15 @@ class TramitesController extends Controller
                         $permison_of_central = true;
                     }
                 }
+            }else{
+                $permison_rh = true;
+                $permison_of_central = true;
             }
 
             $tramites_origen = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina");
             $tramites_destino = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina");
             $tramites_validacion = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina");
-            if($permison_rh == true)
+            if($permison_rh == true && !$access->is_admin)
             {
                 $tramites_origen = $tramites_origen->whereIn('cr_origen',$access->lista_cr);
                 $tramites_destino = $tramites_destino->whereIn('cr_destino',$access->lista_cr);
@@ -142,7 +145,8 @@ class TramitesController extends Controller
             if($trabajador->datoslaboralesnomina->clues->clave_nivel == 1)
             {
                 $clues = Clues::with("cr")->where("clave_nivel", 4)->where("cve_jurisdiccion", $trabajador->datoslaboralesnomina->clues->cve_jurisdiccion)->first();
-                $object->cr_firmante_origen = $clues->cr->cr;
+                //return Response::json(['error' => $clues], HttpResponse::HTTP_CONFLICT);
+                $object->cr_firmante_origen = $clues->cr[0]->cr;
             }else{
                 $object->cr_firmante_origen = $trabajador->datoslaboralesnomina->cr_nomina_id;
             }
@@ -150,7 +154,7 @@ class TramitesController extends Controller
             if($trabajador->datoslaborales->clues_fisico->clave_nivel == 1)
             {
                 $clues = Clues::with("cr")->where("clave_nivel", 4)->where("cve_jurisdiccion", $trabajador->datoslaborales->clues_fisico->cve_jurisdiccion)->first();
-                $object->cr_firmante_destino = $clues->cr->cr;
+                $object->cr_firmante_destino = $clues->cr[0]->cr;
             }else{
                 $object->cr_firmante_destino = $trabajador->datoslaborales->cr_fisico_id;
             }

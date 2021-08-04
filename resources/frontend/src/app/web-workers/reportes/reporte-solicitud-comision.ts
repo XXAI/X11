@@ -254,6 +254,13 @@ export class ReporteSolicitudComision {
           }
         });
 
+        let copias = "C.C.P. "+Origenfirmate.nombre_responsable+" - "+Origenfirmate.cargo_responsable+"\n"+
+        "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n";
+        if(Origenfirmate.cr == DestinoFirmante.cr)
+        {
+          copias = "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n";
+        }
+
         datos.content.push({
           layout: 'noBorders',
           
@@ -264,8 +271,7 @@ export class ReporteSolicitudComision {
               [
                 //{ text: "", colSpan:2},{},
                 { text: "C.C.P. DR. JOSÉ MANUEL CRUZ CASTELLANOS. SECRETARIO DE SALUD Y DIRECTOR GENERAL DEL INSTITUTO DE SALUD DEL ESTADO DE CHIAPAS\n"+
-                        "C.C.P. "+Origenfirmate.nombre_responsable+" - "+Origenfirmate.cargo_responsable+"\n"+
-                        "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n"+
+                        copias+
                         "Cc.p. LIC. JULIO ALBERTO BEZARES DOMÍNGUEZ. JEFE DEL DEPARTAMENTO DE CONTROL DEL PAGO\n"+
                         "C.c.p. ING. GABRIEL DE LA GUARDIA NAGANO.- JEFE DEL DEPARTAMENTO DE OPERACIÓN Y SISTEMATIZACIÓN", style: "texto_firmas"},
                 //{ text: "", colSpan:4},{},{},{},
