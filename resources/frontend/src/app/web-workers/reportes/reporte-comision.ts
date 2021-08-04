@@ -191,7 +191,7 @@ export class ReporteComision {
           }
         });
 
-
+        let destino = 
         datos.content.push({
           layout: 'noBorders',
           table: {
@@ -205,7 +205,8 @@ export class ReporteComision {
                 "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
                 datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+") "+
                 " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
-                "DEBIÉNDOSE PRESENTAR CON EL "+datos_trabajador.datoslaborales.cr_fisico.nombre_responsable+", "+
+                //"DEBIÉNDOSE PRESENTAR CON EL "+datos_trabajador.datoslaborales.cr_fisico.nombre_responsable+", "+
+                "DEBIÉNDOSE PRESENTAR CON EL "+DestinoFirmante.nombre_responsable+", "+
                 "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
                 "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO "+
                 " EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+
@@ -246,7 +247,13 @@ export class ReporteComision {
             ]
           }
         });
-
+        
+        let copias = "C.C.P. "+Origenfirmate.nombre_responsable+" - "+Origenfirmate.cargo_responsable+"\n"+
+        "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n";
+        if(Origenfirmate.cr == DestinoFirmante.cr)
+        {
+          copias = "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n";
+        }
         datos.content.push({
           layout: 'noBorders',
           
@@ -256,8 +263,7 @@ export class ReporteComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                { text: "C.C.P. "+Origenfirmate.nombre_responsable+" - "+Origenfirmate.cargo_responsable+"\n"+
-                        "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n"+
+                { text: copias+
                         "Cc.p. LIC. JULIO ALBERTO BEZARES DOMÍNGUEZ. JEFE DEL DEPARTAMENTO DE CONTROL DEL PAGO\n"+
                         "C.c.p. ING. GABRIEL DE LA GUARDIA NAGANO.- JEFE DEL DEPARTAMENTO DE OPERACIÓN Y SISTEMATIZACIÓN\n\n"+
                         "Vo.Bo. L.A.E. ANITA DEL CARMEN GARCÍA LEÓN - SUBDIRECTORA DE RECURSOS HUMANOS\n"+

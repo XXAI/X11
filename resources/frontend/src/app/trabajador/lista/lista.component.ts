@@ -908,6 +908,7 @@ export class ListaComponent implements OnInit {
     //console.log(valor+" - "+trabajador_id);
     this.trabajadorService.setTramite(valor, trabajador_id).subscribe(
       response => {
+        console.log(response);
         this.sharedService.showSnackBar("Se guardo correctamente", null, 3000);
         this.OficioSolicitud(response.id);
       },
