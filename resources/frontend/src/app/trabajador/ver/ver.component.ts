@@ -134,10 +134,14 @@ export class VerComponent implements OnInit {
           this.puedeVerAsistencias = true;
         }
     
-        if(this.dataTrabajador.rel_datos_laborales.cr_fisico_id != this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id)
+        if(this.dataTrabajador.rel_datos_laborales_nomina)
         {
-          this.pestanaTramites = true;
+          if(this.dataTrabajador.rel_datos_laborales.cr_fisico_id != this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id)
+          {
+            this.pestanaTramites = true;
+          }
         }
+        
         if(this.dataTrabajador.clave_credencial){
           this.trabajadorService.getDatosCredencial(this.dataTrabajador.clave_credencial).subscribe(
             response => {
