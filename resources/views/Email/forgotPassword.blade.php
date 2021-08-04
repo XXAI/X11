@@ -48,7 +48,7 @@ Muchas gracias,<br>
         top: -80px;
         left: 0px;
         right: 0px;
-        height: 50px;
+        height: 100%;
 
 
     }
@@ -75,7 +75,7 @@ Muchas gracias,<br>
 <header>
     <div>
 
-        <table width="120%">
+        <table width="100%">
             <tbody>
                 <tr>
                     <td>
