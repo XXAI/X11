@@ -15,6 +15,7 @@ use Carbon\Carbon;
 
 
 use App\Models\Tramites;
+use App\Models\Directorio;
 use App\Models\Trabajador;
 use App\Models\User;
 use App\Models\Clues;
@@ -207,8 +208,8 @@ class TramitesController extends Controller
 
             $tramite = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina")->find($id);
 
-            $firmante_origen = Cr::where("cr", $tramite->cr_firmante_origen)->first();
-            $firmante_destino = Cr::where("cr", $tramite->cr_firmante_destino)->first();
+            $firmante_origen = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", $tramite->cr_firmante_origen)->first();
+            $firmante_destino = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", $tramite->cr_firmante_destino)->first();
             /*foreach ($permisos->roles as $key => $value) {
                 foreach ($value->permissions as $key2 => $value2) {
                     if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')

@@ -205,7 +205,7 @@ export class ReporteSolicitudComision {
                 "en el municipio de "+datos_trabajador.datoslaborales.cr_fisico.municipio+", siendo mi adscripción en "+datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+") "+
                 " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+
                 ", con fecha de ingreso "+datos_trabajador.datoslaborales.fecha_ingreso+".\n\n"+
-                "Sin otro particular, le envío un cordial saludo.\n\n\n\n",alignment:'justify', style: "texto_depto"},
+                "Sin otro particular, le envío un cordial saludo.\n\n",alignment:'justify', style: "texto_depto"},
                 //{ text: "", colSpan:4},{},{},{},
               ],
             ]
@@ -229,9 +229,27 @@ export class ReporteSolicitudComision {
         });
 
         let tabla = ['*', '*'];
+        let firmante_origen = "";
+        let cargo_origen = "";
+        let firmante_destino = "";
+        let cargo_destino = "";
+        if(Origenfirmate.responsable)
+        {
+          let obj_origen = Origenfirmate.responsable;
+          firmante_origen = obj_origen.nombre+" "+obj_origen.apellido_paterno+" "+obj_origen.apellido_materno;
+          cargo_origen = Origenfirmate.cargo;
+        }
+
+        if(DestinoFirmante.responsable)
+        {
+          let obj_destino = DestinoFirmante.responsable;
+          firmante_destino = obj_destino.nombre+" "+obj_destino.apellido_paterno+" "+obj_destino.apellido_materno;
+          cargo_destino = DestinoFirmante.cargo;
+        }
+
         let firmas = [
-          { text: "AUTORIZÓ\n\n\n\n\n\n______________________________________________\n"+Origenfirmate.nombre_responsable+"\n"+Origenfirmate.cargo_responsable+"\n\n",alignment:'center', style: "texto_depto"},
-          { text: "VO. BO.\n\n\n\n\n\n______________________________________________\n"+DestinoFirmante.nombre_responsable+"\n"+DestinoFirmante.cargo_responsable+"\n\n",alignment:'center', style: "texto_depto"}
+          { text: "AUTORIZÓ\n\n\n\n\n\n______________________________________________\n"+firmante_origen+"\n"+cargo_origen+"\n\n",alignment:'center', style: "texto_depto"},
+          { text: "VO. BO.\n\n\n\n\n\n______________________________________________\n"+firmante_destino+"\n"+cargo_destino+"\n\n",alignment:'center', style: "texto_depto"}
         ];
 
         //if(Origenfirmate.cr == DestinoFirmante.cr)
@@ -239,7 +257,7 @@ export class ReporteSolicitudComision {
         {
           tabla = ['*'];
           firmas = [
-            { text: "AUTORIZÓ Y VO. BO.\n\n\n\n\n\n______________________________________________\n"+Origenfirmate.nombre_responsable+"\n"+Origenfirmate.cargo_responsable+"\n\n",alignment:'center', style: "texto_depto"}
+            { text: "AUTORIZÓ Y VO. BO.\n\n\n\n\n\n______________________________________________\n"+firmante_origen+"\n"+cargo_origen+"\n\n",alignment:'center', style: "texto_depto"}
           ];
         }
         datos.content.push({
@@ -254,11 +272,11 @@ export class ReporteSolicitudComision {
           }
         });
 
-        let copias = "C.C.P. "+Origenfirmate.nombre_responsable+" - "+Origenfirmate.cargo_responsable+"\n"+
-        "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n";
+        let copias = "C.C.P. "+firmante_origen+" - "+cargo_origen+"\n"+
+        "C..C.P. "+firmante_destino+" - "+cargo_destino+"\n";
         if(Origenfirmate.cr == DestinoFirmante.cr)
         {
-          copias = "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n";
+          copias = "C..C.P. "+firmante_destino+" - "+cargo_destino+"\n";
         }
 
         datos.content.push({

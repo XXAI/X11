@@ -32,6 +32,7 @@ export const APPS:App [] = [
       ],
     },
     { name:'Tramites',      route: "tramites",  icon: "assets/icons/documento.png",  permission:"hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt" },
+    { name:'Directorio',      route: "directorio",  icon: "assets/icons/directorio.svg",  permission:"RkggFnAkLcXiLUTbZk3A07y0c4WdjjCO" },
     /*
     { name: "Seguridad", route: "seguridad", icon: "assets/icons/security-shield.svg", 
         children: [

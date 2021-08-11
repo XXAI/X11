@@ -24,7 +24,7 @@ class Trabajador extends Model
     }
     
     public function datoslaboralesnomina(){
-        return $this->hasOne('App\Models\RelDatosLaboralesNomina')->with('clues', 'cr', 'codigo');
+        return $this->hasOne('App\Models\RelDatosLaboralesNomina')->with('clues', 'cr.directorio', 'codigo');
     }
     
 

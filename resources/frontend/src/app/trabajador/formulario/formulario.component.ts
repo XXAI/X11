@@ -17,9 +17,6 @@ import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.comp
 import { JornadaDialogComponent } from '../jornada-dialog/jornada-dialog.component';
 import { TrabajadorService } from '../trabajador.service';
 
-
-
-
 @Component({
   selector: 'app-formulario',
   templateUrl: './formulario.component.html',

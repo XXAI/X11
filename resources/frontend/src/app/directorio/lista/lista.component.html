@@ -1,0 +1,89 @@
+<br>
+<section class="profile" >
+    <div  fxFill>
+        <section fxLayout fxLayoutAlign="center">
+            <div class="users-loading-shade" *ngIf="isLoading"><mat-spinner></mat-spinner></div>
+            <mat-card fxFlex.xs="100%" fxFlex="90%">
+                <div fxLayout="row">
+                    <div fxFlex="100%">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Buscar</mat-label>
+                            <input matInput [(ngModel)]="searchQuery" (keyup.enter)="applyFilter()" placeholder="Buscar">
+                            <button mat-icon-button flexFill matSuffix (click)="applyFilter()" color="primary" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="'hidePassword'">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </div>
+                </div>
+                
+                
+                <mat-divider [inset]="true"></mat-divider>
+
+                <div class="users-container ">
+                    <div class="users-table-container">
+                        <table #usersTable mat-table [dataSource]="dataSource" class="users-table" matSort>
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>  Municipio </th>
+                                <td mat-cell *matCellDef="let row"> {{row.municipio}} </td>
+                            </ng-container>
+                    
+                            <!-- Username Column -->
+                            <ng-container matColumnDef="clues">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Clues  / CR</th>
+                                <td mat-cell *matCellDef="let row"> 
+                                    <b>CR:</b>({{row.cr}})<br>
+                                    <div *ngIf="row.clues"><B>CLUES:</B> ({{row.clues.clues}}) </div> 
+                                    <div *ngIf="!row.clues">Sin Clues</div>
+                                    <b>TEL:</b> <span style="color: blue; font-weight: bold;" *ngIf="row.telefono!=''">{{row.telefono}}</span>
+                                    <span style="color: blue; font-weight: bold;" *ngIf="row.telefono==null">SIN NÚMERO</span>
+                                </td>
+                            </ng-container>
+                    
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="nombre_unidad" >
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> Nombre Unidad </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.descripcion}}<br>
+                                <b>DIRECCIÓN: </b><span style="font-weight: bold;" *ngIf="row.direccion!=''">{{row.direccion}}</span>
+                                <span style="font-weight: bold;" *ngIf="row.direccion==null">SIN DIRECCIÓN</span>
+                                </td>
+                            </ng-container>
+                    
+                            <!-- Email Column -->
+                            <ng-container matColumnDef="no_trabajadores" >
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> Responsables </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true" > 
+                                    <div *ngFor="let item of row.directorio">
+                                        {{item.responsable.nombre}} {{item.responsable.apellido_paterno}} {{item.responsable.apellido_materno}} - {{ item.cargo}}<br>
+                                        <b>TEL: </b> <span style="color: blue; font-weight: bold;">{{ item.responsable.telefono_celular}}</span>
+                                    </div>
+                                     
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                                <td mat-cell *matCellDef="let row">
+                                    <button mat-raised-button color="accent" (click)="EditarCR(row.cr)"><mat-icon>edit</mat-icon></button> &nbsp;
+                                    <!--<button mat-icon-button color="warn" (click)="confirmDeleteUser(row.id)"><mat-icon>delete</mat-icon></button>-->
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noResultsFound">
+                                <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                    No se encontraron registros 
+                                </td>
+                            </ng-container>
+                            
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                            <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
+                        </table>
+                    </div>
+                    <mat-paginator #paginator pageSize="20" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadDirectorioData($event)"></mat-paginator>
+                </div>
+            </mat-card>
+        </section>
+    </div>
+</section>

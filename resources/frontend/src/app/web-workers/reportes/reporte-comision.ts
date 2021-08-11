@@ -148,7 +148,23 @@ export class ReporteComision {
         //     ]
         //   }
         // });
+        let firmante_origen = "";
+        let cargo_origen = "";
+        let firmante_destino = "";
+        let cargo_destino = "";
+        if(Origenfirmate.responsable)
+        {
+          let obj_origen = Origenfirmate.responsable;
+          firmante_origen = obj_origen.nombre+" "+obj_origen.apellido_paterno+" "+obj_origen.apellido_materno;
+          cargo_origen = Origenfirmate.cargo;
+        }
 
+        if(DestinoFirmante.responsable)
+        {
+          let obj_destino = DestinoFirmante.responsable;
+          firmante_destino = obj_destino.nombre+" "+obj_destino.apellido_paterno+" "+obj_destino.apellido_materno;
+          cargo_destino = DestinoFirmante.cargo;
+        }
 
         datos.content.push({
           layout: 'noBorders',
@@ -206,13 +222,13 @@ export class ReporteComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                { text: "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+fecha_inicio+" al "+fecha_fin+", SE LE COMISIONA TEMPORALMENTE DEL "+
+                { text: "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
                 datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
                 "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
                 datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+") "+
                 " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
                 //"DEBIÉNDOSE PRESENTAR CON EL "+datos_trabajador.datoslaborales.cr_fisico.nombre_responsable+", "+
-                "DEBIÉNDOSE PRESENTAR CON EL "+DestinoFirmante.nombre_responsable+", "+
+                "DEBIÉNDOSE PRESENTAR CON EL C. "+firmante_destino+", "+
                 "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
                 "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO "+
                 " EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+
@@ -254,11 +270,11 @@ export class ReporteComision {
           }
         });
         
-        let copias = "C.C.P. "+Origenfirmate.nombre_responsable+" - "+Origenfirmate.cargo_responsable+"\n"+
-        "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n";
+        let copias = "C.C.P. "+firmante_origen+" - "+cargo_origen+"\n"+
+        "C..C.P. "+firmante_destino+" - "+cargo_destino+"\n";
         if(Origenfirmate.cr == DestinoFirmante.cr)
         {
-          copias = "C..C.P. "+DestinoFirmante.nombre_responsable+" - "+DestinoFirmante.cargo_responsable+"\n";
+          copias = "C..C.P. "+firmante_destino+" - "+cargo_destino+"\n";
         }
         datos.content.push({
           layout: 'noBorders',

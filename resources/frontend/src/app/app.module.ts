@@ -44,6 +44,7 @@ import { CuestionarioDengueModule } from './cuestionario-dengue/cuestionario-den
 import { TrabajadorModule } from './trabajador/trabajador.module';
 import { TramitesModule } from './tramites/tramites.module';
 import { RegistroModule } from './registro/registro.module';
+import { DirectorioModule } from './directorio/directorio.module';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { RegistroModule } from './registro/registro.module';
     TrabajadorModule,
     TramitesModule,
     RegistroModule,
+    DirectorioModule,
     DashboardModule,
     SecurityModule,
     DevToolsModule,

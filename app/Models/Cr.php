@@ -16,4 +16,12 @@ class Cr extends Model
     public function clues(){
         return $this->hasOne('App\Models\Clues', 'clues', "clues");
     }
+
+    public function directorio(){
+        return $this->hasMany('App\Models\Directorio','cr');
+    }
+
+    public function directorioResponsable(){
+        return $this->hasOne('App\Models\Directorio','cr')->where("tipo_responsable_id", 1);
+    }
 }

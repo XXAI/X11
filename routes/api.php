@@ -117,6 +117,10 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('reporte-empleados-validados',   'API\Modulos\EmpleadosController@reporteValidados');
 
     Route::apiResource('tramites',       'API\Modulos\TramitesController');
+    Route::apiResource('directorio',       'API\Modulos\DirectorioController');
+    Route::get('directorio-trabajador',       'API\Modulos\DirectorioController@buscarResponsable');
+    Route::post('responsable-unidad',       'API\Modulos\DirectorioController@AgregarResponsable');
+    //Route::post('responsable-unidad/{id}',       'API\Modulos\DirectorioController@EliminarResponsable');
     Route::get('tramites-trabajador/{id}',    'API\Modulos\TramitesController@ListTramites');
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
 });
