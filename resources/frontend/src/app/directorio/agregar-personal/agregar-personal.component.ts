@@ -25,6 +25,7 @@ export class AgregarPersonalComponent implements OnInit {
   isLoading: boolean = false;
   responsableIsLoading: boolean = false;
   filteredResponsable: Observable<any[]>;
+  obj_seleccionado:any;
   
   tipo_trabajador:any =  [{id:1, nombre:'JEFE, RESPONSABLE O DIRECTOR'},{id:2, nombre:'JEFE RECURSOS HUMANOS'},{id:3, nombre:'JEFE DE ADMINISTRACIÓN'}];
   public responsableForm = this.fb.group({
@@ -118,9 +119,17 @@ export class AgregarPersonalComponent implements OnInit {
 
   displayResponsableFn(item: any) {
     if (item) { 
-      
+      //console.log("entra");
+      this.obj_seleccionado = item;
+      //this.cargarTelefono(item);
       return item.nombre+" "+item.apellido_paterno+" "+item.apellido_materno; }
   }
 
+  cargarTelefono()
+  {
+    //console.log(this.obj_seleccionado);
+    console.log(this.responsableForm.value.responsable);
+    this.responsableForm.patchValue({telefono: this.responsableForm.value.responsable.telefono_celular});
+  }
   
 }

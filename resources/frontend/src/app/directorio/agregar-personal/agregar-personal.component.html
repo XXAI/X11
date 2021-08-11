@@ -24,7 +24,7 @@
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field fxFlex="70" fxFlex.xs="70">
-                                <input matInput placeholder="Responsable" [matAutocomplete]="responsableAutocomplete" formControlName='responsable'>
+                                <input matInput placeholder="Responsable" [matAutocomplete]="responsableAutocomplete" formControlName='responsable' (blur)="cargarTelefono()">
                                 <mat-autocomplete #responsableAutocomplete="matAutocomplete" [displayWith]="displayResponsableFn" [panelWidth]="'auto'">
                                     <mat-option *ngIf="responsableIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
                                     <ng-container *ngIf="!responsableIsLoading">

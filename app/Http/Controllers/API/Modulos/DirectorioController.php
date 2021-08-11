@@ -238,7 +238,7 @@ class DirectorioController extends Controller
 
             $trabajador = Trabajador::join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id","=", "trabajador.id")
                                         ->where("rel_trabajador_datos_laborales.cr_fisico_id", $params['cr'])
-                                        ->select("trabajador.id", "trabajador.nombre", "trabajador.apellido_paterno", "trabajador.apellido_materno", "trabajador.rfc");
+                                        ->select("trabajador.id", "trabajador.nombre", "trabajador.apellido_paterno", "trabajador.apellido_materno", "trabajador.rfc", "trabajador.telefono_celular");
 
             if(isset($params['query']) && $params['query']){
                 $trabajador = $trabajador->where(function($query)use($params){

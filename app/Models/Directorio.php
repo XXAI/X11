@@ -13,6 +13,6 @@ class Directorio extends Model
     protected $table = 'rel_trabajador_cr_responsables';
 
     public function responsable(){
-        return $this->belongsTo('App\Models\trabajador', 'trabajador_id','id');
+        return $this->belongsTo('App\Models\Trabajador', 'trabajador_id','id');
     }
 }
