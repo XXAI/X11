@@ -141,8 +141,8 @@ export class VerComponent implements OnInit {
             this.pestanaTramites = true;
           }
         }
-        console.log(this.dataTrabajador.rel_datos_laborales.cr_fisico_id +" - "+ this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id);
-        console.log(this.pestanaTramites);
+        //console.log(this.dataTrabajador.rel_datos_laborales.cr_fisico_id +" - "+ this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id);
+        //console.log(this.pestanaTramites);
         
         if(this.dataTrabajador.clave_credencial){
           this.trabajadorService.getDatosCredencial(this.dataTrabajador.clave_credencial).subscribe(
