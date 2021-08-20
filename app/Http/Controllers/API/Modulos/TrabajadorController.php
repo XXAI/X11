@@ -402,7 +402,7 @@ class TrabajadorController extends Controller
                 'nacionalidad_id'           => 'required',
                 'pais_nacimiento_id'        => 'required',
                 'entidad_nacimiento_id'     => 'required',
-                'municipio_nacimiento_id'   => 'required',
+                //'municipio_nacimiento_id'   => 'required',
                 'estado_conyugal_id'        => 'required',
                 'sexo'                      => 'required',
                 'idioma_id'                 => 'required',
@@ -742,7 +742,7 @@ class TrabajadorController extends Controller
                 'nacionalidad_id'           => 'required',
                 'pais_nacimiento_id'        => 'required',
                 'entidad_nacimiento_id'     => 'required',
-                'municipio_nacimiento_id'   => 'required',
+                //'municipio_nacimiento_id'   => 'required',
                 'estado_conyugal_id'        => 'required',
                 'sexo'                      => 'required',
                 'idioma_id'                 => 'required',
@@ -886,7 +886,7 @@ class TrabajadorController extends Controller
     {
         try{
             $catalogos = Array();
-            $catalogos['pais']              = Pais::all();
+            $catalogos['pais']              = Pais::orderBy("descripcion")->get();
             $catalogos['entidad']           = Entidad::all();
             $catalogos['nacionalidad']      = Nacionalidad::all();
             $catalogos['estado_conyugal']   = EstadoConyugal::all();

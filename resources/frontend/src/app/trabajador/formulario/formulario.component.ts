@@ -739,7 +739,13 @@ export class FormularioComponent implements OnInit {
     if(tipo == 1)
     {
       data = this.trabajadorForm.value;
-      data.municipio_nacimiento_id = data.municipio.id;
+      if(data.pais_nacimiento_id == 142)
+      {
+        data.municipio_nacimiento_id = data.municipio.id;
+      }else{
+        data.municipio_nacimiento_id = null;
+      }
+      
       
       /*if(data.cr != null)
       {
