@@ -72,24 +72,16 @@ class TrabajadorController extends Controller
 
         try{
             $access = $this->getUserAccessData();
-            //return response()->json(['data'=>$access],HttpResponse::HTTP_OK);
+            
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
             $parametros = $request->all();
-            $trabajador = Trabajador:://with("datoslaborales")//select('trabajador.*')
+            $trabajador = Trabajador:://with("datoslaborales")
                             join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                             ->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
                             ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja)");
-                            //
-                           
-            /*select('empleados.*','permuta_adscripcion.clues_destino as permuta_activa_clues','permuta_adscripcion.cr_destino_id as permuta_activa_cr')
-                            ->leftJoin('permuta_adscripcion',function($join)use($access){
-                                $join = $join->on('permuta_adscripcion.empleado_id','=','empleados.id')->where('permuta_adscripcion.estatus',1);
-                                if(!$access->is_admin){
-                                    $join->whereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
-                                }
-                            })*/;
+                            ;
 
             $permison_individual = false;                
             if(!$access->is_admin){
@@ -129,7 +121,9 @@ class TrabajadorController extends Controller
             
 
             //Filtros, busquedas, ordenamiento
-            if(isset($parametros['query']) && $parametros['query']){
+            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);
+
+            /*if(isset($parametros['query']) && $parametros['query']){
                 $trabajador = $trabajador->where(function($query)use($parametros){
                     return $query//->where('nombre','LIKE','%'.$parametros['query'].'%')
                                 ->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
@@ -171,16 +165,7 @@ class TrabajadorController extends Controller
                     }else if($adscripcion == 'OU'){
                         $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
                     }else if($adscripcion == 'EOU'){
-                        /*$filtro_acceso = [];
-                        if(isset($parametros['clues']) && $parametros['clues']){
-                            $filtro_acceso['clues'] = [$parametros['clues']];
-                        }else{
-                            $filtro_acceso['clues'] = $access->lista_clues;
-                        }*/
                         $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
-                                                //->where(function($query)use($filtro_acceso){
-                                                //    $query->whereIn('datos_nominales.clues_adscripcion_nomina',$filtro_acceso['clues']);
-                                                //});
                     }
                 }
                 if(isset($parametros['comisionado']) && $parametros['comisionado'] == 1){
@@ -195,15 +180,16 @@ class TrabajadorController extends Controller
                         $grupo = GrupoUnidades::with('listaCR')->find($parametros['grupos']);
                         $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
 
-                        $trabajador = $trabajador->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$lista_cr);/*->where(function($query)use($lista_cr){
-                            $query->whereIn('trabajador.cr_fisico_id',$lista_cr)
-                                ->orWhere(function($query2)use($lista_cr){
-                                    $query2->whereIn('permuta_adscripcion.cr_destino_id',$lista_cr);
-                                });
-                        });*/
+                        $trabajador = $trabajador->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$lista_cr);
+                        //->where(function($query)use($lista_cr){
+                        //    $query->whereIn('trabajador.cr_fisico_id',$lista_cr)
+                        //        ->orWhere(function($query2)use($lista_cr){
+                        //            $query2->whereIn('permuta_adscripcion.cr_destino_id',$lista_cr);
+                        //        });
+                        //});
                     }
                 }
-            }
+            }*/
 
             if(isset($parametros['page'])){
                 $trabajador = $trabajador->orderBy('nombre');
@@ -332,9 +318,76 @@ class TrabajadorController extends Controller
         }
     }
 
+    private function aplicarFiltros($main_query, $parametros, $access){
+        //Filtros, busquedas, ordenamiento
+        if(isset($parametros['query']) && $parametros['query']){
+            $main_query = $main_query->where(function($query)use($parametros){
+                return $query//->where('nombre','LIKE','%'.$parametros['query'].'%')
+                            ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
+                            ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
+                            ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
+            });
+        }
+        //$main_query = $main_query->where("cr_fisico_id", "!=","cr_nomina_id");
+
+        if(isset($parametros['active_filter']) && $parametros['active_filter']){
+            if(isset($parametros['clues']) && $parametros['clues']){
+                if(isset($parametros['adscripcion']) && $parametros['adscripcion'] && $parametros['adscripcion'] == 'EOU'){
+                    $main_query = $main_query->where('datos_nominales.clues_adscripcion_nomina',$parametros['clues']);
+                }else{
+                    $main_query = $main_query->where('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$parametros['clues']);
+                }
+            }
+
+            if(isset($parametros['cr']) && $parametros['cr']){
+                $main_query = $main_query->where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
+            }
+
+            if(isset($parametros['rama']) && $parametros['rama']){
+                $main_query = $main_query->where('rama_id',$parametros['rama']);
+            }
+
+            if(isset($parametros['estatus']) && $parametros['estatus']){
+                $estatus = explode('-',$parametros['estatus']);
+                $main_query = $main_query->where('trabajador.estatus',$estatus[0]);
+                if(isset($estatus[1])){
+                    $main_query = $main_query->where('trabajador.validado',$estatus[1]);
+                }
+            }
+
+            if(isset($parametros['adscripcion']) && $parametros['adscripcion']){
+                $adscripcion = $parametros['adscripcion'];
+                if($adscripcion == 'MU'){
+                    $main_query = $main_query->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica = datos_nominales.clues_adscripcion_nomina');
+                }else if($adscripcion == 'OU'){
+                    $main_query = $main_query->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
+                }else if($adscripcion == 'EOU'){
+                    $main_query = $main_query->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
+                }
+            }
+            if(isset($parametros['comisionado']) && $parametros['comisionado'] == 1){
+                $main_query = $main_query->whereRaw("trabajador.id in (select rl.trabajador_id from rel_trabajador_datos_laborales rl, rel_trabajador_datos_laborales_nomina rln where rl.trabajador_id=rln.trabajador_id and rl.cr_fisico_id!=rln.cr_nomina_id)");
+            }
+            if(isset($parametros['e4']) && $parametros['e4'] == 1){
+                $main_query = $main_query->join("rel_trabajador_e4", "rel_trabajador_e4.trabajador_id", "=", "trabajador.id");
+            }
+
+            if($access->is_admin){
+                if(isset($parametros['grupos']) && $parametros['grupos']){
+                    $grupo = GrupoUnidades::with('listaCR')->find($parametros['grupos']);
+                    $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
+
+                    $main_query = $main_query->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$lista_cr);
+                }
+            }
+        }
+        return $main_query;
+    }
+
     public function show(Request $request, $id)
     {
         try{
+            $response_data = [];
             $loggedUser = auth()->userOrFail();
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
             $params = $request->all();
@@ -354,10 +407,74 @@ class TrabajadorController extends Controller
             if($trabajador){
                 $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
             }
-            return response()->json($trabajador,HttpResponse::HTTP_OK);
+
+            $response_data['data'] = $trabajador;
+            $response_data['mini_paginador'] = false;
+            if(isset($params['selectedIndex'])){
+                $response_data['mini_paginador'] = $this->calcularMiniPaginador($params);
+            }
+
+            return response()->json($response_data,HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
+    }
+
+    private function calcularMiniPaginador($params){
+        $access = $this->getUserAccessData();
+        $per_page = $params['pageSize'];
+        $page_index = $params['pageIndex'];
+        $selected_index = $params['selectedIndex'];
+
+        $real_index = ($per_page * $page_index) + $selected_index; //calculamos el index real dentro de todo el "universo" de registros
+
+        $trabajadores = Trabajador::select('empleados.id')
+                                    ->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+                                    ->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
+                                    ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja)");
+                                    ;
+        //
+        $permison_individual = false;                
+        if(!$access->is_admin){
+            foreach ($permisos->roles as $key => $value) {
+                foreach ($value->permissions as $key2 => $value2) {
+                    if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg'){
+                        $permison_individual = true;
+                    }
+                }
+            }
+        }
+        
+        
+        //filtro de valores por permisos del usuario
+        if(!$access->is_admin && $permison_individual == false){
+            $trabajadores = $trabajadores->where(function($query){
+                                            $query->whereIn('trabajador.estatus',[1,4]);
+                                        })->where(function($query)use($access){
+                                            $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)
+                                                    ->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
+                                        });
+        }
+        
+        //para hacer el limit en el query, seleccionando los registros anterior y siguiente al index del id actual
+        if($real_index == 0){
+            $limit_index = 0;
+            $total_results = 2;
+        }else{
+            $limit_index = $real_index-1;
+            $total_results = 3;
+        }
+
+        //aplicar todos los filtros asignados
+        $trabajadores = $this->aplicarFiltros($trabajadores,$params,$access);
+
+        $total_trabajadores = clone $trabajadores;
+        $total_trabajadores = $total_trabajadores->count();
+        $trabajadores = $trabajadores->skip($limit_index)->take($total_results)->get();
+
+        $mini_pagination = ['next_prev'=>$trabajadores,'total'=>$total_trabajadores];
+
+        return $mini_pagination;
     }
 
     public function FinalizarCaptura(Request $request, $id)

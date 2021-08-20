@@ -312,7 +312,7 @@ export class FormularioComponent implements OnInit {
         {
           this.router.navigate(['/trabajadores']);
         }
-        let trabajador = response;
+        let trabajador = response.data;
         if(trabajador.actualizado == 1)
         {
           this.actualizado = true;  
@@ -321,7 +321,7 @@ export class FormularioComponent implements OnInit {
           this.actualizado = false;
         }
         //this.actualizado = trabajador.actualizado;
-        this.datos_personales = response;
+        this.datos_personales = response.data;
         //console.log(trabajador);
         this.datos_laborales_nomina = trabajador.datoslaboralesnomina;
         this.idioma(trabajador.idioma_id);
