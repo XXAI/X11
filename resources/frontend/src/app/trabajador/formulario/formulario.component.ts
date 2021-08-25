@@ -51,6 +51,7 @@ export class FormularioComponent implements OnInit {
   imagen_trabajador:string = 'assets/trabajador.jpg';
   selectedItemIndex: number = -1;
   isLoadingPage: boolean = true;
+  isLoadingCredential: boolean = true;
   actualizado:boolean = false;
   editable = true;
 
@@ -58,6 +59,8 @@ export class FormularioComponent implements OnInit {
   finalizarActualizacion:boolean = true;
 
   indexTab:number = 0;
+
+  miniPagination:any;
 
   trabajador_id:string = "";
   nombre_trabajador:string;
@@ -209,6 +212,8 @@ export class FormularioComponent implements OnInit {
   dataSourceCapacitacion:any = new MatTableDataSource(this.datosCapacitacion);
 
   ngOnInit() {
+    this.miniPagination = {total:0};
+
     this.cargarDatosDefault();
     this.cargarCatalogos();
     this.cargarBuscadores();
@@ -241,6 +246,36 @@ export class FormularioComponent implements OnInit {
         this.editable = false;
       }
     });
+  }
+
+  loadNext(){
+    let nextId = this.miniPagination.next;
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+
+    if(paginator.selectedIndex+1 >= paginator.pageSize){
+      paginator.pageIndex += 1;
+      paginator.selectedIndex = 0;
+    }else{
+      paginator.selectedIndex += 1;
+    }
+
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
+    this.router.navigate(['/trabajadores/editar/'+nextId]);
+  }
+
+  loadPrevious(){
+    let prevId = this.miniPagination.previous;
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    
+    if(paginator.selectedIndex-1 < 0){
+      paginator.pageIndex -= 1;
+      paginator.selectedIndex = paginator.pageSize-1;
+    }else{
+      paginator.selectedIndex -= 1;
+    }
+
+    this.sharedService.setDataToCurrentApp('paginator',paginator);
+    this.router.navigate(['/trabajadores/editar/'+prevId]);
   }
 
   checar()
@@ -305,19 +340,64 @@ export class FormularioComponent implements OnInit {
   }*/
 
   cargarTrabajador(id):void{
-    this.trabajadorService.buscarTrabajador(id, {}).subscribe(
+    this.isLoadingPage = true;
+    this.imagen_trabajador = 'assets/trabajador.jpg';
+    let params = {};
+
+    //Inicia: Datos para los botones de Anterior y Siguiente
+    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+    let filter = this.sharedService.getDataFromCurrentApp('filter');
+    let query = this.sharedService.getDataFromCurrentApp('searchQuery');
+
+    for (let i in paginator) {
+      params[i] = paginator[i];
+    }
+
+    for (let i in filter) {
+      if(filter.clues){       params['clues']       = filter.clues.clues;    params['active_filter'] = true; }
+      if(filter.cr){          params['cr']          = filter.cr.cr;          params['active_filter'] = true; }
+      if(filter.estatus){     params['estatus']     = filter.estatus.id;     params['active_filter'] = true; }
+      if(filter.rama){        params['rama']        = filter.rama.id;        params['active_filter'] = true; }
+      if(filter.grupos){      params['grupos']      = filter.grupos.id;      params['active_filter'] = true; }
+      if(filter.adscripcion){ params['adscripcion'] = filter.adscripcion.id; params['active_filter'] = true; }
+      if(filter.comisionado){ params['comisionado'] = filter.comisionado;    params['active_filter'] = true; }
+      if(filter.e4){          params['e4']          = filter.e4;             params['active_filter'] = true; }
+    }
+    
+
+    if(query){
+      params['query'] = query;
+    }
+    //Termina: Datos para los botones de Anterior y Siguiente    
+
+    this.trabajadorService.buscarTrabajador(id, params).subscribe(
       response =>{
-        
-        if(response.length == 0)
-        {
+        if(!response.data){
           this.router.navigate(['/trabajadores']);
         }
+
+        if(response.mini_paginador){
+          let paginator = this.sharedService.getDataFromCurrentApp('paginator');
+
+          let paginationIndex = response.mini_paginador.next_prev.findIndex(item => item.id == response.data.id);
+          //Aqui verificar estatus
+          if(paginationIndex < 0){
+            this.miniPagination.next = (response.mini_paginador.next_prev[1])?response.mini_paginador.next_prev[1].id:0;
+            this.miniPagination.previous = (response.mini_paginador.next_prev[0])?response.mini_paginador.next_prev[0].id:0;
+          }else{
+            this.miniPagination.next = (response.mini_paginador.next_prev[paginationIndex+1])?response.mini_paginador.next_prev[paginationIndex+1].id:0;
+            this.miniPagination.previous = (response.mini_paginador.next_prev[paginationIndex-1])?response.mini_paginador.next_prev[paginationIndex-1].id:0;
+          }
+
+          this.miniPagination.total = response.mini_paginador.total;
+
+          this.miniPagination.current = (paginator.pageSize*paginator.pageIndex)+paginator.selectedIndex+1;
+        }
+
         let trabajador = response.data;
-        if(trabajador.actualizado == 1)
-        {
+        if(trabajador.actualizado == 1){
           this.actualizado = true;  
-        }else if(trabajador.actualizado == 0)
-        {
+        }else if(trabajador.actualizado == 0){
           this.actualizado = false;
         }
         //this.actualizado = trabajador.actualizado;
@@ -342,18 +422,22 @@ export class FormularioComponent implements OnInit {
         this.datos_laborales = trabajador.datoslaborales;
         if(this.datos_laborales != null)
         {
-          let anio = this.datos_laborales.fecha_ingreso.substring(0,4);
-          let mes = (parseInt(this.datos_laborales.fecha_ingreso.substring(5,7)) - 1);
-          let dia = parseInt(this.datos_laborales.fecha_ingreso.substring(8,10));
-          ingreso = new Date(anio,+mes,dia);
-
-          let ingreso_federal;
-          let anio_federal = this.datos_laborales.fecha_ingreso_federal.substring(0,4);
-          let mes_federal = (parseInt(this.datos_laborales.fecha_ingreso_federal.substring(5,7)) - 1);
-          let dia_federal = parseInt(this.datos_laborales.fecha_ingreso_federal.substring(8,10));
+          if(this.datos_laborales.fecha_ingreso){
+            let anio = this.datos_laborales.fecha_ingreso.substring(0,4);
+            let mes = (parseInt(this.datos_laborales.fecha_ingreso.substring(5,7)) - 1);
+            let dia = parseInt(this.datos_laborales.fecha_ingreso.substring(8,10));
+            ingreso = new Date(anio,+mes,dia);
+          }
           
-          ingreso_federal = new Date(anio_federal,mes_federal,dia_federal);
-
+          let ingreso_federal;
+          if(this.datos_laborales.fecha_ingreso_federal){
+            let anio_federal = this.datos_laborales.fecha_ingreso_federal.substring(0,4);
+            let mes_federal = (parseInt(this.datos_laborales.fecha_ingreso_federal.substring(5,7)) - 1);
+            let dia_federal = parseInt(this.datos_laborales.fecha_ingreso_federal.substring(8,10));
+            
+            ingreso_federal = new Date(anio_federal,mes_federal,dia_federal);
+          }
+          
           if(this.datos_laborales.vigencia_fiel != null)
           {
             this.fiel(this.datos_laborales.tiene_fiel);
@@ -445,30 +529,32 @@ export class FormularioComponent implements OnInit {
         //console.log(datosEscolaridadCursante.colegiacion);
         this.tiene_colegio(datosEscolaridadCursante.colegiacion);
         this.tiene_certificado(datosEscolaridadCursante.certificacion);*/
-        
+
+        this.isLoadingCredential = true;
         this.trabajadorService.getDatosCredencial(trabajador.clave_credencial).subscribe(
           response => {
-            
             if(response.length > 0){
               let datosCredencial = response[0];
               if(datosCredencial.tieneFoto == '1'){
                 this.imagen_trabajador = 'http://credencializacion.saludchiapas.gob.mx/images/credenciales/'+datosCredencial.id+'.'+datosCredencial.tipoFoto;
-                console.log(this.imagen_trabajador);
+              }else{
+                this.imagen_trabajador = 'assets/trabajador.jpg';
               }
             }/*else{
               this.datosCredencial = undefined;
             }
-            this.isLoadingCredential = false;*/
+            */
+            this.isLoadingCredential = false;
+          },
+          errorResponse =>{
+            this.isLoadingCredential = false;
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000); 
           }
-        ),
-        errorResponse =>{
-          var errorMessage = "Ocurrió un error.";
-          if(errorResponse.status == 409){
-            errorMessage = errorResponse.error.error.message;
-          }
-          this.sharedService.showSnackBar(errorMessage, null, 3000);
-          
-        };
+        );
         this.isLoadingPage = false;
       },
       errorResponse =>{
@@ -478,7 +564,6 @@ export class FormularioComponent implements OnInit {
           errorMessage = errorResponse.error.error.message;
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
-        
       }
     );
   }

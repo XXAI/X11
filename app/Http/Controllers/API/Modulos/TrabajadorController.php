@@ -411,7 +411,7 @@ class TrabajadorController extends Controller
             $response_data['data'] = $trabajador;
             $response_data['mini_paginador'] = false;
             if(isset($params['selectedIndex'])){
-                $response_data['mini_paginador'] = $this->calcularMiniPaginador($params);
+                $response_data['mini_paginador'] = $this->calcularMiniPaginador($params,$permisos);
             }
 
             return response()->json($response_data,HttpResponse::HTTP_OK);
@@ -420,7 +420,7 @@ class TrabajadorController extends Controller
         }
     }
 
-    private function calcularMiniPaginador($params){
+    private function calcularMiniPaginador($params,$permisos){
         $access = $this->getUserAccessData();
         $per_page = $params['pageSize'];
         $page_index = $params['pageIndex'];
@@ -428,11 +428,12 @@ class TrabajadorController extends Controller
 
         $real_index = ($per_page * $page_index) + $selected_index; //calculamos el index real dentro de todo el "universo" de registros
 
-        $trabajadores = Trabajador::select('empleados.id')
+        $trabajadores = Trabajador::select('trabajador.id')
                                     ->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                                     ->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
-                                    ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja)");
-                                    ;
+                                    ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja)")
+                                    ->orderBy('trabajador.nombre');
+                                    
         //
         $permison_individual = false;                
         if(!$access->is_admin){
@@ -445,7 +446,10 @@ class TrabajadorController extends Controller
             }
         }
         
-        
+        if($permison_individual){
+            return false;
+        }
+
         //filtro de valores por permisos del usuario
         if(!$access->is_admin && $permison_individual == false){
             $trabajadores = $trabajadores->where(function($query){

@@ -5,11 +5,19 @@
     <!--<section  fxFlex="15" fxFlex.xs="100" *ngIf="trabajador_id != 0">-->
     <section  fxFlex="17" fxFlex.xs="100">
         <mat-card>
-            <mat-card-header fxShow.xs="true" fxHide="true">
-                <mat-icon>account_circle</mat-icon>
-                <mat-card-title>Secretaría de Salud</mat-card-title>
-            </mat-card-header>
-            <img mat-card-image src="{{ imagen_trabajador }}" alt="Photo of a Shiba Inu">
+            <mat-card-content>
+                <section *ngIf="miniPagination.total > 0" fxLayout="row">
+                    <button fxFlex="none" mat-icon-button [disabled]="miniPagination.previous == 0" (click)="loadPrevious()"><mat-icon>navigate_before</mat-icon> <span fxHide.xs="true"></span></button>
+                    <span fxFlex style="text-align: center; margin-top:8px;"><small>{{miniPagination.current}}/{{miniPagination.total}}</small></span>
+                    <button fxFlex="none" mat-icon-button [disabled]="miniPagination.next == 0" (click)="loadNext()"><span fxHide.xs="true"></span> <mat-icon>navigate_next</mat-icon></button>
+                </section>
+            </mat-card-content>
+            <mat-card-content style="position: relative;">
+                <div class="data-loading-shade" *ngIf="isLoadingCredential">
+                    <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+                </div>
+                <img mat-card-image src="{{ imagen_trabajador }}" alt="Foto del trabajador">
+            </mat-card-content>
             <mat-card-content>{{ nombre_trabajador }}</mat-card-content>
             <mat-card-content>
                 <span *ngIf="!actualizado && trabajador_id != null" style="color: red; font-weight: bold;">NO ACTUALIZADO</span>
@@ -28,7 +36,6 @@
                     </div>
                 </div>            
             </mat-card-content>
-
         </mat-card>
     </section>    
     <section  fxFlex="78" fxFlex.xs="100">
