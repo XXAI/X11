@@ -21,6 +21,7 @@ import { VerComponent } from './ver/ver.component';
 import { BuscarTrabajadorDialogComponent } from './buscar-trabajador-dialog/buscar-trabajador-dialog.component';
 import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog/agregar-firmantes-dialog.component';
 import { TransferenciaTrabajadorDialogComponent } from './transferencia-trabajador-dialog/transferencia-trabajador-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -43,7 +44,9 @@ import { TransferenciaTrabajadorDialogComponent } from './transferencia-trabajad
     TrabajadorRoutingModule,
     SharedModule,
     MatDatepickerModule,
-    MatNativeDateModule 
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   entryComponents:[
     JornadaDialogComponent,

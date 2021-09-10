@@ -3,12 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { ListaComponent } from './lista/lista.component';
-//import { FormularioComponent } from './formulario/formulario.component';
+import { DocumentacionComponent } from './documentacion/documentacion.component';
 
-//import { VerComponent } from './ver/ver.component';
 
 const routes: Routes = [
-  { path: 'tramites', component: ListaComponent, canActivate: [AuthGuard] },
+  { path: 'tramites/comision', component: ListaComponent, canActivate: [AuthGuard] },
+  { path: 'tramites/documentacion', component: DocumentacionComponent, canActivate: [AuthGuard] },
   /*{ path: 'trabajadores/nuevo', component: FormularioComponent, canActivate: [AuthGuard] },
   { path: 'trabajadores/editar/:id', component: FormularioComponent, canActivate: [AuthGuard] },
   { path: 'trabajadores/editar/:id/:step', component: FormularioComponent, canActivate: [AuthGuard] },

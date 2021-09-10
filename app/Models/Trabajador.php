@@ -102,5 +102,8 @@ class Trabajador extends Model
     public function rel_trabajador_horario(){
         return $this->hasMany('App\Models\RelHorario');
     }
+    public function rel_trabajador_documentos(){
+        return $this->hasOne('App\Models\RelDocumentacion');
+    }
 
 }

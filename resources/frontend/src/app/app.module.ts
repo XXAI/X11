@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { MatFileUploadModule } from 'angular-material-fileupload';
+
 import { LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 import { AuthModule } from './auth/auth.module';
@@ -77,6 +79,7 @@ import { DirectorioModule } from './directorio/directorio.module';
     ProfileModule,
     AppRoutingModule,
     CuestionarioDengueModule,
+    MatFileUploadModule ,
     WildcardRoutingModule,
   ],
   providers: [

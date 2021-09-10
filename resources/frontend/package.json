@@ -28,6 +28,7 @@
     "@ngrx/store": "^11.0.1",
     "angular-animate": "^1.8.2",
     "angular-highcharts": "^9.0.11",
+    "angular-material-fileupload": "^3.0.2",
     "file-saver": "^2.0.5",
     "highcharts": "^8.2.2",
     "ngx-captcha": "^9.0.1",

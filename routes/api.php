@@ -122,9 +122,12 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::post('responsable-unidad',       'API\Modulos\DirectorioController@AgregarResponsable');
     //Route::post('responsable-unidad/{id}',       'API\Modulos\DirectorioController@EliminarResponsable');
     Route::get('tramites-trabajador/{id}',    'API\Modulos\TramitesController@ListTramites');
+    Route::apiResource('tramite-documentacion',       'API\Modulos\TramiteDocumentacionController');
+    
+    
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
 });
-
+Route::post('tramite-documentacion-upload',       'API\Modulos\TramiteDocumentacionController@Upload');
 Route::middleware('auth')->get('/avatar-images', function (Request $request) {
     $avatars_path = public_path() . config('ng-client.path') . '/assets/avatars';
     $image_files = glob( $avatars_path . '/*', GLOB_MARK );
