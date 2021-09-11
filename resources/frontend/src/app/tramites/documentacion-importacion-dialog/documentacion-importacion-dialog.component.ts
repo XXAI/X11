@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, NgModel } from '@angular/forms';
 import { TramitesService } from '../tramites.service';
 import { merge,interval } from 'rxjs';
@@ -71,55 +71,27 @@ export class DocumentacionImportacionDialogComponent implements OnInit, OnDestro
   fileChange(event) {
 		let fileList: FileList = event.target.files;
 		if (fileList.length > 0) {
-			this.archivo = fileList[0];
+			this.archivo = <File>fileList[0];
       console.log(this.archivo);
 		}
   }
   
   subir() {
-    for (const key in this.form.controls) {
-      this.form.get(key).clearValidators();
-      this.form.get(key).updateValueAndValidity();
-    }  
-
-    this.permisosError = false;
-    this.errorArchivo = false;
+    console.log(this.archivo);
 
 		if (this.archivo) {
 			this.archivoSubido = false;
-      this.loading = true;
+      
+			
+      /*let formData: FormData = new FormData();
+      //formData.append('archivo', this.archivo, this.archivo.name);
+      formData.append('prueba', 'uno');*/
 
-			let usuario = JSON.parse(localStorage.getItem("usuario"));
-
-      let formData: FormData = new FormData();
-      formData.append('rfc', this.form.get("titulo").value);
-			formData.append('archivo', this.archivo, this.archivo.name);
-
-		  this.disableForm();
-			//let options = new RequestOptions({ headers: headers });
-
-      var responseHeaders: any;
-			var contentDisposition: any;
-
-      this.apiService.subir(formData).subscribe(
+      let datos = {rfc : 1};
+      this.apiService.subir(datos ).subscribe(
         response => {
-            this.archivoSubido = true;
-            this.loading = false;
-						this.progreso = 100;
-            this.archivo = null;
-            this.enableForm();
-				
+      	
         }, errorResponse => {
-          this.loading = false;
-          this.enableForm();
-          if(errorResponse.status == 409){
-
-            
-          } else {
-            
-          } 
-          this.progreso = 100;
-          this.loading = false;       
         }     
       )			
 		} else {
@@ -127,87 +99,6 @@ export class DocumentacionImportacionDialogComponent implements OnInit, OnDestro
       
     }
 	}
-  disableForm(){
-    this.form.get('titulo').disable();
-  }
-
-  enableForm(){
-    this.form.get('titulo').enable();
-  }
-
-  crear(){
-    return;
-    
-  }
-
-  editar(){
-    
-  }
-
-  cancelar(): void {
-    //this.dialogRef.close({ last_action: "none"});
-  }
-  borrar(): void {
-    
-  }
-  guardar(): void {
-    for (const key in this.form.controls) {
-      this.form.get(key).clearValidators();
-      this.form.get(key).updateValueAndValidity();
-    }  
-
-    this.permisosError = false;
-
-    /*if(this.data.edit){
-      this.editar();
-    } else {      
-      this.crear();
-    }*/
-  }
-
-  serverValidator(error: {[key: string]: any}):ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} => {
-
-      return error;
-    }
-  }
-
-  setErrors(validationErrors:any[]){
-    this.permisosError = false;
-    this.errorArchivo = false;
-    var  noTieneGrupo = false;
-    var bloqueado = false;
-    Object.keys(validationErrors).forEach( prop => {
-      const formControl = this.form.get(prop);
-      if(formControl){
-
-        formControl.markAsTouched();       
-
-        var array = [];
-        for(var x in validationErrors[prop]){
-          array.push(this.serverValidator({[validationErrors[prop][x]]: true}));
-        }
-        formControl.setValidators(array);              
-        formControl.updateValueAndValidity();
-      } else {
-        if(prop == "archivo"){
-          this.errorArchivo = true;
-        }
-        if(prop == "grupo"){
-          noTieneGrupo = true;
-        }
-
-        if(prop == "bloqueado"){
-          bloqueado = true;
-        }
-      }
-    });
-    if(noTieneGrupo){
-      
-    }
-
-    if(bloqueado){
-      
-    }
-  }
+  
+  
 }

@@ -21,17 +21,8 @@
 </section>        -->
 <h1 mat-dialog-title></h1>
 <div mat-dialog-content>
-    <mat-progress-bar mode="indeterminate" style="margin-bottom: 1em;"  *ngIf="loading"></mat-progress-bar>
-    <form class="form" [formGroup]="form" (ngSubmit)="subir()" (keyup.enter)="subir()">
-        <mat-form-field>
-            <mat-label>Título</mat-label>
-            <input matInput name="titulo" formControlName="titulo" maxlength="255">            
-            <mat-error *ngIf="form?.controls['titulo']?.hasError('required')">Campo requerido</mat-error>
-        </mat-form-field>  
-        
-        
-        
-    </form>
+    
+    
     <br>
     <input type="file" #archivoInput style="width:100%" name="archivo" is="xls" (change)="fileChange($event)" > 
     <mat-error *ngIf="errorArchivo"><small>Archivo obligatorio</small></mat-error>
@@ -40,7 +31,6 @@
     
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="cancelar()">Cancelar</button>
-  <button mat-button  color="warn" (click)="borrar()" >Borrar</button>
+  
   <button mat-raised-button color="primary" (click)="subir()">Guardar</button>
 </div>

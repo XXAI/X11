@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB, \File, \Store;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Facades\Storage;
 use App\Models\Trabajador;
+use App\Models\RelDocumentacion;
 
 //Relacionales
 use App\Models\User;
@@ -70,14 +72,57 @@ class TramiteDocumentacionController extends Controller
 
     public function Upload(Request $request)
     {
-        ini_set('memory_limit', '-1');
-        $request->validate([
+        //ini_set('memory_limit', '-1');
+        $mensajes = [
+            
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = $request->all();
+        $reglas = [];
+
+        
+
+        $reglas = [
+            'trabajador_id'       => 'required',
+            'rfc'                 => 'required',
+        ];
+        
+        DB::beginTransaction();
+        $v = Validator::make($inputs, $reglas, $mensajes);
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+      
+        
+     try{  
+       $parametros = $request->all();
+       $documentacion = RelDocumentacion::where("rfc", $parametros['rfc'])->get();
+       if($documentacion)
+       {
+
+       }
+       $documentacion = new RelDocumentacion();
+       $documentacion->trabajador_id = 1; 
+       $documentacion->rfc = $parametros['rfc']; 
+       $documentacion->estatus = 1;
+       $documentacion->save(); 
+       DB::commit();
+       return response()->json(['data'=>$documentacion],HttpResponse::HTTP_OK);
+    }catch(\Exception $e){
+        DB::rollback();
+        return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+    }
+        /*$request->validate([
             'archivo' => 'required|mimes:pdf|max:5000',
             'id' => 'required',
             'rfc' =>'required'
-            ]);
+            ]);*/
+
+           // dd($request->file('archivo'));
     
-            $fileModel = new File;
+            /*$fileModel = new File;
             $parametros = $request->all();
             if($request->hasFile('archivo')) {
                 $fileName = $parametros['rfc'];//$request->file('archivo')->getClientOriginalName();
@@ -86,7 +131,8 @@ class TramiteDocumentacionController extends Controller
                 $path = $request->file("archivo")->storeAs("public/documentacion", $name);
                 dd($path);
                 
-            }
+            }*/
+
     }
 
     private function getUserAccessData($loggedUser = null){

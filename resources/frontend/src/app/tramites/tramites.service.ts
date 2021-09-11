@@ -59,7 +59,7 @@ export class TramitesService {
     );
   }
 
-  private httpOptions = { headers: new HttpHeaders({'Access-Control-Allow-Origin':'*', Accept: 'application/json' })};
+  private httpOptions = { headers: new HttpHeaders()};
   setUploadFile(payload):Observable<any> {
     return this.http.post<any>(this.url_documentacion_upload, payload, this.httpOptions).pipe(
       map( response => {
@@ -67,7 +67,7 @@ export class TramitesService {
       })
     );
   }
-  subir(formData: FormData, ):Observable<any> {
+  subir(formData: any):Observable<any> {
 		return this.http.post(this.url_documentacion_upload, formData);
   }
   /*Fin documentacion */
