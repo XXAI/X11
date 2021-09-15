@@ -161,7 +161,7 @@ class TramitesController extends Controller
             }
             
             $fecha_actual = Carbon::now();
-            $fecha_calculada;
+            
             $dia = $fecha_actual->day;
             $fecha_inicial = "";
             $fecha_final = "";

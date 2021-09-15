@@ -1,15 +1,17 @@
-import { Component, OnInit, OnDestroy, Inject, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, NgModel } from '@angular/forms';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { SharedService } from '../../shared/shared.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TramitesService } from '../tramites.service';
-import { merge,interval } from 'rxjs';
+import { ImportarService } from '../importar.service';
+;
 import { Subscription } from 'rxjs';
-import { map, switchMap, filter, first } from 'rxjs/operators';
-
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface VerTrabajadorData {
   id?: string;
   rfc?:string;
+  nombre?:string;
 }
 
 @Component({
@@ -20,11 +22,12 @@ export interface VerTrabajadorData {
     TramitesService
   ]
 })
-export class DocumentacionImportacionDialogComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DocumentacionImportacionDialogComponent implements OnInit {
   form: FormGroup;
   grupos:any [] = [];
   loading: boolean;
-
+  nombre:string;
+  
   id:any;
   permisosError:boolean;
   objectSubscription: Subscription;
@@ -38,16 +41,21 @@ export class DocumentacionImportacionDialogComponent implements OnInit, OnDestro
 
   constructor(
     private fb: FormBuilder,
-    
-    private apiService: TramitesService) { }
+    private importarService: ImportarService,
+    public dialogRef: MatDialogRef<DocumentacionImportacionDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: VerTrabajadorData,
+    public dialog: MatDialog,
+    private apiService: TramitesService,
+    private sharedService: SharedService) { }
 
   ngOnInit (){
+    this.nombre = this.data.nombre;
     this.archivoSubido = false;
     this.enviandoDatos = false;
-    this.object = {}
+    this.object = {};
     this.form = this.fb.group(
       {
-        titulo: [''],
+        file: ['', Validators.required],
       }
     );
 
@@ -56,23 +64,25 @@ export class DocumentacionImportacionDialogComponent implements OnInit, OnDestro
     this.errorArchivo = false;
     
   }
-  
-  ngOnDestroy(){
-    if(this.objectSubscription != null){
-      this.objectSubscription.unsubscribe();
-    }
-  }
 
-
-  ngAfterViewInit(){
-
-  }
 
   fileChange(event) {
 		let fileList: FileList = event.target.files;
 		if (fileList.length > 0) {
-			this.archivo = <File>fileList[0];
-      console.log(this.archivo);
+      this.archivo = <File>fileList[0];
+      if(this.archivo.size > 5000000)
+      {
+        this.form.patchValue({file:null});
+        this.archivo = null;
+        this.sharedService.showSnackBar("Archivo supera el maximo de tamaño", null, 3000);
+      }
+
+      /*if(this.archivo.type == "")
+      {
+        this.form.patchValue({file:null});
+        this.archivo = null;
+        this.sharedService.showSnackBar("Archivo supera el maximo de tamaño", null, 3000);
+      }*/
 		}
   }
   
@@ -81,19 +91,17 @@ export class DocumentacionImportacionDialogComponent implements OnInit, OnDestro
 
 		if (this.archivo) {
 			this.archivoSubido = false;
-      
-			
-      /*let formData: FormData = new FormData();
-      //formData.append('archivo', this.archivo, this.archivo.name);
-      formData.append('prueba', 'uno');*/
 
-      let datos = {rfc : 1};
-      this.apiService.subir(datos ).subscribe(
+      let data = {'rfc': this.data.rfc, 'trabajador_id': this.data.id};
+      this.importarService.upload(data, this.archivo, '').subscribe(
         response => {
-      	
+          this.dialogRef.close(true);
+          this.sharedService.showSnackBar("Ha subido correctamente el documento", null, 3000);
+          //console.log(response);
         }, errorResponse => {
-        }     
-      )			
+          this.sharedService.showSnackBar(errorResponse, null, 3000);
+        });     
+      
 		} else {
       this.errorArchivo = true;
       

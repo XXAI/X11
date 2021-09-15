@@ -7,6 +7,7 @@ import { DocumentacionComponent } from './documentacion/documentacion.component'
 
 
 const routes: Routes = [
+  { path: 'tramites', component: ListaComponent, canActivate: [AuthGuard] },
   { path: 'tramites/comision', component: ListaComponent, canActivate: [AuthGuard] },
   { path: 'tramites/documentacion', component: DocumentacionComponent, canActivate: [AuthGuard] },
   /*{ path: 'trabajadores/nuevo', component: FormularioComponent, canActivate: [AuthGuard] },

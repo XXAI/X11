@@ -39,10 +39,7 @@
                     <div fxFlex>
                     </div>
                     &nbsp;
-                    <button mat-raised-button  color="primary"  [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'" [matMenuTriggerFor]="menuAction"><mat-icon>handyman</mat-icon> Acciones</button>
-                    <mat-menu #menuAction="matMenu">
-                        
-                    </mat-menu>                   
+                                 
                 </div>
             </mat-card>    
             
@@ -52,7 +49,7 @@
                 <mat-expansion-panel #advancedFilter  class="advanced-filter" [formGroup]="filterForm">
                     <br>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                        <mat-form-field fxFlex="22">
+                        <mat-form-field fxFlex="50">
                             <mat-label>CLUES</mat-label>
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
                             <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
@@ -62,7 +59,7 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="23">
+                        <mat-form-field fxFlex="50">
                             <mat-label>CR</mat-label>
                             <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
                             <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('cr')" [panelWidth]="'auto'">
@@ -72,60 +69,10 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('cr').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="30">
-                            <mat-label>Rama</mat-label>
-                            <mat-select #ramaFilter formControlName="rama" [compareWith]="compareRamaSelect">
-                                <mat-option>Sin Filtro</mat-option>
-                                <mat-option *ngFor="let item of filterCatalogs['rama']" [value]="item">
-                                    {{item.descripcion}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field fxFlex="15">
-                            <mat-label>Estatus</mat-label>
-                            <mat-select #estatusFilter formControlName="estatus" [compareWith]="compareEstatusSelect">
-                                <mat-option>Sin Filtro</mat-option>
-                                <mat-option *ngFor="let item of filterCatalogs['estatus']" [value]="item">
-                                    {{item.descripcion}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field fxFlex="5">
-                            <mat-label>Comisión</mat-label>
-                            <mat-select #comisionFilter formControlName="comisionado" [compareWith]="compareComisionSelect">
-                                <mat-option>Sin Filtro</mat-option>
-                                <mat-option [value]="1">SI</mat-option>
-                                <mat-option [value]="2">NO</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                       
                     </div>
                     <div fxLayout="row wrap">
-                        <mat-form-field fxFlex="50" *ngIf="filterCatalogs.grupos">
-                            <mat-label>Grupos</mat-label>
-                            <input type="text" aria-label="grupos" matInput formControlName="grupos" [matAutocomplete]="gruposAutocomplete">
-                            <mat-autocomplete #gruposAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('descripcion')" [panelWidth]="'auto'">
-                                <mat-option *ngFor="let item of filteredCatalogs['grupos'] | async" [value]="item">
-                                    {{item.descripcion}}
-                                </mat-option>
-                            </mat-autocomplete>
-                            <mat-hint *ngIf="filterForm.get('grupos').value">{{filterForm.get('grupos').value.descripcion}}</mat-hint>
-                        </mat-form-field>
-                        <mat-form-field fxFlex="15">
-                            <mat-label>Adscripción</mat-label>
-                            <mat-select #adscripcionFilter formControlName="adscripcion" [compareWith]="compareAdscripcionSelect">
-                                <mat-option>Sin Filtro</mat-option>
-                                <mat-option *ngFor="let item of filterCatalogs['adscripcion']" [value]="item">
-                                    {{item.descripcion}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>        
-                        <mat-form-field fxFlex="5">
-                            <mat-label>E4</mat-label>
-                            <mat-select #comisionFilter formControlName="e4" [compareWith]="comparee4Select">
-                                <mat-option [value]="0">Todos</mat-option>
-                                <mat-option [value]="1">SI</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                       
                         <div fxFlex></div>
                         <div fxFlex="none">
                             <button mat-flat-button (click)="filterForm.reset()">
@@ -149,25 +96,7 @@
                 <div class="data-container ">
                     <div class="data-table-container">
                         <table #dataTable mat-table [dataSource]="dataSource" class="data-table" matSort>
-                            <!-- ID Column -->
-                            <ng-container matColumnDef="estatus">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </th>
-                                <td mat-cell *matCellDef="let row"> 
-                                    <div  *ngIf="row.estatus!=1">
-                                        <mat-icon>
-                                            {{ statusIcon[row.estatus] }}
-                                        </mat-icon> 
-                                    </div>
-                                    <div  *ngIf="row.estatus==1">
-                                        <mat-icon  [ngClass]="{'actualizacion_completa': row.actualizado==1}">
-                                            {{ validateIcon[row.validado] }}
-                                        </mat-icon> 
-                                        
-                                    </div>
-                                   
-                                </td>
-                            </ng-container>    
-                    
+                           
                             <!-- Name Column -->
                             <ng-container matColumnDef="RFC" >
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> RFC </th>
@@ -187,8 +116,14 @@
                             </ng-container>
                             <ng-container matColumnDef="CR">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> CR </th>
-                                <td mat-cell *matCellDef="let row"> {{row.datoslaborales.cr_fisico_id}} <br>
+                                <td mat-cell *matCellDef="let row"> 
+                                    {{row.datoslaborales.cr_fisico_id}} <br>
                                     {{row.datoslaborales.cr_fisico.descripcion}}
+                                    <div *ngIf="row.rel_trabajador_documentos">
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 2" style="color: red;">
+                                            <b>{{ row.rel_trabajador_documentos.observacion }} </b>
+                                        </div>
+                                    </div>
                                 </td>
                             </ng-container>
 
@@ -196,11 +131,47 @@
                                 <th mat-header-cell *matHeaderCellDef>Acciones</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
                                     
-                                    <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Acciones</button>
-                                    <mat-menu #menu="matMenu">
-                                        <button mat-menu-item (click)="CargarDocumento(row)"><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>
+                                    
+                                    <div *ngIf="!row.rel_trabajador_documentos">
+                                        <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Acciones</button>
+                                        <mat-menu #menu="matMenu">
+                                                <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
+                                        </mat-menu>
+                                    </div>
+                                    
+                                    <div *ngIf="row.rel_trabajador_documentos">
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 1 && permiso_validador == true">
+                                            <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Acciones</button>
+                                            <mat-menu #menu="matMenu">
+                                                    <div *ngIf="row.rel_trabajador_documentos.estatus == 1">
+                                                        <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 2)" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
+                                                        <button mat-menu-item (click)="CambioEstatus(row.id, 3)" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
+                                                        <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                            <mat-icon color="warn">download</mat-icon> DESCARGAR
+                                                        </button>            
+                                                    </div>
+                                                
+                                            </mat-menu>
                                             
-                                    </mat-menu>
+                                        </div>
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 2 && permiso_rh == true">
+                                            <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Acciones</button>
+                                            <mat-menu #menu="matMenu">
+                                                    <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
+                                            </mat-menu>
+                                            <B style="color: red;">DENEGADO</B>
+                                        </div>
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus != 3 && permiso_rh == true">
+                                            <div *ngIf="row.rel_trabajador_documentos.estatus == 1">PENDIENTE</div>
+                                            <div *ngIf="row.rel_trabajador_documentos.estatus == 3">APROBADO</div>
+                                        </div>
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 3">
+                                            <button mat-raised-button color="primary" (click)="descargar(row)">
+                                                <mat-icon>download</mat-icon> DESCARGAR
+                                            </button> 
+                                        </div>  
+                                    </div>
+                                      
                                     
                                 </td>
                             </ng-container>

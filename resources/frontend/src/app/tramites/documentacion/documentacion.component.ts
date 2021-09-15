@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTable } from '@angular/material/table';
@@ -12,13 +11,10 @@ import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { TramitesService } from '../tramites.service';
 import { DocumentacionImportacionDialogComponent } from '../documentacion-importacion-dialog/documentacion-importacion-dialog.component';
+import { CancelarDocumentacionDialogComponent } from '../cancelar-documentacion-dialog/cancelar-documentacion-dialog.component';
 
-import { PermissionsList } from '../../auth/models/permissions-list';
-import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { MediaObserver } from '@angular/flex-layout';
 
-import { ReportWorker } from '../../web-workers/report-worker';
-import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-documentacion',
@@ -44,6 +40,9 @@ export class DocumentacionComponent implements OnInit {
   isLoadingPDFArea: boolean = false;
   isLoadingAgent: boolean = false;
   mediaSize: string;
+
+  permiso_rh:boolean = false;
+  permiso_validador:boolean = false;
 
   puedeFinalizar: boolean = false;
   capturaFinalizada: boolean = false;
@@ -96,7 +95,7 @@ export class DocumentacionComponent implements OnInit {
     'adscripcion': [undefined],
   });
 
-  displayedColumns: string[] = ['estatus','RFC','CURP','Nombre', 'CR','actions']; //'Agente',
+  displayedColumns: string[] = ['RFC','CURP','Nombre', 'CR','actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, public tramitesService: TramitesService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
@@ -155,12 +154,12 @@ export class DocumentacionComponent implements OnInit {
         maxHeight: '100vh',
         height: '100%',
         width: '100%',
-        data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc}
+        data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
       };
     }else{
       configDialog = {
-        width: '25%',
-        data:{ id: obj.id, rfc: obj.rfc}
+        width: '30%',
+        data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
       }
     }
     const dialogRef = this.dialog.open(DocumentacionImportacionDialogComponent, configDialog);
@@ -168,6 +167,7 @@ export class DocumentacionComponent implements OnInit {
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
         console.log(valid);
+        this.loadTrabajadorData();
       }
       this.loadTrabajadorData();
     });
@@ -175,22 +175,22 @@ export class DocumentacionComponent implements OnInit {
   public loadFilterCatalogs(){
     this.tramitesService.getFilterCatalogs().subscribe(
       response => {
-        //console.log(response);
+        console.log(response);
         this.filterCatalogs = {
           'clues': response.data.clues,
           'cr': response.data.cr,
-          'estatus': response.data.estatus,
+          /*'estatus': response.data.estatus,
           'rama': response.data.rama,
-          'adscripcion': [{id:'MU',descripcion:'Adscrito y Fisico en la unidad'},{id:'OU', descripcion:'Comisionados de otras unidades'},{id:'EOU', descripcion:'Comisionados a otras unidades'}]
+          'adscripcion': [{id:'MU',descripcion:'Adscrito y Fisico en la unidad'},{id:'OU', descripcion:'Comisionados de otras unidades'},{id:'EOU', descripcion:'Comisionados a otras unidades'}]*/
         };
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
         this.filteredCatalogs['cr'] = this.filterForm.controls['cr'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'cr','descripcion')));
 
-        if(response.data.grupos){
+        /*if(response.data.grupos){
           this.filterCatalogs.grupos = response.data.grupos;
           this.filteredCatalogs['grupos'] = this.filterForm.controls['grupos'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'grupos','descripcion')));
-        }
+        }*/
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -203,7 +203,48 @@ export class DocumentacionComponent implements OnInit {
   }
 
 
-  
+  public ObservacionCancelar(obj, id, estado)
+  {
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
+      };
+    }else{
+      configDialog = {
+        width: '30%',
+        data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
+      }
+    }
+    const dialogRef = this.dialog.open(CancelarDocumentacionDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.loadTrabajadorData();
+      }
+      this.loadTrabajadorData();
+    });
+  }
+
+  public CambioEstatus(id, estado)
+  {
+    this.tramitesService.setCambioEstatus(id, estado).subscribe(
+      response =>{
+        this.loadTrabajadorData();
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        //this.isLoading = false;
+      });
+  }
 
   public loadTrabajadorData(event?:PageEvent){
     
@@ -273,6 +314,8 @@ export class DocumentacionComponent implements OnInit {
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
 
+          this.permiso_rh = response.rh;
+          this.permiso_validador = response.oficina;
           this.dataSource = [];
           this.resultsLength = 0;
           if(response.data.total > 0){
@@ -337,8 +380,26 @@ export class DocumentacionComponent implements OnInit {
     }
   }
 
-  showAddEmployeDialog(){
-    
+  descargar(obj:any){
+    this.tramitesService.getFile(obj.id).subscribe(
+      response =>{
+        console.log(response);
+        let blob = new Blob([response], {type: 'application/pdf'});
+
+        var downloadURL = window.URL.createObjectURL(response);
+        var link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = obj.rfc+".pdf";
+        link.click();
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoading = false;
+      });
   }
 
   editTrabajador(index){

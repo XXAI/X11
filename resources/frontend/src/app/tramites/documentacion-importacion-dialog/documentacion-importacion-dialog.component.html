@@ -1,16 +1,16 @@
 
-<!--<section  fxFlex="100" fxFlex.xs="100">
+<section  fxFlex="100" fxFlex.xs="100">
     <mat-card>
-        <mat-card-title>IMPORAR ARCHIVOS DEL TRABAJADOR</mat-card-title>
-
+        <mat-card-title>IMPORTAR ARCHIVOS DEL TRABAJADOR</mat-card-title>
+        <mat-card-subtitle>{{nombre}}</mat-card-subtitle>
         <mat-card-content>
             <div>
                 Maximo de peso del archivo 5Mb.
             </div>
-            <form (ngSubmit)="onSubmit()" [formGroup]="form" enctype="multipart/form-data">
+            <form (ngSubmit)="subir()" [formGroup]="form">
                 <div class="form-group">
                     <label>Archivo</label>
-                    <input type="file" formControlName="file" class="form-control" (change)="uploadFile($event)">
+                    <input type="file" formControlName="file" class="form-control" accept="application/pdf" (change)="fileChange($event)">
                 </div>
                 <button type="submit" mat-raised-button color="primary">ENVIAR</button>
             </form>
@@ -18,19 +18,4 @@
             
         </mat-card-content>
     </mat-card>
-</section>        -->
-<h1 mat-dialog-title></h1>
-<div mat-dialog-content>
-    
-    
-    <br>
-    <input type="file" #archivoInput style="width:100%" name="archivo" is="xls" (change)="fileChange($event)" > 
-    <mat-error *ngIf="errorArchivo"><small>Archivo obligatorio</small></mat-error>
-    <br>
-    <br>
-    
-</div>
-<div mat-dialog-actions>
-  
-  <button mat-raised-button color="primary" (click)="subir()">Guardar</button>
-</div>
+</section>        

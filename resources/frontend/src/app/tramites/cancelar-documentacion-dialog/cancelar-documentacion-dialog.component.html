@@ -1,0 +1,24 @@
+
+<h1 mat-dialog-title>{{nombre}}</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" >
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+            <div fxFlex="100" fxFlex.xs="100">
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                    <mat-form-field fxFlex="100" fxFlex.xs="100">
+                        <textarea matInput  formControlName="observacion" placeholder="Observación" rows="5" required></textarea>
+                        <mat-error *ngIf="form.get('observacion').invalid && (form.get('observacion').dirty || form.get('observacion').touched)">
+                            <span *ngIf="form.get('observacion').errors.required">Campo obligatorio</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>    
+                
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button (click)="subir()" color="success" [disabled]="!form.valid"><mat-icon>save</mat-icon> Guardar</button>
+</div>
+

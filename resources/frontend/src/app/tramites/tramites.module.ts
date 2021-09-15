@@ -16,10 +16,11 @@ import { DocumentacionComponent } from './documentacion/documentacion.component'
 import { DocumentacionImportacionDialogComponent } from './documentacion-importacion-dialog/documentacion-importacion-dialog.component';
 
 import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CancelarDocumentacionDialogComponent } from './cancelar-documentacion-dialog/cancelar-documentacion-dialog.component'
 
 @NgModule({
-  declarations: [ListaComponent, DocumentacionComponent, DocumentacionImportacionDialogComponent/*, FormatoFechaPipe*/],
+  declarations: [ListaComponent, DocumentacionComponent, DocumentacionImportacionDialogComponent, CancelarDocumentacionDialogComponent/*, FormatoFechaPipe*/],
   imports: [
     CommonModule,
     TramitesRoutingModule,
@@ -35,7 +36,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     { provide: MatPaginatorIntl, useValue: getEspPaginatorIntl() }
   ],
   entryComponents:[
-    DocumentacionImportacionDialogComponent
+    DocumentacionImportacionDialogComponent,
+    CancelarDocumentacionDialogComponent
   ]
 })
 export class TramitesModule { }
