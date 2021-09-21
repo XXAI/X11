@@ -223,7 +223,7 @@ class TramiteDocumentacionController extends Controller
        $documentacion = RelDocumentacion::where("trabajador_id", $id)->first();
        
 
-        return \Storage::download("public\\documentacion\\".$documentacion->rfc.".pdf");
+        return \Storage::download("public//documentacion//".$documentacion->rfc.".pdf");
         //return response()->json(['data'=>$documentacion],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             DB::rollback();
