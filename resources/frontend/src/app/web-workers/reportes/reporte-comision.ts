@@ -67,7 +67,7 @@ export class ReporteComision {
                   //     alignment: 'center'
                   // },
                   {
-                    text:fecha_hoy.toString(),
+                    text: "16 DE JUNIO DEL 2021",//fecha_hoy.toString(),
                     alignment:'right',
                     fontSize: 7,
                 }
@@ -189,7 +189,8 @@ export class ReporteComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/2021\n\nASUNTO:COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio"},
+                //{ text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/2021\n\nASUNTO:COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio"},
+                { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/2021\n\nASUNTO:COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A 16 DE JUNIO DEL 2021", style: "texto_num_oficio"},
                 //{ text: "", colSpan:4},{},{},{},
               ],
             ]

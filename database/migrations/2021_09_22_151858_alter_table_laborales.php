@@ -14,8 +14,8 @@ class AlterTableLaborales extends Migration
     public function up()
     {
         Schema::table('rel_trabajador_datos_laborales_nomina', function (Blueprint $table) {
-            $table->string('curp', 50)->nullable()->after('trabajador_id')->index();
-            $table->string('rfc', 15)->nullable()->after('trabajador_id')->index();
+            $table->string('curp_nomina', 50)->nullable()->after('trabajador_id')->index();
+            $table->string('rfc_nomina', 15)->nullable()->after('trabajador_id')->index();
             $table->string('tipo_personal', 100)->nullable()->after('institucion_id');
             $table->string('fuente_financiamiento', 150)->nullable()->after('numero_empleado');
             $table->string('clave_presupuestal', 100)->nullable()->after('numero_empleado');
@@ -34,8 +34,8 @@ class AlterTableLaborales extends Migration
     public function down()
     {
         Schema::table('rel_trabajador_datos_laborales_nomina', function (Blueprint $table) {
-            $table->dropColumn('rfc');
-            $table->dropColumn('curp');
+            $table->dropColumn('rfc_nomina');
+            $table->dropColumn('curp_nomina');
             $table->dropColumn('tipo_personal');
             $table->dropColumn('fuente_financiamiento');
             $table->dropColumn('clave_presupuestal');
