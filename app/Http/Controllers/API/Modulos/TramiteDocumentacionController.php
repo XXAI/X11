@@ -61,6 +61,7 @@ class TramiteDocumentacionController extends Controller
                 $permison_of_central = true;
             }
             
+            //return response()->json(['data'=>$access->is_admin, 'rh'=>$permison_rh, 'oficina'=>$permison_of_central],HttpResponse::HTTP_OK);
             //Sacamos totales para el estatus de las cantidades validadas
             if($permison_rh || $access->is_admin){
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
@@ -69,16 +70,20 @@ class TramiteDocumentacionController extends Controller
             }
             else if($permison_of_central == true)
             {
+                
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                                         ->with('rel_trabajador_documentos',"datoslaborales")
                                         ->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus in (1,3)))"))
                                         ->where("trabajador.estatus", 1);
+
+                                                              
             } 
             
-            $permison_individual = false;                
+            /*$permison_individual = false;                
             if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
                     foreach ($value->permissions as $key2 => $value2) {
+                        echo $value2->id."-- ";
                         if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
                         {
                             $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
@@ -86,15 +91,15 @@ class TramiteDocumentacionController extends Controller
                         }
                     }
                 }
-            }
-            
+            }*/
+            //return response()->json(['data'=>$trabajador->get()],HttpResponse::HTTP_CONFLICT);  
             
             //filtro de valores por permisos del usuario
-            if(!$access->is_admin && $permison_individual == false){
+            /*if(!$access->is_admin && $permison_individual == false){
                 $trabajador = $trabajador->where(function($query)use($access){
                     $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
                 });
-            }
+            }*/
 
             $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);
 

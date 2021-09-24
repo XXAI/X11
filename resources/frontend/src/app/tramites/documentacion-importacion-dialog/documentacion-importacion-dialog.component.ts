@@ -25,7 +25,7 @@ export interface VerTrabajadorData {
 export class DocumentacionImportacionDialogComponent implements OnInit {
   form: FormGroup;
   grupos:any [] = [];
-  loading: boolean;
+  isLoading: boolean;
   nombre:string;
   
   id:any;
@@ -59,7 +59,7 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
       }
     );
 
-    this.loading = true;
+    this.isLoading = false;
     this.permisosError = false;    
     this.errorArchivo = false;
     
@@ -77,29 +77,25 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
         this.sharedService.showSnackBar("Archivo supera el maximo de tamaño", null, 3000);
       }
 
-      /*if(this.archivo.type == "")
-      {
-        this.form.patchValue({file:null});
-        this.archivo = null;
-        this.sharedService.showSnackBar("Archivo supera el maximo de tamaño", null, 3000);
-      }*/
+    
 		}
   }
   
   subir() {
-    console.log(this.archivo);
-
+    
 		if (this.archivo) {
 			this.archivoSubido = false;
-
+      this.isLoading = true;
       let data = {'rfc': this.data.rfc, 'trabajador_id': this.data.id};
       this.importarService.upload(data, this.archivo, '').subscribe(
         response => {
           this.dialogRef.close(true);
           this.sharedService.showSnackBar("Ha subido correctamente el documento", null, 3000);
+          this.isLoading = false;
           //console.log(response);
         }, errorResponse => {
           this.sharedService.showSnackBar(errorResponse, null, 3000);
+          this.isLoading = false;
         });     
       
 		} else {

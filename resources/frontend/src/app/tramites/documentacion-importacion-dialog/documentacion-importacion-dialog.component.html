@@ -4,15 +4,27 @@
         <mat-card-title>IMPORTAR ARCHIVOS DEL TRABAJADOR</mat-card-title>
         <mat-card-subtitle>{{nombre}}</mat-card-subtitle>
         <mat-card-content>
+            <div class="form-loading-shade">
+                <mat-spinner *ngIf="isLoading"></mat-spinner>
+              </div>
             <div>
-                Maximo de peso del archivo 5Mb.
+                Maximo de peso del archivo <b style="color: red;">5Mb.</b>
             </div>
             <form (ngSubmit)="subir()" [formGroup]="form">
+                <b>Documentación Requerida:</b>
+                <ul style="font-weight: bold;">
+                    <li>ACTA DE NACIMIENTO</li>
+                    <li>CURP</li>
+                    <li>CONSTANCIA DE ANTECEDENTES NO PENALES</li>
+                    <li>TÍTULO (TODOS LOS QUE CUENTE)</li>
+                    <li>CÉDULA PROFESIONAL (TODOS LOS QUE CUENTE)</li>
+                    <li>SOLICITUD DE EMPLEO</li>
+                </ul>
                 <div class="form-group">
                     <label>Archivo</label>
                     <input type="file" formControlName="file" class="form-control" accept="application/pdf" (change)="fileChange($event)">
                 </div>
-                <button type="submit" mat-raised-button color="primary">ENVIAR</button>
+                <button type="submit" mat-raised-button color="primary"  [disabled]="!form.valid || isLoading">SUBIR INFORMACIÓN</button>
             </form>
     
             
