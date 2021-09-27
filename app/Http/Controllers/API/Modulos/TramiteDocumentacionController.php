@@ -9,6 +9,7 @@ use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Facades\Storage;
 use App\Models\Trabajador;
 use App\Models\RelDocumentacion;
+use App\Models\RelDocumentacionDetalles;
 
 
 //Relacionales
@@ -130,7 +131,8 @@ class TramiteDocumentacionController extends Controller
         ];
         $inputs = $request->all();
         $reglas = ['estatus'=> 'required'];
-            
+        
+        //return response()->json(['data'=>$request->all()],HttpResponse::HTTP_CONFLICT);    
             
         $object = RelDocumentacion::where("trabajador_id",$id)->first();
         if(!$object){
@@ -150,9 +152,19 @@ class TramiteDocumentacionController extends Controller
             {
                 $object->observacion                       = $inputs['observacion'];       
             }
+
+            
             $object->estatus                       = $inputs['estatus'];   
             $object->save();
-            
+            $arreglo = Array();
+            foreach ($inputs['requerimientos'] as $key => $value) {
+                //array_push($arreglo, new RelDocumentacionDetalles(['tipo_id' => $value]));
+                $aux = new RelDocumentacionDetalles();
+                $aux->rel_trabajador_documentacion_id=$object->id;
+                $aux->tipo_id = $value;
+                $aux->save();
+            }
+           
             DB::commit();
             return response()->json($object,HttpResponse::HTTP_OK);
 

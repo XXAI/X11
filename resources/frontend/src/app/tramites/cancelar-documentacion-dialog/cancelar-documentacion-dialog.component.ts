@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, NgModel } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, NgModel, FormArray, FormControl } from '@angular/forms';
 import { TramitesService } from '../tramites.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,6 +34,15 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
   progreso: number = 0; 
   errorArchivo:boolean;
 
+  public checks: Array<any> = [
+    {description: 'ACTA DE NACIMIENTO', value: '1'},
+    {description: "CURP", value: '2'},
+    {description: "CONSTANCIA DE ANTECEDENTES NO PENALES", value: '3'},
+    {description: "TÍTULO (TODOS LOS QUE CUENTE)", value: '4'},
+    {description: "CÉDULA PROFESIONAL (TODOS LOS QUE CUENTE)", value: '5'},
+    {description: "SOLICITUD DE EMPLEO", value: '6'}
+  ];
+
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<CancelarDocumentacionDialogComponent>,
@@ -46,6 +55,7 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
     this.nombre = this.data.nombre;
     this.form = this.fb.group(
       {
+        requerimiento: new FormArray([]),
         observacion: ['', Validators.required],
       }
     );
@@ -53,9 +63,35 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
     this.loading = true;
   }
   
+  onCheckChange(event) {
+    const formArray: FormArray = this.form.get('requerimiento') as FormArray;
+  
+    /* Selected */
+    if(event.target.checked){
+      // Add a new control in the arrayForm
+      formArray.push(new FormControl(event.target.value));
+      //formArray.push(new FormControl(1));
+    }
+    /* unselected */
+    else{
+      // find the unselected element
+      let i: number = 0;
+  
+      formArray.controls.forEach((ctrl: FormControl) => {
+        if(ctrl.value == event.target.value) {
+          // Remove the unselected element from the arrayForm
+          formArray.removeAt(i);
+          return;
+        }
+  
+        i++;
+      });
+    }
+  }
+
   subir() {
-    
-    this.tramitesService.setCambioEstatus(this.data.id, 2, this.form.value.observacion).subscribe(
+    console.log(this.form.value);
+    this.tramitesService.setCambioEstatus(this.data.id, 2, this.form.value).subscribe(
       response =>{
         this.sharedService.showSnackBar("Se ha denegado el archivo", null, 3000);
         this.dialogRef.close(true);
@@ -67,7 +103,7 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         //this.isLoading = false;
-      });
+    });
 		
 	}
   cancelar(): void {

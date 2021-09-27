@@ -45,7 +45,7 @@ export class TramitesService {
 
   /*Documentacion */
   setCambioEstatus(id, estatus, data:any= []):Observable<any> {
-    return this.http.put<any>(this.url_documentacion+"/"+id, { estatus:estatus, observacion:data}).pipe(
+    return this.http.put<any>(this.url_documentacion+"/"+id, { estatus:estatus, observacion: data.observacion, requerimientos:data.requerimiento}).pipe(
         map( response => {
           return response;
         })
