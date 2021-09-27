@@ -119,11 +119,11 @@
                                 <td mat-cell *matCellDef="let row"> 
                                     {{row.datoslaborales.cr_fisico_id}} <br>
                                     {{row.datoslaborales.cr_fisico.descripcion}}
-                                    <div *ngIf="row.rel_trabajador_documentos">
+                                    <!--<div *ngIf="row.rel_trabajador_documentos">
                                         <div *ngIf="row.rel_trabajador_documentos.estatus == 2" style="color: red;">
                                             <b>{{ row.rel_trabajador_documentos.observacion }} </b>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </td>
                             </ng-container>
 
@@ -152,14 +152,23 @@
                                                     </div>
                                                 
                                             </mat-menu>
-                                            
+                                            <button  mat-raised-button color="warn" (click)="verInformacion(row)" *ngIf="row.rel_trabajador_documentos.detalles.length >0">
+                                                <mat-icon>
+                                                    dangerous
+                                                </mat-icon>
+                                            </button>
                                         </div>
                                         <div *ngIf="row.rel_trabajador_documentos.estatus == 2 && permiso_rh == true">
                                             <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Acciones</button>
                                             <mat-menu #menu="matMenu">
                                                     <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
                                             </mat-menu>
-                                            <B style="color: red;">DENEGADO</B>
+                                            <button  mat-raised-button color="warn" (click)="verInformacion(row)">
+                                                <mat-icon>
+                                                    dangerous
+                                                </mat-icon>
+                                            </button>
+                                            <!--<B style="color: red;">DENEGADO</B>-->
                                         </div>
                                         <div *ngIf="row.rel_trabajador_documentos.estatus != 3 && permiso_rh == true">
                                             <div *ngIf="row.rel_trabajador_documentos.estatus == 1">PENDIENTE</div>

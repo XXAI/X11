@@ -10,5 +10,7 @@ class RelDocumentacion extends Model
     use SoftDeletes;
     protected $table = 'rel_trabajador_documentacion';
 
-  
+    public function detalles(){
+        return $this->hasMany('App\Models\RelDocumentacionDetalles', 'rel_trabajador_documentacion_id');
+    }
 }

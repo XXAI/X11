@@ -17,10 +17,12 @@ import { DocumentacionImportacionDialogComponent } from './documentacion-importa
 
 import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CancelarDocumentacionDialogComponent } from './cancelar-documentacion-dialog/cancelar-documentacion-dialog.component'
+import { CancelarDocumentacionDialogComponent } from './cancelar-documentacion-dialog/cancelar-documentacion-dialog.component';
+import { VerInformacionDialogComponent } from './ver-informacion-dialog/ver-informacion-dialog.component';
+import { VisorPdfDialogComponent } from './visor-pdf-dialog/visor-pdf-dialog.component'
 
 @NgModule({
-  declarations: [ListaComponent, DocumentacionComponent, DocumentacionImportacionDialogComponent, CancelarDocumentacionDialogComponent/*, FormatoFechaPipe*/],
+  declarations: [ListaComponent, DocumentacionComponent, DocumentacionImportacionDialogComponent, CancelarDocumentacionDialogComponent, VerInformacionDialogComponent, VisorPdfDialogComponent/*, FormatoFechaPipe*/],
   imports: [
     CommonModule,
     TramitesRoutingModule,
@@ -37,7 +39,9 @@ import { CancelarDocumentacionDialogComponent } from './cancelar-documentacion-d
   ],
   entryComponents:[
     DocumentacionImportacionDialogComponent,
-    CancelarDocumentacionDialogComponent
+    CancelarDocumentacionDialogComponent,
+    VerInformacionDialogComponent,
+    VisorPdfDialogComponent
   ]
 })
 export class TramitesModule { }

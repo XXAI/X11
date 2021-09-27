@@ -66,14 +66,14 @@ class TramiteDocumentacionController extends Controller
             //Sacamos totales para el estatus de las cantidades validadas
             if($permison_rh || $access->is_admin){
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
-                                    ->with('rel_trabajador_documentos', "datoslaborales")
+                                    ->with('rel_trabajador_documentos.detalles', "datoslaborales")
                                         ->where("estatus", 1);
             }
             else if($permison_of_central == true)
             {
                 
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
-                                        ->with('rel_trabajador_documentos',"datoslaborales")
+                                        ->with('rel_trabajador_documentos.detalles',"datoslaborales")
                                         ->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus in (1,3)))"))
                                         ->where("trabajador.estatus", 1);
 
@@ -232,7 +232,8 @@ class TramiteDocumentacionController extends Controller
 
     public function Download(Request $request, $id)
     {
-        
+        /*$obj = Trabajador::where("id", $id)->first();
+        return response()->file("public//documentacion//".$documentacion->rfc.".pdf");*/
         ini_set('memory_limit', '-1');
         DB::beginTransaction();
         

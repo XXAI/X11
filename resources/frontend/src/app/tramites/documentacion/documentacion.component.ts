@@ -5,16 +5,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTable } from '@angular/material/table';
 
-import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
+//import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { TramitesService } from '../tramites.service';
 import { DocumentacionImportacionDialogComponent } from '../documentacion-importacion-dialog/documentacion-importacion-dialog.component';
+import { VerInformacionDialogComponent } from '../ver-informacion-dialog/ver-informacion-dialog.component';
 import { CancelarDocumentacionDialogComponent } from '../cancelar-documentacion-dialog/cancelar-documentacion-dialog.component';
+import { VisorPdfDialogComponent } from '../visor-pdf-dialog/visor-pdf-dialog.component';
 
 import { MediaObserver } from '@angular/flex-layout';
-
 
 @Component({
   selector: 'app-documentacion',
@@ -98,7 +99,11 @@ export class DocumentacionComponent implements OnInit {
   displayedColumns: string[] = ['RFC','CURP','Nombre', 'CR','actions']; //'Agente',
   dataSource: any = [];
 
-  constructor(private sharedService: SharedService, public tramitesService: TramitesService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
+  constructor(private sharedService: SharedService, 
+    public tramitesService: TramitesService, 
+    public dialog: MatDialog, 
+    private fb: FormBuilder, 
+    public mediaObserver: MediaObserver) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatTable) usersTable: MatTable<any>;
@@ -144,6 +149,30 @@ export class DocumentacionComponent implements OnInit {
     this.loadFilterCatalogs();
   }
 
+  public verInformacion(obj)
+  {
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno, arreglo:obj.rel_trabajador_documentos.detalles, observacion:obj.rel_trabajador_documentos.observacion}
+      };
+    }else{
+      configDialog = {
+        width: '30%',
+        data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno, arreglo:obj.rel_trabajador_documentos.detalles, observacion:obj.rel_trabajador_documentos.observacion }
+      }
+    }
+    const dialogRef = this.dialog.open(VerInformacionDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+      }
+    });
+   }
   
   public CargarDocumento(obj)
   {
@@ -381,9 +410,39 @@ export class DocumentacionComponent implements OnInit {
   }
 
   descargar(obj:any){
+    
     this.tramitesService.getFile(obj.id).subscribe(
       response =>{
         console.log(response);
+        /*let datos = response;
+        const url = window.URL.createObjectURL(datos);
+
+          console.log(url);
+          let configDialog = {};
+          configDialog = {
+            width: '30%',
+            data:{ data:url}
+          }
+          const dialogRef = this.dialog.open(VisorPdfDialogComponent, configDialog);
+
+        dialogRef.afterClosed().subscribe(valid => {
+          if(valid){
+            this.loadTrabajadorData();
+          }
+          this.loadTrabajadorData();
+        });*/
+          //document.querySelector("iframe").src = url;
+        /*fetch(datos) 
+        .then(obj => {
+          const byteArray = new Uint8Array(atob(response.data).split('').map(char => char.charCodeAt(0)));
+          return new Blob([byteArray], {type: 'application/pdf'});
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+
+          
+          document.querySelector("iframe").src = url;
+        });*/
         let blob = new Blob([response], {type: 'application/pdf'});
 
         var downloadURL = window.URL.createObjectURL(response);
@@ -399,7 +458,7 @@ export class DocumentacionComponent implements OnInit {
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
-      });
+    });
   }
 
   editTrabajador(index){

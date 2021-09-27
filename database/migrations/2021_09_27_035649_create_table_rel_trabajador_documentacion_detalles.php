@@ -15,8 +15,9 @@ class CreateTableRelTrabajadorDocumentacionDetalles extends Migration
     {
         Schema::create('rel_trabajador_documentacion_detalles', function (Blueprint $table) {
             $table->Increments('id')->unsigned();
-            $table->smallInteger('rel_trabajador_documentacion_id')->unsigned()->index();
-            $table->smallInteger('tipo_id')->unsigned()->index();
+            $table->smallInteger('rel_trabajador_documentacion_id')->unsigned()->index('rel_documentacion_id');
+            $table->smallInteger('tipo_id')->unsigned()->index('tipo_requerimiento_id');
+            //$table->unique(['documentacion_detalles_id', 'rel_documentacion_id'. 'tipo_requerimiento_id']);
             $table->timestamps();
             $table->softDeletes();
         });
