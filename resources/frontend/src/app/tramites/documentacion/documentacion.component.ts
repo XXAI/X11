@@ -15,6 +15,7 @@ import { VerInformacionDialogComponent } from '../ver-informacion-dialog/ver-inf
 import { CancelarDocumentacionDialogComponent } from '../cancelar-documentacion-dialog/cancelar-documentacion-dialog.component';
 import { VisorPdfDialogComponent } from '../visor-pdf-dialog/visor-pdf-dialog.component';
 
+import { environment } from 'src/environments/environment';
 import { MediaObserver } from '@angular/flex-layout';
 
 @Component({
@@ -41,6 +42,7 @@ export class DocumentacionComponent implements OnInit {
   isLoadingPDFArea: boolean = false;
   isLoadingAgent: boolean = false;
   mediaSize: string;
+  url           = `${environment.base_url_file}`;
 
   permiso_rh:boolean = false;
   permiso_validador:boolean = false;
@@ -151,6 +153,7 @@ export class DocumentacionComponent implements OnInit {
 
   public verInformacion(obj)
   {
+    
     let configDialog = {};
     if(this.mediaSize == 'xs'){
       configDialog = {
@@ -411,7 +414,8 @@ export class DocumentacionComponent implements OnInit {
 
   descargar(obj:any){
     
-    this.tramitesService.getFile(obj.id).subscribe(
+    window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
+    /*this.tramitesService.getFile(obj.id).subscribe(
       response =>{
         console.log(response);
         /*let datos = response;
@@ -442,7 +446,7 @@ export class DocumentacionComponent implements OnInit {
 
           
           document.querySelector("iframe").src = url;
-        });*/
+        });
         let blob = new Blob([response], {type: 'application/pdf'});
 
         var downloadURL = window.URL.createObjectURL(response);
@@ -458,7 +462,7 @@ export class DocumentacionComponent implements OnInit {
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
-    });
+    });*/
   }
 
   editTrabajador(index){

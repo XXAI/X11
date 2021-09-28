@@ -147,7 +147,7 @@
                                                         <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 2)" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
                                                         <button mat-menu-item (click)="CambioEstatus(row.id, 3)" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
                                                         <button mat-menu-item color="primary" (click)="descargar(row)" >
-                                                            <mat-icon color="warn">download</mat-icon> DESCARGAR
+                                                            <mat-icon color="warn">visibility</mat-icon> VISUALIZAR
                                                         </button>            
                                                     </div>
                                                 
@@ -176,7 +176,7 @@
                                         </div>
                                         <div *ngIf="row.rel_trabajador_documentos.estatus == 3">
                                             <button mat-raised-button color="primary" (click)="descargar(row)">
-                                                <mat-icon>download</mat-icon> DESCARGAR
+                                                <mat-icon>visibility</mat-icon> VISUALIZAR
                                             </button> 
                                         </div>  
                                     </div>
