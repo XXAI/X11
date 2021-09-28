@@ -26,7 +26,7 @@ class TramiteDocumentacionController extends Controller
 
         try{
             $access = $this->getUserAccessData();
-            
+            //return $access;
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
             $parametros = $request->all();
@@ -58,8 +58,8 @@ class TramiteDocumentacionController extends Controller
                     }
                 }
             }else{
-                $permison_rh = true;
-                $permison_of_central = true;
+                //$permison_rh = true;
+                //$permison_of_central = true;
             }
             
             //return response()->json(['data'=>$access->is_admin, 'rh'=>$permison_rh, 'oficina'=>$permison_of_central],HttpResponse::HTTP_OK);
@@ -67,18 +67,42 @@ class TramiteDocumentacionController extends Controller
             if($permison_rh || $access->is_admin){
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                                     ->with('rel_trabajador_documentos.detalles', "datoslaborales")
-                                        ->where("estatus", 1);
+                                        ->where("trabajador.estatus", 1);
+                $trabajador = $trabajador->where(function($query)use($access){
+                    $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
+                });
             }
             else if($permison_of_central == true)
             {
                 
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                                         ->with('rel_trabajador_documentos.detalles',"datoslaborales")
-                                        ->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus in (1,3)))"))
+                                        //->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus in (1,3)))"))
                                         ->where("trabajador.estatus", 1);
+                if(!isset($parametros['estatus']))
+                {
+                    $trabajador = $trabajador->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus in (1,3)))")); 
+                }
 
                                                               
             } 
+            //Filtros
+            if(isset($parametros['enviado']))
+            {
+                if($parametros['enviado'] ==  1)
+                {
+                    $trabajador = $trabajador->whereRaw("( trabajador.id in (select trabajador_id from rel_trabajador_documentacion where deleted_at is null))");
+                }else if($parametros['enviado'] == 2)
+                {
+                    $trabajador = $trabajador->whereRaw("( trabajador.id not in (select trabajador_id from rel_trabajador_documentacion where deleted_at is null))");
+                }
+            }
+
+            if(isset($parametros['estatus']))
+            {
+                $trabajador = $trabajador->whereRaw("(select trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus=".$parametros['estatus']."))");
+                
+            }
             
             /*$permison_individual = false;                
             if(!$access->is_admin){
@@ -115,7 +139,7 @@ class TramiteDocumentacionController extends Controller
 
             
 
-            return response()->json(['data'=>$trabajador, 'rh'=>$permison_rh, 'oficina'=>$permison_of_central],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$trabajador, 'rh'=>$permison_rh, 'oficina'=>$permison_of_central, 'admin'=> $access->is_admin],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
@@ -157,12 +181,15 @@ class TramiteDocumentacionController extends Controller
             $object->estatus                       = $inputs['estatus'];   
             $object->save();
             $arreglo = Array();
-            foreach ($inputs['requerimientos'] as $key => $value) {
-                //array_push($arreglo, new RelDocumentacionDetalles(['tipo_id' => $value]));
-                $aux = new RelDocumentacionDetalles();
-                $aux->rel_trabajador_documentacion_id=$object->id;
-                $aux->tipo_id = $value;
-                $aux->save();
+            if($inputs['estatus'] != 3)
+            {
+               foreach ($inputs['requerimientos'] as $key => $value) {
+                    //array_push($arreglo, new RelDocumentacionDetalles(['tipo_id' => $value]));
+                    $aux = new RelDocumentacionDetalles();
+                    $aux->rel_trabajador_documentacion_id=$object->id;
+                    $aux->tipo_id = $value;
+                    $aux->save();
+                }
             }
            
             DB::commit();
@@ -298,13 +325,13 @@ class TramiteDocumentacionController extends Controller
         $accessData = (object)[];
         $accessData->lista_clues = $lista_clues;
         $accessData->lista_cr = $lista_cr;
-
-        if (\Gate::allows('has-permission', \Permissions::ADMIN_PERSONAL_ACTIVO)){
+        $accessData->is_admin = ($loggedUser->is_superuser == 0)?false:true;
+        /*if (\Gate::allows('has-permission', \Permissions::ADMIN_PERSONAL_ACTIVO)){
             $accessData->is_admin = true;
         }else{
             $accessData->is_admin = false;
-        }
-
+        }*/
+        //return $loggedUser->is_superuser;
         return $accessData;
     }
 }

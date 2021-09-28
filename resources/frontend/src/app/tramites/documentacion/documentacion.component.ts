@@ -91,14 +91,10 @@ export class DocumentacionComponent implements OnInit {
     'clues': [undefined],
     'cr': [undefined],
     'estatus': [undefined],
-    'comisionado': [undefined],
-    'e4': [undefined],
-    'rama': [undefined],
-    'grupos': [undefined],
-    'adscripcion': [undefined],
+    'enviado': [undefined]
   });
 
-  displayedColumns: string[] = ['RFC','CURP','Nombre', 'CR','actions']; //'Agente',
+  displayedColumns: string[] = ['ESTATUS','RFC','CURP','Nombre', 'CR','actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, 
@@ -308,9 +304,9 @@ export class DocumentacionComponent implements OnInit {
           params[i] = filterFormValues[i].clues;
         }else if(i == 'cr'){
           params[i] = filterFormValues[i].cr;
-        }else if(i == 'comisionado'){
+        }else if(i == 'enviado'){
           params[i] = filterFormValues[i];
-        }else if(i == 'e4'){
+        }else if(i == 'estatus'){
           params[i] = filterFormValues[i];
         }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
@@ -394,10 +390,11 @@ export class DocumentacionComponent implements OnInit {
         }else if(i == 'cr'){
           item.tag = data[i].cr;
           item.tooltip += data[i].descripcion;
-        }else if(i == 'comisionado'){
-          item.tag = data[i].comisionado;
-        }else if(i == 'e4'){
-          item.tag = data[i].e4;
+        }else if(i == 'enviado'){
+          console.log(data[i]);
+          item.tag = data[i];
+        }else if(i == 'estatus'){
+          item.tag = data[i];
         }else{
           if(data[i].descripcion.length > 30){
             item.tag = data[i].descripcion.slice(0,20) + '...';
