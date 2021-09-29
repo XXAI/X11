@@ -67,6 +67,7 @@ class TramiteDocumentacionController extends Controller
             if($permison_rh || $access->is_admin){
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                                     ->with('rel_trabajador_documentos.detalles', "datoslaborales")
+                                        ->where("trabajador.validado", 1)
                                         ->where("trabajador.estatus", 1);
                 $trabajador = $trabajador->where(function($query)use($access){
                     $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);

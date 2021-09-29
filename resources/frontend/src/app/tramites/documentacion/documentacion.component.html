@@ -183,17 +183,20 @@
                                                         <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 2)" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
                                                         <button mat-menu-item (click)="CambioEstatus(row.id, 3)" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
                                                         <button mat-menu-item color="primary" (click)="descargar(row)" >
-                                                            <mat-icon color="warn">visibility</mat-icon> VISUALIZAR
-                                                        </button>            
+                                                            <mat-icon color="warn">visibility</mat-icon> Ver
+                                                        </button> 
+                                                        <button  mat-menu-item (click)="verInformacion(row)" *ngIf="row.rel_trabajador_documentos.detalles.length >0">
+                                                            <mat-icon  color="warn">
+                                                                error
+                                                            </mat-icon>
+                                                            DATOS
+                                                        </button>           
                                                     </div>
                                                 
                                             </mat-menu>
-                                            <button  mat-raised-button color="warn" (click)="verInformacion(row)" *ngIf="row.rel_trabajador_documentos.detalles.length >0">
-                                                <mat-icon>
-                                                    error
-                                                </mat-icon>
-                                            </button>
+                                            
                                         </div>
+                                        
                                         <div *ngIf="row.rel_trabajador_documentos.estatus == 2 && permiso_rh == true">
                                             <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Acciones</button>
                                             <mat-menu #menu="matMenu">
@@ -206,13 +209,10 @@
                                             </button>
                                             <!--<B style="color: red;">DENEGADO</B>-->
                                         </div>
-                                        <!--<div *ngIf="row.rel_trabajador_documentos.estatus != 3 && permiso_rh == true">
-                                            <div *ngIf="row.rel_trabajador_documentos.estatus == 1">PENDIENTE</div>
-                                            <div *ngIf="row.rel_trabajador_documentos.estatus == 3">APROBADO</div>
-                                        </div>-->
-                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 3">
+                                       
+                                        <div *ngIf="permiso_validador == false && (row.rel_trabajador_documentos.estatus == 3 || row.rel_trabajador_documentos.estatus == 1) ">
                                             <button mat-raised-button color="primary" (click)="descargar(row)">
-                                                <mat-icon>visibility</mat-icon> VISUALIZAR
+                                                <mat-icon>visibility</mat-icon> Ver
                                             </button> 
                                         </div>  
                                     </div>
