@@ -18,6 +18,7 @@ export class TrabajadorService {
   url_trabajadores = `${environment.base_url}/busqueda-trabajadores`;
   url_trabajador = `${environment.base_url}/busqueda-firmantes`;
   url_info_trabajador = `${environment.base_url}/ver-info-trabajador/`;
+  url_clue_asistencia = `${environment.base_url}/clues_asistencia`;
   url_asistencia = 'http://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
@@ -259,4 +260,13 @@ export class TrabajadorService {
       }
     ));
   }
+
+  cargaClues():Observable<any> {
+    
+    return this.http.get<any>(this.url_clue_asistencia, {}).pipe(
+        map( response => {
+          return response;
+        })
+    );
+}
 }

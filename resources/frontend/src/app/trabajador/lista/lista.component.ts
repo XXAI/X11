@@ -56,6 +56,7 @@ export class ListaComponent implements OnInit {
   countPersonalActivo: number = 0;
   countPersonalValidado: number = 0;
   percentPersonalValidado: number = 0;
+  cluesAsistencia = [];
 
   showMyStepper:boolean = false;
   showReportForm:boolean = false;
@@ -113,6 +114,7 @@ export class ListaComponent implements OnInit {
 
   ngOnInit() {
     
+    this.cargarCluesAsistencia();
     this.mediaObserver.media$.subscribe(
       response => {
         this.mediaSize = response.mqAlias;
@@ -150,6 +152,20 @@ export class ListaComponent implements OnInit {
 
     this.loadTrabajadorData(event);
     this.loadFilterCatalogs();
+  }
+
+  cargarCluesAsistencia()
+  {
+    this.trabajadorService.cargaClues().subscribe(
+      response =>{
+        console.log(response);
+        response.data.forEach(element => {
+          console.log(element);
+          this.cluesAsistencia.push(element.clues);
+        });
+        //console.log(this.cluesAsistencia);
+        //this.cluesAsistencia = response.data;
+      });
   }
 
   toggleReportPanel(){
@@ -568,14 +584,14 @@ export class ListaComponent implements OnInit {
         maxHeight: '100vh',
         height: '100%',
         width: '100%',
-        data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize}
+        data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize, cluesAsistencia: this.cluesAsistencia}
       };
     }else{
       configDialog = {
         width: '99%',
         maxHeight: '90vh',
         height: '643px',
-        data:{id: id, puedeEditar: !this.capturaFinalizada}
+        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
       }
     }
 

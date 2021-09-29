@@ -47,6 +47,7 @@ use App\Models\Lengua;
 use App\Models\Sindicato;
 use App\Models\TipoBaja;
 use App\Models\GrupoUnidades;
+use App\Models\CluesAsistencia;
 
 //Relacionales
 use App\Models\RelCapacitacion;
@@ -1039,6 +1040,15 @@ class TrabajadorController extends Controller
         }
     }
 
+    public function ListCluesAsistencia(Request $request)
+    {
+        try{
+            $obj = CluesAsistencia::all();
+            return response()->json(['data'=>$obj],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+        return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
     public function getBuscador(Request $request)
     {
         try{

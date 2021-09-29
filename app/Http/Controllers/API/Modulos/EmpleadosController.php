@@ -1487,10 +1487,10 @@ class EmpleadosController extends Controller
             
             $access = $this->getUserAccessData();
             if($access->is_admin)
-                $cr = Cr::with("clues")->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->get();
+                $cr = Cr::with("clues")->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->orWhere("cr", 'LIKE','%'.$parametros['query'].'%')->get();
             else
             {
-                $cr = Cr::with("clues")->whereIn("cr", array_values($access->lista_cr))->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->get();
+                $cr = Cr::with("clues")->whereIn("cr", array_values($access->lista_cr))->where("descripcion", 'LIKE','%'.$parametros['query'].'%')->orWhere("cr", 'LIKE','%'.$parametros['query'].'%')->get();
             }    
 
             return response()->json(['data'=>$cr],HttpResponse::HTTP_OK);

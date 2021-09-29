@@ -122,6 +122,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::post('responsable-unidad',       'API\Modulos\DirectorioController@AgregarResponsable');
     //Route::post('responsable-unidad/{id}',       'API\Modulos\DirectorioController@EliminarResponsable');
     Route::get('tramites-trabajador/{id}',    'API\Modulos\TramitesController@ListTramites');
+    Route::get('clues_asistencia',              'API\Modulos\TrabajadorController@ListCluesAsistencia');
     Route::apiResource('tramite-documentacion',       'API\Modulos\TramiteDocumentacionController');
     
     Route::post('tramite-documentacion-upload',       'API\Modulos\TramiteDocumentacionController@Upload');

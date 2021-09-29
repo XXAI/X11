@@ -51,7 +51,7 @@ export class FormularioComponent implements OnInit {
   imagen_trabajador:string = 'assets/trabajador.jpg';
   selectedItemIndex: number = -1;
   isLoadingPage: boolean = true;
-  isLoadingCredential: boolean = true;
+  isLoadingCredential: boolean = false;
   actualizado:boolean = false;
   editable = true;
 
@@ -233,6 +233,7 @@ export class FormularioComponent implements OnInit {
       this.trabajador_id = params.get('id');
       
       if(this.trabajador_id){
+        
         //console.log("entra");
         this.cargarTrabajador(this.trabajador_id);
         this.trabajadorForm.get("cr").disable();
@@ -246,6 +247,7 @@ export class FormularioComponent implements OnInit {
         this.editable = false;
       }
     });
+    console.log(this.isLoadingCredential);
   }
 
   loadNext(){
@@ -533,6 +535,7 @@ export class FormularioComponent implements OnInit {
         this.isLoadingCredential = true;
         this.trabajadorService.getDatosCredencial(trabajador.clave_credencial).subscribe(
           response => {
+            
             if(response.length > 0){
               let datosCredencial = response[0];
               if(datosCredencial.tieneFoto == '1'){

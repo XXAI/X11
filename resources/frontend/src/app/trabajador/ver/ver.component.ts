@@ -10,6 +10,7 @@ import * as FileSaver from 'file-saver';
 export interface VerEmpleadoData {
   id: number;
   puedeEditar?:boolean;
+  cluesAsistencia?:any;
 }
 
 @Component({
@@ -30,7 +31,7 @@ export class VerComponent implements OnInit {
 
   dataTrabajador: any;
 
-  cluesAsistencia:any = [ 'CSSSA017213', 'CSSSA009162', 'CSSSA019954', 'CSSSA017324' ];
+  cluesAsistencia = []; //= [ 'CSSSA017213', 'CSSSA009162', 'CSSSA019954', 'CSSSA017324' ];
 
   datosCredencial:any;
   photoPlaceholder = 'assets/profile-icon.svg';
@@ -83,8 +84,8 @@ export class VerComponent implements OnInit {
     }else{
       this.puedeVerAsistencias = false;
     }*/
-    
-
+    this.cluesAsistencia = this.data.cluesAsistencia;
+   
     if(this.data.puedeEditar){
       this.puedeEditar = this.data.puedeEditar;
     }
@@ -92,6 +93,7 @@ export class VerComponent implements OnInit {
     this.loadDataTrabajador(this.data.id);
   }
 
+  
   loadDataTrabajador(id:any){
     let params = {};
 
@@ -175,12 +177,16 @@ export class VerComponent implements OnInit {
   {
     //console.log(obj);
     let bandera:boolean = false;
-    this.cluesAsistencia.forEach(element => {
-      if(element == obj)
-      {
-        bandera = true;
-      }
-    });
+    //console.log(this.cluesAsistencia);
+    if(this.cluesAsistencia.length > 0)
+    {
+      this.cluesAsistencia.forEach(element => {
+        if(element == obj)
+        {
+          bandera = true;
+        }
+      });
+    }
     //console.log();
     return bandera;
   }
