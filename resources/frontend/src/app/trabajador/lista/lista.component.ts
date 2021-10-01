@@ -761,7 +761,7 @@ export class ListaComponent implements OnInit {
           this.countPersonalValidado = response.estatus.estatus_validacion.total_validados;
           this.percentPersonalValidado = response.estatus.estatus_validacion.porcentaje;
           this.countPersonalActualizado = response.estatus.estatus_actualizacion.total_actualizado;
-          this.percentPersonalActualizado = (response.estatus.estatus_validacion.total_validados/response.estatus.estatus_actualizacion.total_actualizado);
+          this.percentPersonalActualizado = (response.estatus.estatus_actualizacion.total_actualizado/response.estatus.estatus_validacion.total_validados) * 100;
           
           this.dataSource = [];
           this.resultsLength = 0;

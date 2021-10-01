@@ -114,7 +114,7 @@ class TrabajadorController extends Controller
             $estatus_validacion = clone $trabajador;
             $estatus_actualizacion = clone $trabajador;
             $estatus_validacion = $estatus_validacion->select(\DB::raw('sum(IF(trabajador.estatus = 1 OR trabajador.estatus = 4,1,0)) as total_activos'),DB::raw('sum(IF(trabajador.estatus = 1 AND trabajador.validado = 1,1,0)) as total_validados'),DB::raw('count(trabajador.id) as total_registros'))->first();
-            $estatus_actualizacion = $estatus_validacion->select(\DB::raw('sum(IF(trabajador.actualizado = 1,1,0)) as total_actualizado'))->whereIn("trabajador.validado", [1,4])->first();
+            $estatus_actualizacion = $estatus_actualizacion->select(\DB::raw('sum(IF(trabajador.actualizado = 1,1,0)) as total_actualizado'))->whereIn("trabajador.validado", [1,4])->first();
             if($estatus_validacion->total_activos == 0)
             {
                 $estatus_validacion->porcentaje = 0;
