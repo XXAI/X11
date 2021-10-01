@@ -285,7 +285,26 @@
                             <mat-spinner mode="indeterminate" *ngIf="isLoadingAsistencia"></mat-spinner>
                         </div>
                         <br>
-                        <section fxLayout="row wrap" fxLayoutGap="10px" *ngIf="!isLoadingAsistencia">
+                        <div *ngIf="!Asitencia">
+                            Para tener acceso a verificar tu asistencia, debe de completar toda tu información:
+                            <ul>
+                                <li>Datos personales</li>
+                                <li>Datos Laborales</li>
+                                <li>Horario labolal</li>
+                                <li>Escolaridad</li>
+                            </ul>    
+                            <b>*Nota:</b> Para completar tu información debes de tener: 
+                            <ul>
+                                <li>Nombre de la institución educativa, nombre de la carrera cursada, número de cédula si se cuenta con ella (de todos los estudios que cuente).</li>
+                                <li>Fecha de vigencia de la FIEL (Firma electrónica avanzada)</li>
+                            </ul>
+                            Por default el municipio de nacimiento aparece "sin especificar", se debe de modificar, seleccionando de la lista desplegable que aparecerá cuando este escribiendo el nombre del municipio.
+                            <br>
+                            Para continual debe de dar clic sobre el boton <b style="color:red">Editar</b>
+                            <br><br>
+                            Puede ver el video tutorial de registro basico de la información en el siguiente link dar clic <a href="https://n9.cl/pyx9" target="_blank">Aquí</a>
+                        </div>
+                        <section fxLayout="row wrap" fxLayoutGap="10px" *ngIf="!isLoadingAsistencia && Asitencia">
                             <mat-form-field fxFlex="20" fxFlex.xs="45">
                                 <input matInput [matDatepicker]="fechaInicioAsistPicker" placeholder="Fecha Inicio"  [(ngModel)]="fechaInicioAsist" readonly [ngModelOptions]="{standalone: true}">
                                 <mat-datepicker-toggle matSuffix [for]="fechaInicioAsistPicker"></mat-datepicker-toggle>
@@ -308,7 +327,7 @@
                             </div>
                             <button fxFlex mat-raised-button color="info" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF" (click)="reporteAsistencias()"><mat-icon>insert_drive_file</mat-icon></button>
                         </section>
-                        <div class="asistencia-table-container" *ngIf="!isLoadingAsistencia">
+                        <div class="asistencia-table-container" *ngIf="!isLoadingAsistencia && Asitencia">
                             <table #asistenciaTable mat-table [dataSource]="assistSource" class="data-table" matSort>
                                 <ng-container matColumnDef="dia">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Dia </th>

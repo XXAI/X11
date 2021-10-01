@@ -35,6 +35,7 @@ export class VerComponent implements OnInit {
 
   datosCredencial:any;
   photoPlaceholder = 'assets/profile-icon.svg';
+  Asitencia:boolean = false;
 
   puedeVerAsistencias: boolean = false;
   puedeEditar:boolean = false;
@@ -130,7 +131,8 @@ export class VerComponent implements OnInit {
         this.dataSource = this.dataTrabajador.escolaridad;
         //console.log(this.dataTrabajador);
         this.verTramites(response.id);
-
+        this.Asitencia = (response.actualizado == 0)?false:true;
+        console.log(this.Asitencia);
         if(this.verificarAsistencia(this.dataTrabajador.rel_datos_laborales.cr_fisico.clues))
         {
           this.puedeVerAsistencias = true;
@@ -149,7 +151,7 @@ export class VerComponent implements OnInit {
         if(this.dataTrabajador.clave_credencial){
           this.trabajadorService.getDatosCredencial(this.dataTrabajador.clave_credencial).subscribe(
             response => {
-              console.log(response);
+              //console.log(response);
               if(response.length > 0){
                 this.datosCredencial = response[0];
                 if(this.datosCredencial.tieneFoto == '1'){

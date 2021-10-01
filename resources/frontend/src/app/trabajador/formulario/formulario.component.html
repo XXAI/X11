@@ -330,9 +330,9 @@
                                     <mat-datepicker-toggle matPrefix [for]="fecha_gf_picker"></mat-datepicker-toggle>
                                     <mat-datepicker #fecha_gf_picker [disabled]="false"></mat-datepicker>
                                     
-                                    <mat-error *ngIf="datosLaborelesForm.get('fecha_ingreso_federal').invalid && (datosLaborelesForm.get('fecha_ingreso_federal').dirty || datosLaborelesForm.get('fecha_ingreso_federal').touched)">
+                                    <!--<mat-error *ngIf="datosLaborelesForm.get('fecha_ingreso_federal').invalid && (datosLaborelesForm.get('fecha_ingreso_federal').dirty || datosLaborelesForm.get('fecha_ingreso_federal').touched)">
                                         <span *ngIf="datosLaborelesForm.get('fecha_ingreso_federal').errors.required">Campo obligatorio</span>
-                                    </mat-error>
+                                    </mat-error>-->
                                 </mat-form-field>
                              
                                 <mat-form-field fxFlex="50" fxFlex.xs="100">
@@ -768,7 +768,7 @@
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <mat-label>Nivel Maximo de Estudios</mat-label>
-                                    <mat-select formControlName="nivel_maximo_id" required>
+                                    <mat-select formControlName="nivel_maximo_id" #nivel_escolaridad (selectionChange)="verificarNivel(nivel_escolaridad.value)" required >
                                         <mat-option *ngFor="let item of catalogo['grado_academico']" [value]="item.id">
                                             {{item.descripcion}}
                                         </mat-option>
@@ -861,8 +861,9 @@
                     </div> 
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                         <div fxFlex="30">
-                            <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(!datosEscolaresForm.valid || isLoading) || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>
-                            <button mat-raised-button (click)="accionFinalizar()" color="success" [disabled]="(finalizarActualizacion)"><mat-icon>save</mat-icon> Finalizar Actualización</button>
+                            <!--<button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(!datosEscolaresForm.valid || isLoading) || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>-->
+                            <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(EstudiosActualizado > dataSourceEstudios.data.length) || isLoading"><mat-icon>save</mat-icon> Guardar</button>
+                            <button mat-raised-button (click)="accionFinalizar()" color="success" [disabled]="(finalizarActualizacion && (EstudiosActualizado > dataSourceEstudios.data.length)) || Actualizado "><mat-icon>save</mat-icon> Finalizar Actualización</button>
                         
                         </div>
                         <div  *ngIf="!actualizado" align="end" class='mat-dialog-actions'  fxFlex="70"><button mat-stroked-button (click)="retroceder(3)" ><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button></div>

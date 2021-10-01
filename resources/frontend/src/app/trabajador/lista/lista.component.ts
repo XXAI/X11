@@ -56,6 +56,8 @@ export class ListaComponent implements OnInit {
   countPersonalActivo: number = 0;
   countPersonalValidado: number = 0;
   percentPersonalValidado: number = 0;
+  countPersonalActualizado:number = 0;
+  percentPersonalActualizado:number = 0;
   cluesAsistencia = [];
 
   showMyStepper:boolean = false;
@@ -160,7 +162,7 @@ export class ListaComponent implements OnInit {
       response =>{
         console.log(response);
         response.data.forEach(element => {
-          console.log(element);
+          //console.log(element);
           this.cluesAsistencia.push(element.clues);
         });
         //console.log(this.cluesAsistencia);
@@ -758,6 +760,8 @@ export class ListaComponent implements OnInit {
           this.countPersonalActivo = response.estatus.estatus_validacion.total_activos;
           this.countPersonalValidado = response.estatus.estatus_validacion.total_validados;
           this.percentPersonalValidado = response.estatus.estatus_validacion.porcentaje;
+          this.countPersonalActualizado = response.estatus.estatus_actualizacion.total_actualizado;
+          this.percentPersonalActualizado = (response.estatus.estatus_validacion.total_validados/response.estatus.estatus_actualizacion.total_actualizado);
           
           this.dataSource = [];
           this.resultsLength = 0;

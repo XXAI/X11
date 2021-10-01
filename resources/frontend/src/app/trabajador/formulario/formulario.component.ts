@@ -38,6 +38,7 @@ export class FormularioComponent implements OnInit {
   filteredInstitucionCiclo: Observable<any[]>;
   colegioIsLoading: boolean = false;
   filteredColegio: Observable<any[]>;
+  EstudiosActualizado:number = 0;
   mediaSize: string;
   datosEstudios:any = [];
   datosCapacitacion:any = [];
@@ -54,6 +55,7 @@ export class FormularioComponent implements OnInit {
   isLoadingCredential: boolean = false;
   actualizado:boolean = false;
   editable = true;
+  Actualizado:boolean = false;
 
   filteredCr: Observable<any[]>;
   finalizarActualizacion:boolean = true;
@@ -265,6 +267,46 @@ export class FormularioComponent implements OnInit {
     this.router.navigate(['/trabajadores/editar/'+nextId]);
   }
 
+  verificarNivel(valor)
+  {
+    console.log(valor);
+    /*console.log("netro");
+    console.log(valor);*/
+    switch(valor)
+    {
+      case 2039842:
+        this.EstudiosActualizado = 0; break;
+      case 2039843:
+        this.EstudiosActualizado = 1; break;
+      case 2039846:
+        this.EstudiosActualizado = 0; break;
+      case 2039847:
+        this.EstudiosActualizado = 0; break;
+      case 2039848:
+        this.EstudiosActualizado = 1; break;
+      case 2039849:
+        this.EstudiosActualizado = 1; break;
+      case 2039850:
+        this.EstudiosActualizado = 1; break;
+      case 2039851:
+        this.EstudiosActualizado = 1; break;
+      case 2039852:
+        this.EstudiosActualizado = 2; break;
+      case 2039853:
+        this.EstudiosActualizado = 3; break;
+      case 2039854:
+        this.EstudiosActualizado = 2; break;
+      case 2039855:
+        this.EstudiosActualizado = 2; break;
+      case 2039856:
+        this.EstudiosActualizado = 1; break;
+      case 2039857:
+        this.EstudiosActualizado = 0; break;
+    }
+    console.log(this.EstudiosActualizado);
+    console.log(this.dataSourceEstudios.data.length);
+  }
+
   loadPrevious(){
     let prevId = this.miniPagination.previous;
     let paginator = this.sharedService.getDataFromCurrentApp('paginator');
@@ -397,6 +439,9 @@ export class FormularioComponent implements OnInit {
         }
 
         let trabajador = response.data;
+
+        this.Actualizado = (trabajador.actualizado == 0)?false:true;
+        this.verificarNivel(trabajador.nivel_maximo_id);
         if(trabajador.actualizado == 1){
           this.actualizado = true;  
         }else if(trabajador.actualizado == 0){

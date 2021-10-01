@@ -4,6 +4,8 @@
             <mat-icon aria-hidden="false" aria-label="Estatus Empleado">speed</mat-icon>
             <span>Estatus: Activos {{countPersonalActivo | number: '2.'}} / Validados {{countPersonalValidado | number: '2.'}}</span>
             <span class="spacer"></span>
+            <span>{{ countPersonalActualizado }} ({{percentPersonalActualizado | number : '1.2-2' }}%) Actualizados</span>
+            <span class="spacer"></span>
             <span>{{ percentPersonalValidado }}% Validado</span>
             <span class="spacer"></span>
         </mat-toolbar-row>
