@@ -83,9 +83,13 @@ class TramitesController extends Controller
                 
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
-                $tramites_origen = $tramites_origen->paginate($resultadosPorPagina);
-                $tramites_destino = $tramites_destino->paginate($resultadosPorPagina);
-                $tramites_validacion = $tramites_validacion->paginate($resultadosPorPagina);
+                //$tramites_origen = $tramites_origen->paginate($resultadosPorPagina);
+                //$tramites_destino = $tramites_destino->paginate($resultadosPorPagina);
+                //$tramites_validacion = $tramites_validacion->paginate($resultadosPorPagina);
+
+                $tramites_origen = ['data' => $tramites_origen->get()];
+                $tramites_destino = ['data' => $tramites_destino->get()];
+                $tramites_validacion = ['data' => $tramites_validacion->get()];
             }
             
            

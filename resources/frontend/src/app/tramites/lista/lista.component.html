@@ -174,8 +174,8 @@
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header> PERSONAL / UNIDAD </th>
                                         <td mat-cell *matCellDef="let row"> 
                                             <b>TRABAJADOR:</b> {{ row.trabajador.rfc }} {{ row.trabajador.nombre }} {{ row.trabajador.apellido_paterno }} {{ row.trabajador.apellido_materno }}<br>
-                                            <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ row.trabajador.datoslaboralesnomina.cr.descripcion }}<br>
-                                            <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ row.trabajador.datoslaborales.cr_fisico.descripcion }}
+                                            <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ (row.trabajador.datoslaboralesnomina.cr)?row.trabajador.datoslaboralesnomina.cr.descripcion:'Sin CR Asignado' }}<br>
+                                            <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ (row.trabajador.datoslaborales.cr_fisico)?row.trabajador.datoslaborales.cr_fisico.descripcion:'Sin CR Asignado' }}
                                         </td>
                                     </ng-container>   
         
@@ -228,8 +228,8 @@
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header> PERSONAL / UNIDAD </th>
                                         <td mat-cell *matCellDef="let row"> 
                                             <b>TRABAJADOR:</b> {{ row.trabajador.rfc }} {{ row.trabajador.nombre }} {{ row.trabajador.apellido_paterno }} {{ row.trabajador.apellido_materno }}<br>
-                                            <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ row.trabajador.datoslaboralesnomina.cr.descripcion }}<br>
-                                            <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ row.trabajador.datoslaborales.cr_fisico.descripcion }}
+                                            <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ (row.trabajador.datoslaboralesnomina.cr)?row.trabajador.datoslaboralesnomina.cr.descripcion:'Sin CR Asignado' }}<br>
+                                            <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ (row.trabajador.datoslaborales.cr_fisico)?row.trabajador.datoslaborales.cr_fisico.descripcion:'Sin CR Asignado' }}
                                         </td>
                                     </ng-container>   
         
@@ -282,8 +282,8 @@
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header> PERSONAL / UNIDAD </th>
                                         <td mat-cell *matCellDef="let row"> 
                                             <b>TRABAJADOR:</b> {{ row.trabajador.rfc }} {{ row.trabajador.nombre }} {{ row.trabajador.apellido_paterno }} {{ row.trabajador.apellido_materno }}<br>
-                                            <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ row.trabajador.datoslaboralesnomina.cr.descripcion }}<br>
-                                            <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ row.trabajador.datoslaborales.cr_fisico.descripcion }}
+                                            <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ (row.trabajador.datoslaboralesnomina.cr)?row.trabajador.datoslaboralesnomina.cr.descripcion:'Sin CR Asignado' }}<br>
+                                            <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ (row.trabajador.datoslaborales.cr_fisico)?row.trabajador.datoslaborales.cr_fisico.descripcion:'Sin CR Asignado' }}
                                         </td>
                                     </ng-container>   
         
@@ -326,9 +326,9 @@
                                 </table>
                             </mat-tab>
                           </mat-tab-group>
-                        <!--<mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLengthValidacion" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadTramitesData($event)"></mat-paginator>-->
+                        
                     </div>
-                    
+                    <!--mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLengthValidacion" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadTramitesData($event)"></mat-paginator-->
                 </div>                
             </mat-card>
         </section>
