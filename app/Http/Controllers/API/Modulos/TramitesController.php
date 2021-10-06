@@ -157,7 +157,18 @@ class TramitesController extends Controller
                 $clues = Clues::with("cr")->where("clave_nivel", 4)->where("cve_jurisdiccion", $trabajador->datoslaborales->clues_fisico->cve_jurisdiccion)->first();
                 $object->cr_firmante_destino = $clues->cr[0]->cr;
             }else{
-                $object->cr_firmante_destino = $trabajador->datoslaborales->cr_fisico_id;
+                $cr_firmante_destino = $trabajador->datoslaborales->cr_fisico_id;
+                $cr_responsable_destino = Directorio::where("tipo_responsable_id",1)->where("cr", $cr_firmante_destino)->first();
+
+                if($cr_responsable_destino->trabajador_id == $trabajador->id){
+                    $cr_destino = Cr::where('cr',$trabajador->datoslaborales->cr_fisico_id)->first();
+                    $desglose_area = explode('.',$cr_destino->area);
+
+                    $cr_firma_destino = Cr::where('clues',$cr_destino->clues)->where('area',$desglose_area[0])->first();
+                    $object->cr_firmante_destino = $cr_firma_destino->cr;
+                }else{
+                    $object->cr_firmante_destino = $cr_firmante_destino;
+                }
             }
             
             $fecha_actual = Carbon::now();
