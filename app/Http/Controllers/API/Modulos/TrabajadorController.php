@@ -435,7 +435,7 @@ class TrabajadorController extends Controller
         $trabajadores = Trabajador::select('trabajador.id')
                                     ->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                                     ->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
-                                    ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja)")
+                                    ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja  where tipo_baja_id=2)")
                                     ->orderBy('trabajador.nombre');
                                     
         //
@@ -977,7 +977,7 @@ class TrabajadorController extends Controller
 
             $access = $this->getUserAccessData();
             
-            $trabajador = Trabajador::with("rel_datos_laborales", "rel_datos_laborales_nomina")->where(function($query)use($parametros){
+            $trabajador = Trabajador::with("rel_datos_laborales", "rel_datos_laborales_nomina", "rel_trabajador_baja")->where(function($query)use($parametros){
                 return $query->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
                             ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
@@ -1219,7 +1219,7 @@ class TrabajadorController extends Controller
                 $trabajador_datos_laborales->save();
 
                 $trabajador->estatus = 1;
-               
+                $baja = RelBaja::where("trabajador_id", $trabajador->id)->update(['fecha_fin_baja' => \Date("Y-m-d")]);
                 $trabajador->save();
 
             }
