@@ -303,8 +303,8 @@ export class FormularioComponent implements OnInit {
       case 2039857:
         this.EstudiosActualizado = 0; break;
     }
-    console.log(this.EstudiosActualizado);
-    console.log(this.dataSourceEstudios.data.length);
+    console.log(this.EstudiosActualizado+"<--1");
+    console.log(this.dataSourceEstudios.data.length+"<--2");
   }
 
   loadPrevious(){
@@ -921,6 +921,9 @@ export class FormularioComponent implements OnInit {
             this.indexTab = tipo;
           }else{
             this.finalizarActualizacion = false;
+            console.log(!this.finalizarActualizacion+"<--");
+            console.log(this.Actualizado+"<--");
+            console.log((this.EstudiosActualizado +" - "+ this.dataSourceEstudios.data.length));
           }
         },
         errorResponse =>{

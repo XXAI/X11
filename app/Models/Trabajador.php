@@ -106,4 +106,8 @@ class Trabajador extends Model
         return $this->hasOne('App\Models\RelDocumentacion');
     }
 
+    public function rel_trabajador_baja(){
+        return $this->hasOne('App\Models\RelBaja')->whereNull("fecha_fin_baja");
+    }
+
 }
