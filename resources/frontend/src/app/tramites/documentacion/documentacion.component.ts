@@ -178,15 +178,15 @@ export class DocumentacionComponent implements OnInit {
     let configDialog = {};
     if(this.mediaSize == 'xs'){
       configDialog = {
-        maxWidth: '100vw',
-        maxHeight: '100vh',
+        //maxWidth: '200vw',
+        //maxHeight: '100vh',
         height: '100%',
         width: '100%',
         data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
       };
     }else{
       configDialog = {
-        width: '30%',
+        width: '60%',
         data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
       }
     }

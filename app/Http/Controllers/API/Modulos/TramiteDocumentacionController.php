@@ -69,9 +69,11 @@ class TramiteDocumentacionController extends Controller
                                     ->with('rel_trabajador_documentos.detalles', "datoslaborales")
                                         ->where("trabajador.validado", 1)
                                         ->where("trabajador.estatus", 1);
-                $trabajador = $trabajador->where(function($query)use($access){
-                    $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
-                });
+                if(!$access->is_admin){
+                    $trabajador = $trabajador->where(function($query)use($access){
+                        $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
+                    });
+                }
             }
             else if($permison_of_central == true)
             {

@@ -72,14 +72,14 @@ export class ListaComponent implements OnInit {
         this.mediaSize = response.mqAlias;
     });
 
-    let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','paginator','filter']);
+    //let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','paginator','filter']);
     
-    if(appStoredData['searchQuery']){
+    /*if(appStoredData['searchQuery']){
       this.searchQuery = appStoredData['searchQuery'];
-    }
+    }*/
 
     let event = null
-    if(appStoredData['paginator']){
+    /*if(appStoredData['paginator']){
       this.currentPage = appStoredData['paginator'].pageIndex;
       this.pageSize = appStoredData['paginator'].pageSize;
       event = appStoredData['paginator'];
@@ -95,7 +95,7 @@ export class ListaComponent implements OnInit {
         previousPageIndex: (this.currentPage > 0)?this.currentPage-1:0
        };
       this.sharedService.setDataToCurrentApp('paginator', dummyPaginator);
-    }
+    }*/
 
     /*if(appStoredData['filter']){
       this.filterForm.patchValue(appStoredData['filter']);
@@ -106,10 +106,14 @@ export class ListaComponent implements OnInit {
   }
 
   applyFilter(){
-    this.selectedItemIndex = -1;
+    /*this.selectedItemIndex = -1;
     this.paginator.pageIndex = 0;
-    this.paginator.pageSize = this.pageSize;
-    //this.loadTrabajadorData(null);
+    this.paginator.pageSize = this.pageSize;*/
+    this.loadTramitesData(null);
+  }
+
+  clearFilter(){
+    this.searchQuery = '';
   }
 
   loadTramitesData(event?:PageEvent){ 

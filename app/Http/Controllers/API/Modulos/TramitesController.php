@@ -66,16 +66,40 @@ class TramitesController extends Controller
                 $permison_of_central = true;
             }
 
-            $tramites_origen = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina");
-            $tramites_destino = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina");
-            $tramites_validacion = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina");
-            if($permison_rh == true && !$access->is_admin)
-            {
+            $tramites = Tramites::select('rel_trabajador_tramites.*')
+                                ->leftjoin('trabajador','trabajador.id','=','rel_trabajador_tramites.trabajador_id')
+                                ->leftjoin('catalogo_cr as cr_origen_desc','cr_origen_desc.cr','=','rel_trabajador_tramites.cr_origen')
+                                ->leftjoin('catalogo_cr as cr_destino_desc','cr_destino_desc.cr','=','rel_trabajador_tramites.cr_destino')
+                                ->with('trabajador.datoslaborales', 'trabajador.datoslaboralesnomina');
+            //
+            if(isset($parametros['query']) && $parametros['query']){
+                $tramites = $tramites->where(function ($query)use($parametros){
+                                        $query->where('rel_trabajador_tramites.fecha_inicio','like','%'.$parametros['query'].'%')
+                                        ->orWhere('rel_trabajador_tramites.fecha_final','like','%'.$parametros['query'].'%')
+                                        ->orWhere('rel_trabajador_tramites.cr_origen','like','%'.$parametros['query'].'%')
+                                        ->orWhere('rel_trabajador_tramites.cr_destino','like','%'.$parametros['query'].'%')
+                                        ->orWhereRaw('concat(trabajador.nombre," ", trabajador.apellido_paterno, " ", trabajador.apellido_materno) like "%'.$parametros['query'].'%"' )
+                                        ->orWhereRaw('concat(trabajador.apellido_paterno, " ", trabajador.apellido_materno, " ", trabajador.nombre) like "%'.$parametros['query'].'%"' )
+                                        ->orWhere('trabajador.curp','LIKE','%'.$parametros['query'].'%')
+                                        ->orWhere('trabajador.rfc','LIKE','%'.$parametros['query'].'%')
+                                        ->orWhere('cr_origen_desc.descripcion','LIKE','%'.$parametros['query'].'%')
+                                        ->orWhere('cr_origen_desc.clues','LIKE','%'.$parametros['query'].'%')
+                                        ->orWhere('cr_destino_desc.descripcion','LIKE','%'.$parametros['query'].'%')
+                                        ->orWhere('cr_destino_desc.clues','LIKE','%'.$parametros['query'].'%');
+                                    });
+            }
+
+            //
+            $tramites_origen = $tramites;
+            $tramites_destino = clone $tramites;
+            $tramites_validacion = clone $tramites;
+
+            if($permison_rh == true && !$access->is_admin){
                 $tramites_origen = $tramites_origen->whereIn('cr_origen',$access->lista_cr);
                 $tramites_destino = $tramites_destino->whereIn('cr_destino',$access->lista_cr);
             }/*else if($permison_of_central == true)
             {*/
-                $tramites_validacion = $tramites_validacion->where('estatus_origen',1)->where('estatus_destino',1);
+            $tramites_validacion = $tramites_validacion->where(function ($where){ $where->where('estatus_origen',1)->where('estatus_destino',1); });
             //}
             //filtro de valores por permisos del usuario
             
@@ -83,18 +107,15 @@ class TramitesController extends Controller
                 
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
-                //$tramites_origen = $tramites_origen->paginate($resultadosPorPagina);
-                //$tramites_destino = $tramites_destino->paginate($resultadosPorPagina);
-                //$tramites_validacion = $tramites_validacion->paginate($resultadosPorPagina);
-
+                $tramites_origen = $tramites_origen->paginate($resultadosPorPagina);
+                $tramites_destino = $tramites_destino->paginate($resultadosPorPagina);
+                $tramites_validacion = $tramites_validacion->paginate($resultadosPorPagina);
+            }else{
                 $tramites_origen = ['data' => $tramites_origen->get()];
                 $tramites_destino = ['data' => $tramites_destino->get()];
                 $tramites_validacion = ['data' => $tramites_validacion->get()];
             }
             
-           
-            
-
             return response()->json(['data_origen'=>$tramites_origen,'data_destino'=>$tramites_destino,'data_validacion'=>$tramites_validacion, 'rh'=>$permison_rh, 'rh_central'=>$permison_of_central],HttpResponse::HTTP_OK);
             //return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
