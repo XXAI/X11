@@ -49,7 +49,8 @@ class TrabajadorServiceController extends Controller
                                 //'rel_trabajador_capacitacion_detalles',
                                 'rel_datos_laborales',
                                 'rel_datos_laborales_nomina',
-                                'rel_datos_comision'
+                                'rel_datos_comision',
+                                'rel_trabajador_documentos'
                                 //'rel_trabajador_escolaridad',
                                 //'rel_trabajador_escolaridad_cursante',
                                 //'rel_trabajador_horario'

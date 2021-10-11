@@ -8,7 +8,8 @@
     
     <div fxLayout="row wrap" fxLayoutGap="10px"  *ngIf="!isLoadingCredential">
         <div fxFlex.xs="100" fxFlex="10" >
-            <img mat-card-image style="width: 100%; height: 100%; margin: 0 auto 0 auto; object-fit: contain;" src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
+            <img mat-card-image style="width: 100%; margin: 0 auto 0 auto; object-fit: contain;" src="{{(datosCredencial)?datosCredencial.photo:photoPlaceholder}}" alt="">
+            
         </div>
         <div fxLayout="row wrap" fxFlex.xs="100" fxFlex="75"  *ngIf="dataTrabajador">
             <div fxFlex>
@@ -51,12 +52,24 @@
         </div>
         <div fxLayout="row wrap" fxFlex="10" fxFlex.xs="100" fxLayoutAlign="center center" *ngIf="dataTrabajador">
             <button fxFlex="100" *ngIf="puedeEditar && dataTrabajador.estatus==1" mat-raised-button (click)="editarEmpleado()" color="accent" style="margin-bottom: 10px;"><mat-icon>edit</mat-icon> Editar</button>
-            <button  fxFlex="100" mat-raised-button (click)='cancelar()'>Cerrar</button>
+            <button  fxFlex="100" mat-raised-button (click)='cancelar()' style="margin-bottom: 10px;">Cerrar</button>
+            
+            <!--Expediente<br>
+            <button  mat-raised-button color="primary" [disabled]="verInfoExpediente" (click)="verExpediente(dataTrabajador)" >
+                    <span class="material-icons-outlined">
+                        visibility
+                    </span>
+                    
+                    <span *ngIf="!dataTrabajador.rel_trabajador_documentos">Pendiente</span>
+                    <span *ngIf="dataTrabajador.rel_trabajador_documentos">{{ estatusDocumentacion[dataTrabajador.rel_trabajador_documentos.estatus]}}</span>
+            </button>-->
+            
+                
         </div>
         
     </div>
 </div>
-<div mat-dialog-content style="max-height: 49vh; height:375px;">
+<div mat-dialog-content style="max-height: 49vh; height:400px;">
     <section fxLayout="column">
         <section fxFlex="100">
             <div class="loading-shade" *ngIf="isLoading"><mat-spinner *ngIf="isLoading"></mat-spinner></div>
@@ -72,11 +85,11 @@
                             <div fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50"  fxFlex.xl="50" fxFlex.xs="100">
                                 <div style="text-align: center; padding: 10px; border-bottom: 1px solid #E21800; color: blue; font-weight: 500;">DATOS PERSONALES</div>
                                 <div style="background-color: rgba(220, 220, 233, 0.3);padding: 10px;">
-                                    <div fxLayout="row wrap">
-                                        <div fxFlex.sm="50" fxFlex.xs="100">
+                                    <div fxLayout="row">
+                                        <div fxFlex="50" >
                                             <span class="label">CURP: </span><br><span class="value">{{ dataTrabajador.curp }}</span>
                                         </div>
-                                        <div fxFlex.sm="50" fxFlex.xs="100">
+                                        <div fxFlex="50">
                                             <span class="label">RFC: </span><br><span class="value">{{ dataTrabajador.rfc }}</span><br>
                                         </div>
                                     </div>
@@ -186,9 +199,26 @@
                                         </div>
                                         
                                     </div>
+                                    
                                     <div fxLayout="row" *ngIf="dataTrabajador.rel_datos_comision != null">
                                         <div fxFlex="100">
                                             <span class="label">COMISIÓN SINDICAL: </span><br><span class="value"> SINDICATO {{ dataTrabajador.rel_datos_comision.sindicato.descripcion }}</span>
+                                        </div>
+                                        
+                                    </div>
+                                    <div fxLayout="row">
+                                        <div fxFlex="100">
+                                            <span class="label">Expediente: </span><br><span class="value">
+                                                <div fxFlex="60">Estatus: 
+                                                    <span *ngIf="!dataTrabajador.rel_trabajador_documentos">Pendiente</span>
+                                                    <span *ngIf="dataTrabajador.rel_trabajador_documentos">{{ estatusDocumentacion[dataTrabajador.rel_trabajador_documentos.estatus]}}</span>
+                                                     </div>
+                                                <div fxFlex="40"  fxFlex="100"><button  mat-raised-button color="primary" [disabled]="verInfoExpediente" (click)="verExpediente(dataTrabajador)" >
+                                                    <span class="material-icons-outlined">
+                                                        visibility
+                                                    </span>
+                                                    Expediente</button></div>
+                                            </span>
                                         </div>
                                         
                                     </div>

@@ -8,7 +8,7 @@
                 <mat-spinner *ngIf="isLoading"></mat-spinner>
               </div>
             <div>
-                Maximo de peso del archivo <b style="color: red;">5Mb.</b>
+                Maximo de peso del archivo <b style="color: red;">6Mb.</b>
             </div>
             <form (ngSubmit)="subir()" [formGroup]="form">
                 <b>Documentación Requerida:</b>
@@ -20,6 +20,7 @@
                     <li>CÉDULA PROFESIONAL (TODOS LOS QUE CUENTE)</li>
                     <li>SOLICITUD DE EMPLEO</li>
                 </ul>
+                <hr>
                 <div class="form-group">
                     <label>Archivo</label>
                     <input type="file" formControlName="file" class="form-control" accept="application/pdf" (change)="fileChange($event)">

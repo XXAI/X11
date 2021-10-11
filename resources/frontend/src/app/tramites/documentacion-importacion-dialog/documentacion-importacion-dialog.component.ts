@@ -70,7 +70,7 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
 		let fileList: FileList = event.target.files;
 		if (fileList.length > 0) {
       this.archivo = <File>fileList[0];
-      if(this.archivo.size > 5000000)
+      if(this.archivo.size > 6144000)
       {
         this.form.patchValue({file:null});
         this.archivo = null;

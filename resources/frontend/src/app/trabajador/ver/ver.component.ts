@@ -6,6 +6,7 @@ import { SharedService } from '../../shared/shared.service';
 import { Router } from '@angular/router';
 import { ReportWorker } from '../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
+import { environment } from 'src/environments/environment';
 
 export interface VerEmpleadoData {
   id: number;
@@ -36,6 +37,7 @@ export class VerComponent implements OnInit {
   datosCredencial:any;
   photoPlaceholder = 'assets/profile-icon.svg';
   Asitencia:boolean = false;
+  url           = `${environment.base_url_file}`;
 
   puedeVerAsistencias: boolean = false;
   puedeEditar:boolean = false;
@@ -43,8 +45,11 @@ export class VerComponent implements OnInit {
   dataTramites = [];//[{tramite:'COMISIÓN', periodo:'---', acuse:'---', estatus:1}];
   displayedColumns: string[] = ['institucion','grado','descripcion','cedula']; //'Agente',
   displayedColumnsTramite: string[] = ['tramite','periodo', 'archivo', 'estatus']; //'Agente',
+  estatusDocumentacion:string[] = ['', 'En revisión', "En corrección", "Validado"];
   navTabSelected:number = 0;
   pestanaTramites:boolean = false;
+
+  verInfoExpediente:boolean = true;
 
   //Para el listado de las asistencias
   isLoadingAsistencia:boolean = false;
@@ -132,7 +137,13 @@ export class VerComponent implements OnInit {
         //console.log(this.dataTrabajador);
         this.verTramites(response.id);
         this.Asitencia = (response.actualizado == 0)?false:true;
-        console.log(this.Asitencia);
+        //console.log(this.Asitencia);
+        
+        if(this.dataTrabajador.rel_trabajador_documentos != null)
+        {
+          this.verInfoExpediente = false;
+        }
+
         if(this.verificarAsistencia(this.dataTrabajador.rel_datos_laborales.cr_fisico.clues))
         {
           this.puedeVerAsistencias = true;
@@ -191,6 +202,12 @@ export class VerComponent implements OnInit {
     }
     //console.log();
     return bandera;
+  }
+
+
+  verExpediente(obj:any)
+  {
+    window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
   }
 
   loadNext(){
