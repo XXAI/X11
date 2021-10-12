@@ -341,6 +341,31 @@ export class FormularioComponent implements OnInit {
       this.indexTab = number;
   }
 
+  verificarRfc(rfc){
+    //console.log(rfc.length);
+    if(rfc.length == 13)
+    {
+      this.trabajadorService.getValidadorRfc(rfc).subscribe(
+        response => {
+          console.log(response);
+          if(response == 1)
+          {
+            this.sharedService.showSnackBar("El trabajador ya existe, por favor, verifique su estatus o ubicación", null, 5000); 
+          }
+        },
+        errorResponse =>{
+          this.isLoadingCredential = false;
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, null, 3000); 
+        }
+      );
+
+    }
+  }
+
  /*confirmUnlinkTrabajador(){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
@@ -929,8 +954,8 @@ export class FormularioComponent implements OnInit {
         errorResponse =>{
           this.isLoading = false;
           var errorMessage = "Ocurrió un error.";
-          if(errorResponse.status == 409){
-            errorMessage = errorResponse.error.error.message;
+          if(errorResponse.error){
+            errorMessage = errorResponse.error.message;
           }
           this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
           
@@ -950,8 +975,8 @@ export class FormularioComponent implements OnInit {
           errorResponse =>{
             this.isLoading = false;
             var errorMessage = "Ocurrió un error.";
-            if(errorResponse.status == 409){
-              errorMessage = errorResponse.error.error.message;
+            if(errorResponse.error){
+              errorMessage = errorResponse.error.message;
             }
             this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
             

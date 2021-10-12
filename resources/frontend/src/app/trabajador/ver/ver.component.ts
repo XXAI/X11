@@ -207,7 +207,13 @@ export class VerComponent implements OnInit {
 
   verExpediente(obj:any)
   {
-    window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
+    if(!this.verInfoExpediente)
+    {
+      window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
+    }else{
+      this.sharedService.showSnackBar('No tiene expediente registrado', null, 4000);
+    }
+    
   }
 
   loadNext(){

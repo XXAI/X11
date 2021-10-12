@@ -12,19 +12,23 @@
             
         </div>
         <div fxLayout="row wrap" fxFlex.xs="100" fxFlex="75"  *ngIf="dataTrabajador">
-            <div fxFlex>
+            <div  fxFlex="100" fxFlex.xs="50">
                 <h1 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
                 <h2 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales.cr_fisico)?dataTrabajador.rel_datos_laborales.cr_fisico.descripcion:'CR físico no asignado' }}</h2>
-            </div>
-            <div fxFlex fxHide.xs="true">
                 <mat-chip-list aria-label="Fish selection">
                     <mat-chip color="primary" [selected]="dataTrabajador.validado == 1"><mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
                     <mat-chip color="primary" [selected]="dataTrabajador.estatus == 1">{{(dataTrabajador.estatus == 1)?'Activo':'Inactivo'}}</mat-chip>
                     <mat-chip color="warn" *ngIf="dataTrabajador.estatus == 2" [selected]="dataTrabajador.estatus == 2">Baja</mat-chip>
                     <mat-chip color="primary" *ngIf="dataTrabajador.rel_datos_comision != null" [selected]="true" >COMISIÓN SINDICAL</mat-chip>
                     <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
+                    <mat-chip color="info" style="cursor: pointer;" (click)="verExpediente(dataTrabajador)"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
+                        <span *ngIf="!dataTrabajador.rel_trabajador_documentos">Pendiente</span>
+                        <span *ngIf="dataTrabajador.rel_trabajador_documentos">{{ estatusDocumentacion[dataTrabajador.rel_trabajador_documentos.estatus]}}</span>
+                    </mat-chip>
+
                 </mat-chip-list>
             </div>
+            
             <div fxFlex="100">
                 <div fxFlex="100" fxFlex.xs="100" style="text-align: center; font-size: 9pt; background-color: #3f51b5; color: white;">HORARIO LABORAL</div>
             </div>
@@ -69,7 +73,7 @@
         
     </div>
 </div>
-<div mat-dialog-content style="max-height: 49vh; height:400px;">
+<div mat-dialog-content style="max-height: 65vh; height:380px;">
     <section fxLayout="column">
         <section fxFlex="100">
             <div class="loading-shade" *ngIf="isLoading"><mat-spinner *ngIf="isLoading"></mat-spinner></div>
@@ -206,7 +210,7 @@
                                         </div>
                                         
                                     </div>
-                                    <div fxLayout="row">
+                                    <!--<div fxLayout="row">
                                         <div fxFlex="100">
                                             <span class="label">Expediente: </span><br><span class="value">
                                                 <div fxFlex="60">Estatus: 
@@ -221,7 +225,7 @@
                                             </span>
                                         </div>
                                         
-                                    </div>
+                                    </div>-->
                                     
                                 </div>
 

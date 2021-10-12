@@ -71,7 +71,7 @@
                                     </mat-error>
                                 </mat-form-field>
                                 <mat-form-field fxFlex="20" fxFlex.xs="100">
-                                    <input matInput id="rfc" formControlName="rfc" placeholder="rfc"  autocomplete="off" minlength="13" [readonly]="editable">
+                                    <input matInput id="rfc" formControlName="rfc" placeholder="rfc"  autocomplete="off" minlength="13" [readonly]="editable" #rfc (blur)="verificarRfc(rfc.value)">
                                     <mat-error *ngIf="trabajadorForm.get('rfc').invalid && (trabajadorForm.get('rfc').dirty || trabajadorForm.get('rfc').touched)">
                                         <span *ngIf="trabajadorForm.get('rfc').errors.required">Campo obligatorio</span>
                                         <span *ngIf="trabajadorForm.get('rfc').errors.minlength">Este campo requiere 13 caracteres</span>

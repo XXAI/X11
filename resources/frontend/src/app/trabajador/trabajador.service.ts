@@ -34,6 +34,7 @@ export class TrabajadorService {
   url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
   url_tramite = `${environment.base_url}/tramites`;
   url_tramite_trabajador = `${environment.base_url}/tramites-trabajador`;
+  url_valida_rfc = `${environment.base_url}/valida-rfc`;
 
   constructor(private http: HttpClient) { }
 
@@ -262,11 +263,17 @@ export class TrabajadorService {
   }
 
   cargaClues():Observable<any> {
-    
     return this.http.get<any>(this.url_clue_asistencia, {}).pipe(
         map( response => {
           return response;
         })
     );
-}
+  }
+  getValidadorRfc(rfc):Observable<any> {
+    return this.http.get<any>(this.url_valida_rfc+"/"+rfc, {}).pipe(
+        map( response => {
+          return response;
+        })
+    );
+  }
 }

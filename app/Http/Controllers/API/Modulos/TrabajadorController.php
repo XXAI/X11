@@ -500,6 +500,23 @@ class TrabajadorController extends Controller
             return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
         }   
     }
+    public function getBuscadorRfc(Request $request, $id)
+    {
+        try{
+            $object = Trabajador::where("rfc",$id)->first();
+            if($object)
+            {
+                return response()->json(1,HttpResponse::HTTP_OK);
+            }else{
+                return response()->json(2,HttpResponse::HTTP_OK);
+            }
+            
+            DB::beginTransaction();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }   
+    }
     public function update(Request $request, $id)
     {
         $mensajes = [
