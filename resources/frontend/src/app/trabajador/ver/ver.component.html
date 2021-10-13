@@ -17,10 +17,10 @@
                 <h2 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales.cr_fisico)?dataTrabajador.rel_datos_laborales.cr_fisico.descripcion:'CR físico no asignado' }}</h2>
                 <mat-chip-list aria-label="Fish selection">
                     <mat-chip color="primary" [selected]="dataTrabajador.validado == 1"><mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
-                    <mat-chip color="primary" [selected]="dataTrabajador.estatus == 1">{{(dataTrabajador.estatus == 1)?'Activo':'Inactivo'}}</mat-chip>
+                    <mat-chip color="primary" [selected]="dataTrabajador.actualizado == 1">{{(dataTrabajador.actualizado == 1)?'Actualizado':'No Actualizado'}}</mat-chip>
                     <mat-chip color="warn" *ngIf="dataTrabajador.estatus == 2" [selected]="dataTrabajador.estatus == 2">Baja</mat-chip>
-                    <mat-chip color="primary" *ngIf="dataTrabajador.rel_datos_comision != null" [selected]="true" >COMISIÓN SINDICAL</mat-chip>
-                    <mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>
+                    <!--<mat-chip color="primary" *ngIf="dataTrabajador.rel_datos_comision != null" [selected]="true" >COMISIÓN SINDICAL</mat-chip>-->
+                    <!--<mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>-->
                     <mat-chip color="info" style="cursor: pointer;" (click)="verExpediente(dataTrabajador)"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
                         <span *ngIf="!dataTrabajador.rel_trabajador_documentos">Pendiente</span>
                         <span *ngIf="dataTrabajador.rel_trabajador_documentos">{{ estatusDocumentacion[dataTrabajador.rel_trabajador_documentos.estatus]}}</span>

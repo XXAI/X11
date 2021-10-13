@@ -35,6 +35,8 @@ export class TrabajadorService {
   url_tramite = `${environment.base_url}/tramites`;
   url_tramite_trabajador = `${environment.base_url}/tramites-trabajador`;
   url_valida_rfc = `${environment.base_url}/valida-rfc`;
+  url_comision_sindical = `${environment.base_url}/comision-sindical`;
+  
 
   constructor(private http: HttpClient) { }
 
@@ -240,6 +242,14 @@ export class TrabajadorService {
 
   setTramite(tipo, trabajador):Observable<any>{
     return this.http.post<any>(this.url_tramite, {params:{tipo_tramite: tipo, trabajador:trabajador}}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  };
+  
+  guardarComisionSindical(obj):Observable<any>{
+    return this.http.post<any>(this.url_comision_sindical, {obj}).pipe(
       map( (response: any) => {        
         return response;
       }

@@ -126,6 +126,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('clues_asistencia',              'API\Modulos\TrabajadorController@ListCluesAsistencia');
     Route::apiResource('tramite-documentacion',       'API\Modulos\TramiteDocumentacionController');
     
+    Route::post('comision-sindical',                    'API\Modulos\TrabajadorController@comisionSindical');
     Route::post('tramite-documentacion-upload',       'API\Modulos\TramiteDocumentacionController@Upload');
     Route::get('tramite-documentacion-download/{id}',       'API\Modulos\TramiteDocumentacionController@Download');
     

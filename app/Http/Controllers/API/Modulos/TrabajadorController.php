@@ -59,6 +59,7 @@ use App\Models\RelHorario;
 use App\Models\RelNomina;
 use App\Models\RelBaja;
 use App\Models\RelTransaccion;
+use App\Models\RelComision;
 use App\Models\User;
 
 use App\Exports\DevReportExport;
@@ -77,8 +78,8 @@ class TrabajadorController extends Controller
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
             $parametros = $request->all();
-            $trabajador = Trabajador:://with("datoslaborales")
-                            join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+            $trabajador = Trabajador::with("rel_datos_comision")
+                            ->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                             ->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
                             ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2)");
@@ -500,6 +501,86 @@ class TrabajadorController extends Controller
             return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
         }   
     }
+    public function comisionSindical(Request $request)
+    {
+        $mensajes = [
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = $request->all();
+        $inputs = $inputs['obj'];
+        $reglas = [];
+
+        $reglas = [
+            'fecha_fin'           => 'required',
+            'fecha_inicio'           => 'required',
+            'no_documento'           => 'required',
+            'sindicato_id'           => 'required',
+            'trabajador_id'           => 'required',
+        ];
+        
+        DB::beginTransaction();
+        $object = new RelComision();
+        $v = Validator::make($inputs, $reglas, $mensajes);
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+
+        try {
+            
+                $fecha_actual = Carbon::now();
+                $fecha_inicio = Carbon::parse($inputs['fecha_inicio']);
+                $fecha_fin = Carbon::parse($inputs['fecha_fin']);
+                //Actualizamos el estatus de comision
+                $actualizacion = RelComision::where("fecha_fin", "<",$fecha_fin->toDateString())->where("estatus", "A");
+                $actualizacion->update(['estatus'=> 'E']);
+                //
+                
+                $diferencia = $fecha_inicio->diffInDays($fecha_fin, FALSE);  
+                if($diferencia < 1)
+                {
+                    $fecha_pivote   = $fecha_fin;
+                    $fecha_fin      = $fecha_inicio;
+                    $fecha_inicio   = $fecha_pivote;
+                    $diferencia = $fecha_inicio->diffInDays($fecha_fin, FALSE);   
+                    //return Response::json(['error' => $diferencia], HttpResponse::HTTP_CONFLICT);
+                }
+
+                $diferencia = $fecha_actual->diffInDays($fecha_fin, FALSE); 
+                if($diferencia < 1)
+                {
+                    return Response::json(['error' => "El periodo de la comisión debe de ser mayor a la fecha actual"], HttpResponse::HTTP_CONFLICT);
+                }
+
+                $busqueda = RelComision::where("trabajador_id", $inputs['trabajador_id'])->where("fecha_fin", ">", $fecha_fin->toDateString())->where("estatus", "A")->get();
+
+                if(count($busqueda) > 0)
+                {
+                    return Response::json(['error' => "Actualmente existe una comision sindical activa, verifique sus datos"], HttpResponse::HTTP_CONFLICT);
+                }
+                $object->trabajador_id              = $inputs['trabajador_id'];
+                $object->fecha_inicio               = $inputs['fecha_inicio'];
+                $object->fecha_fin                  = $inputs['fecha_fin'];
+                
+                $object->no_oficio                  = $inputs['no_documento'];
+                $object->sindicato_id                = $inputs['sindicato_id'];
+                $object->tipo_comision_id            = "CS";
+                $object->estatus                    = "A";
+                
+            $object->save();
+
+            DB::commit();
+            
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
+
     public function getBuscadorRfc(Request $request, $id)
     {
         try{

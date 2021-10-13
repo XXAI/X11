@@ -22,6 +22,7 @@ import { BuscarTrabajadorDialogComponent } from './buscar-trabajador-dialog/busc
 import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog/agregar-firmantes-dialog.component';
 import { TransferenciaTrabajadorDialogComponent } from './transferencia-trabajador-dialog/transferencia-trabajador-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComisionSindicalDialogComponent } from './comision-sindical-dialog/comision-sindical-dialog.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     VerComponent,
     BuscarTrabajadorDialogComponent,
     AgregarFirmantesDialogComponent,
-    TransferenciaTrabajadorDialogComponent
+    TransferenciaTrabajadorDialogComponent,
+    ComisionSindicalDialogComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +59,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     VerComponent,
     BuscarTrabajadorDialogComponent,
     AgregarFirmantesDialogComponent,
-    TransferenciaTrabajadorDialogComponent
+    TransferenciaTrabajadorDialogComponent,
+    ComisionSindicalDialogComponent
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

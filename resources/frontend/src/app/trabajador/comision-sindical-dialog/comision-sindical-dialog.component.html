@@ -1,0 +1,50 @@
+<section  fxFlex="100" fxFlex.xs="100" [formGroup]="ComisionForm">
+    <mat-card>
+        <mat-card-title>Comisión Sindical {{nombre_trabajador}}</mat-card-title>
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="75" fxFlex.xs="100">
+                    <mat-label>Sindicato </mat-label>
+                    <mat-select formControlName="sindicato_id" (selectionChange) = "obtener_texto_sindicato($event)" required>
+                        <mat-option *ngFor="let item of catalogo_sindicato" [value]="item.id">
+                            {{item.descripcion}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="ComisionForm.get('sindicato_id').invalid && (ComisionForm.get('sindicato_id').dirty || ComisionForm.get('sindicato_id').touched)">
+                        <span *ngIf="ComisionForm.get('sindicato_id').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <input matInput  autocomplete="off" formControlName="no_documento" placeholder="No Documento" >
+                    <mat-error *ngIf="ComisionForm.get('no_documento').invalid && (ComisionForm.get('no_documento').dirty || ComisionForm.get('no_documento').touched)">
+                        <span *ngIf="ComisionForm.get('no_documento').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <input matInput [matDatepicker]="fecha_inicio_picker"  autocomplete="off" (click)="fecha_inicio_picker.open()" formControlName="fecha_inicio" placeholder="Fecha Inicio" >
+                    <mat-datepicker-toggle matPrefix [for]="fecha_inicio_picker"></mat-datepicker-toggle>
+                    <mat-datepicker #fecha_inicio_picker [disabled]="false"></mat-datepicker>
+                    <mat-error *ngIf="ComisionForm.get('fecha_inicio').invalid && (ComisionForm.get('fecha_inicio').dirty || ComisionForm.get('fecha_inicio').touched)">
+                        <span *ngIf="ComisionForm.get('fecha_inicio').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <input matInput [matDatepicker]="fecha_fin_picker"  autocomplete="off" (click)="fecha_fin_picker.open()" formControlName="fecha_fin" placeholder="Fecha fin" >
+                    <mat-datepicker-toggle matPrefix [for]="fecha_fin_picker"></mat-datepicker-toggle>
+                    <mat-datepicker #fecha_fin_picker [disabled]="false"></mat-datepicker>
+                    <mat-error *ngIf="ComisionForm.get('fecha_fin').invalid && (ComisionForm.get('fecha_fin').dirty || ComisionForm.get('fecha_fin').touched)">
+                        <span *ngIf="ComisionForm.get('fecha_fin').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                    
+                </mat-form-field>
+            </div>
+                    
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="cancelar()">Cancelar</button>
+            <button mat-raised-button color="primary" [disabled]="!ComisionForm.valid" (click)="guardar()">Agregar</button>
+        </mat-card-actions>
+    </mat-card>
+</section>

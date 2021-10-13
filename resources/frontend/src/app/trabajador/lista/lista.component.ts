@@ -21,6 +21,7 @@ import { VerComponent } from '../ver/ver.component';
 import { BuscarTrabajadorDialogComponent } from '../buscar-trabajador-dialog/buscar-trabajador-dialog.component';
 import { BajaDialogComponent } from '../baja-dialog/baja-dialog.component';
 import { TransferenciaTrabajadorDialogComponent } from '../transferencia-trabajador-dialog/transferencia-trabajador-dialog.component';
+import { ComisionSindicalDialogComponent } from '../comision-sindical-dialog/comision-sindical-dialog.component';
 
 
 import { ReportWorker } from '../../web-workers/report-worker';
@@ -358,6 +359,33 @@ export class ListaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
         //console.log(valid);
+        this.loadTrabajadorData();
+      }
+    });
+  }
+
+  ComisionSindical(obj)
+  {
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data:{scSize:this.mediaSize, id: obj.id, nombre: obj.nombre+" "+ obj.apellido_paterno+" "+obj.apellido_materno}
+      };
+    }else{
+      configDialog = {
+        width: '95%',
+        data:{id: obj.id, nombre: obj.nombre+" "+ obj.apellido_paterno+" "+obj.apellido_materno }
+      }
+    }
+
+    const dialogRef = this.dialog.open(ComisionSindicalDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
         this.loadTrabajadorData();
       }
     });
