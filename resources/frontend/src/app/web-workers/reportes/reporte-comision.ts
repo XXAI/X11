@@ -214,7 +214,31 @@ export class ReporteComision {
           }
         });
 
-        let destino = 
+        let contenido = "";
+        if(datos_trabajador.datoslaboralesnomina.ur == "CON")
+        {
+          contenido = "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
+          datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
+          "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
+          datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+") "+
+          " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
+          "DEBIÉNDOSE PRESENTAR CON EL C. "+firmante_destino+", "+
+          "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
+          "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO "+
+          " EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+
+          "SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.";
+        }else{
+          contenido= "\n\n\n\nPOR NECESIDADES DEL SERVICIO, CIB FUNDAMENTO EN EL ARTÍCULO 149 DE LAS CONDICIONES GENERALES DE TRABAJO DE LA SECRETARIA DE SALUD, ME PERMITO COMUNICARLE QUE A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
+          datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
+          "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
+          datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+"); CON PLAZA CLAVE BASÉ: "+datos_trabajador.datoslaboralesnomina.clave_presupuestal+
+          " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
+          "DEBIÉNDOSE PRESENTAR CON EL C. "+firmante_destino+", "+
+          "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
+          "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO "+
+          " EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+
+          "SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.";;
+        }
         datos.content.push({
           layout: 'noBorders',
           table: {
@@ -222,20 +246,7 @@ export class ReporteComision {
             margin: [0,0,0,0],
             body: [
               [
-                //{ text: "", colSpan:2},{},
-                { text: "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
-                datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
-                "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
-                datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+") "+
-                " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
-                //"DEBIÉNDOSE PRESENTAR CON EL "+datos_trabajador.datoslaborales.cr_fisico.nombre_responsable+", "+
-                "DEBIÉNDOSE PRESENTAR CON EL C. "+firmante_destino+", "+
-                "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
-                "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO "+
-                " EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+
-                "SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.", style: "texto_leyenda"},
-                //{ text: "\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE A PARTIR DEL "+fecha_hoy.toUpperCase()+" DEL AÑO EN CURSO,\n"+" SE LE COMISIONA TEMPORALMENTE DEL "+" Centro de salud rural 1 nucleo basico roberto barrios (CSSSA004764);\n DEPENDIENTE DE LA "+ "JURISDICCION SANITARIA No. VI,"+"AL "+"Hospital General Palenque (CSSSA004595);\n"+" CON CÓDIGO FUNCIONAL M01006 MÉDICO GENERAL 'A', "+"DEBIENDOSE PRESENTAR CON EL "+"Dr. Jean Michel Gamez López,\n"+"QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. (CONTRATO)\n\n"+"ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIADAD DE SU\n ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRORROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+"SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.", style: "texto_leyenda"},
-                //{ text: "", colSpan:4},{},{},{},
+                { text: contenido, style: "texto_leyenda"},
               ],
             ]
           }

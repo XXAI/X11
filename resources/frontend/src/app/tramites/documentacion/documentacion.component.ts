@@ -244,7 +244,7 @@ export class DocumentacionComponent implements OnInit {
       };
     }else{
       configDialog = {
-        width: '30%',
+        width: '80%',
         data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
       }
     }

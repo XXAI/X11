@@ -59,6 +59,7 @@ export class FormularioComponent implements OnInit {
 
   filteredCr: Observable<any[]>;
   finalizarActualizacion:boolean = true;
+  puedeDesligar:boolean = false;
 
   indexTab:number = 0;
 
@@ -471,6 +472,11 @@ export class FormularioComponent implements OnInit {
           this.actualizado = true;  
         }else if(trabajador.actualizado == 0){
           this.actualizado = false;
+        }
+
+        if(trabajador.rel_datos_comision == null)
+        {
+          this.puedeDesligar = true;
         }
         //this.actualizado = trabajador.actualizado;
         this.datos_personales = response.data;

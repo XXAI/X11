@@ -86,7 +86,7 @@ class Trabajador extends Model
     }
     
     public function rel_datos_comision(){
-        return $this->hasOne('App\Models\RelComision')->where("estatus", "A")->with('sindicato');
+        return $this->hasOne('App\Models\RelComision')->where("estatus", "A")->where("tipo_comision_id", 'CS')->with('sindicato');
     }
 
     public function rel_datos_laborales_nomina(){

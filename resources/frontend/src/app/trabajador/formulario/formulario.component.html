@@ -27,7 +27,7 @@
                 <span *ngIf="datos_personales.validado == 1" style="font-weight: bold; color: blue;">VERIFICADO</span>
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px" *ngIf="trabajador_id != null">
                     <div fxFlex="100" fxFlex.xs="100">
-                        <button mat-raised-button color="warn" style="width: 100%;" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'"  (click)="desligarTrabajador()"><mat-icon>link_off</mat-icon> Desligar</button>
+                        <button mat-raised-button color="warn" style="width: 100%;" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" *ngIf="puedeDesligar" (click)="desligarTrabajador()"><mat-icon>link_off</mat-icon> Desligar</button>
                     </div>
                 </div>
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">    
@@ -862,8 +862,8 @@
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                         <div fxFlex="30">
                             <!--<button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(!datosEscolaresForm.valid || isLoading) || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>-->
-                            <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(EstudiosActualizado > dataSourceEstudios.data.length) || isLoading"><mat-icon>save</mat-icon> Guardar</button>
-                            <button mat-raised-button (click)="accionFinalizar()" color="success" [disabled]="(finalizarActualizacion && (EstudiosActualizado > dataSourceEstudios.data.length)) || Actualizado "><mat-icon>save</mat-icon> Finalizar Actualización</button>
+                            <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="datosEscolaresForm.valid && (EstudiosActualizado > dataSourceEstudios.data.length) || isLoading"><mat-icon>save</mat-icon> Guardar</button>
+                            <button mat-raised-button (click)="accionFinalizar()" color="success" [disabled]="datosEscolaresForm.valid && (finalizarActualizacion && (EstudiosActualizado > dataSourceEstudios.data.length)) || Actualizado"><mat-icon>save</mat-icon> Finalizar Actualización</button>
                         
                         </div>
                         <div  *ngIf="!actualizado" align="end" class='mat-dialog-actions'  fxFlex="70"><button mat-stroked-button (click)="retroceder(3)" ><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button></div>

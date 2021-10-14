@@ -222,7 +222,6 @@ export class ListaComponent implements OnInit {
           if(response.error) {
             
             this.isLoading = false;
-            //this.sharedService.showSnackBar(errorMessage, null, 3000);
           } else {
               console.log(response);
               //return;
@@ -240,13 +239,10 @@ export class ListaComponent implements OnInit {
               );
               
               let config = {
-                //title: this.reportTitle,
-                //showSigns: this.reportIncludeSigns, 
-              };
-
-              
+              };   
               reportWorker.postMessage({data:response,reporte:'archivo/comision'});
           }
+          //console.log(response);
           this.isLoading = false;
         },
         errorResponse =>{

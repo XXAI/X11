@@ -12,19 +12,38 @@
             </div>
             <form (ngSubmit)="subir()" [formGroup]="form">
                 <b>Documentación Requerida:</b>
-                <ul style="font-weight: bold;">
-                    <li>ACTA DE NACIMIENTO</li>
-                    <li>CURP</li>
-                    <li>CONSTANCIA DE ANTECEDENTES NO PENALES</li>
-                    <li>TÍTULO (TODOS LOS QUE CUENTE)</li>
-                    <li>CÉDULA PROFESIONAL (TODOS LOS QUE CUENTE)</li>
-                    <li>SOLICITUD DE EMPLEO</li>
-                </ul>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+                    <div fxFlex="50" fxFlex.xs="100">
+                    <ol>
+                        <li value="01">SOLICITUD DE EMPLEO CON FOTOGRAFIA</li>
+                        <li>FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA (1)</li>
+                        <li>CURRICULÚM VITAE DEBIDAMENTE FIRMADO</li>
+                        <li>CONSTANCIA DE NO INHABILITACIÓN (ACTUALIZADA 06 MESES)</li>
+                        <li>CONSTANCIA DE NO ANTECEDENTES PENALES (ACTUALIZADA 06 MESES)</li>
+                        <li>CERTIFICADO MÉDICO ACTUALIZADO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)</li>
+                        <li>*PROTESTA</li>
+                        
+                    </ol>
+                    </div>
+                    <div fxFlex="50" fxFlex.xs="100">
+                    <ol>
+                        <li value="08">ACTA DE NACIMIENTO ACTUALIZADA, VIGENCIA MÍNIMA 2018 </li>
+                        <li>CONSTANCIA DE SITUACIÓN FISCAL ACTUALIZADA (R.F.C.) </li>
+                        <li>*PRE Y LIBERACIÓN DE LA CARTILLA MILITAR </li>
+                        <li>ÚLTIMO GRADO DE ESTUDIOS</li>
+                        <li>COMPROBANTE DE DOMICILIO (02 MESES) (1)</li>
+                        <li>CURP ACTUALIZADA (1)</li>
+                        <li>CREDENCIAL DE ELECTOR ACTUALIZADO (1)</li>
+                        <li>CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)</li>
+                    </ol>
+                    </div>
+                </div>            
                 <hr>
                 <div class="form-group">
                     <label>Archivo</label>
                     <input type="file" formControlName="file" class="form-control" accept="application/pdf" (change)="fileChange($event)">
                 </div>
+                <hr>
                 <button type="submit" mat-raised-button color="primary"  [disabled]="!form.valid || isLoading">SUBIR INFORMACIÓN</button>
             </form>
     

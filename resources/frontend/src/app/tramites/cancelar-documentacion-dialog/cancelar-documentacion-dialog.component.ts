@@ -35,12 +35,21 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
   errorArchivo:boolean;
 
   public checks: Array<any> = [
-    {description: 'ACTA DE NACIMIENTO', value: '1'},
-    {description: "CURP", value: '2'},
-    {description: "CONSTANCIA DE ANTECEDENTES NO PENALES", value: '3'},
-    {description: "TÍTULO (TODOS LOS QUE CUENTE)", value: '4'},
-    {description: "CÉDULA PROFESIONAL (TODOS LOS QUE CUENTE)", value: '5'},
-    {description: "SOLICITUD DE EMPLEO", value: '6'}
+    {description: 'SOLICITUD DE EMPLEO CON FOTOGRAFIA', value: '1'},
+    {description: "FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA (1)", value: '2'},
+    {description: "CURRICULÚM VITAE DEBIDAMENTE FIRMADO", value: '3'},
+    {description: "CONSTANCIA DE NO INHABILITACIÓN (ACTUALIZADA 06 MESES)", value: '4'},
+    {description: "CONSTANCIA DE NO ANTECEDENTES PENALES (ACTUALIZADA 06 MESES)", value: '5'},
+    {description: "CERTIFICADO MÉDICO ACTUALIZADO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)", value: '6'},
+    {description: "*PROTESTA", value: '7'},
+    {description: "ACTA DE NACIMIENTO ACTUALIZADA, VIGENCIA MÍNIMA 2018 ", value: '8'},
+    {description: "CONSTANCIA DE SITUACIÓN FISCAL ACTUALIZADA (R.F.C.)", value: '9'},
+    {description: "*PRE Y LIBERACIÓN DE LA CARTILLA MILITAR", value: '10'},
+    {description: "ÚLTIMO GRADO DE ESTUDIOS", value: '11'},
+    {description: "COMPROBANTE DE DOMICILIO (02 MESES)", value: '12'},
+    {description: "CURP ACTUALIZADA", value: '13'},
+    {description: "CREDENCIAL DE ELECTOR ACTUALIZADO", value: '14'},
+    {description: "CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)", value: '15'}
   ];
 
   constructor(

@@ -146,14 +146,21 @@ export class VerComponent implements OnInit {
 
         if(this.verificarAsistencia(this.dataTrabajador.rel_datos_laborales.cr_fisico.clues))
         {
-          this.puedeVerAsistencias = true;
+          if(this.dataTrabajador.rel_datos_comision == null)
+          {
+            this.puedeVerAsistencias = true;
+          }
         }
     
         if(this.dataTrabajador.rel_datos_laborales_nomina)
         {
           if(this.dataTrabajador.rel_datos_laborales.cr_fisico_id != this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id)
           {
-            this.pestanaTramites = true;
+            if(this.dataTrabajador.rel_datos_laborales_nomina.ur !='610'  && this.dataTrabajador.rel_datos_comision == null)
+            {
+              this.pestanaTramites = true;
+            }
+            
           }
         }
         //console.log(this.dataTrabajador.rel_datos_laborales.cr_fisico_id +" - "+ this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id);
