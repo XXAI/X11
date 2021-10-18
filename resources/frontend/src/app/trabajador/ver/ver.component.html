@@ -21,8 +21,12 @@
                     <mat-chip color="warn" *ngIf="dataTrabajador.estatus == 2" [selected]="dataTrabajador.estatus == 2">Baja</mat-chip>
                     <!--<mat-chip color="primary" *ngIf="dataTrabajador.rel_datos_comision != null" [selected]="true" >COMISIÓN SINDICAL</mat-chip>-->
                     <!--<mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>-->
-                    <mat-chip color="info" style="cursor: pointer;" (click)="verExpediente(dataTrabajador)"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
-                        <span *ngIf="!dataTrabajador.rel_trabajador_documentos">Pendiente</span>
+                    
+                    <mat-chip style="cursor: pointer; background-color: red; color: white;" *ngIf="!dataTrabajador.rel_trabajador_documentos"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
+                        <span *ngIf="">Pendiente</span>
+                        
+                    </mat-chip>
+                    <mat-chip style="cursor: pointer; color: white;"  *ngIf="dataTrabajador.rel_trabajador_documentos != null" [ngClass]="{'chip-yellow': dataTrabajador.rel_trabajador_documentos.estatus ==1, 'chip-pause': dataTrabajador.rel_trabajador_documentos.estatus ==2, 'chip-green': dataTrabajador.rel_trabajador_documentos.estatus ==3}" (click)="verExpediente(dataTrabajador)"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
                         <span *ngIf="dataTrabajador.rel_trabajador_documentos">{{ estatusDocumentacion[dataTrabajador.rel_trabajador_documentos.estatus]}}</span>
                     </mat-chip>
 
@@ -338,7 +342,16 @@
                             <br><br>
                             Puede ver el video tutorial de registro basico de la información en el siguiente link dar clic <a href="https://n9.cl/pyx9" target="_blank">Aquí</a>
                         </div>
-                        <section fxLayout="row wrap" fxLayoutGap="10px" *ngIf="!isLoadingAsistencia && Asitencia">
+                        
+                        <div *ngIf="!validadorEstudios">
+                            Para tener acceso a verificar tu asistencia, debe de completar toda tu información:
+                            <ul>
+                               <li>Escolaridad</li>
+                            </ul>    
+                            <b>*Nota:</b> Debe de ingresar todos y cada unos de tus estudios. 
+                        </div>
+
+                        <section fxLayout="row wrap" fxLayoutGap="10px" *ngIf="!isLoadingAsistencia && Asitencia && validadorEstudios">
                             <mat-form-field fxFlex="20" fxFlex.xs="45">
                                 <input matInput [matDatepicker]="fechaInicioAsistPicker" placeholder="Fecha Inicio"  [(ngModel)]="fechaInicioAsist" readonly [ngModelOptions]="{standalone: true}">
                                 <mat-datepicker-toggle matSuffix [for]="fechaInicioAsistPicker"></mat-datepicker-toggle>

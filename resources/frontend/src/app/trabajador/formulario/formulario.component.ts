@@ -466,6 +466,7 @@ export class FormularioComponent implements OnInit {
 
         let trabajador = response.data;
 
+
         this.Actualizado = (trabajador.actualizado == 0)?false:true;
         this.verificarNivel(trabajador.nivel_maximo_id);
         if(trabajador.actualizado == 1){

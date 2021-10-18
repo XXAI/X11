@@ -138,3 +138,28 @@ th{
       display: none;
     }
   }
+
+  .chip-red
+  {
+      background-color: red;
+      color: white;
+  }
+
+  .chip-yellow
+  {
+      background-color: goldenrod;
+      color: white;
+  }
+
+  .chip-pause
+  {
+      background-color: cadetblue;
+      color: white;
+  }
+  .chip-green
+  {
+      background-color: green;
+      color: white;
+  }
+
+

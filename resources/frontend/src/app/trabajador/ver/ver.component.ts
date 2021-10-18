@@ -48,6 +48,7 @@ export class VerComponent implements OnInit {
   estatusDocumentacion:string[] = ['', 'En revisión', "En corrección", "Validado"];
   navTabSelected:number = 0;
   pestanaTramites:boolean = false;
+  validadorEstudios:boolean = false;
 
   verInfoExpediente:boolean = true;
 
@@ -151,6 +152,10 @@ export class VerComponent implements OnInit {
             this.puedeVerAsistencias = true;
           }
         }
+        if(this.dataTrabajador.escolaridad.length >= this.verificarEstudios(this.dataTrabajador.nivel_maximo_id))
+        {
+          this.validadorEstudios = true;
+        }
     
         if(this.dataTrabajador.rel_datos_laborales_nomina)
         {
@@ -209,6 +214,45 @@ export class VerComponent implements OnInit {
     }
     //console.log();
     return bandera;
+  }
+
+  verificarEstudios(valor)
+  {
+    
+    let cantidad_estudios:number = 0;
+    switch(valor)
+    {
+      case 2039842:
+        cantidad_estudios = 0; break;
+      case 2039843:
+        cantidad_estudios = 1; break;
+      case 2039846:
+        cantidad_estudios = 0; break;
+      case 2039847:
+        cantidad_estudios = 0; break;
+      case 2039848:
+        cantidad_estudios = 1; break;
+      case 2039849:
+        cantidad_estudios = 1; break;
+      case 2039850:
+        cantidad_estudios = 1; break;
+      case 2039851:
+        cantidad_estudios = 1; break;
+      case 2039852:
+        cantidad_estudios = 2; break;
+      case 2039853:
+        cantidad_estudios = 3; break;
+      case 2039854:
+        cantidad_estudios = 2; break;
+      case 2039855:
+        cantidad_estudios = 2; break;
+      case 2039856:
+        cantidad_estudios = 1; break;
+      case 2039857:
+        cantidad_estudios = 0; break;
+    }
+   
+    return cantidad_estudios;
   }
 
 
