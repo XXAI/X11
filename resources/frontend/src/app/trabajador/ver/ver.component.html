@@ -23,7 +23,7 @@
                     <!--<mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>-->
                     
                     <mat-chip style="cursor: pointer; background-color: red; color: white;" *ngIf="!dataTrabajador.rel_trabajador_documentos"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
-                        <span *ngIf="">Pendiente</span>
+                        <span>Pendiente</span>
                         
                     </mat-chip>
                     <mat-chip style="cursor: pointer; color: white;"  *ngIf="dataTrabajador.rel_trabajador_documentos != null" [ngClass]="{'chip-yellow': dataTrabajador.rel_trabajador_documentos.estatus ==1, 'chip-pause': dataTrabajador.rel_trabajador_documentos.estatus ==2, 'chip-green': dataTrabajador.rel_trabajador_documentos.estatus ==3}" (click)="verExpediente(dataTrabajador)"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
