@@ -94,7 +94,7 @@ export class DocumentacionComponent implements OnInit {
     'enviado': [undefined]
   });
 
-  displayedColumns: string[] = ['ESTATUS','RFC','CURP','Nombre', 'CR','actions']; //'Agente',
+  displayedColumns: string[] = ['ESTATUS','RFC', 'CR','actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, 
@@ -180,7 +180,7 @@ export class DocumentacionComponent implements OnInit {
       configDialog = {
         //maxWidth: '200vw',
         //maxHeight: '100vh',
-        height: '100%',
+        height: '95%',
         width: '100%',
         data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
       };
@@ -190,6 +190,7 @@ export class DocumentacionComponent implements OnInit {
         data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno}
       }
     }
+    console.log(configDialog);
     const dialogRef = this.dialog.open(DocumentacionImportacionDialogComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {

@@ -1,0 +1,11 @@
+.lista_documentos mat-list-item:nth-child(odd)
+{
+    background: #a3b4ff;
+}
+
+.lista_documentos mat-list-item
+{
+    font-size: 9pt;
+    color: black;
+    height: 35px;
+}

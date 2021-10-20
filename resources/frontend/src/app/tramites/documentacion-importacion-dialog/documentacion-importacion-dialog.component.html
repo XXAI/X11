@@ -1,5 +1,92 @@
-
-<section  fxFlex="100" fxFlex.xs="100">
+<h1 mat-dialog-title>IMPORTAR ARCHIVOS DEL TRABAJADOR</h1>
+<hr style="border: 1px solid #3f51b5;">
+<div>
+    <mat-chip-list>
+        <mat-chip color="primary"> <mat-icon>person</mat-icon> <b style="font-size: 12pt;">{{nombre}}</b></mat-chip> 
+    </mat-chip-list>
+</div>
+<div mat-dialog-content>
+    <form  [formGroup]="form">
+        <b>Documentación Requerida:</b>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+            <div fxFlex="50" fxFlex.xs="100">
+            <mat-list role="list" class="lista_documentos">
+                <mat-list-item role="listitem">SOLICITUD DE EMPLEO CON FOTOGRAFIA</mat-list-item>
+                <mat-list-item role="listitem">FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA (1)</mat-list-item>
+                <mat-list-item role="listitem">CURRICULÚM VITAE DEBIDAMENTE FIRMADO</mat-list-item>
+                <mat-list-item role="listitem">CONSTANCIA DE NO INHABILITACIÓN (ACTUALIZADA 06 MESES)</mat-list-item>
+                <mat-list-item role="listitem">CONSTANCIA DE NO ANTECEDENTES PENALES (ACTUALIZADA 06 MESES)</mat-list-item>
+                <mat-list-item role="listitem">CERTIFICADO MÉDICO ACTUALIZADO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)</mat-list-item>
+                <mat-list-item role="listitem">*PROTESTA</mat-list-item>
+            </mat-list>
+                <!--<ol>
+                <li value="01">SOLICITUD DE EMPLEO CON FOTOGRAFIA</li>
+                <li>FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA (1)</li>
+                <li>CURRICULÚM VITAE DEBIDAMENTE FIRMADO</li>
+                <li>CONSTANCIA DE NO INHABILITACIÓN (ACTUALIZADA 06 MESES)</li>
+                <li>CONSTANCIA DE NO ANTECEDENTES PENALES (ACTUALIZADA 06 MESES)</li>
+                <li>CERTIFICADO MÉDICO ACTUALIZADO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)</li>
+                <li>*PROTESTA</li>
+                
+            </ol>-->
+            </div>
+            <div fxFlex="50" fxFlex.xs="100">
+                <mat-list role="list" class="lista_documentos">
+                    <mat-list-item role="listitem">ACTA DE NACIMIENTO ACTUALIZADA, VIGENCIA MÍNIMA 2018</mat-list-item>
+                    <mat-list-item role="listitem">CONSTANCIA DE SITUACIÓN FISCAL ACTUALIZADA (R.F.C.)</mat-list-item>
+                    <mat-list-item role="listitem">*PRE Y LIBERACIÓN DE LA CARTILLA MILITAR</mat-list-item>
+                    <mat-list-item role="listitem">ÚLTIMO GRADO DE ESTUDIOS</mat-list-item>
+                    <mat-list-item role="listitem">COMPROBANTE DE DOMICILIO (02 MESES)</mat-list-item>
+                    <mat-list-item role="listitem">CURP ACTUALIZADA</mat-list-item>
+                    <mat-list-item role="listitem">CREDENCIAL DE ELECTOR ACTUALIZADO</mat-list-item>
+                    <mat-list-item role="listitem">CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)</mat-list-item>
+                </mat-list>    
+                <!--<ol>
+                <li value="08">ACTA DE NACIMIENTO ACTUALIZADA, VIGENCIA MÍNIMA 2018 </li>
+                <li>CONSTANCIA DE SITUACIÓN FISCAL ACTUALIZADA (R.F.C.) </li>
+                <li>*PRE Y LIBERACIÓN DE LA CARTILLA MILITAR </li>
+                <li>ÚLTIMO GRADO DE ESTUDIOS</li>
+                <li>COMPROBANTE DE DOMICILIO (02 MESES)</li>
+                <li>CURP ACTUALIZADA</li>
+                <li>CREDENCIAL DE ELECTOR ACTUALIZADO</li>
+                <li>CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)</li>
+            </ol>-->
+            </div>
+        </div>            
+        <hr>
+        <div class="form-group">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+                <div fxFlex="50" fxFlex.xs="100">
+                    <label>Archivo</label>
+                    <input type="file" formControlName="file" class="form-control" accept="application/pdf" (change)="fileChange($event)">
+                </div>
+                <div fxFlex="50" fxFlex.xs="100">
+                    Maximo de peso del archivo <b style="color: red;">6Mb.</b>
+                </div>
+            </div>
+            
+        </div>
+        <hr>
+        
+        
+    </form>
+</div>
+<mat-dialog-actions>
+    <button type="button" mat-raised-button color="primary" (click)="subir();"  [disabled]="!form.valid || isLoading">
+        <span *ngIf="!isLoading">
+            SUBIR INFORMACIÓN
+        </span>
+        <span *ngIf="isLoading">
+            <div class="form-loading-shade">
+                Cargando Informaciòn
+                <mat-icon><mat-spinner [diameter]="20" color="primary"></mat-spinner></mat-icon>
+               
+            </div>
+            
+        </span>
+        </button>
+</mat-dialog-actions>
+<!--<section  fxFlex="100" fxFlex.xs="100">
     <mat-card>
         <mat-card-title>IMPORTAR ARCHIVOS DEL TRABAJADOR</mat-card-title>
         <mat-card-subtitle>{{nombre}}</mat-card-subtitle>
@@ -50,4 +137,4 @@
             
         </mat-card-content>
     </mat-card>
-</section>        
+</section>-->

@@ -22,6 +22,7 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
   grupos:any [] = [];
   loading: boolean;
   nombre:string;
+  isLoading: boolean;
   
   id:any;
   permisosError:boolean;
@@ -68,7 +69,7 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
         observacion: ['', Validators.required],
       }
     );
-
+    this.isLoading = false;
     this.loading = true;
   }
   
@@ -100,12 +101,15 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
 
   subir() {
     console.log(this.form.value);
+    this.isLoading = true;
     this.tramitesService.setCambioEstatus(this.data.id, 2, this.form.value).subscribe(
       response =>{
+        this.isLoading = false;
         this.sharedService.showSnackBar("Se ha denegado el archivo", null, 3000);
         this.dialogRef.close(true);
       },
       errorResponse =>{
+        this.isLoading = false;
         var errorMessage = "Ocurrió un error.";
         if(errorResponse.status == 409){
           errorMessage = errorResponse.error.error.message;

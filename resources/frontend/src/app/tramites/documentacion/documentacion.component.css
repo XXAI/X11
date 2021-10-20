@@ -205,3 +205,19 @@ table {
 .hide{
   display: none;
 }
+
+.mat-header-row
+{
+  background-color: #3f51b5 !important;
+  color: white !important;
+}
+.mat-header-row th
+{
+  color: white !important;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2 !important;}
+
+tbody tr:nth-child(even){
+  background: #CCC
+}

@@ -1,0 +1,7 @@
+.lista_documentos mat-list-item
+{
+    font-size: 9pt;
+    color: #162c88;
+    height: 30px;
+    font-weight: bold;
+}
