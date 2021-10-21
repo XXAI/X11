@@ -155,7 +155,7 @@ export class DocumentacionComponent implements OnInit {
       configDialog = {
         maxWidth: '100vw',
         maxHeight: '100vh',
-        height: '100%',
+        height: '60%',
         width: '100%',
         data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno, arreglo:obj.rel_trabajador_documentos.detalles, observacion:obj.rel_trabajador_documentos.observacion}
       };

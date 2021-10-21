@@ -164,7 +164,7 @@
                                     
                                     <div *ngIf="!row.rel_trabajador_documentos">
                                         
-                                        <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu"  fxHide.xs="false">
+                                        <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
                                             <mat-icon>menu</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
@@ -174,7 +174,9 @@
                                     
                                     <div *ngIf="row.rel_trabajador_documentos">
                                         <div *ngIf="row.rel_trabajador_documentos.estatus == 1 && permiso_validador == true">
-                                            <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Acciones</button>
+                                            <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+                                                    <mat-icon>menu</mat-icon>
+                                            </button>
                                             <mat-menu #menu="matMenu">
                                                     <div *ngIf="row.rel_trabajador_documentos.estatus == 1">
                                                         <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 2)" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
@@ -195,11 +197,13 @@
                                         </div>
                                         
                                         <div *ngIf="row.rel_trabajador_documentos.estatus == 2 && permiso_rh == true">
-                                            <button mat-button mat-stroked-button [matMenuTriggerFor]="menu">Acciones</button>
+                                            <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+                                                    <mat-icon>menu</mat-icon>
+                                            </button>
                                             <mat-menu #menu="matMenu">
                                                     <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
                                             </mat-menu>
-                                            <button  mat-raised-button color="warn" (click)="verInformacion(row)">
+                                            <button  mat-mini-fab color="warn" (click)="verInformacion(row)">
                                                 <mat-icon >
                                                     error
                                                 </mat-icon>
@@ -208,8 +212,8 @@
                                         </div>
                                        
                                         <div *ngIf="permiso_validador == false && (row.rel_trabajador_documentos.estatus == 3 || row.rel_trabajador_documentos.estatus == 1) ">
-                                            <button mat-raised-button color="primary" (click)="descargar(row)">
-                                                <mat-icon>visibility</mat-icon> Ver
+                                            <button mat-mini-fab  style="background-color: #4E342E;" (click)="descargar(row)">
+                                                <mat-icon>visibility</mat-icon>
                                             </button> 
                                         </div>  
                                     </div>

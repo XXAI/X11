@@ -1,28 +1,43 @@
 
 
-<h1 mat-dialog-title>Detalles de importación de decumentación</h1>
+
+<h1 mat-dialog-title>DETALLES DE IMPORTACIÓN DE DOCUMENTACIÓN</h1>
+<hr style="border: 1px solid #3f51b5;">
+<div>
+    <mat-chip-list>
+        <mat-chip color="primary" [selected]="nombre"> <mat-icon>person</mat-icon> <b style="font-size: 12pt;">{{nombre}}</b></mat-chip> 
+    </mat-chip-list>
+</div>
+<br>
+<!--<h1 mat-dialog-title>Detalles de importación de decumentación</h1>
 <h1 mat-dialog-title>{{nombre}}</h1>
 <h4 mat-dialog-title>{{rfc}}</h4>
-
+-->
 <div mat-dialog-content>
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                <div fxFlex="50">
-                    <mat-label>Observación:</mat-label>
-                    {{ observacion }}
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
+        <div fxFlex="100">
+            <mat-label>Observación:</mat-label>
+            <b>{{ observacion }}</b>
+        </div>
+    </div>    
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
+        <div fxFlex="100">
+            <mat-label>Documentación:</mat-label>
+            <mat-list role="list" class="lista_documentos">
+                <div *ngFor="let choice of documentacion; let i=index">
+                    <mat-list-item role="listitem" [ngClass]="{'color':i%2 == 0}">
+                        <label>
+                            {{ arreglo_datos[(choice.tipo_id - 1)].description }}
+                        </label>
+                    </mat-list-item>
                 </div>
-            </div>    
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                <div fxFlex="100">
-                    <mat-label>Documentación:</mat-label>
-                    <ul>
-                        <li *ngFor="let item of documentacion">{{ arreglo_datos[(item.tipo_id - 1)].description }}</li>
-                    </ul>
-                </div>
-            </div>        
-            
-    
+            </mat-list>
+            <!--<ul>
+                <li *ngFor="let item of documentacion">{{ arreglo_datos[(item.tipo_id - 1)].description }}</li>
+            </ul>-->
+        </div>
+    </div>              
 </div>    
 <div mat-dialog-actions>
-    <button mat-raised-button (click)="cancelar()">Cerrar</button>
-  
+    <button mat-raised-button (click)="cancelar()" color="warn">Cerrar</button>
 </div>

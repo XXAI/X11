@@ -3,7 +3,7 @@
 <hr style="border: 1px solid #3f51b5;">
 <div>
     <mat-chip-list>
-        <mat-chip color="primary"> <mat-icon>person</mat-icon> <b style="font-size: 12pt;">{{nombre}}</b></mat-chip> 
+        <mat-chip color="primary" [selected]="nombre"> <mat-icon>person</mat-icon> <b style="font-size: 12pt;">{{nombre}}</b></mat-chip> 
     </mat-chip-list>
 </div>
 <br>
@@ -27,7 +27,7 @@
                     <div fxFlex="50" fxFlex.xs="100">
                         <mat-list role="list" class="lista_documentos">
                             <div *ngFor="let choice of checks; let i=index">
-                                <mat-list-item role="listitem"  *ngIf="i<7" >
+                                <mat-list-item role="listitem"  *ngIf="i<7" [ngClass]="{'color':i%2 == 0}">
                                     <label>
                                         <input type="checkbox" [value]="choice.value" (change)="onCheckChange($event)">
                                         {{choice.description}}
@@ -41,7 +41,7 @@
                     <div fxFlex="50" fxFlex.xs="100">
                         <mat-list role="list" class="lista_documentos">
                             <div *ngFor="let choice of checks; let i=index">
-                                <mat-list-item role="listitem"   *ngIf="i>=7">
+                                <mat-list-item role="listitem"   *ngIf="i>=7"  [ngClass]="{'color':i%2 != 0}">
                                     <label >
                                         <input type="checkbox" [value]="choice.value" (change)="onCheckChange($event)">
                                         {{choice.description}}
@@ -60,8 +60,9 @@
             
             <div fxFlex="100" fxFlex.xs="100">
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                    <mat-form-field fxFlex="100" fxFlex.xs="100">
-                        <textarea matInput  formControlName="observacion" placeholder="Observación" rows="5" required></textarea>
+                    <mat-form-field fxFlex="100" fxFlex.xs="100" appearance="fill">
+                        <mat-label>Observación</mat-label>
+                        <textarea matInput  formControlName="observacion" rows="5" required></textarea>
                         <mat-error *ngIf="form.get('observacion').invalid && (form.get('observacion').dirty || form.get('observacion').touched)">
                             <span *ngIf="form.get('observacion').errors.required">Campo obligatorio</span>
                         </mat-error>

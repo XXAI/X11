@@ -1,0 +1,12 @@
+.color
+{
+    background-color: #cdc5fe;
+}
+
+.lista_documentos mat-list-item
+{
+    font-size: 9pt;
+    color: black;
+    height: 30px;
+    font-weight: bold;
+}
