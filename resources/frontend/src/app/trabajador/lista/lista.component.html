@@ -217,7 +217,8 @@
                                     <div *ngIf="row.rel_datos_comision" style="font-size: 7pt;">
                                         Comisión sindical: {{ row.rel_datos_comision.sindicato.descripcion }}
                                     </div>
-                                     </td>
+                                   
+                                </td>
                             </ng-container>
 
                             <!-- Email Column -->
@@ -237,6 +238,12 @@
                                         <div style="font-size: 8pt;" *ngIf="row.rel_datos_laborales.cr_fisico != null">
                                             {{ row.rel_datos_laborales.cr_fisico_id}}
                                         </div>
+                                        <div style="font-size: 8pt;" *ngIf="row.rel_datos_laborales.cr_fisico == null">
+                                            SIN ASIGNAR
+                                        </div>
+                                        <div *ngIf="row.rel_trabajador_baja" style="font-size: 7pt;">
+                                            BAJA {{ (row.rel_trabajador_baja.tipo_baja_id == 2)?'DEFINITIVA':'TEMPORAL' }}: {{ row.rel_trabajador_baja.baja.descripcion }}
+                                        </div>
                                     </div>
                                     
                                 </td>
@@ -247,7 +254,7 @@
                                 <td mat-cell *matCellDef="let row; let i = index">
                                     <!--<button mat-stroked-button color="primary" matTooltip="Editar Trabajador" (click)="editTrabajador(i)" routerLink="/trabajadores/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>&nbsp;-->
                                     
-                                    <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+                                    <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu" *ngIf="row.estatus == 1">
                                             <mat-icon>menu</mat-icon>
                                     </button>
                                     <mat-menu #menu="matMenu">

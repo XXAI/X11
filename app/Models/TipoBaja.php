@@ -10,4 +10,6 @@ class TipoBaja extends Model
     use SoftDeletes;
     protected $fillable = [''];
     protected $table = 'catalogo_baja';
+
+    
 }

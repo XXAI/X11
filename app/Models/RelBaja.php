@@ -10,4 +10,8 @@ class RelBaja extends Model
     use SoftDeletes;
     protected $fillable = [''];
     protected $table = 'rel_trabajador_baja';
+
+    public function baja(){
+        return $this->belongsTo('App\Models\TipoBaja', 'tipo_baja_id');
+    }
 }
