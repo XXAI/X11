@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </mat-card>
-            <mat-card fxFlex.xs="100%" fxFlex="90%">
+            <mat-card fxFlex.xs="100%" fxFlex="90%" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
                 <div fxLayout="row" fxLayout.xs="column" style="padding-bottom:10px;">
                     <div fxFlex>
                     </div>
@@ -189,7 +189,7 @@
                         <table #dataTable mat-table [dataSource]="dataSource" class="data-table" matSort>
                             <!-- ID Column -->
                             <ng-container matColumnDef="estatus">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTATUS </th>
                                 <td mat-cell *matCellDef="let row"> 
                                     <div  *ngIf="row.estatus!=1">
                                         <mat-icon>
@@ -208,32 +208,46 @@
                     
                             <!-- Name Column -->
                             <ng-container matColumnDef="RFC" >
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> RFC </th>
-                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.rfc}} </td>
-                            </ng-container>
-
-                            <!-- Email Column -->
-                            <ng-container matColumnDef="CURP" >
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> CURP </th>
-                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.curp}} </td>
-                            </ng-container>
-
-                            <!-- Username Column -->
-                            <ng-container matColumnDef="Nombre">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Completo </th>
-                                <td mat-cell *matCellDef="let row"> {{row.nombre}}  {{ row.apellido_paterno }} {{ row.apellido_materno }}
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> NOMBRE </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                    <b>{{row.nombre}}  {{ row.apellido_paterno }} {{ row.apellido_materno }}</b>
+                                    <div style="font-size: 8pt;">
+                                        {{row.rfc}}
+                                    </div>
                                     <div *ngIf="row.rel_datos_comision" style="font-size: 7pt;">
                                         Comisión sindical: {{ row.rel_datos_comision.sindicato.descripcion }}
                                     </div>
+                                     </td>
+                            </ng-container>
+
+                            <!-- Email Column -->
+                            <!--<ng-container matColumnDef="CURP" >
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> CURP </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.curp}} </td>
+                            </ng-container>-->
+
+                            <!-- Username Column -->
+                            <ng-container matColumnDef="Nombre">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> CR </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <div *ngIf="row.rel_datos_laborales">
+                                            {{ row.rel_datos_laborales.cr_fisico.descripcion}}
+                                        <div style="font-size: 8pt;">
+                                            {{ row.rel_datos_laborales.cr_fisico_id}}
+                                        </div>
+                                    </div>
+                                    
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="actions" >
-                                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                                <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
                                     <!--<button mat-stroked-button color="primary" matTooltip="Editar Trabajador" (click)="editTrabajador(i)" routerLink="/trabajadores/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>&nbsp;-->
                                     
-                                    <button mat-button mat-stroked-button [matMenuTriggerFor]="menu" *ngIf="row.estatus != 3">Acciones</button>
+                                    <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+                                            <mat-icon>menu</mat-icon>
+                                    </button>
                                     <mat-menu #menu="matMenu">
                                         <button mat-menu-item *ngIf="row.estatus != 3"  (click)="verEmpleado(row.id,i)"><mat-icon color="primary">remove_red_eye</mat-icon>Detalles</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && row.validado == 0  && row.actualizado == 1"  [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="validateTrabajador(row.id)"><mat-icon  color="primary">check_cirlce</mat-icon>Validar</button>

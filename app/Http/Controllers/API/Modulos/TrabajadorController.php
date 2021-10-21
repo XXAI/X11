@@ -78,7 +78,7 @@ class TrabajadorController extends Controller
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
             $parametros = $request->all();
-            $trabajador = Trabajador::with("rel_datos_comision")
+            $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales")
                             ->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                             ->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
                             ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
