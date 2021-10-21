@@ -230,9 +230,11 @@
                             <ng-container matColumnDef="Nombre">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> CR </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <div *ngIf="row.rel_datos_laborales">
+                                    <div *ngIf="row.rel_datos_laborales != null">
+                                        <div style="font-size: 8pt;" *ngIf="row.rel_datos_laborales.cr_fisico != null">
                                             {{ row.rel_datos_laborales.cr_fisico.descripcion}}
-                                        <div style="font-size: 8pt;">
+                                        </div>
+                                        <div style="font-size: 8pt;" *ngIf="row.rel_datos_laborales.cr_fisico != null">
                                             {{ row.rel_datos_laborales.cr_fisico_id}}
                                         </div>
                                     </div>
