@@ -162,4 +162,10 @@ th{
       color: white;
   }
 
+  .chip-primary
+  {
+      background-color: blue;
+      color: white;
+  }
+
 

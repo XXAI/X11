@@ -49,7 +49,8 @@ export class VerComponent implements OnInit {
   dataTramites = [];//[{tramite:'COMISIÓN', periodo:'---', acuse:'---', estatus:1}];
   displayedColumns: string[] = ['institucion','grado','descripcion','cedula']; //'Agente',
   displayedColumnsTramite: string[] = ['tramite','periodo', 'archivo', 'estatus']; //'Agente',
-  estatusDocumentacion:string[] = ['', 'En revisión', "En corrección", "Validado"];
+  estatusDocumentacion:string[] = ['', 'Enviado','Rechazado', 'En Validación', "Rechazado", "Validado"];
+  estatusChip:number = 0;
   navTabSelected:number = 0;
   pestanaTramites:boolean = false;
   validadorEstudios:boolean = false;
@@ -171,6 +172,13 @@ export class VerComponent implements OnInit {
             }
             
           }
+        }
+
+        if(this.dataTrabajador.rel_trabajador_documentos != null)
+        {
+          this.estatusChip = this.dataTrabajador.rel_trabajador_documentos.estatus;
+        }else{
+          this.estatusChip = null;
         }
         //console.log(this.dataTrabajador.rel_datos_laborales.cr_fisico_id +" - "+ this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id);
         //console.log(this.pestanaTramites);

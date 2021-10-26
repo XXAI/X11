@@ -66,16 +66,39 @@ class TramiteDocumentacionController extends Controller
             //Sacamos totales para el estatus de las cantidades validadas
             
             if($permison_rh || $access->is_admin){
-                $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+                $trabajador = Trabajador::Join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                                     ->with('rel_trabajador_documentos.detalles', "datoslaborales")
                                         ->where("trabajador.validado", 1)
                                         ->where("trabajador.estatus", 1)
-                                        ->whereRaw(DB::RAW("(trabajador.id not in (select trabajador_id from rel_trabajador_documentacion) or trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus  in (1,2,5)))"));
+                                        //->whereRaw(DB::RAW("(trabajador.id not in (select trabajador_id from rel_trabajador_documentacion))"))// or trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus  in (1,2,4,5)))"))
+                                        ->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales))"))
+                                        ->select("trabajador.id","trabajador.rfc","trabajador.nombre","trabajador.apellido_paterno","trabajador.apellido_materno",
+                                                DB::Raw("(select estatus from rel_trabajador_documentacion where trabajador_id=trabajador.id) as estatus"),
+                                                DB::Raw("(select cr_fisico_id from rel_trabajador_datos_laborales where trabajador_id=trabajador.id) as cr"),
+                                                DB::Raw("(select descripcion from  catalogo_cr where cr = (select cr_fisico_id from rel_trabajador_datos_laborales where trabajador_id=trabajador.id)) as descripcion"));
                 if(!$access->is_admin){
                     $trabajador = $trabajador->where(function($query)use($access){
                         $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
+                        
                     });
                 }
+            }else if($permison_of_central == true)
+            {
+                
+                $trabajador = Trabajador::Join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+                                        ->with('rel_trabajador_documentos.detalles',"datoslaborales")
+                                        //->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus in (1,3)))"))
+                                        ->where("trabajador.estatus", 1)
+                                        ->select("trabajador.id","trabajador.rfc","trabajador.nombre","trabajador.apellido_paterno","trabajador.apellido_materno",
+                                                DB::Raw("(select estatus from rel_trabajador_documentacion where trabajador_id=trabajador.id) as estatus"),
+                                                DB::Raw("(select cr_fisico_id from rel_trabajador_datos_laborales where trabajador_id=trabajador.id) as cr"),
+                                                DB::Raw("(select descripcion from  catalogo_cr where cr = (select cr_fisico_id from rel_trabajador_datos_laborales where trabajador_id=trabajador.id)) as descripcion"));
+                if(!isset($parametros['estatus']))
+                {
+                    $trabajador = $trabajador->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus in (3,5)))")); 
+                }
+
+                                                              
             }
             /*if($permison_rh || $access->is_admin){
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
@@ -264,9 +287,11 @@ class TramiteDocumentacionController extends Controller
             if($parametros['tipo'] == 1)
             {
                 $documentacion->estatus = 1;
+                $documentacion->entrega_personal = 1;
             }else if($parametros['tipo'] == 2)
             {
-                $documentacion->estatus = 2;
+                $documentacion->estatus = 3;
+                $documentacion->entrega_personal = 0;
             }
             
             $documentacion->save(); 

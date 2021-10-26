@@ -102,7 +102,7 @@ export class CancelarDocumentacionDialogComponent implements OnInit {
   subir() {
     console.log(this.form.value);
     this.isLoading = true;
-    this.tramitesService.setCambioEstatus(this.data.id, 2, this.form.value).subscribe(
+    this.tramitesService.setCambioEstatus(this.data.id, 4, this.form.value).subscribe(
       response =>{
         this.isLoading = false;
         this.sharedService.showSnackBar("Se ha denegado el archivo", null, 3000);
