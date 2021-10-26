@@ -22,7 +22,7 @@
                     <!--<mat-chip color="primary" *ngIf="dataTrabajador.rel_datos_comision != null" [selected]="true" >COMISIÓN SINDICAL</mat-chip>-->
                     <!--<mat-chip color="info" *ngIf="!datosCredencial"><mat-icon>clear</mat-icon> Sin Credencial</mat-chip>-->
                     
-                    <mat-chip style="cursor: pointer; background-color: red; color: white;" *ngIf="!dataTrabajador.rel_trabajador_documentos"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
+                    <mat-chip style="cursor: pointer; background-color: red; color: white;" *ngIf="!dataTrabajador.rel_trabajador_documentos"  (click)="verExpediente(dataTrabajador)"><mat-icon>visibility</mat-icon>&nbsp;Expediente &nbsp;
                         <span>Pendiente</span>
                         
                     </mat-chip>

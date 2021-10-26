@@ -23,6 +23,8 @@ import { AgregarFirmantesDialogComponent } from './agregar-firmantes-dialog/agre
 import { TransferenciaTrabajadorDialogComponent } from './transferencia-trabajador-dialog/transferencia-trabajador-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComisionSindicalDialogComponent } from './comision-sindical-dialog/comision-sindical-dialog.component';
+import { DocumentacionImportacionDialogComponent } from '../tramites/documentacion-importacion-dialog/documentacion-importacion-dialog.component';
+
 
 
 @NgModule({

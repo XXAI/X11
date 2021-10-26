@@ -12,6 +12,7 @@ export interface VerTrabajadorData {
   id?: string;
   rfc?:string;
   nombre?:string;
+  tipo?:number;
 }
 
 @Component({
@@ -50,6 +51,7 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
 
   ngOnInit (){
     this.nombre = this.data.nombre;
+
     this.archivoSubido = false;
     this.enviandoDatos = false;
     this.object = {};
@@ -86,7 +88,7 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
 		if (this.archivo) {
 			this.archivoSubido = false;
       this.isLoading = true;
-      let data = {'rfc': this.data.rfc, 'trabajador_id': this.data.id};
+      let data = {'rfc': this.data.rfc, 'trabajador_id': this.data.id, 'tipo':this.data.tipo};
       this.importarService.upload(data, this.archivo, '').subscribe(
         response => {
           this.dialogRef.close(true);

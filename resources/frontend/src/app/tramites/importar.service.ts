@@ -29,6 +29,7 @@ export class ImportarService {
 
     formData.append('trabajador_id', data.trabajador_id);
     formData.append('rfc', data.rfc);
+    formData.append('tipo', data.tipo);
     let token = localStorage.getItem('token');
     let headers = new HttpHeaders().set(
       "Authorization",'Bearer '+localStorage.getItem("token"),

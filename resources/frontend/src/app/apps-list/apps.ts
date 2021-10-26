@@ -34,7 +34,7 @@ export const APPS:App [] = [
     { name:'Tramites',      route: "tramites",  icon: "assets/icons/documento.png", isHub:true, hideHome:true, 
       children:[
         { name:'Comisión Interna',route:'tramites/comision', icon:'insert_drive_file', permission:"hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt" },
-        { name:'Documentacion',route:'tramites/documentacion', icon:'insert_drive_file', permission:"8HXTiaeI3NvlUWwNyzdKCgTxcepkqvDj" }
+        { name:'Documentacion',route:'tramites/documentacion', icon:'insert_drive_file'/*, permission:"8HXTiaeI3NvlUWwNyzdKCgTxcepkqvDj"*/ }
       ] },
     { name:'Directorio',      route: "directorio",  icon: "assets/icons/directorio.svg",  permission:"RkggFnAkLcXiLUTbZk3A07y0c4WdjjCO" },
     /*

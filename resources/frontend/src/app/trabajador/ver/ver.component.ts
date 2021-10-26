@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { ReportWorker } from '../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
 import { environment } from 'src/environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { DocumentacionImportacionDialogComponent } from '../../tramites/documentacion-importacion-dialog/documentacion-importacion-dialog.component';
 
 export interface VerEmpleadoData {
   id: number;
@@ -27,10 +29,12 @@ export class VerComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: VerEmpleadoData,
     private fb: FormBuilder,
     private trabajadorService: TrabajadorService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    public dialog: MatDialog, 
   ) { }
 
   dataTrabajador: any;
+  mediaSize: string;
 
   cluesAsistencia = []; //= [ 'CSSSA017213', 'CSSSA009162', 'CSSSA019954', 'CSSSA017324' ];
 
@@ -258,13 +262,44 @@ export class VerComponent implements OnInit {
 
   verExpediente(obj:any)
   {
+    console.log(!this.verInfoExpediente);
     if(!this.verInfoExpediente)
     {
       window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
     }else{
-      this.sharedService.showSnackBar('No tiene expediente registrado', null, 4000);
+      console.log(obj);
+      this.CargarDocumento(obj);
+      
     }
     
+  }
+
+  public CargarDocumento(obj)
+  {
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        //maxWidth: '200vw',
+        //maxHeight: '100vh',
+        height: '95%',
+        width: '100%',
+        data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno, tipo:1}
+      };
+    }else{
+      configDialog = {
+        width: '60%',
+        data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno, tipo:1}
+      }
+    }
+    //console.log(configDialog);
+    const dialogRef = this.dialog.open(DocumentacionImportacionDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.loadDataTrabajador(this.data.id);
+      }
+      //this.loadTrabajadorData();
+    });
   }
 
   loadNext(){

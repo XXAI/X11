@@ -64,7 +64,20 @@ class TramiteDocumentacionController extends Controller
             
             //return response()->json(['data'=>$access->is_admin, 'rh'=>$permison_rh, 'oficina'=>$permison_of_central],HttpResponse::HTTP_OK);
             //Sacamos totales para el estatus de las cantidades validadas
+            
             if($permison_rh || $access->is_admin){
+                $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+                                    ->with('rel_trabajador_documentos.detalles', "datoslaborales")
+                                        ->where("trabajador.validado", 1)
+                                        ->where("trabajador.estatus", 1)
+                                        ->whereRaw(DB::RAW("(trabajador.id not in (select trabajador_id from rel_trabajador_documentacion) or trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus  in (1,2,5)))"));
+                if(!$access->is_admin){
+                    $trabajador = $trabajador->where(function($query)use($access){
+                        $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
+                    });
+                }
+            }
+            /*if($permison_rh || $access->is_admin){
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                                     ->with('rel_trabajador_documentos.detalles', "datoslaborales")
                                         ->where("trabajador.validado", 1)
@@ -88,7 +101,7 @@ class TramiteDocumentacionController extends Controller
                 }
 
                                                               
-            } 
+            }*/ 
             //Filtros
             if(isset($parametros['enviado']))
             {
@@ -175,7 +188,7 @@ class TramiteDocumentacionController extends Controller
 
         DB::beginTransaction();
         try {
-            if($inputs['estatus'] == 2)
+            if($inputs['estatus'] == 4)
             {
                 $object->observacion                       = $inputs['observacion'];       
             }
@@ -184,7 +197,7 @@ class TramiteDocumentacionController extends Controller
             $object->estatus                       = $inputs['estatus'];   
             $object->save();
             $arreglo = Array();
-            if($inputs['estatus'] != 3)
+            if($inputs['estatus'] == 4)
             {
                foreach ($inputs['requerimientos'] as $key => $value) {
                     //array_push($arreglo, new RelDocumentacionDetalles(['tipo_id' => $value]));
@@ -221,6 +234,7 @@ class TramiteDocumentacionController extends Controller
         $reglas = [
             'trabajador_id'       => 'required',
             'rfc'                 => 'required',
+            'tipo'                => 'required',  
         ];
         
         DB::beginTransaction();
@@ -247,7 +261,14 @@ class TramiteDocumentacionController extends Controller
             
             $documentacion->trabajador_id = $parametros['trabajador_id']; 
             $documentacion->rfc = $parametros['rfc']; 
-            $documentacion->estatus = 1;
+            if($parametros['tipo'] == 1)
+            {
+                $documentacion->estatus = 1;
+            }else if($parametros['tipo'] == 2)
+            {
+                $documentacion->estatus = 2;
+            }
+            
             $documentacion->save(); 
             DB::commit();
         }

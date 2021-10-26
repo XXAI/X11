@@ -115,8 +115,9 @@
                                     <div *ngIf="row.rel_trabajador_documentos != null">
                                         <mat-icon *ngIf="row.rel_trabajador_documentos.trabajador_id == null">pending</mat-icon>
                                         <mat-icon color="primary" *ngIf="row.rel_trabajador_documentos.estatus == 1">timer</mat-icon>
-                                        <mat-icon color="warn" *ngIf="row.rel_trabajador_documentos.estatus == 2">error</mat-icon>
-                                        <mat-icon style="color:green" *ngIf="row.rel_trabajador_documentos.estatus == 3">check_circle_outline</mat-icon>
+                                        <mat-icon color="primary" *ngIf="row.rel_trabajador_documentos.estatus == 2">timer</mat-icon>
+                                        <mat-icon color="warn" *ngIf="row.rel_trabajador_documentos.estatus == 4">error</mat-icon>
+                                        <mat-icon style="color:green" *ngIf="row.rel_trabajador_documentos.estatus == 5">check_circle_outline</mat-icon>
                                     </div>
                                     <div *ngIf="row.rel_trabajador_documentos == null">
                                         <mat-icon>pending</mat-icon>
@@ -173,7 +174,88 @@
                                     </div>
                                     
                                     <div *ngIf="row.rel_trabajador_documentos">
-                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 1 && permiso_validador == true">
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 1">
+                                            <button mat-mini-fab color="warn" mat-stroked-button [matMenuTriggerFor]="menu">
+                                                    <mat-icon>menu</mat-icon>
+                                            </button>
+                                            <mat-menu #menu="matMenu">
+                                                        <button mat-menu-item (click)="CambioEstatus(row.id, 2)" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
+                                                        <button mat-menu-item (click)="CambioEstatus(row.id, 3)" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
+                                                        <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                            <mat-icon color="warn">visibility</mat-icon> Ver
+                                                        </button> 
+                                                   
+                                                
+                                            </mat-menu>
+                                            
+                                        </div>
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 2">
+                                            <button mat-mini-fab color="warn" mat-stroked-button [matMenuTriggerFor]="menu">
+                                                    <mat-icon>menu</mat-icon>
+                                            </button>
+                                            <mat-menu #menu="matMenu">
+                                                <mat-menu #menu="matMenu">
+                                                    <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
+                                                </mat-menu>    
+                                            </mat-menu>
+                                        </div>
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 3 && permiso_rh == true">
+                                            <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+                                                    <mat-icon>menu</mat-icon>
+                                            </button>
+                                            <mat-menu #menu="matMenu">
+                                                <div *ngIf="row.rel_trabajador_documentos.estatus == 1">
+                                                    <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 2)" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
+                                                    <button mat-menu-item (click)="CambioEstatus(row.id, 3)" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
+                                                    <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                        <mat-icon color="warn">visibility</mat-icon> Ver
+                                                    </button> 
+                                                    <button  mat-menu-item (click)="verInformacion(row)" *ngIf="row.rel_trabajador_documentos.detalles.length >0">
+                                                        <mat-icon  color="warn">
+                                                            error
+                                                        </mat-icon>
+                                                        DATOS
+                                                    </button>           
+                                                </div>
+                                            
+                                            </mat-menu>
+                                           
+                                        </div>
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 4 && permiso_validador == true">
+                                            <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+                                                    <mat-icon>menu</mat-icon>
+                                            </button>
+                                            <mat-menu #menu="matMenu">
+                                                    <div>
+                                                        <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
+                                                        <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                            <mat-icon color="warn">visibility</mat-icon> Ver
+                                                        </button> 
+                                                        <button  mat-menu-item (click)="verInformacion(row)" *ngIf="row.rel_trabajador_documentos.detalles.length >0">
+                                                            <mat-icon  color="warn">
+                                                                error
+                                                            </mat-icon>
+                                                            DATOS
+                                                        </button>           
+                                                    </div>
+                                                
+                                            </mat-menu>
+                                        </div>   
+                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 5">
+                                            <button mat-mini-fab color="success" mat-stroked-button [matMenuTriggerFor]="menu">
+                                                    <mat-icon>menu</mat-icon>
+                                            </button>
+                                            <mat-menu #menu="matMenu">
+                                                    <div>
+                                                        <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                            <mat-icon color="warn">visibility</mat-icon> Ver
+                                                        </button> 
+                                                                   
+                                                    </div>
+                                                
+                                            </mat-menu>
+                                        </div>    
+                                        <!--<div *ngIf="row.rel_trabajador_documentos.estatus == 1 && permiso_validador == true">
                                             <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
                                                     <mat-icon>menu</mat-icon>
                                             </button>
@@ -196,7 +278,7 @@
                                             
                                         </div>
                                         
-                                        <div *ngIf="row.rel_trabajador_documentos.estatus == 2 && permiso_rh == true">
+                                        <!--<div *ngIf="row.rel_trabajador_documentos.estatus == 2 && permiso_rh == true">
                                             <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
                                                     <mat-icon>menu</mat-icon>
                                             </button>
@@ -208,14 +290,14 @@
                                                     error
                                                 </mat-icon>
                                             </button>
-                                            <!--<B style="color: red;">DENEGADO</B>-->
+                                           
                                         </div>
                                        
                                         <div *ngIf="permiso_validador == false && (row.rel_trabajador_documentos.estatus == 3 || row.rel_trabajador_documentos.estatus == 1) ">
                                             <button mat-mini-fab  style="background-color: #4E342E;" (click)="descargar(row)">
                                                 <mat-icon>visibility</mat-icon>
                                             </button> 
-                                        </div>  
+                                        </div>  -->
                                     </div>
                                       
                                     
