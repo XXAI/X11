@@ -374,7 +374,7 @@
                             </div>
                             <button fxFlex mat-raised-button color="info" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF" (click)="reporteAsistencias()"><mat-icon>insert_drive_file</mat-icon></button>
                         </section>
-                        <div class="asistencia-table-container" *ngIf="!isLoadingAsistencia && Asitencia">
+                        <div class="asistencia-table-container" *ngIf="!isLoadingAsistencia && Asitencia && validadorEstudios">
                             <table #asistenciaTable mat-table [dataSource]="assistSource" class="data-table" matSort>
                                 <ng-container matColumnDef="dia">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Dia </th>
