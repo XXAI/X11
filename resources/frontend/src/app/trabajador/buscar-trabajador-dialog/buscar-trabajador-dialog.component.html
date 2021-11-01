@@ -43,15 +43,23 @@
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="text-align: left;"> CLUES / CR </th>
                                         <td mat-cell *matCellDef="let row" fxHide.xs="true"> 
                                             
-                                            <div *ngIf="row.estatus == 2 || row.estatus == 1">
+                                            <div *ngIf="row.rel_trabajador_baja == null">
+                                                <div *ngIf="row.estatus == 2 || row.estatus == 1 ">
                                                 
-                                                {{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.clues:'Sin CLUES asignado'}}
-                                                <br> <small>{{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.descripcion:'Sin CR asignado'}}</small> 
+                                                    {{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.clues:'Sin CLUES asignado'}}
+                                                    <br> <small>{{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.descripcion:'Sin CR asignado'}}</small> 
+                                                </div>
+                                               
+                                                <div *ngIf="row.estatus == 3">
+                                                    Sin CLUES asignado
+                                                    <br> <small>Sin CR asignado</small> 
+                                                </div>
                                             </div>
-                                           
-                                            <div *ngIf="row.estatus == 3">
-                                                Sin CLUES asignado
-                                                <br> <small>Sin CR asignado</small> 
+                                            <div *ngIf="row.rel_trabajador_baja != null">
+                                                {{ row.rel_trabajador_baja.baja.descripcion}}<BR>
+                                                <small>{{ (row.rel_trabajador_baja.tipo_baja_id == 1)?'BAJA TERMPORAL':'BAJA DEFINITIVA'}}</small>
+                                                
+
                                             </div>
                                             
                                         </td>
