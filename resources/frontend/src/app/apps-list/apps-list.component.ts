@@ -20,7 +20,7 @@ export class AppsListComponent implements OnInit {
   ngOnInit() {
     this.getApps();
     this.breakpoint = (window.innerWidth <= 599) ? 3 : 6;
-    this.setAvisos();
+    //this.setAvisos();
   }
 
   getApps():void{
