@@ -271,7 +271,6 @@ class TramiteDocumentacionController extends Controller
        $parametros = $request->all();
        $documentacion = RelDocumentacion::where("trabajador_id", $parametros['trabajador_id'])->first();
        
-       
        if(!$documentacion)
        {
             $documentacion = new RelDocumentacion();
@@ -279,22 +278,28 @@ class TramiteDocumentacionController extends Controller
         if($request->hasFile('archivo')) {
             $fileName = $parametros['rfc'];
             $extension = $request->file('archivo')->getClientOriginalExtension();
-            $name = $fileName.".".$extension;
-            $request->file("archivo")->storeAs("public/documentacion", $name);
-            
-            $documentacion->trabajador_id = $parametros['trabajador_id']; 
-            $documentacion->rfc = $parametros['rfc']; 
-            if($parametros['tipo'] == 1)
+            if($extension == "pdf")
             {
-                $documentacion->estatus = 1;
-                $documentacion->entrega_personal = 1;
-            }else if($parametros['tipo'] == 2)
-            {
-                $documentacion->estatus = 3;
-                $documentacion->entrega_personal = 0;
+                $name = $fileName.".".$extension;
+                $request->file("archivo")->storeAs("public/documentacion", $name);
+                
+                $documentacion->trabajador_id = $parametros['trabajador_id']; 
+                $documentacion->rfc = $parametros['rfc']; 
+                if($parametros['tipo'] == 1)
+                {
+                    $documentacion->estatus = 1;
+                    $documentacion->entrega_personal = 1;
+                }else if($parametros['tipo'] == 2)
+                {
+                    $documentacion->estatus = 3;
+                    $documentacion->entrega_personal = 0;
+                }
+                
+                $documentacion->save();
+            }else{
+                return response()->json(['error' => "Formato de correo incorrento, favor de verificar" ], HttpResponse::HTTP_CONFLICT);
             }
-            
-            $documentacion->save(); 
+             
             DB::commit();
         }
         

@@ -96,7 +96,9 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
           this.isLoading = false;
           //console.log(response);
         }, errorResponse => {
-          this.sharedService.showSnackBar(errorResponse, null, 3000);
+          console.log(errorResponse);
+          console.log(errorResponse.error);
+          this.sharedService.showSnackBar(errorResponse.error.error, null, 3000);
           this.isLoading = false;
         });     
       

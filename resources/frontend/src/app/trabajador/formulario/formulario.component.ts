@@ -39,6 +39,7 @@ export class FormularioComponent implements OnInit {
   colegioIsLoading: boolean = false;
   filteredColegio: Observable<any[]>;
   EstudiosActualizado:number = 0;
+  EstudiosRestantes:number = 0;
   mediaSize: string;
   datosEstudios:any = [];
   datosCapacitacion:any = [];
@@ -304,8 +305,8 @@ export class FormularioComponent implements OnInit {
       case 2039857:
         this.EstudiosActualizado = 0; break;
     }
-    console.log(this.EstudiosActualizado+"<--1");
-    console.log(this.dataSourceEstudios.data.length+"<--2");
+    //console.log(this.EstudiosActualizado+"<--1");
+    //console.log(this.dataSourceEstudios.data.length+"<--2");
   }
 
   loadPrevious(){
@@ -581,6 +582,7 @@ export class FormularioComponent implements OnInit {
         }
         this.datosEstudios = datos_escolares;
         this.dataSourceEstudios.data = datos_escolares;
+        this.EstudiosRestantes = this.EstudiosActualizado - datos_escolares.length;
         /*
         //Capacitacion
         let Capacitacion = trabajador.capacitacion;
