@@ -3,6 +3,7 @@ import { SharedService } from '../../shared/shared.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TramitesService } from '../tramites.service';
 import { ImportarService } from '../importar.service';
+import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -86,21 +87,31 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
   subir() {
     
 		if (this.archivo) {
-			this.archivoSubido = false;
-      this.isLoading = true;
-      let data = {'rfc': this.data.rfc, 'trabajador_id': this.data.id, 'tipo':this.data.tipo};
-      this.importarService.upload(data, this.archivo, '').subscribe(
-        response => {
-          this.dialogRef.close(true);
-          this.sharedService.showSnackBar("Ha subido correctamente el documento", null, 3000);
-          this.isLoading = false;
-          //console.log(response);
-        }, errorResponse => {
-          console.log(errorResponse);
-          console.log(errorResponse.error);
-          this.sharedService.showSnackBar(errorResponse.error.error, null, 3000);
-          this.isLoading = false;
-        });     
+      const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+        width: '500px',
+        data:{dialogTitle:'Confirmación',dialogMessage:'Solamente puede enviar un archivo único que contenga todos los documentos, en el orden que marca la lista, no mayor a 6 megabytes. ¿Realmente desea enviar este archivo? Para aceptar escriba ACEPTAR',validationString:'ACEPTAR',btnColor:'primary',btnText:'Aceptar'}
+      });
+  
+      dialogRef.afterClosed().subscribe(valid => {
+        if(valid){
+          this.archivoSubido = false;
+          this.isLoading = true;
+          let data = {'rfc': this.data.rfc, 'trabajador_id': this.data.id, 'tipo':this.data.tipo};
+          this.importarService.upload(data, this.archivo, '').subscribe(
+            response => {
+              this.dialogRef.close(true);
+              this.sharedService.showSnackBar("Ha subido correctamente el documento", null, 3000);
+              this.isLoading = false;
+              //console.log(response);
+            }, errorResponse => {
+              console.log(errorResponse);
+              console.log(errorResponse.error);
+              this.sharedService.showSnackBar(errorResponse.error.error, null, 3000);
+              this.isLoading = false;
+            });
+         }
+      });
+			     
       
 		} else {
       this.errorArchivo = true;
