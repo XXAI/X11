@@ -89,7 +89,7 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
 		if (this.archivo) {
       const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
         width: '500px',
-        data:{dialogTitle:'Confirmación',dialogMessage:'Solamente puede enviar un archivo único que contenga todos los documentos, en el orden que marca la lista, no mayor a 6 megabytes. ¿Realmente desea enviar este archivo? Para aceptar escriba ACEPTAR',validationString:'ACEPTAR',btnColor:'primary',btnText:'Aceptar'}
+        data:{dialogTitle:'Confirmación',dialogMessage:'Solamente puede enviar un archivo único que contenga todos los documentos, en el orden que marca la lista, no mayor a 6 megabytes. ¿Realmente desea enviar este archivo? Para confirmar escriba ACEPTAR',validationString:'ACEPTAR',btnColor:'primary',btnText:'Aceptar'}
       });
   
       dialogRef.afterClosed().subscribe(valid => {
