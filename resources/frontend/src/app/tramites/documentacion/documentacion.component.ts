@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTable } from '@angular/material/table';
 
-//import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
@@ -14,6 +13,7 @@ import { DocumentacionImportacionDialogComponent } from '../documentacion-import
 import { VerInformacionDialogComponent } from '../ver-informacion-dialog/ver-informacion-dialog.component';
 import { CancelarDocumentacionDialogComponent } from '../cancelar-documentacion-dialog/cancelar-documentacion-dialog.component';
 import { VisorPdfDialogComponent } from '../visor-pdf-dialog/visor-pdf-dialog.component';
+import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
 import { environment } from 'src/environments/environment';
 import { MediaObserver } from '@angular/flex-layout';
@@ -273,6 +273,32 @@ export class DocumentacionComponent implements OnInit {
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         //this.isLoading = false;
       });
+  }
+
+  public VerificacionDenegar(id, estado)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Confirmación',dialogMessage:'¿Desea denegar la aceptación de documentos? Para confirmar escriba DENEGAR',validationString:'DENEGAR',btnColor:'primary',btnText:'Aceptar'}
+    });
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.CambioEstatus(id, estado);
+      }
+    });
+  }
+
+  public VerificacionAprobar(id, estado)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Confirmación',dialogMessage:'¿Desea aprobar la aceptación de documentos? Para confirmar escriba APROBAR',validationString:'APROBAR',btnColor:'primary',btnText:'Aceptar'}
+    });
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.CambioEstatus(id, estado);
+      }
+    });
   }
 
   public loadTrabajadorData(event?:PageEvent){

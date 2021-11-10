@@ -181,8 +181,8 @@
                                                     <mat-icon>menu</mat-icon>
                                             </button>
                                             <mat-menu #menu="matMenu">
-                                                <button mat-menu-item (click)="CambioEstatus(row.id, 2)" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
-                                                <button mat-menu-item (click)="CambioEstatus(row.id, 3)" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
+                                                <button mat-menu-item (click)="VerificacionDenegar(row.id, 2);" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
+                                                <button mat-menu-item (click)="VerificacionAprobar(row.id, 3);" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
                                                 <button mat-menu-item color="primary" (click)="descargar(row)" >
                                                     <mat-icon color="warn">visibility</mat-icon> Ver
                                                 </button> 
@@ -208,8 +208,8 @@
                                                     <mat-icon>menu</mat-icon>
                                             </button>
                                             <mat-menu #menu="matMenu">
-                                                    <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 4)" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
-                                                    <button mat-menu-item (click)="CambioEstatus(row.id, 5)" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
+                                                    <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 4);" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
+                                                    <button mat-menu-item (click)="VerificacionAprobar(row.id, 5);" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
                                                     <button mat-menu-item color="primary" (click)="descargar(row)" >
                                                         <mat-icon color="warn">visibility</mat-icon> Ver
                                                     </button> 

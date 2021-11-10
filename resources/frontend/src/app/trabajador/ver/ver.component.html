@@ -169,19 +169,19 @@
                                         </div>
                                     </div>
                                     <div fxLayout="row">
-                                        <div fxFlex="50">
+                                        <!--<div fxFlex="50">
                                             <span class="label">TIPO DE NOMINA: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.tipo_nomina.descripcion:'NO REGISTRADO' }}</span>
-                                        </div>
+                                        </div>-->
                                         <div fxFlex="50">
                                             <span class="label">UR: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.ur:'NO REGISTRADO' }}</span>
                                         </div>
-                                        
-                                    </div>
-                                    <div fxLayout="row wrap">
                                         <div fxFlex.sm="50"  fxFlex.xs="100">
                                             <span class="label">RAMA: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales.rama)?dataTrabajador.rel_datos_laborales.rama.descripcion:'NO REGISTRADO'}} </span>
                                         </div>
-                                        <div fxFlex.sm="50" fxFlex.xs="100">
+                                    </div>
+                                    <div fxLayout="row wrap">
+                                        
+                                        <div fxFlex.sm="100" fxFlex.xs="100">
                                             <span class="label">CODIGO: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.codigo.codigo:'NO REGISTRADO'}} {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.codigo.descripcion:'' }}</span>
                                         </div>
                                        
