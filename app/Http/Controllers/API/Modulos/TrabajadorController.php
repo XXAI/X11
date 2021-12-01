@@ -213,6 +213,7 @@ class TrabajadorController extends Controller
 
                                     ->leftJoin("catalogo_clues as clues_nomina", "clues_nomina.clues", "datos_nominales.clues_adscripcion_nomina")
                                     ->leftJoin("catalogo_cr as cr_nomina", "cr_nomina.cr", "datos_nominales.cr_nomina_id")
+                                    ->leftJoin("catalogo_area_trabajo as area_trabajo", "area_trabajo.id", "rel_trabajador_datos_laborales.area_trabajo_id")
                                     
                                     ->leftJoin("catalogo_ur as ur", "ur.llave", "datos_nominales.ur")
                                     ->leftJoin("catalogo_codigo as codigo", "codigo.codigo", "datos_nominales.codigo_puesto_id")
@@ -268,7 +269,9 @@ class TrabajadorController extends Controller
                                         "jornada.descripcion as jornada",
                                         "datos_comision.id as comision",
                                         db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where rel_trabajador_horario.trabajador_id=trabajador.id limit 1) as horario"),
-                                        "trabajador.observacion")
+                                        "trabajador.observacion",
+                                        "rel_trabajador_datos_laborales.actividades",
+                                        "area_trabajo.descripcion as area_trabajo")
                                         ->orderby("rel_trabajador_datos_laborales.clues_adscripcion_fisica");
                                     //->get();
                     if(isset($parametros['export_excel']) && $parametros['export_excel']){

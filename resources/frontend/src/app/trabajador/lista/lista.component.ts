@@ -422,6 +422,7 @@ export class ListaComponent implements OnInit {
       params.active_filter = true;
     }
 
+    console.log(params);
     this.trabajadorService.getTrabajadorList(params).subscribe(
       response => {
         console.log(response);
