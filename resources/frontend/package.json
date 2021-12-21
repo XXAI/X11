@@ -33,6 +33,7 @@
     "highcharts": "^8.2.2",
     "ng2-pdf-viewer": "^7.0.1",
     "ngx-captcha": "^9.0.1",
+    "ngx-image-cropper": "^5.0.1",
     "pdfmake": "^0.1.70",
     "rxjs": "~6.6.6",
     "tslib": "^2.0.0",

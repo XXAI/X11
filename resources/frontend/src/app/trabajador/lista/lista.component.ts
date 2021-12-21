@@ -88,8 +88,6 @@ export class ListaComponent implements OnInit {
     '1':'check_circle', //validado 
   };
 
-  
-
   filterCatalogs:any = {};
   filteredCatalogs:any = {};
 

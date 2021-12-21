@@ -5,6 +5,7 @@ import { ReportePersonalActivo } from './reporte-personal-activo';
 import { ReportePersonalActivoArea } from './reporte-personal-activo-area';
 import { ReportePersonalAsistencia } from './reporte-personal-asistencia';
 import { ReporteTrabajadorActivo } from './reporte-trabajador-activo';
+import { ReporteTrabajadorCredencialSalud } from './reporte-personal-credencial-salud';
 import { ReporteConstanciaDengue } from './reporte-constancia-dengue';
 import { ReporteComision } from './reporte-comision';
 import { ReporteSolicitudComision } from './reporte-solicitud-comision';
@@ -16,6 +17,7 @@ const reportes = {
   'empleados/personal-activo-area': new ReportePersonalActivoArea(),
   'empleados/personal-asistencia': new ReportePersonalAsistencia(),
   'trabajador/personal-activo': new ReporteTrabajadorActivo(),
+  'trabajador/credencial-salud': new ReporteTrabajadorCredencialSalud(),
   'participante/constancia': new ReporteConstanciaDengue(),
   'archivo/comision': new ReporteComision(),
   'archivo/solicitudComision': new ReporteSolicitudComision()
@@ -23,7 +25,6 @@ const reportes = {
 
 addEventListener('message', ({ data }) => {
   const documentDefinition = reportes[data.reporte].getDocumentDefinition(data.data);
-
   let pdfReporte = pdfMake.createPdf(documentDefinition);
 
   pdfReporte.getBase64(function(encodedString) {

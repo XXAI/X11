@@ -23,6 +23,7 @@ use App\Models\TipoBaja;
 use App\Models\UR;
 use App\Models\FuenteFinanciamiento;
 use App\Models\TipoTrabajador;
+use App\Models\Cargo;
 
 class CatalogosController extends Controller
 {
@@ -54,6 +55,7 @@ class CatalogosController extends Controller
             $turno = Turno::all();
             $fuente_finan = FuenteFinanciamiento::orderBy("descripcion")->get();
             $ur = UR::all();
+            $cargo = Cargo::all();
             
             $catalogos = [
                 "fuente_financiamiento" => $fuente_finan,
@@ -63,7 +65,8 @@ class CatalogosController extends Controller
                 "nivel_academico" => $nivelAcademico, 
                 "sindicatos" => $sindicatos,
                 "turno" => $turno,
-                "ur" => $ur
+                "ur" => $ur,
+                "cargo" => $cargo
             ];
 
             return response()->json($catalogos,HttpResponse::HTTP_OK);

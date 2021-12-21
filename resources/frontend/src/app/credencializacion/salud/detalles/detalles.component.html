@@ -1,0 +1,39 @@
+<mat-card>
+    <mat-card-title>{{ nombre }}</mat-card-title>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                <mat-icon *ngIf="validado" style="color: green;">check</mat-icon>
+                <mat-icon *ngIf="!validado" style="color: red;">close</mat-icon>Validado</mat-list-item>
+            <div *ngIf="!validado">
+                <b>Descripción:</b> El encargado de Recursos humanos de la jurisdiccion, hospital o unidad es el encargado de validar cada trabajador, este campo valida que el trabajador esta fisicamente en la unidad
+            </div>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <mat-icon *ngIf="actualizado" style="color: green;">check</mat-icon>
+                <mat-icon *ngIf="!actualizado" style="color: red;">close</mat-icon>Actualizado</mat-list-item>
+            <div *ngIf="!actualizado">
+                <b>Descripción:</b> Debe de actualizar toda su información.
+            </div>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <mat-icon *ngIf="credencial" style="color: green;">check</mat-icon>
+                <mat-icon *ngIf="!credencial" style="color: red;">close</mat-icon>Datos de Credencial</mat-list-item>
+            <div *ngIf="!credencial">
+                <b>Descripción:</b> Es necesario llenar el formulario de la credencial para poder imprimirse
+            </div>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <mat-icon *ngIf="foto" style="color: green;">check</mat-icon>
+                <mat-icon *ngIf="!foto" style="color: red;">close</mat-icon>Fotografia</mat-list-item>
+            <div *ngIf="!foto">
+                <b>Descripción:</b> Es necesario cargar la foto del trabajador.
+            </div>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button style="background-color: red; color: white;" (click)="cerrar()">
+                <mat-icon>close</mat-icon> CERRAR
+            </button>
+    </mat-card-actions>
+</mat-card>

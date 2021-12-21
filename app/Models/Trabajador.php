@@ -82,7 +82,7 @@ class Trabajador extends Model
         return $this->hasMany('App\Models\RelCapacitacionDetalles')->with('entidad_nacimiento', 'cursos');
     }
     public function rel_datos_laborales(){
-        return $this->hasOne('App\Models\RelDatosLaborales')->with('actividad','actividad_voluntaria','area_trabajo','cr_fisico','programa','rama', 'jornada');
+        return $this->hasOne('App\Models\RelDatosLaborales')->with('actividad','actividad_voluntaria','area_trabajo','cr_fisico','clues_fisico','programa','rama', 'jornada');
     }
     
     public function rel_datos_comision(){
@@ -108,6 +108,10 @@ class Trabajador extends Model
 
     public function rel_trabajador_baja(){
         return $this->hasOne('App\Models\RelBaja')->whereNull("fecha_fin_baja");
+    }
+
+    public function credencial(){
+        return $this->hasOne('App\Models\Credencializacion');
     }
 
 }

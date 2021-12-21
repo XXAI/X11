@@ -27,6 +27,7 @@ import { MAT_STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 
+
 import { SecurityModule } from './security/security.module';
 import { ProfileModule } from './profile/profile.module';
 import { DevToolsModule } from './dev-tools/dev-tools.module';
@@ -45,6 +46,8 @@ import { TrabajadorModule } from './trabajador/trabajador.module';
 import { TramitesModule } from './tramites/tramites.module';
 import { RegistroModule } from './registro/registro.module';
 import { DirectorioModule } from './directorio/directorio.module';
+import { CredencializacionModule } from './credencializacion/credencializacion.module';
+
 
 @NgModule({
   declarations: [
@@ -77,6 +80,7 @@ import { DirectorioModule } from './directorio/directorio.module';
     ProfileModule,
     AppRoutingModule,
     CuestionarioDengueModule,
+    CredencializacionModule,
     WildcardRoutingModule,
   ],
   providers: [

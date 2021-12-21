@@ -1,0 +1,185 @@
+<mat-tab-group>
+    <mat-tab label="DATOS">
+        <section fxFlex="100" fxFlex.xs="100" [formGroup]="CredencialForm">
+            <mat-card>
+                <mat-card-title>{{ nombre_trabajador }}</mat-card-title>
+                <mat-card-subtitle>{{ nombre_unidad }}</mat-card-subtitle>
+                <mat-card-content>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="45" fxFlex.xs="100">
+                            <mat-label>Cargo </mat-label>
+                            <mat-select formControlName="cargo" required>
+                                <mat-option *ngFor="let item of catalogos['cargo']" [value]="item.id">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="CredencialForm.get('cargo').invalid && (CredencialForm.get('cargo').dirty || CredencialForm.get('cargo').touched)">
+                                <span *ngIf="CredencialForm.get('cargo').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="15" fxFlex.xs="100">
+                            <mat-label>Tipo de Sangre </mat-label>
+                            <mat-select formControlName="tipo_sangre_id" required>
+                                <mat-option *ngFor="let item of tipo_sangre" [value]="item.id">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="CredencialForm.get('tipo_sangre_id').invalid && (CredencialForm.get('tipo_sangre_id').dirty || CredencialForm.get('tipo_sangre_id').touched)">
+                                <span *ngIf="CredencialForm.get('tipo_sangre_id').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="15" fxFlex.xs="100">
+                            <mat-label>RH </mat-label>
+                            <mat-select formControlName="signo" required>
+                                <mat-option [value]="1">- NEGATIVO</mat-option>
+                                <mat-option [value]="2">+ POSITIVO</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="CredencialForm.get('signo').invalid && (CredencialForm.get('signo').dirty || CredencialForm.get('signo').touched)">
+                                <span *ngIf="CredencialForm.get('signo').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="10" fxFlex.xs="100">
+                            <mat-label>Donador </mat-label>
+                            <mat-select formControlName="donador" required>
+                                <mat-option *ngFor="let item of donador" [value]="item.id">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="CredencialForm.get('donador').invalid && (CredencialForm.get('donador').dirty || CredencialForm.get('donador').touched)">
+                                <span *ngIf="CredencialForm.get('donador').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="15" fxFlex.xs="100">
+                            <mat-label>Capacidad Especial </mat-label>
+                            <mat-select formControlName="capacidad_especial" required>
+                                <mat-option *ngFor="let item of capacidad_especial" [value]="item.id">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="CredencialForm.get('capacidad_especial').invalid && (CredencialForm.get('capacidad_especial').dirty || CredencialForm.get('capacidad_especial').touched)">
+                                <span *ngIf="CredencialForm.get('capacidad_especial').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!--<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+
+                    </div>-->
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="100" fxFlex.xs="100">
+                            <input matInput formControlName="area" autocomplete="off" placeholder="Área">
+                            <mat-error *ngIf="CredencialForm.get('area').invalid && (CredencialForm.get('area').dirty || CredencialForm.get('area').touched)">
+                                <span *ngIf="CredencialForm.get('area').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="100" fxFlex.xs="100">
+                            <input matInput formControlName="area_opcional" autocomplete="off" placeholder="Área Opcional" [readonly]="lugar_alternativo">
+                            <mat-error *ngIf="CredencialForm.get('area_opcional').invalid && (CredencialForm.get('area_opcional').dirty || CredencialForm.get('area_opcional').touched)">
+                                <span *ngIf="CredencialForm.get('area_opcional').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="100" fxFlex.xs="100">
+                            <input matInput formControlName="contacto" autocomplete="off" placeholder="Contacto">
+                            <mat-error *ngIf="CredencialForm.get('contacto').invalid && (CredencialForm.get('contacto').dirty || CredencialForm.get('contacto').touched)">
+                                <span *ngIf="CredencialForm.get('contacto').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="100" fxFlex.xs="100">
+                            <input matInput formControlName="contacto_telefono" autocomplete="off" placeholder="Teléfono de Contacto">
+                            <mat-error *ngIf="CredencialForm.get('contacto_telefono').invalid && (CredencialForm.get('contacto_telefono').dirty || CredencialForm.get('contacto_telefono').touched)">
+                                <span *ngIf="CredencialForm.get('contacto_telefono').errors.required">Campo obligatorio</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button (click)="cancelar()">CANCELAR</button>
+                    <button mat-raised-button color="primary" [disabled]="!CredencialForm.valid" (click)="guardar()">GUARDAR</button>
+                </mat-card-actions>
+            </mat-card>
+        </section>
+
+    </mat-tab>
+    <mat-tab label="IMAGEN" [disabled]='!datos_credencial'>
+
+        <section fxFlex="100" fxFlex.xs="100">
+            <mat-card>
+                <!--<mat-card-title>{{ nombre_trabajador }}</mat-card-title>
+                <mat-card-subtitle>{{ nombre_unidad }}</mat-card-subtitle>-->
+                <mat-card-content>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <div fxFlex="70" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <div fxFlex="100" fxFlex.xs="100">
+                                    <input type="file" (change)="fileChangeEvent($event)" />
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <div fxFlex="70" fxFlex.xs="100">
+                                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" autoCrop="false" [imageQuality]="95" [aspectRatio]="3 / 4" [resizeToWidth]="256" alignImage="center" format="jpeg" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+                                        (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+                                    <div>
+                                        Seleccionar Imagen
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div fxFlex="30" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0px">
+                                <div fxFlex="100" fxFlex.xs="100">
+                                    <h5>Vista Previa</h5>
+                                    <img [src]="croppedImage" width="70%" />
+                                </div>
+                            </div>
+                        </div>-->
+                        <div fxFlex="30" fxFlex.xs="100">
+                            <!--<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0px">
+                                <div fxFlex="100" fxFlex.xs="100">
+                                    <button mat-raised-button color="primary" (click)="cortar()">
+                                        <mat-icon>crop</mat-icon> CORTAR
+                                    </button>
+                                </div>
+                            </div>-->
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0px">
+                                <div fxFlex="100" fxFlex.xs="100">
+                                    <h5>Vista Previa</h5>
+                                    <img [src]="croppedImage" width="70%" />
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0px">
+                                <div fxFlex="100" fxFlex.xs="100">
+                                    <button mat-raised-button color="success" (click)="subirFoto()">
+                                        <mat-icon>save</mat-icon> GUARDAR
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </section>
+        <!--<div class="container">
+            <div class="row" style="margin-top: 5%;">
+                <div class="text-center col-md-12">
+                    <input type="file" (change)="fileChangeEvent($event)" />
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5%;">
+                <div class="text-center col-md-8">
+                    <h5>Crop Image</h5>
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 4" [resizeToWidth]="100%" format="jpg" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+                </div>
+                <div class="text-center col-md-4">
+                    <h5>Preview</h5>
+                    <img [src]="croppedImage" />
+                </div>
+            </div>
+        </div>-->
+    </mat-tab>
+</mat-tab-group>

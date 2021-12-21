@@ -82,7 +82,7 @@ class TrabajadorController extends Controller
                             ->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                             ->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
                             ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
-                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2)");
+                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and deleted_at is null)");
                             
 
             $permison_individual = false;                
@@ -400,7 +400,7 @@ class TrabajadorController extends Controller
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
             $params = $request->all();
 
-            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'datoslaboralesnomina', 'rel_datos_comision'/*, 'capacitacionDetalles'*/)->where("id", "=", $id);
+            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'datoslaboralesnomina', 'rel_datos_comision', 'credencial'/*, 'capacitacionDetalles'*/)->where("id", "=", $id);
 
             foreach ($permisos->roles as $key => $value) {
                 foreach ($value->permissions as $key2 => $value2) {
@@ -412,9 +412,17 @@ class TrabajadorController extends Controller
             }
             $trabajador = $trabajador->first();
 
-            if($trabajador){
+            /*if($trabajador){
                 $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
+            }*/
+            if($trabajador->credencial != null)
+            {
+                if($trabajador->credencial->foto == 1)
+                {
+                    $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
+                }
             }
+            
 
             $response_data['data'] = $trabajador;
             $response_data['mini_paginador'] = false;

@@ -43,6 +43,7 @@ class TrabajadorServiceController extends Controller
                                 'nacionalidad',
                                 'estado_conyugal',
                                 'sexo',
+                                'credencial',
                                 'entidad_federativa',
                                 'municipio_federativo',
                                 //'rel_trabajador_capacitacion',
@@ -57,9 +58,15 @@ class TrabajadorServiceController extends Controller
                          )->first();
             
             //return response()->json($id,HttpResponse::HTTP_CONFLICT);
-            $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
+            //$trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
 
-
+            if($trabajador->credencial != null)
+            {
+                if($trabajador->credencial->foto == 1)
+                {
+                    $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
+                }
+            }
             return response()->json($trabajador,HttpResponse::HTTP_OK);
 
         } catch(\Exception $e) {

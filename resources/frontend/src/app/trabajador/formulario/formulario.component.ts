@@ -612,7 +612,19 @@ export class FormularioComponent implements OnInit {
         this.tiene_certificado(datosEscolaridadCursante.certificacion);*/
 
         this.isLoadingCredential = true;
-        this.trabajadorService.getDatosCredencial(trabajador.clave_credencial).subscribe(
+        if(trabajador.credencial != null) 
+        {
+          if(trabajador.credencial.foto == 1)
+          {
+            this.imagen_trabajador = "data:image/png;base64,"+trabajador.credencial.foto_trabajador
+          }else{
+
+          }
+        }else{
+          this.imagen_trabajador = 'assets/trabajador.jpg';
+        }
+        this.isLoadingCredential = false;
+        /*this.trabajadorService.getDatosCredencial(trabajador.clave_credencial).subscribe(
           response => {
             
             if(response.length > 0){
@@ -625,7 +637,7 @@ export class FormularioComponent implements OnInit {
             }/*else{
               this.datosCredencial = undefined;
             }
-            */
+            
             this.isLoadingCredential = false;
           },
           errorResponse =>{
@@ -636,7 +648,7 @@ export class FormularioComponent implements OnInit {
             }
             this.sharedService.showSnackBar(errorMessage, null, 3000); 
           }
-        );
+        );*/
         this.isLoadingPage = false;
       },
       errorResponse =>{

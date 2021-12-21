@@ -131,6 +131,13 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('tramite-documentacion-download/{id}',       'API\Modulos\TramiteDocumentacionController@Download');
     
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
+    //Credencializacion
+    Route::apiResource('credencializacion',         'API\Modulos\CredencializacionController');
+    Route::get('credencializacion-lote',            'API\Modulos\CredencializacionController@ImprimirLote');
+    Route::get('public//FromatoCredencial//default.jpg', function($filename) {
+        $file = \Illuminate\Support\Facades\Storage::get($filename);
+        return response($file, 200) -> header('Content-Type', 'image/jpeg');
+     });
 });
 
 Route::middleware('auth')->get('/avatar-images', function (Request $request) {

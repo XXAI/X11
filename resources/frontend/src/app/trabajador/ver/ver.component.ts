@@ -39,7 +39,7 @@ export class VerComponent implements OnInit {
   cluesAsistencia = []; //= [ 'CSSSA017213', 'CSSSA009162', 'CSSSA019954', 'CSSSA017324' ];
 
   datosCredencial:any;
-  photoPlaceholder = 'assets/profile-icon.svg';
+  fotoTrabajador = 'assets/profile-icon.svg';
   Asitencia:boolean = false;
   url           = `${environment.base_url_file}`;
 
@@ -180,10 +180,25 @@ export class VerComponent implements OnInit {
         }else{
           this.estatusChip = null;
         }
+
+        //Ver foto
+        console.log(this.dataTrabajador.credencial);
+        if(this.dataTrabajador.credencial != null) 
+        {
+          if(this.dataTrabajador.credencial.foto == 1)
+          {
+            this.fotoTrabajador = "data:image/png;base64,"+this.dataTrabajador.credencial.foto_trabajador;
+          }else{
+
+          }
+        }else{
+          this.fotoTrabajador = 'assets/trabajador.jpg';
+        }
+        this.isLoadingCredential = false;
         //console.log(this.dataTrabajador.rel_datos_laborales.cr_fisico_id +" - "+ this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id);
         //console.log(this.pestanaTramites);
         
-        if(this.dataTrabajador.clave_credencial){
+        /*if(this.dataTrabajador.clave_credencial){
           this.trabajadorService.getDatosCredencial(this.dataTrabajador.clave_credencial).subscribe(
             response => {
               //console.log(response);
@@ -192,7 +207,7 @@ export class VerComponent implements OnInit {
                 if(this.datosCredencial.tieneFoto == '1'){
                   this.datosCredencial.photo = 'http://credencializacion.saludchiapas.gob.mx/images/credenciales/'+this.datosCredencial.id+'.'+this.datosCredencial.tipoFoto;
                 }else{
-                  this.datosCredencial.photo = this.photoPlaceholder;
+                  //this.datosCredencial.photo = this.photoPlaceholder;
                 }
               }else{
                 this.datosCredencial = undefined;
@@ -204,7 +219,7 @@ export class VerComponent implements OnInit {
               this.isLoadingCredential = false;
             }
           );
-        }
+        }*/
 
         this.isLoading = false;
       });

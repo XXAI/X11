@@ -259,7 +259,7 @@ class TramiteDocumentacionController extends Controller
             'rfc'                 => 'required',
             'tipo'                => 'required',  
         ];
-        
+        return response()->json(['data'=>$inputs],HttpResponse::HTTP_CONFLICT);
         DB::beginTransaction();
         $v = Validator::make($inputs, $reglas, $mensajes);
         if ($v->fails()) {
