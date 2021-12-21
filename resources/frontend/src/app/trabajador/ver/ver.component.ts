@@ -136,14 +136,13 @@ export class VerComponent implements OnInit {
 
     this.trabajadorService.verInfoTrabajador(id,params).subscribe(
       response =>{
-        //console.log("onde",response);
+        //console.log("--");
         this.dataTrabajador = response;
         //console.log(this.dataTrabajador);
+        //console.log("--");
         this.dataSource = this.dataTrabajador.escolaridad;
-        //console.log(this.dataTrabajador);
         this.verTramites(response.id);
         this.Asitencia = (response.actualizado == 0)?false:true;
-        //console.log(this.Asitencia);
         
         if(this.dataTrabajador.rel_trabajador_documentos != null)
         {
@@ -363,7 +362,7 @@ export class VerComponent implements OnInit {
   dataTabChange(event){
     
     if(event.index == 2 && this.puedeVerAsistencias){
-      console.log('corriendo listado de asistencia');
+      //console.log('corriendo listado de asistencia');
       this.cargarAssistencias(this.dataTrabajador.clave_credencial);
     }
   }

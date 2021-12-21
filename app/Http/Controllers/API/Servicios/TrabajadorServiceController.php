@@ -58,7 +58,7 @@ class TrabajadorServiceController extends Controller
                          )->first();
             
             //return response()->json($id,HttpResponse::HTTP_CONFLICT);
-            //$trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
+            $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
 
             if($trabajador->credencial != null)
             {
