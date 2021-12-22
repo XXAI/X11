@@ -1,7 +1,7 @@
-import * as Highcharts from 'highcharts';
+/*import * as Highcharts from 'highcharts';*/
 
 export const CHARTS:any = {
-    'column-options': {
+    /*'column-options': {
         chart: {
             type: 'column',
             //height: (9 / 16 * 100) + '%'
@@ -64,5 +64,5 @@ export const CHARTS:any = {
             name: 'Joe',
             data: [3, 4, 4, 2, 5]
         }]
-    }
+    }*/
 };

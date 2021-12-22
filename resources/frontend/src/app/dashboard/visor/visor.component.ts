@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ClockService } from '../../utils/classes/clock.service';
 import { Subscription } from 'rxjs';
 import { DashboardService } from '../dashboard.service';
-import { CHARTS } from '../dashboard-chart-options';
-import * as Highcharts from 'highcharts';
+//import { CHARTS } from '../dashboard-chart-options';
+//import * as Highcharts from 'highcharts';
 
 declare var require: any;
-let Boost = require('highcharts/modules/boost');
+/*let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
 let More = require('highcharts/highcharts-more');
 
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
-
+*/
 @Component({
   selector: 'app-visor',
   templateUrl: './visor.component.html',
@@ -66,7 +66,7 @@ export class VisorComponent implements OnInit {
   }
 
   ngAfterViewInit(){
-    if(this.myDashboard){
+    /*if(this.myDashboard){
       this.myDashboard.items.forEach(element => {
       
         if(element.type == 'chart'){
@@ -88,7 +88,7 @@ export class VisorComponent implements OnInit {
             Highcharts.chart(element.chart.id, options);
         }        
       });
-    }
+    }*/
   }
 
   ngOnDestroy(){

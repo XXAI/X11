@@ -259,7 +259,6 @@ class TramiteDocumentacionController extends Controller
             'rfc'                 => 'required',
             'tipo'                => 'required',  
         ];
-        return response()->json(['data'=>$inputs],HttpResponse::HTTP_CONFLICT);
         DB::beginTransaction();
         $v = Validator::make($inputs, $reglas, $mensajes);
         if ($v->fails()) {
@@ -276,6 +275,7 @@ class TramiteDocumentacionController extends Controller
             $documentacion = new RelDocumentacion();
        }
         if($request->hasFile('archivo')) {
+            
             $fileName = $parametros['rfc'];
             $extension = $request->file('archivo')->getClientOriginalExtension();
             if($extension == "pdf")

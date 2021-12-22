@@ -181,7 +181,6 @@ export class VerComponent implements OnInit {
         }
 
         //Ver foto
-        console.log(this.dataTrabajador.credencial);
         if(this.dataTrabajador.credencial != null) 
         {
           if(this.dataTrabajador.credencial.foto == 1)
