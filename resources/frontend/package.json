@@ -30,7 +30,7 @@
     "angular-highcharts": "^9.0.11",
     "angular-material-fileupload": "^3.0.2",
     "file-saver": "^2.0.5",
-    "highcharts": "^8.2.2",
+    "highcharts": "^9.0.0",
     "ng2-pdf-viewer": "^7.0.1",
     "ngx-captcha": "^9.0.1",
     "ngx-image-cropper": "^5.0.1",
