@@ -157,6 +157,7 @@ export class TrabajadorService {
       }
     ));
   }
+  
 
   getFilterCatalogs():Observable<any>{
     return this.http.get<any>(this.url_filter_catalogs).pipe(

@@ -15,6 +15,7 @@ export interface VerTrabajadorData {
   clues_id?:string;
   clues?:string;
   cr?:string;
+  tipo_unidad?:number
 }
 
 @Component({
@@ -44,6 +45,8 @@ export class FormularioComponent implements OnInit {
 
   imageChangedEvent: any = '';
   croppedImage: any = '';
+
+  catalogo_cargo:any = [];
 
   datos_credencial:boolean =false;
      
@@ -90,6 +93,24 @@ export class FormularioComponent implements OnInit {
       response =>{
         this.catalogos = response;
         //this.isLoading = false;
+        //this.catalogos['cargo'] = [];
+        console.log(this.data);
+        response['cargo'].forEach(element => {
+          //console.log(element);
+          if(this.data.tipo_unidad == 2 || this.data.tipo_unidad == 4 )
+          {
+            if(element.nivel == 1)
+            {
+              this.catalogo_cargo.push(element);
+            }
+          }else
+          {
+            if(element.nivel == 2)
+            {
+              this.catalogo_cargo.push(element);
+            }
+          }
+        });
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";

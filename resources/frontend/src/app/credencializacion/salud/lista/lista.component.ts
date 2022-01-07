@@ -66,6 +66,8 @@ export class ListaComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 20;
   selectedItemIndex: number = -1;
+
+  permisoImpresion:boolean = false;
   
   statusIcon:any = {
     '1':'remove_circle', //inactivo
@@ -304,7 +306,7 @@ export class ListaComponent implements OnInit {
 
           
           */
-         console.log(response);
+         //console.log(response);
           this.dataSource = [];
           this.resultsLength = 0;
           if(response.data.total > 0){
@@ -318,6 +320,8 @@ export class ListaComponent implements OnInit {
             dummyPaginator.length = this.resultsLength;
             this.sharedService.setDataToCurrentApp('paginator',dummyPaginator);
           }
+
+          this.permisoImpresion = response.impresion;
           
         //}
         this.isLoading = false;
@@ -419,6 +423,7 @@ export class ListaComponent implements OnInit {
 
   editar(obj)
   {
+    console.log(obj);
     let data_credencial =
     {
       trabajador_id: obj.id,
@@ -426,6 +431,7 @@ export class ListaComponent implements OnInit {
       clues: obj.rel_datos_laborales.clues_fisico.nombre_unidad,
       clues_id: obj.rel_datos_laborales.clues_fisico.clues,
       nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno,
+      tipo_unidad: obj.rel_datos_laborales.clues_fisico.tipo_unidad_id
     }
 
     /*let encrip = CryptoJS.AES.encrypt(obj.rfc, "%ubp$$BG%kU0");

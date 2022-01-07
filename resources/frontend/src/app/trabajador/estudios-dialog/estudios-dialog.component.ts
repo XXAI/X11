@@ -196,12 +196,31 @@ export class EstudiosDialogComponent implements OnInit {
   }
 
   guardar(): void {
+    let countError = 0;
     this.resultado.estatus = true;
     this.resultado.datos = this.EstudiosForm.value;
     this.resultado.datos.grado_academico = { descripcion: this.texto_grado_seleccionado};
     //console.log(this.texto_grado_seleccionado);
-    console.log(this.resultado);
-    this.dialogRef.close(this.resultado);
+    //console.log(this.resultado);
+    if(this.EstudiosForm.controls['otro_estudio'].value != true && typeof this.EstudiosForm.controls['nombre_estudio'].value != 'object')
+    {
+      this.sharedService.showSnackBar("DEBE DE SELECCIONAR UN ESTUDIO", "ERROR", 3000);
+      this.EstudiosForm.patchValue({nombre_estudio:""});
+      countError++;
+    }
+    if(this.EstudiosForm.controls['otro_institucion'].value != true && typeof this.EstudiosForm.controls['institucion'].value != 'object')
+    {
+      this.sharedService.showSnackBar("DEBE DE SELECCIONAR UNA INSTITUCION", "ERROR", 3000);
+      this.EstudiosForm.patchValue({institucion:""});
+      countError++;
+    }
+    
+    //if(this.EstudiosForm.nombre_estudio)
+    if(countError == 0)
+    {
+      this.dialogRef.close(this.resultado);
+    }
+    
   }
 
   obtener_texto(event) {

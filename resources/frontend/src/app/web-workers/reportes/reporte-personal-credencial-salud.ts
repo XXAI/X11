@@ -108,7 +108,7 @@ export class ReporteTrabajadorCredencialSalud{
           
           let palabra = region[parseInt(element.rel_datos_laborales.clues_fisico.cve_jurisdiccion)];
           let longitud:number = 0;
-          let id = String(element.id).padStart(5, "0");
+          let id = String(element.id).padStart(6, "0");
           let area = "";
           let donador = "";
           let rfc_encript = CryptoJS.AES.encrypt(element.rfc, "%ubp$$BG%kU0")
@@ -197,7 +197,7 @@ export class ReporteTrabajadorCredencialSalud{
                 ],
                 [
                   {},{ text: distrito[parseInt(element.rel_datos_laborales.clues_fisico.cve_jurisdiccion)], style: "no_distrito" },{},
-                  { text: "VIGENCIA:\n31/DIC/21", style: "arriba_credencial_datos"}, {}, {}, {}
+                  { text: "VIGENCIA:\n31/DIC/22", style: "arriba_credencial_datos"}, {}, {}, {}
                 ],
                 [
                   {}, { image: imagen_tipo_unidad, width: 30, height: 35, alignment: 'center' }, {},

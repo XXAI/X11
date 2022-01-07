@@ -40,7 +40,7 @@
                             <button mat-raised-button color="accent" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Buscar
                             </button>
-                            <button mat-raised-button color="primary" style="margin-left: 10px;" (click)="imprimirCredencial()">
+                            <button mat-raised-button color="primary" style="margin-left: 10px;" *ngIf="permisoImpresion == true" (click)="imprimirCredencial()">
                                 <mat-icon>print</mat-icon> Imprimir Lote
                             </button>
                         </section>
@@ -126,7 +126,7 @@
                             <button mat-raised-button color="accent" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Aplicar
                             </button>
-                            <button mat-raised-button color="primary" style="margin-left: 10px;" (click)="imprimirCredencial()">
+                            <button mat-raised-button color="primary" style="margin-left: 10px;" *ngIf="permisoImpresion == true" (click)="imprimirCredencial()">
                                 <mat-icon>print</mat-icon> Imprimir Lote
                             </button>
                         </div>
@@ -223,7 +223,7 @@
                                         <button mat-menu-item (click)="editar(row)"><mat-icon color="primary">edit</mat-icon>EDITAR</button>
                                         <div *ngIf="row.credencial != null">
                                             <div *ngIf="row.credencial.foto == 1">
-                                                <button mat-menu-item *ngIf="row.validado == 1 && row.actualizado == 1" (click)="imprimirCredencial(row)"><mat-icon color="primary">print</mat-icon>IMPRIMIR</button>
+                                                <button mat-menu-item *ngIf="row.validado == 1 && row.actualizado == 1 &&  permisoImpresion == true" (click)="imprimirCredencial(row)"><mat-icon color="primary">print</mat-icon>IMPRIMIR</button>
                                             </div>
                                         </div>
 

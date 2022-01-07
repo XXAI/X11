@@ -1,6 +1,6 @@
 <!--h1 mat-dialog-title>Buscar Empleado</h1-->
 <div mat-dialog-content [class.mat-dialog-content-fullscreen]="mediaSize=='xs'">
-    <section >
+    <section>
         <mat-tab-group [selectedIndex]="selectedTab" (selectedIndexChange)="selectedTab = $event" [color]="'accent'" [backgroundColor]="'primary'" animationDuration="0ms">
             <mat-tab label="Buscar Empleado" [disabled]="(selectedTab != 0)">
                 <ng-template matTabContent>
@@ -9,7 +9,7 @@
                         <section fxFlex fxLayout="row" fxLayout.xs="column">
                             <mat-form-field fxFlex fxFlex.xs="100" appearance="outline">
                                 <mat-label>Buscar Empleado</mat-label>
-                                <input matInput #busquedaEmpleado cdkFocusInitial [(ngModel)]="search" (keyup.escape)="search = ''"  (keyup.enter)="buscarTrabajadores()" [readonly]="isLoading" autofocus>
+                                <input matInput #busquedaEmpleado cdkFocusInitial [(ngModel)]="search" (keyup.escape)="search = ''" (keyup.enter)="buscarTrabajadores()" [readonly]="isLoading" autofocus>
                             </mat-form-field>
                             <div fxFlex="none" fxFlex.xs="100">
                                 <section class="search-button">
@@ -19,86 +19,90 @@
                                 </section>
                             </div>
                         </section>
-                
-                        <div fxFlex><!--class="mat-elevation-z8" max-height: 300px;  -->
+
+                        <div fxFlex>
+                            <!--class="mat-elevation-z8" max-height: 300px;  -->
                             <div style="padding-bottom:5px; overflow: auto;">
                                 <table #usersTable mat-table [dataSource]="dataSource" class="employees-table" matSort>
                                     <ng-container matColumnDef="estatus">
-                                        <th mat-header-cell *matHeaderCellDef mat-sort-header  style="text-align: left;"> Estatus </th>
-                                        <td mat-cell *matCellDef="let row"> <mat-icon>{{(row.estatus >= 2)?statusIcon[row.estatus]:statusIcon[row.estatus+'-'+row.validado]}}</mat-icon> </td>
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: left;"> Estatus </th>
+                                        <td mat-cell *matCellDef="let row">
+                                            <mat-icon>{{(row.estatus >= 2)?statusIcon[row.estatus]:statusIcon[row.estatus+'-'+row.validado]}}</mat-icon>
+                                        </td>
                                     </ng-container>
-                
+
                                     <!-- Username Column -->
                                     <ng-container matColumnDef="nombre">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: left;"> Nombre / RFC </th>
-                                        <td mat-cell *matCellDef="let row" > {{row.nombre}} {{row.apellido_paterno}} {{row.apellido_materno}} <br> <small>{{row.rfc}}</small> </td>
+                                        <td mat-cell *matCellDef="let row"> {{row.nombre}} {{row.apellido_paterno}} {{row.apellido_materno}} <br> <small>{{row.rfc}}</small> </td>
                                     </ng-container>
-                            
+
                                     <!--ng-container matColumnDef="rfc">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header> RFC </th>
                                         <td mat-cell *matCellDef="let row"> {{row.rfc}} </td>
                                     </ng-container-->
-                
+
                                     <ng-container matColumnDef="clues">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="text-align: left;"> CLUES / CR </th>
-                                        <td mat-cell *matCellDef="let row" fxHide.xs="true"> 
-                                            
+                                        <td mat-cell *matCellDef="let row" fxHide.xs="true">
+
                                             <div *ngIf="row.rel_trabajador_baja == null">
                                                 <div *ngIf="row.estatus == 2 || row.estatus == 1 ">
-                                                
+
                                                     {{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.clues:'Sin CLUES asignado'}}
-                                                    <br> <small>{{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.descripcion:'Sin CR asignado'}}</small> 
+                                                    <br> <small>{{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.descripcion:'Sin CR asignado'}}</small>
                                                 </div>
-                                               
+
                                                 <div *ngIf="row.estatus == 3">
                                                     Sin CLUES asignado
-                                                    <br> <small>Sin CR asignado</small> 
+                                                    <br> <small>Sin CR asignado</small>
                                                 </div>
                                             </div>
                                             <div *ngIf="row.rel_trabajador_baja != null">
-                                                {{ row.rel_trabajador_baja.baja.descripcion}}<BR>
+                                                {{ row.rel_trabajador_baja.baja.descripcion}}
+                                                <BR>
                                                 <small>{{ (row.rel_trabajador_baja.tipo_baja_id == 1)?'BAJA TERMPORAL':'BAJA DEFINITIVA'}}</small>
-                                                
+
 
                                             </div>
-                                            
+
                                         </td>
-                                       
+
                                     </ng-container>
-                
+
                                     <ng-container matColumnDef="actions">
-                                        <th mat-header-cell *matHeaderCellDef  style="text-align: left;">Acciones</th>
-                                       
+                                        <th mat-header-cell *matHeaderCellDef style="text-align: left;">Acciones</th>
+
                                         <td mat-cell *matCellDef="let row; let i = index">
-                                            
-                                            <button *ngIf="row.estatus == 3 || row.estatus == 2" mat-raised-button color="primary"   (click)="activarEmpleado(row)"   matTooltip="Activar Empleado"   [matTooltipPosition]="'before'">
+
+                                            <button *ngIf="row.estatus == 3 || row.estatus == 2" mat-raised-button color="primary" (click)="activarEmpleado(row)" matTooltip="Activar Empleado" [matTooltipPosition]="'before'">
                                                 <mat-icon>link</mat-icon>
                                             </button>
-                                            <button *ngIf="row.estatus != 3 && row.empleado_propio == 0"    mat-raised-button color="accent"    (click)="solicitarEmpleado(row)" matTooltip="Solicitar Empleado" [matTooltipPosition]="'before'">
+                                            <button *ngIf="row.estatus != 3 && row.empleado_propio == 0" mat-raised-button color="accent" (click)="solicitarEmpleado(row)" matTooltip="Solicitar Empleado" [matTooltipPosition]="'before'">
                                                 <mat-icon>redo</mat-icon>
                                             </button>
-                                            <button *ngIf="row.estatus != 3 && row.empleado_propio == 1"    mat-raised-button color="info"      (click)="editarEmpleado()"    matTooltip="Editar"             [matTooltipPosition]="'before'" routerLink="/Trabajadores/editar/{{row.id}}">
+                                            <button *ngIf="row.estatus != 3 && row.empleado_propio == 1" mat-raised-button color="info" (click)="editarEmpleado()" matTooltip="Editar" [matTooltipPosition]="'before'" routerLink="/Trabajadores/editar/{{row.id}}">
                                                 <mat-icon>edit</mat-icon>
                                             </button>
                                             <!--button mat-raised-button color="primary"><mat-icon>swap_horiz</mat-icon></button-->
                                         </td>
                                     </ng-container>
-                
+
                                     <ng-container matColumnDef="noResultsFound">
                                         <td mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length">
-                                            No se encontraron registros 
+                                            No se encontraron registros
                                         </td>
                                     </ng-container>
-                
+
                                     <ng-container matColumnDef="loadingResults">
                                         <td mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length">
                                             <mat-spinner diameter="30"></mat-spinner> Cargando
                                         </td>
                                     </ng-container>
-                                    
+
                                     <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
                                     <tr mat-row *matRowDef="let row; let i = index; columns: columnsToDisplay;"></tr>
-                
+
                                     <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0) || isLoading}"></tr>
                                     <tr mat-footer-row *matFooterRowDef="['loadingResults']" class="not-results-found" [ngClass]="{'hide':!isLoading}"></tr>
                                 </table>
@@ -111,21 +115,22 @@
             </mat-tab>
 
             <mat-tab label="{{actionLabel}}" [disabled]="(selectedTab != 1)">
-                <ng-template matTabContent >
+                <ng-template matTabContent>
                     <section fxLayout="row" fxLayout.xs="column">
                         <section fxFlex="30" style="padding-top:10px; padding-right:10px;">
                             <div class="credential-loading-shade" *ngIf="isLoadingCredential">
                                 <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
-                                <span>Cargando los datos de la credencial del empleado</span>    
+                                <span>Cargando los datos de la credencial del empleado</span>
                             </div>
-        
-                            <div *ngIf="!isLoadingCredential && !datosCredencial" style="text-align: center;">
+
+                            <!--<div *ngIf="!isLoadingCredential && !datosCredencial" style="text-align: center;">
                                 <span>No se encontraron los datos de la credencial de este empleado</span><br>
                                 <button (click)="cargarDatosCredencial()" mat-button color="primary"><mat-icon>refresh</mat-icon> Recargar los Datos</button>
-                            </div>
-                            
+                            </div>-->
+                            <img mat-card-image style="width: 50%; margin: 0 auto 0 auto; object-fit: contain;" src="{{ fotoTrabajador }}" alt="Imagen Trabajador">
+
                             <img *ngIf="!isLoadingCredential && datosCredencial" mat-card-image style="height:250px; width: 100%; margin:0 auto 0 auto; border-radius: 50%;" src="{{datosCredencial.photo}}" alt="">
-                            <div *ngIf="!isLoadingCredential && datosCredencial" fxLayout="column" >
+                            <div *ngIf="!isLoadingCredential && datosCredencial" fxLayout="column">
                                 <div fxFlex style="text-align: center;">
                                     <h3>
                                         <small>{{datosCredencial.Adscripcion_Area}} <!-- <br/>{{datosCredencial.Direccion}}{{datosCredencial.Nombre}}<br> --> </small>
@@ -133,11 +138,13 @@
                                 </div>
                             </div>
                         </section>
-                        <section fxFlex="70" fxLayout="column"  style="padding-top:10px;">
+                        <section fxFlex="70" fxLayout="column" style="padding-top:10px;">
                             <section fxFlex class="mat-elevation-z2">
                                 <table class="tabla-info-transferencia">
                                     <tr *ngIf="itemSelected">
-                                        <th>Nombre</th><td>{{itemSelected.nombre}} {{itemSelected.apellido_paterno}} {{itemSelected.apellido_materno}}</td><td width="1" fxHide.xs="true">{{itemSelected.rfc}}</td>
+                                        <th>Nombre</th>
+                                        <td>{{itemSelected.nombre}} {{itemSelected.apellido_paterno}} {{itemSelected.apellido_materno}}</td>
+                                        <td width="1" fxHide.xs="true">{{itemSelected.rfc}}</td>
                                     </tr>
                                     <!--<tr>
                                         <th>CLUES</th><td>{{cluesOrigen.nombre_unidad}}</td><td width="1" fxHide.xs="true">{{cluesOrigen.clues}}</td>
@@ -147,9 +154,11 @@
                                     </tr>-->
                                 </table>
                             </section>
-                    
-                            <div fxFlex fxLayoutAlign="center center"><mat-icon>arrow_downward</mat-icon></div>
-                    
+
+                            <div fxFlex fxLayoutAlign="center center">
+                                <mat-icon>arrow_downward</mat-icon>
+                            </div>
+
                             <section fxFlex fxLayout="column">
                                 <mat-form-field fxFlex>
                                     <mat-label>CLUES</mat-label>
@@ -161,7 +170,7 @@
                                     </mat-autocomplete>
                                     <mat-hint align="end" *ngIf="cluesDestino">{{cluesDestino.clues}}</mat-hint>
                                 </mat-form-field>
-    
+
                                 <mat-form-field fxFlex>
                                     <mat-label>CR</mat-label>
                                     <input type="text" aria-label="cr" matInput [formControl]="crSearch" [(ngModel)]="crDestino" [matAutocomplete]="crAutocomplete">
@@ -180,9 +189,10 @@
             </mat-tab>
         </mat-tab-group>
     </section>
-</div> <!-- mat-tab-dialog-content -->
+</div>
+<!-- mat-tab-dialog-content -->
 <div mat-dialog-actions>
-    <button *ngIf="selectedTab == 0" mat-raised-button color="info"  routerLink="/trabajadores/nuevo" (click)="dialogRef.close()" [disabled]="isLoading">
+    <button *ngIf="selectedTab == 0" mat-raised-button color="info" routerLink="/trabajadores/nuevo" (click)="dialogRef.close()" [disabled]="isLoading">
         <mat-icon>add_circle</mat-icon>
         Trabajador Nuevo
     </button>

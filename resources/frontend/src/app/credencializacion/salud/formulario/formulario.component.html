@@ -9,7 +9,7 @@
                         <mat-form-field fxFlex="45" fxFlex.xs="100">
                             <mat-label>Cargo </mat-label>
                             <mat-select formControlName="cargo" required>
-                                <mat-option *ngFor="let item of catalogos['cargo']" [value]="item.id">
+                                <mat-option *ngFor="let item of catalogo_cargo" [value]="item.id">
                                     {{item.descripcion}}
                                 </mat-option>
                             </mat-select>

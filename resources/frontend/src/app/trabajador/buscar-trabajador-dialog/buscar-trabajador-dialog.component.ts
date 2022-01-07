@@ -37,6 +37,7 @@ export class BuscarTrabajadorDialogComponent implements OnInit {
   search:string = "";
   isLoading: boolean = false;
   isLoadingCredential: boolean = false;
+  fotoTrabajador = 'assets/profile-icon.svg';
 
   photoPlaceholder = 'assets/profile-icon.svg';
 
@@ -304,10 +305,22 @@ export class BuscarTrabajadorDialogComponent implements OnInit {
   cargarDatosCredencial(){
     if(this.itemSelected.clave_credencial){
       this.isLoadingCredential = true;
-      this.TrabajadoresService.getDatosCredencial(this.itemSelected.clave_credencial).subscribe(
+      this.TrabajadoresService.verInfoTrabajador(this.itemSelected.id, {}).subscribe(
         response => {
           console.log(response);
-          if(response.length > 0){
+          if(response.credencial != null) 
+          {
+            if(response.credencial.foto == 1)
+            {
+              this.fotoTrabajador = "data:image/png;base64,"+response.credencial.foto_trabajador;
+            }else{
+
+            }
+          }else{
+            this.fotoTrabajador = 'assets/trabajador.jpg';
+          }
+          this.datosCredencial = response;
+          /*if(response.length > 0){
             this.datosCredencial = response[0];
             if(this.datosCredencial.tieneFoto == '1'){
               this.datosCredencial.photo = 'http://credencializacion.saludchiapas.gob.mx/images/credenciales/'+this.datosCredencial.id+'.'+this.datosCredencial.tipoFoto;
@@ -316,7 +329,7 @@ export class BuscarTrabajadorDialogComponent implements OnInit {
             }
           }else{
             this.datosCredencial = undefined;
-          }
+          }*/
           this.isLoadingCredential = false;
         }
       );

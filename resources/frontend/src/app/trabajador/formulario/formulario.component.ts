@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { exit } from 'process';
 import { Observable } from 'rxjs';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -345,7 +346,7 @@ export class FormularioComponent implements OnInit {
 
   verificarRfc(rfc){
     //console.log(rfc.length);
-    if(rfc.length == 13)
+    if(rfc.length == 13 && this.trabajador_id == null)
     {
       this.trabajadorService.getValidadorRfc(rfc).subscribe(
         response => {
@@ -914,7 +915,7 @@ export class FormularioComponent implements OnInit {
 
   accionGuardar(tipo:number):void{
     let data;
-    
+    let countError = 0;
     if(tipo == 1)
     {
       data = this.trabajadorForm.value;
@@ -925,12 +926,13 @@ export class FormularioComponent implements OnInit {
         data.municipio_nacimiento_id = null;
       }
       
-      
-      /*if(data.cr != null)
+      if(typeof data.municipio != 'object')
       {
-        data.cr_id = data.cr.cr;
-        data.clues = data.clues.clues;
-      }*/
+        this.sharedService.showSnackBar("Debe seleccionar un municipio de la lista", "ERROR", 3000);
+        countError++;
+        this.trabajadorForm.patchValue({municipio:""});
+      }
+      
     }else if(tipo == 2)
     {
       data = this.datosLaborelesForm.value;
@@ -954,7 +956,8 @@ export class FormularioComponent implements OnInit {
     
     this.isLoading = true;
     data.tipo_dato = tipo;
-    if(this.trabajador_id != null)
+    
+    if(this.trabajador_id != null && countError == 0)
     {
       this.trabajadorService.guardarTrabajador(this.trabajador_id, data).subscribe(
         response =>{
@@ -984,8 +987,15 @@ export class FormularioComponent implements OnInit {
       );
     }else
     {
-      if(data.cr != null)
+      if(this.trabajador_id == null && data.cr == null)
       {
+        this.sharedService.showSnackBar("DEBE DE SELECCIONAR UN CENTRO DE RESPONSABILIDAD", "ERROR", 3000);
+        countError++;
+      }
+      
+      if(countError == 0)
+      {
+
         this.trabajadorService.guardarNuevoTrabajador( data).subscribe(
           response =>{
             //console.log(response);
@@ -1003,10 +1013,8 @@ export class FormularioComponent implements OnInit {
             
           }
         );
-      }else{
-        this.sharedService.showSnackBar("DEBE DE SELECCIONAR UN CENTRO DE RESPONSABILIDAD", "ERROR", 3000);
       }
-      
+      this.isLoading = false;
     }
     
   }

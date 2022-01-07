@@ -25,6 +25,8 @@ class CredencializacionController extends Controller
         $responsable_clues = array();
         $loggedUser = auth()->userOrFail();
 
+        $permiso_impresion = false;
+        $permison_individual = false; 
         try{
             $access = $this->getUserAccessData();
             
@@ -37,18 +39,19 @@ class CredencializacionController extends Controller
                             //->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
                             
                             
-            $permison_individual = false;                
-            /*if(!$access->is_admin){
+                           
+            if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
                     foreach ($value->permissions as $key2 => $value2) {
-                        if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
+                        if($value2->id == 'MA5a5d9UandF0MBBpWi4Ew98uN9sZKCE')
                         {
-                            $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
-                            $permison_individual = true;
+                            $permiso_impresion = true;
                         }
                     }
                 }
-            }*/
+            }else{
+                $permiso_impresion = true;
+            }
             
             //filtro de valores por permisos del usuario
             if(!$access->is_admin && $permison_individual == false){
@@ -80,7 +83,7 @@ class CredencializacionController extends Controller
                 $estatus = ['grupo_usuario'=>false];
             }
             
-            return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$trabajador, 'impresion'=>$permiso_impresion],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
