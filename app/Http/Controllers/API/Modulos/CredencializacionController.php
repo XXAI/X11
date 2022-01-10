@@ -26,6 +26,7 @@ class CredencializacionController extends Controller
         $loggedUser = auth()->userOrFail();
 
         $permiso_impresion = false;
+        $permiso_visualizar_todos = false;
         $permison_individual = false; 
         try{
             $access = $this->getUserAccessData();
@@ -39,22 +40,40 @@ class CredencializacionController extends Controller
                             //->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
                             
                             
-                           
             if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
+                    
                     foreach ($value->permissions as $key2 => $value2) {
                         if($value2->id == 'MA5a5d9UandF0MBBpWi4Ew98uN9sZKCE')
                         {
                             $permiso_impresion = true;
                         }
+                        
+                        if($value2->id == 'a1LC0TC1p9OkNd9zaIWKwUuM8qYKpprT')
+                        {
+                            $permiso_visualizar_todos = true;
+                        }
                     }
                 }
+                    
+                foreach ($permisos->permissions as $key2 => $value2) {
+                    if($value2->id == 'MA5a5d9UandF0MBBpWi4Ew98uN9sZKCE')
+                    {
+                        $permiso_impresion = true;
+                    }
+                    
+                    if($value2->id == 'a1LC0TC1p9OkNd9zaIWKwUuM8qYKpprT')
+                    {
+                        $permiso_visualizar_todos = true;
+                    }
+                }
+                
             }else{
                 $permiso_impresion = true;
             }
             
             //filtro de valores por permisos del usuario
-            if(!$access->is_admin && $permison_individual == false){
+            if(!$access->is_admin && $permison_individual == false && $permiso_visualizar_todos == false){
                 $trabajador = $trabajador->where(function($query){
                     $query->whereIn('trabajador.estatus',[1,4]);
                 })->where(function($query)use($access){
@@ -83,7 +102,7 @@ class CredencializacionController extends Controller
                 $estatus = ['grupo_usuario'=>false];
             }
             
-            return response()->json(['data'=>$trabajador, 'impresion'=>$permiso_impresion],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$trabajador, 'impresion'=>$permiso_impresion, "todos"=> $permiso_visualizar_todos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
