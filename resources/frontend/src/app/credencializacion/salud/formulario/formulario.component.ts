@@ -92,25 +92,39 @@ export class FormularioComponent implements OnInit {
     await this.saludService.getCatalogos().subscribe(
       response =>{
         this.catalogos = response;
-        //this.isLoading = false;
-        //this.catalogos['cargo'] = [];
-        console.log(this.data);
+        let catalogo_edificio = [];
+        let catalogo_unidad = [];
         response['cargo'].forEach(element => {
-          //console.log(element);
+          
+          if(element.id == 1)
+          {
+            catalogo_unidad.push(element);
+          }
+
           if(this.data.tipo_unidad == 2 || this.data.tipo_unidad == 4 )
           {
             if(element.nivel == 1)
             {
-              this.catalogo_cargo.push(element);
+              //this.catalogo_cargo.push(element);
+              catalogo_edificio.push(element);
             }
           }else
           {
             if(element.nivel == 2)
             {
-              this.catalogo_cargo.push(element);
+              catalogo_unidad.push(element);
+              //this.catalogo_cargo.push(element);
             }
           }
         });
+        //console.log(this.data.tipo_unidad);
+        //console.log(catalogo_unidad);
+        if(this.data.tipo_unidad == 2 || this.data.tipo_unidad == 4 )
+        {
+          this.catalogo_cargo = catalogo_edificio;
+        }else{
+          this.catalogo_cargo = catalogo_unidad;
+        }
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
