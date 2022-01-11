@@ -145,7 +145,7 @@ export class FormularioComponent implements OnInit {
           this.CredencialForm.patchValue(
             {
               tipo_sangre_id: credencial.tipo_sanguineo,
-              signo: credencial.signo_sanguineo,
+              signo: credencial.rh,
               cargo: credencial.cargo_id,
               area_opcional: credencial.area_opcional, 
               contacto: credencial.contacto,
