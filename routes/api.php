@@ -22,6 +22,8 @@ Route::get('verificar-avance',   'API\Modulos\ParticipantesController@verificarA
 Route::get('ver-constancia',   'API\Modulos\ParticipantesController@verConstancia');
 Route::get('ver-reporte-dengue',                'API\Modulos\ParticipantesController@exportExcel');
 
+Route::get('ver-foto/{id}',                'API\Modulos\CredencializacionController@foto');
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'

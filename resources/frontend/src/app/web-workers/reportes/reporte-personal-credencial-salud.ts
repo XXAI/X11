@@ -103,6 +103,7 @@ export class ReporteTrabajadorCredencialSalud{
         let tamano_arreglo = data.length;
 
         data.forEach(element => {
+          console.log(element);
           let foto = "data:image/jpeg;base64,"+element.credencial.foto_trabajador;
           let imagen_tipo_unidad = "";
           
@@ -111,7 +112,7 @@ export class ReporteTrabajadorCredencialSalud{
           let id = String(element.id).padStart(6, "0");
           let area = "";
           let donador = "";
-          let rfc_encript = CryptoJS.AES.encrypt(element.rfc, "%ubp$$BG%kU0")
+          //let rfc_encript = CryptoJS.AES.encrypt(element.rfc, "%ubp$$BG%kU0")
           //console.log(element.rel_datos_laborales);
           switch(parseInt(element.rel_datos_laborales.clues_fisico.cve_jurisdiccion))
           {
@@ -202,7 +203,7 @@ export class ReporteTrabajadorCredencialSalud{
                 [
                   {}, { image: imagen_tipo_unidad, width: 30, height: 35, alignment: 'center' }, {},
                   { text: "TIPO SANGRE:\n"+tipo_sanguineo[element.credencial.tipo_sanguineo]+" RH "+signo_sanguineo[element.credencial.rh], margin: [ 0,4,0,0 ], style: "arriba_credencial_datos"},
-                  {}, {qr: "https://funcionarios.saludchiapas.gob.mx/ssa/"+rfc_encript, fit: "75"/*,eccLevel:"L"/*, alignment: 'center', version:6*/, rowSpan:5, margin: [ 0,4,0,0 ]}, 
+                  {}, {qr: "https://funcionarios.saludchiapas.gob.mx/ssa/"+element.encriptar, fit: "100"/*,eccLevel:"L"/*, alignment: 'center', version:6*/, rowSpan:4, margin: [ 0,4,0,0 ]}, 
                 { image: donador, width: 75, height: 75, alignment: 'right', margin: [ 0,4,0,0 ], rowSpan:5 },
                 ],
                 [

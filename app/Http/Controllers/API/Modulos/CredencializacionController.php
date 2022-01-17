@@ -177,7 +177,7 @@ class CredencializacionController extends Controller
                 $name = $fileName.".".$extension;
                 $request->file("archivo")->storeAs("public/FotoTrabajador", $name);
             }else{
-                return response()->json(['error' => "Formato de correo incorrento, favor de verificar" ], HttpResponse::HTTP_CONFLICT);
+                return response()->json(['error' => "Formato de imagen incorrento, favor de verificar" ], HttpResponse::HTTP_CONFLICT);
             }
              
             $object_rel = Credencializacion::where("trabajador_id",$trabajador->id)->first();
@@ -342,8 +342,12 @@ class CredencializacionController extends Controller
 
             $formato = base64_encode(\Storage::get('public\\FromatoCredencial\\default.jpg'));
             
+            $encriptacion = "ubp((%kU0";
             foreach ($trabajador as $key => $value) {
                 $trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$value->id.'.'.$value->credencial->extension));
+                
+                $trabajador[$key]->encriptar = encrypt($trabajador[$key]->rfc, $encriptacion);
+                //$trabajador[$key]->decriptar = decrypt($trabajador[$key]->encriptar, $encriptacion); 
             }
             
         return response()->json(['data'=>$trabajador, 'formato'=>$formato],HttpResponse::HTTP_OK);
@@ -351,6 +355,52 @@ class CredencializacionController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    public function foto(Request $request, $id)
+    {
+        try{
+            $encriptacion = "ubp((%kU0";
+            $rfc = decrypt($id, $encriptacion);
+            $trabajador = Trabajador::with('credencial.cargo')->where("rfc", $rfc)->first();
+
+            if($trabajador)
+            {
+                $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
+            }else{
+                $trabajador = [];
+            }
+             //if($trabajador->credencial)
+            return response()->json($trabajador,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
+
+    function encrypt($string, $key) {
+        $result = '';
+        for($i=0; $i<strlen($string); $i++) {
+           $char = substr($string, $i, 1);
+           $keychar = substr($key, ($i % strlen($key))-1, 1);
+           $char = chr(ord($char)+ord($keychar));
+           $result.=$char;
+        }
+        return base64_encode($result);
+     }
+
+     function decrypt($string, $key) {
+        $result = '';
+        $string = base64_decode($string);
+        for($i=0; $i<strlen($string); $i++) {
+           $char = substr($string, $i, 1);
+           $keychar = substr($key, ($i % strlen($key))-1, 1);
+           $char = chr(ord($char)-ord($keychar));
+           $result.=$char;
+        }
+        return $result;
+     }
 
     private function aplicarFiltros($main_query, $parametros, $access){
         //Filtros, busquedas, ordenamiento

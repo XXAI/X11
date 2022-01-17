@@ -556,7 +556,8 @@ export class ListaComponent implements OnInit {
           if(response.error) {
             this.error_pdf(response);
           } else {    
-              const reportWorker = this.iniciateWorker('CredencialSalud');
+            console.log(response);
+             const reportWorker = this.iniciateWorker('CredencialSalud');
               let config = {  title: this.reportTitle, lote:true };
               reportWorker.postMessage({data:{items: response.data, config:config, formato: response.formato},reporte:'trabajador/credencial-salud'});
           }

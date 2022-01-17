@@ -76,7 +76,7 @@ export class FormularioComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    //console.log(this.data);
+    console.log(this.data);
     this.nombre_trabajador = this.data.nombre;
     this.nombre_unidad = this.data.clues;
     this.obtenerData();
