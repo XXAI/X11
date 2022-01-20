@@ -203,7 +203,7 @@ export class ReporteTrabajadorCredencialSalud{
                 [
                   {}, { image: imagen_tipo_unidad, width: 30, height: 35, alignment: 'center' }, {},
                   { text: "TIPO SANGRE:\n"+tipo_sanguineo[element.credencial.tipo_sanguineo]+" RH "+signo_sanguineo[element.credencial.rh], margin: [ 0,4,0,0 ], style: "arriba_credencial_datos"},
-                  {}, {qr: "https://funcionarios.saludchiapas.gob.mx/ssa/"+element.encriptar, fit: "100"/*,eccLevel:"L"/*, alignment: 'center', version:6*/, rowSpan:4, margin: [ 0,4,0,0 ]}, 
+                  {}, {qr: "https://funcionarios.saludchiapas.gob.mx/ssa/"+element.encriptar, fit: "70"/*,eccLevel:"L"/*, alignment: 'center', version:6*/, rowSpan:4, margin: [ 0,4,0,0 ]}, 
                 { image: donador, width: 75, height: 75, alignment: 'right', margin: [ 0,4,0,0 ], rowSpan:5 },
                 ],
                 [

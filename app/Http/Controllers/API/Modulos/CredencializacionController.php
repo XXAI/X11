@@ -14,6 +14,9 @@ use Illuminate\Facades\Storage;
 
 use App\Models\Trabajador;
 use App\Models\Credencializacion;
+use App\Models\Cargo;
+use App\Models\Cr;
+use App\Models\Clues;
 use App\Models\User;
 
 
@@ -138,7 +141,10 @@ class CredencializacionController extends Controller
                     $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
                 }
             }
-            //$foto = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.jpg'));
+
+            $encriptacion = "ubp((%kU0";
+            $trabajador->encriptar = encrypt($trabajador->rfc, $encriptacion);
+            
             return response()->json(["data"=>$trabajador, "formato" => $image],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
@@ -361,15 +367,36 @@ class CredencializacionController extends Controller
         try{
             $encriptacion = "ubp((%kU0";
             $rfc = decrypt($id, $encriptacion);
-            $trabajador = Trabajador::with('credencial.cargo')->where("rfc", $rfc)->first();
+            
+    
+            $trabajador = Trabajador::where("rfc", $rfc)
+            ->select("id", "nombre", "apellido_paterno", "apellido_materno")
+            ->first();
 
+            $credencial = Credencializacion::where("trabajador_id", $trabajador->id)
+                            ->select("area_opcional", "extension", "foto", "cargo_id")->first();
+
+            $cargo = Cargo::find($credencial->cargo_id);
+            $cr = Cr::whereRaw("cr = (select cr_fisico_id from rel_trabajador_datos_laborales where trabajador_id=".$trabajador->id.")")->select("descripcion", "cr")->first();
+            $clues = Clues::whereRaw("clues = (select clues_adscripcion_fisica from rel_trabajador_datos_laborales where trabajador_id=".$trabajador->id.")")->select("nombre_unidad", "clues")->first();
+
+            $trabajador->credencial = $credencial;
+            if($trabajador->credencial)
+            {
+                $trabajador->credencial->cargo = $cargo;
+            }
+            
+            $trabajador->cr = $cr;
+            if($trabajador->cr)
+            {
+                $trabajador->cr->clues = $clues;
+            }
             if($trabajador)
             {
                 $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
             }else{
                 $trabajador = [];
             }
-             //if($trabajador->credencial)
             return response()->json($trabajador,HttpResponse::HTTP_OK);
 
         } catch (\Exception $e) {

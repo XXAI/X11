@@ -208,7 +208,7 @@
                                     </div>
                                     <div fxLayout="row">
                                         <div fxFlex="100">
-                                            <span class="label">CENTRO DE RESPONSABILIDAD DE ADSCRIPCIÓN: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.cr.clues:'NO REGISTRADO' }} {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.cr.descripcion:'' }}</span>
+                                            <span class="label">CENTRO DE RESPONSABILIDAD DE ADSCRIPCIÓN: </span><br><span class="value">{{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.cr)?dataTrabajador.rel_datos_laborales_nomina.cr.clues:'NO REGISTRADO':'NO REGISTRADO' }} {{ (dataTrabajador.rel_datos_laborales_nomina.cr)?dataTrabajador.rel_datos_laborales_nomina.cr.descripcion:'' }}</span>
                                         </div>
 
                                     </div>
