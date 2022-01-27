@@ -90,7 +90,8 @@ export class FormularioComponent implements OnInit {
     'curp': ['',[Validators.required, Validators.minLength(18)]],
     'pais_nacimiento_id': ['',[Validators.required]],
     'entidad_nacimiento_id': ['',[Validators.required]],
-    'municipio': [{ value:'', disabled:true}, Validators.required],
+    //'municipio': [{ value:'', disabled:true}, Validators.required],
+    'municipio': [],
     //'municipio_nacimiento_id': ['', [Validators.required]],
     'nacionalidad_id': ['',[Validators.required]],
     'fecha_nacimiento': ['',[Validators.required]],
@@ -251,7 +252,7 @@ export class FormularioComponent implements OnInit {
         this.editable = false;
       }
     });
-    console.log(this.isLoadingCredential);
+    
   }
 
   loadNext(){
@@ -486,10 +487,10 @@ export class FormularioComponent implements OnInit {
         this.datos_laborales_nomina = trabajador.datoslaboralesnomina;
         this.idioma(trabajador.idioma_id);
         this.lengua(trabajador.lengua_indigena_id);
-        this.verificar_curp(trabajador.curp);
+        
         this.nombre_trabajador= trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+trabajador.nombre;
         this.trabajadorForm.patchValue(trabajador);  //carga datos de trabajador
-
+        this.verificar_curp(trabajador.curp);
         if(trabajador.idioma_id == null)
         {
             this.trabajadorForm.patchValue({idioma_id: 0});
@@ -883,6 +884,7 @@ export class FormularioComponent implements OnInit {
       
       let sexo = curp.substring(10,11);
       let estado = curp.substring(11,13);
+      console.log(estado);
       let fecha_nacimiento = curp.substring(4,10);
       
       let anio = fecha_nacimiento.substring(0,2);
@@ -899,13 +901,18 @@ export class FormularioComponent implements OnInit {
       {
           this.trabajadorForm.patchValue({sexo: 2029390});
       }
+      
       if(estado == "NE")
       {
+        //console.log("entro");
         this.trabajadorForm.get('municipio').disable();
+        this.trabajadorForm.get('entidad_nacimiento_id').disable();
         this.trabajadorForm.patchValue({nacionalidad_id: 2047952, entidad_nacimiento_id:2499 });
         
       }else{
+        //console.log("no entro");
         this.trabajadorForm.get('municipio').enable();
+        this.trabajadorForm.get('entidad_nacimiento_id').enable();
         this.trabajadorForm.patchValue({nacionalidad_id: 2047951, pais_nacimiento_id:142, entidad_nacimiento_id:7});
 
       }
@@ -920,17 +927,25 @@ export class FormularioComponent implements OnInit {
       data = this.trabajadorForm.value;
       if(data.pais_nacimiento_id == 142)
       {
-        data.municipio_nacimiento_id = data.municipio.id;
+        if(typeof data.municipio != 'object')
+        {
+          this.sharedService.showSnackBar("Debe seleccionar un municipio de la lista", "ERROR", 3000);
+          countError++;
+          this.trabajadorForm.patchValue({municipio:""});
+        }else{
+          data.municipio_nacimiento_id = data.municipio.id;
+        }
+        if(data.entidad_nacimiento_id == null)
+        {
+          this.sharedService.showSnackBar("Debe seleccionar una entidad de la lista", "ERROR", 3000);
+          countError++;
+        }
+        
       }else{
         data.municipio_nacimiento_id = null;
+        data.entidad_nacimiento_id = null;
       }
       
-      if(typeof data.municipio != 'object')
-      {
-        this.sharedService.showSnackBar("Debe seleccionar un municipio de la lista", "ERROR", 3000);
-        countError++;
-        this.trabajadorForm.patchValue({municipio:""});
-      }
       
     }else if(tipo == 2)
     {
