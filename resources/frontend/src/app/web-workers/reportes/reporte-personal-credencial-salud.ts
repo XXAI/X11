@@ -1,12 +1,14 @@
 //import { LOGOS } from "../../logos";
 import { LOGOS_CREDENCIAL } from "../../logos/credencial/iconos";
 import * as CryptoJS from 'crypto-js';
+import { exit } from "process";
 
 export class ReporteTrabajadorCredencialSalud{
     getDocumentDefinition(reportData:any) {
         //console.log("entro");
         //Variables Generales
-        
+        console.log(reportData);
+        exit;
         let config = reportData.config;
         let distrito:any[] = ['','I','II','III','IV','V', 'VI', 'VII', 'VIII','IX','X', 'I'];
         let region:any[] = ['','TUXTLA', "SAN CRISTOBAL", "COMITAN", "VILLAFLORES", "PICHUCALCO", "PALENQUE", "TAPACHULA", "TONALA", "OCOSINGO", "MOTOZINTLA", "ESTATAL"];
@@ -38,7 +40,7 @@ export class ReporteTrabajadorCredencialSalud{
               },
               subtitulo:
               {
-                fontSize: 11,
+                fontSize: 12,
                 alignment:"center",
                 bold:true
               },
@@ -137,7 +139,15 @@ export class ReporteTrabajadorCredencialSalud{
             donador = LOGOS_CREDENCIAL[1].donador_no;
           }
 
-          if(element.credencial.area_opcional != null && element.credencial.area_opcional!= '')
+          if(element.rel_datos_laborales.clues_adscripcion_fisica == "CSSSA017213")
+          {
+            area = element.rel_datos_laborales.cr_fisico.descripcion;
+            area += "\n"+element.rel_datos_laborales.clues_fisico.nombre_unidad;
+          }else
+          {
+            area = element.rel_datos_laborales.cr_fisico.descripcion;
+          }
+          /*if(element.credencial.area_opcional != null && element.credencial.area_opcional!= '')
           {
             area = element.credencial.area_opcional;
           }else
@@ -148,7 +158,8 @@ export class ReporteTrabajadorCredencialSalud{
           if(area != element.rel_datos_laborales.clues_fisico.nombre_unidad)
           {
             area += "\n"+element.rel_datos_laborales.clues_fisico.nombre_unidad;
-          }
+          }*/
+
 
           switch(element.rel_datos_laborales.clues_fisico.tipo_unidad_id)
           {
@@ -203,8 +214,8 @@ export class ReporteTrabajadorCredencialSalud{
                 [
                   {}, { image: imagen_tipo_unidad, width: 30, height: 35, alignment: 'center' }, {},
                   { text: "TIPO SANGRE:\n"+tipo_sanguineo[element.credencial.tipo_sanguineo]+" RH "+signo_sanguineo[element.credencial.rh], margin: [ 0,4,0,0 ], style: "arriba_credencial_datos"},
-                  {}, {qr: "https://funcionarios.saludchiapas.gob.mx/#/ssa/"+element.encriptar, fit: "70"/*,eccLevel:"L"/*, alignment: 'center', version:6*/, rowSpan:4, margin: [ 0,4,0,0 ]}, 
-                { image: donador, width: 75, height: 75, alignment: 'right', margin: [ 0,4,0,0 ], rowSpan:5 },
+                  {}, {qr: "https://funcionarios.saludchiapas.gob.mx/#/ssa/"+element.encriptar, fit: "70"/*,eccLevel:"L"/*, alignment: 'center', version:6*/, rowSpan:4, margin: [ 20,4,0,0 ]}, 
+                { image: donador, width: 75, height: 75, alignment: 'right', margin: [ 0,2,2,0 ], rowSpan:5 },
                 ],
                 [
                   {},{},{},{},{},{},{},

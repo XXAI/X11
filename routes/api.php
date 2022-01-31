@@ -106,7 +106,8 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('catalogos',          'API\Modulos\CatalogosController');
     Route::get('catalogo-tipo-baja',         'API\Modulos\CatalogosController@catalogoTipoBaja');
     Route::get('catalogo-tipo-profesion',    'API\Modulos\CatalogosController@catalogoTipoProfesion');
-    Route::get('obtener-catalogos',          'API\Modulos\CatalogosController@obtenerCatalogos');
+    Route::get('catalogo-tipo-profesion',    'API\Modulos\CatalogosController@catalogoTipoProfesion');
+    Route::get('catalogo_cargos',            'API\Modulos\CatalogosController@obtenerCatalogoCargo');
 
     Route::get('busqueda-clues',             'API\Modulos\SearchCatalogsController@getCluesAutocomplete');
     Route::get('busqueda-codigos',           'API\Modulos\SearchCatalogsController@getCodigoAutocomplete');

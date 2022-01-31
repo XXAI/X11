@@ -75,6 +75,24 @@ class CatalogosController extends Controller
         }
     }
 
+    public function obtenerCatalogoCargo(Request $request)
+    {
+        try{
+            $params = $request->all();
+            if($params['clues'] == 'CSSSA017213')
+            {
+                $cargo = Cargo::where("nivel", 1)->orderBy("descripcion")->get();
+            }else
+            {
+                $cargo = Cargo::where("nivel", 2)->orderBy("descripcion")->get();
+            }
+
+            return response()->json($cargo,HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function catalogoTipoBaja(){
         try{
             $tipos_baja = TipoBaja::all();

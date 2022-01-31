@@ -15,6 +15,7 @@ export class SaludService {
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
   url_imprimir_lote =  `${environment.base_url}/credencializacion-lote`;
   url_catalogos = `${environment.base_url}/catalogos`;
+  url_cargos    = `${environment.base_url}/catalogo_cargos`;
 
   constructor( handler: HttpBackend, private http: HttpClient) {
     //To ignore interceptor
@@ -29,7 +30,15 @@ export class SaludService {
           return response;
         })
     );
-}
+  }
+
+  getCargos(payload:any):Observable<any> {
+    return this.http.get<any>(this.url_cargos, {params:payload}).pipe(
+        map( response => {
+          return response;
+        })
+    );
+  }
 
   getTrabajadorList(payload):Observable<any> {
       if(payload.reporte && payload.export_excel){

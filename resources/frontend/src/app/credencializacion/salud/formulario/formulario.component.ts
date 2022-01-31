@@ -35,6 +35,7 @@ export class FormularioComponent implements OnInit {
   tituloIsLoading:boolean = false;
   nombre_trabajador:string = "";
   nombre_unidad:string = "";
+  nombre_cr:string = "";
   FotoCredencial:File  = null;
   lugar_alternativo:boolean = true;
   
@@ -67,7 +68,8 @@ export class FormularioComponent implements OnInit {
     'tipo_sangre_id':['',Validators.required],
     'signo':['',Validators.required],
     'cargo':['',Validators.required],
-    'area':[{ value:'', disabled:true}, Validators.required],
+    'area':[''],
+    'area_seleccion':[{ value:''}, Validators.required],
     'area_opcional':[''],
     'contacto':['',Validators.required],
     'contacto_telefono':['', Validators.required],
@@ -76,23 +78,29 @@ export class FormularioComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    console.log(this.data);
+    
     this.nombre_trabajador = this.data.nombre;
     this.nombre_unidad = this.data.clues;
+    if(this.data.cr != null)
+    {
+      this.nombre_cr += this.data.cr;
+    }
     this.obtenerData();
     this.CredencialForm.patchValue({trabajador_id: this.data.trabajador_id, area: this.data.cr});
+    //this.cargarAreasClues(this.data.clues_id);
     if(this.data.clues_id != "CSSSA017213")
     {
       this.lugar_alternativo = false;
+      
     }
   }
 
   async obtenerData()
   {
-    await this.saludService.getCatalogos().subscribe(
+    await this.saludService.getCargos({clues: this.data.clues_id}).subscribe(
       response =>{
         this.catalogos = response;
-        let catalogo_edificio = [];
+        /*let catalogo_edificio = [];
         let catalogo_unidad = [];
         response['cargo'].forEach(element => {
           
@@ -105,7 +113,6 @@ export class FormularioComponent implements OnInit {
           {
             if(element.nivel == 1)
             {
-              //this.catalogo_cargo.push(element);
               catalogo_edificio.push(element);
             }
           }else
@@ -113,18 +120,15 @@ export class FormularioComponent implements OnInit {
             if(element.nivel == 2)
             {
               catalogo_unidad.push(element);
-              //this.catalogo_cargo.push(element);
             }
           }
         });
-        //console.log(this.data.tipo_unidad);
-        //console.log(catalogo_unidad);
         if(this.data.tipo_unidad == 2 || this.data.tipo_unidad == 4 )
         {
           this.catalogo_cargo = catalogo_edificio;
         }else{
           this.catalogo_cargo = catalogo_unidad;
-        }
+        }*/
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
