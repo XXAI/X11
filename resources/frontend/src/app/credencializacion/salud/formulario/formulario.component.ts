@@ -39,7 +39,7 @@ export class FormularioComponent implements OnInit {
   FotoCredencial:File  = null;
   lugar_alternativo:boolean = true;
   
-  tipo_sangre:any = [{id:1, descripcion:"A"}, {id:2, descripcion:"B"},{id:3, descripcion:"AB"}, {id:4, descripcion:"O"}];
+  tipo_sangre:any = [{id:1, descripcion:"A"},{id:5, descripcion:"A1"},{id:6, descripcion:"A2"}, {id:2, descripcion:"B"},{id:3, descripcion:"AB"}, {id:4, descripcion:"O"}];
   cargo:any = [{id:1, descripcion:"ADMINISTRATIVO"}];
   donador:any = [{id:1, descripcion:"SI"},{id:2, descripcion:"NO"}];
   capacidad_especial:any = [{id:1, descripcion:"SI"},{id:2, descripcion:"NO"}];

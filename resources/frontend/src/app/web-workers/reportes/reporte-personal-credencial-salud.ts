@@ -1,18 +1,16 @@
 //import { LOGOS } from "../../logos";
 import { LOGOS_CREDENCIAL } from "../../logos/credencial/iconos";
 import * as CryptoJS from 'crypto-js';
-import { exit } from "process";
 
 export class ReporteTrabajadorCredencialSalud{
     getDocumentDefinition(reportData:any) {
         //console.log("entro");
         //Variables Generales
-        console.log(reportData);
-        exit;
+        
         let config = reportData.config;
         let distrito:any[] = ['','I','II','III','IV','V', 'VI', 'VII', 'VIII','IX','X', 'I'];
-        let region:any[] = ['','TUXTLA', "SAN CRISTOBAL", "COMITAN", "VILLAFLORES", "PICHUCALCO", "PALENQUE", "TAPACHULA", "TONALA", "OCOSINGO", "MOTOZINTLA", "ESTATAL"];
-        let tipo_sanguineo:any[] =  ["", "A", "B", "AB", "O"];
+        let region:any[] = ['','TUXTLA', "SCLC", "COMITAN", "VILLAFLORES", "PICHUCALCO", "PALENQUE", "TAPACHULA", "TONALA", "OCOSINGO", "MOTOZINTLA", "ESTATAL"];
+        let tipo_sanguineo:any[] =  ["", "A", "B", "AB", "O", "A1", "A2"];
         let signo_sanguineo:any[] =  ["", "-", "+"];
         let formato = "data:image/jpeg;base64,"+reportData.formato;
 
@@ -119,7 +117,7 @@ export class ReporteTrabajadorCredencialSalud{
           switch(parseInt(element.rel_datos_laborales.clues_fisico.cve_jurisdiccion))
           {
             case 1: longitud = 12; break;
-            case 2: longitud = 6; break;
+            case 2: longitud = 16; break;
             case 3: longitud = 10; break;
             case 4: longitud = 6; break;
             case 5: longitud = 7; break;

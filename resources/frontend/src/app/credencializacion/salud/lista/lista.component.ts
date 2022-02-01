@@ -262,7 +262,6 @@ export class ListaComponent implements OnInit {
     this.loadFilterChips(filterFormValues);
 
     for(let i in filterFormValues){
-      console.log(i);
       if(filterFormValues[i]){
         if(i == 'clues'){
           params[i] = filterFormValues[i].clues;

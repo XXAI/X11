@@ -79,7 +79,9 @@ class CatalogosController extends Controller
     {
         try{
             $params = $request->all();
-            if($params['clues'] == 'CSSSA017213')
+            $clues = Clues::find($params['clues']);
+
+            if($clues->tipo_unidad_id == 2)
             {
                 $cargo = Cargo::where("nivel", 1)->orderBy("descripcion")->get();
             }else

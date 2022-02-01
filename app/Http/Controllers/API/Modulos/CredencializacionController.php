@@ -37,8 +37,8 @@ class CredencializacionController extends Controller
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
             $parametros = $request->all();
-            $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial")
-                            ->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id");
+            $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial");
+                            //->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id");
                             //->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
                             //->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
                             
@@ -80,13 +80,20 @@ class CredencializacionController extends Controller
                 $trabajador = $trabajador->where(function($query){
                     $query->whereIn('trabajador.estatus',[1,4]);
                 })->where(function($query)use($access){
-                    $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
+                    /*$query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)
+                    ->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);*/
+                    $clues_arreglo = join("','",$access->lista_clues);
+                    $cr_arreglo = join("','",$access->lista_cr);
+
+                    $query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where clues_adscripcion_fisica in ('".$clues_arreglo."'))")
+                    ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id in ('".$cr_arreglo."'))");
+                    //->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
                 });
             }
             
-            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);
+            $trabajador = $this->aplicarFiltrosIndex($trabajador, $parametros, $access);
 
-            $trabajador = $trabajador->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null)")
+            $trabajador = $trabajador->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null )")
             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where (cr_fisico_id is null or clues_adscripcion_fisica is null))");
             if(isset($parametros['page'])){
                 $trabajador = $trabajador->orderBy('nombre');
@@ -433,7 +440,7 @@ class CredencializacionController extends Controller
         //Filtros, busquedas, ordenamiento
         if(isset($parametros['query']) && $parametros['query']){
             $main_query = $main_query->where(function($query)use($parametros){
-                return $query//->where('nombre','LIKE','%'.$parametros['query'].'%')
+                return $query
                             ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
                             ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
                             ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
@@ -459,15 +466,40 @@ class CredencializacionController extends Controller
                                           ->where('actualizado',1)
                                           ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_credencial where deleted_at is null and foto=1)");
             }
+        }
+        return $main_query;
+    }
 
-            /*if($access->is_admin){
-                if(isset($parametros['grupos']) && $parametros['grupos']){
-                    $grupo = GrupoUnidades::with('listaCR')->find($parametros['grupos']);
-                    $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
-
-                    $main_query = $main_query->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$lista_cr);
+    private function aplicarFiltrosIndex($main_query, $parametros, $access){
+        //Filtros, busquedas, ordenamiento
+        if(isset($parametros['query']) && $parametros['query']){
+            $main_query = $main_query->where(function($query)use($parametros){
+                return $query
+                            ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
+                            ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
+                            ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
+            });
+        }
+        
+        if(isset($parametros['active_filter']) && $parametros['active_filter']){
+            if(isset($parametros['clues']) && $parametros['clues']){
+                if(isset($parametros['adscripcion']) && $parametros['adscripcion'] && $parametros['adscripcion'] == 'EOU'){
+                    $main_query = $main_query->whereRaw("id in (select trabajador_id from rel_trabajador_datos_laborales where clues_adscripcion_fisica in ('".$parametros['clues']."'))");
+                }else{
+                    $main_query = $main_query->whereRaw("id in (select trabajador_id from rel_trabajador_datos_laborales where clues_adscripcion_fisica in ('".$parametros['clues']."'))");
                 }
-            }*/
+            }
+
+            if(isset($parametros['cr']) && $parametros['cr']){
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id =".$parametros['cr'].")");//where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
+            }
+
+            if(isset($parametros['imprimible']) && $parametros['imprimible'] == 1){
+                $main_query = $main_query->where('validado',1)
+                                          ->where('estatus',1)
+                                          ->where('actualizado',1)
+                                          ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_credencial where deleted_at is null and foto=1)");
+            }
         }
         return $main_query;
     }
