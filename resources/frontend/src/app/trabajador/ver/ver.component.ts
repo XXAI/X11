@@ -54,6 +54,7 @@ export class VerComponent implements OnInit {
   navTabSelected:number = 0;
   pestanaTramites:boolean = false;
   validadorEstudios:boolean = false;
+  datosNominales:any;
 
   verInfoExpediente:boolean = true;
 
@@ -143,6 +144,8 @@ export class VerComponent implements OnInit {
         this.dataSource = this.dataTrabajador.escolaridad;
         this.verTramites(response.id);
         this.Asitencia = (response.actualizado == 0)?false:true;
+
+        this.datosNominales = this.dataTrabajador.rel_datos_laborales_nomina;
         
         if(this.dataTrabajador.rel_trabajador_documentos != null)
         {
