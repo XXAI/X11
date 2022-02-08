@@ -3,21 +3,21 @@
     background-size: cover;
 }
 
-.infoEmployee th{
+.infoEmployee th {
     text-align: left;
     white-space: nowrap;
 }
 
-.infoEmployee td{
+.infoEmployee td {
     padding-left: 10px;
 }
 
-.is-loading{
+.is-loading {
     display: flex;
     justify-content: center;
 }
 
-.is-loading mat-spinner{
+.is-loading mat-spinner {
     margin: 0 auto;
 }
 
@@ -34,138 +34,134 @@
     align-items: center;
     justify-content: center;
 }
-  
-.loading-shade mat-spinner{
-    margin:0 auto;
+
+.loading-shade mat-spinner {
+    margin: 0 auto;
 }
 
-.loading-shade span{
-    margin:0 auto;
+.loading-shade span {
+    margin: 0 auto;
 }
 
 table {
     width: 100%;
 }
 
-.not-results-found{
+.not-results-found {
     text-align: center;
     font-style: italic;
 }
 
-.hide{
+.hide {
     display: none;
 }
 
 .asistencia-table-container {
     position: relative;
     /*max-height: 400px;*/
-    min-height:200px;
+    min-height: 200px;
     overflow: auto;
 }
 
-.info-adscripcion-activa{
+.info-adscripcion-activa {
     width: 100%;
 }
 
-.info-adscripcion-activa th.titulo-largo{
+.info-adscripcion-activa th.titulo-largo {
     /*background-color: rgba(0,0,0,.85);*/
-    color: rgba(0,0,0,.85);
+    color: rgba(0, 0, 0, .85);
     border-bottom: thick;
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: rgba(0,0,0,.85);
+    border-bottom-color: rgba(0, 0, 0, .85);
     font-weight: bold;
     text-align: center;
-    padding:2px;
+    padding: 2px;
 }
 
-.info-adscripcion-activa th.titulo-corto{
+.info-adscripcion-activa th.titulo-corto {
     background-color: lightsteelblue;
     text-align: right;
 }
 
-.info-adscripcion-activa td{
+.info-adscripcion-activa td {
     background-color: #dddddd;
     text-align: left;
-    padding:2px;
+    padding: 2px;
 }
 
-.info-adscripcion-activa td.descripcion{
+.info-adscripcion-activa td.descripcion {
     text-align: center;
 }
 
-.tarjeta-info-empleado p{
+.tarjeta-info-empleado p {
     line-height: 22px;
     margin-bottom: 0px;
 }
 
-.tarjeta-info-empleado p:first-child{
+.tarjeta-info-empleado p:first-child {
     padding-right: 10px;
 }
 
-.tarjeta-info-empleado p:last-child{
+.tarjeta-info-empleado p:last-child {
     padding-left: 10px;
     border-left: thick;
     border-left-width: 1px;
     border-left-style: solid;
-    border-left-color: rgba(0,0,0,.12);
-    
+    border-left-color: rgba(0, 0, 0, .12);
 }
 
-span.label{
-    color: rgba(0,0,0,.87);
+span.label {
+    color: rgba(0, 0, 0, .87);
     font-weight: bold;
     border-bottom: thick;
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: rgba(0,0,0,.50);
+    border-bottom-color: rgba(0, 0, 0, .50);
     font-size: 9pt;
 }
 
-span.value{
+span.value {
     padding: 0 5px 0 5px;
 }
 
-th{
+th {
     color: blue;
     font-weight: bold;
     font-size: 12pt;
 }
 
-@media (max-width: 768px) { 
-    .mobile-pc
-    {
-      display: none;
+@media (max-width: 768px) {
+    .mobile-pc {
+        display: none;
     }
-  }
+}
 
-  .chip-red
-  {
-      background-color: red;
-      color: white;
-  }
+.chip-red {
+    background-color: red;
+    color: white;
+}
 
-  .chip-yellow
-  {
-      background-color: goldenrod;
-      color: white;
-  }
+.chip-yellow {
+    background-color: goldenrod;
+    color: white;
+}
 
-  .chip-pause
-  {
-      background-color: cadetblue;
-      color: white;
-  }
-  .chip-green
-  {
-      background-color: green;
-      color: white;
-  }
+.chip-pause {
+    background-color: cadetblue;
+    color: white;
+}
 
-  .chip-primary
-  {
-      background-color: blue;
-      color: white;
-  }
+.chip-green {
+    background-color: green;
+    color: white;
+}
 
+.chip-primary {
+    background-color: blue;
+    color: white;
+}
 
+.mat-list-icon {
+    color: rgba(0, 0, 0, 0.54);
+}

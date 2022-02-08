@@ -9,6 +9,7 @@ import * as FileSaver from 'file-saver';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentacionImportacionDialogComponent } from '../../tramites/documentacion-importacion-dialog/documentacion-importacion-dialog.component';
+import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
 export interface VerEmpleadoData {
   id: number;
@@ -35,8 +36,9 @@ export class VerComponent implements OnInit {
 
   dataTrabajador: any;
   mediaSize: string;
+  disabledDownload:boolean = false;
 
-  cluesAsistencia = []; //= [ 'CSSSA017213', 'CSSSA009162', 'CSSSA019954', 'CSSSA017324' ];
+  cluesAsistencia = [];
 
   datosCredencial:any;
   fotoTrabajador = 'assets/profile-icon.svg';
@@ -494,17 +496,26 @@ export class VerComponent implements OnInit {
 
   solicitar(valor:number, trabajador_id:string)
   {
-    //console.log(valor+" - "+trabajador_id);
-    this.trabajadorService.setTramite(valor, trabajador_id).subscribe(
-      response => {
-        this.sharedService.showSnackBar("Se guardo correctamente", null, 3000);
-        this.verTramites(trabajador_id);
-      },
-      responsError =>{
-        console.log(responsError);
-        this.sharedService.showSnackBar(responsError.error, null, 3000);
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'ELIMINAR',dialogMessage:'¿Realmente desea renovar su oficio de comisión? Escriba ACEPTAR a continuación para realizar el proceso.',validationString:'ACEPTAR',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.trabajadorService.setTramite(valor, trabajador_id).subscribe(
+          response => {
+            this.sharedService.showSnackBar("Se guardo correctamente", null, 3000);
+            this.verTramites(trabajador_id);
+          },
+          responsError =>{
+            console.log(responsError);
+            this.sharedService.showSnackBar(responsError.error, null, 3000);
+          }
+        );
       }
-    );
+    });
+    
   }
 
   verTramites(trabajador_id)
@@ -523,6 +534,7 @@ export class VerComponent implements OnInit {
 
   OficioSolicitud(id)
   {
+    this.disabledDownload = true;
     this.trabajadorService.createFileComision(id).subscribe(
       response =>{
         
@@ -554,16 +566,16 @@ export class VerComponent implements OnInit {
             reportWorker.postMessage({data:response,reporte:'archivo/solicitudComision'});
         }
         this.isLoading = false;
+        this.disabledDownload = false;
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
         if(errorResponse.status == 409){
           errorMessage = errorResponse.error.error.message;
         }
-        //this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
-        //this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
-        //this.sharedService.showSnackBar(errorMessage, null, 3000);
+        
         this.isLoading = false;
+        this.disabledDownload = false;
         
       });
   }

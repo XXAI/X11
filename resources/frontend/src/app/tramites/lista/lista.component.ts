@@ -58,6 +58,7 @@ export class ListaComponent implements OnInit {
   dataSourceRecepcion: any = [];
   dataSourceEnvio: any = [];
   dataSourceValidacion: any = [];
+  disabledDownload:boolean = false;
 
   constructor(private sharedService: SharedService, private tramitesService: TramitesService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
 
@@ -216,6 +217,7 @@ export class ListaComponent implements OnInit {
 
   imprimirComprobante(id)
   {
+    this.disabledDownload = true;
       this.tramitesService.createFileComision(id).subscribe(
         response =>{
           
@@ -244,16 +246,16 @@ export class ListaComponent implements OnInit {
           }
           //console.log(response);
           this.isLoading = false;
+          this.disabledDownload = false;
         },
         errorResponse =>{
           var errorMessage = "Ocurrió un error.";
           if(errorResponse.status == 409){
             errorMessage = errorResponse.error.error.message;
           }
-          //this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
-          //this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = errorMessage;
-          //this.sharedService.showSnackBar(errorMessage, null, 3000);
+          
           this.isLoading = false;
+          this.disabledDownload = false;
           
         }
       );

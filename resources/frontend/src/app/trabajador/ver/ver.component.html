@@ -449,7 +449,7 @@
                                 <ng-container matColumnDef="archivo">
                                     <th mat-header-cell *matHeaderCellDef> ACUSE </th>
                                     <td mat-cell *matCellDef="let element">
-                                        <button mat-raised-button color="accent" (click)="OficioSolicitud(element.id)">
+                                        <button mat-raised-button color="accent" (click)="OficioSolicitud(element.id)" [disabled]="disabledDownload">
                                         <mat-icon>download</mat-icon>
                                     </button>
                                     </td>
@@ -458,13 +458,13 @@
                                 <ng-container matColumnDef="estatus">
                                     <th mat-header-cell *matHeaderCellDef fxHide.xs="true"> ESTATUS </th>
                                     <td mat-cell *matCellDef="let element" fxHide.xs="true">
-                                        <button mat-mini-fab [disabled]="element.estatus_origen == 0" [color]="element.estatus_origen == 1? 'primary' : 'warn'">
+                                        <button mat-mini-fab [disabled]="element.estatus_origen == 0" [color]="element.estatus_origen == 1? 'primary' : 'warn'" matTooltip="Área recepción">
                                             <mat-icon>arrow_circle_down</mat-icon>
                                         </button>
-                                        <button mat-mini-fab [disabled]="element.estatus_destino == 0" [color]="element.estatus_destino == 1? 'primary' : 'warn'">
+                                        <button mat-mini-fab [disabled]="element.estatus_destino == 0" [color]="element.estatus_destino == 1? 'primary' : 'warn'" matTooltip="Área dependiente">
                                             <mat-icon>arrow_circle_up</mat-icon>
                                         </button>
-                                        <button mat-mini-fab [disabled]="element.estatus_validacion == 0" [color]="element.estatus_validacion == 1? 'primary' : 'warn'">
+                                        <button mat-mini-fab [disabled]="element.estatus_validacion == 0" [color]="element.estatus_validacion == 1? 'primary' : 'warn'" matTooltip="Validacion RH Central">
                                             <mat-icon>check_circle_outline</mat-icon>
                                         </button>
 

@@ -20,6 +20,23 @@ export class ReporteSolicitudComision {
         let mes_fin = (parseInt(comision.fecha_final.substr(5,2)) - 1);
         let fecha_fin =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision.fecha_final.substr(0,4), mes_fin,comision.fecha_final.substr(8,2)));
         let trabajador = reportData.items;
+
+        let nombres = reportData.nombres;
+        let control = nombres.control.responsable;
+        let nombre_control = control.nombre+" "+control.apellido_paterno+" "+control.apellido_materno;
+
+        let sistematizacion = nombres.sistematizacion.responsable;
+        let nombre_sistematizacion = sistematizacion.nombre+" "+sistematizacion.apellido_paterno+" "+sistematizacion.apellido_materno;
+
+        let secretario = nombres.secretario.responsable;
+        let nombre_secretario = secretario.nombre+" "+secretario.apellido_paterno+" "+secretario.apellido_materno;
+
+        let director = nombres.direccion_admon.responsable;
+        let nombre_director = director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno;
+        
+        let subdireccion_rh = nombres.subdireccion_rh.responsable;
+        let nombre_subdireccion_rh = subdireccion_rh.nombre+" "+subdireccion_rh.apellido_paterno+" "+subdireccion_rh.apellido_materno;
+
         let datos = {
           pageOrientation: 'portrait',
           pageSize: 'LETTER',
@@ -167,7 +184,7 @@ export class ReporteSolicitudComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                { text: "LIC. SAMUEL SILVÁN OLÁN\nDIRECTOR DE ADMINISTRACIÓN Y FINANZAS\nDEL INSTITUTO DE SALUD DEL ESTADO DE CHIAPAS\n\n", style: "texto_depto"},
+                { text: "LIC. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\nDEL INSTITUTO DE SALUD DEL ESTADO DE CHIAPAS\n\n", style: "texto_depto"},
                 //{ text: "", colSpan:4},{},{},{},
               ],
             ]
@@ -183,7 +200,7 @@ export class ReporteSolicitudComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                { text: "ATN. LIC. ANITA DEL CARMEN GARCÍA LEÓN\nSUBDIRECTORA DE RECURSOS HUMANOS\n\n\n\n",alignment:'right', style: "texto_depto"},
+                { text: "ATN. LIC. "+nombre_subdireccion_rh+"\n"+nombres.subdireccion_rh.cargo+"\n\n\n\n",alignment:'right', style: "texto_depto"},
                 //{ text: "", colSpan:4},{},{},{},
               ],
             ]
@@ -288,10 +305,10 @@ export class ReporteSolicitudComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                { text: "C.C.P. DR. JOSÉ MANUEL CRUZ CASTELLANOS. SECRETARIO DE SALUD Y DIRECTOR GENERAL DEL INSTITUTO DE SALUD DEL ESTADO DE CHIAPAS\n"+
+                { text: "C.C.P. DR. "+nombre_secretario+". "+nombres.secretario.cargo+"\n"+
                         copias+
-                        "Cc.p. LIC. JULIO ALBERTO BEZARES DOMÍNGUEZ. JEFE DEL DEPARTAMENTO DE CONTROL DEL PAGO\n"+
-                        "C.c.p. ING. GABRIEL DE LA GUARDIA NAGANO.- JEFE DEL DEPARTAMENTO DE OPERACIÓN Y SISTEMATIZACIÓN", style: "texto_firmas"},
+                        "Cc.p. "+nombre_control+". - "+nombres.control.cargo+"\n"+
+                        "C.c.p. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo, style: "texto_firmas"},
                 //{ text: "", colSpan:4},{},{},{},
               ],
             ]
@@ -299,93 +316,7 @@ export class ReporteSolicitudComision {
         });
         
         
-        /*datos.content.push({
-          layout: 'noBorders',
-          table: {
-            widths: ['*'],
-            margin: [0,0,0,0],
-            body: [
-              [
-                //{ text: "", colSpan:2},{},
-                { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/2021\n\nASUNTO:COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio"},
-                //{ text: "", colSpan:4},{},{},{},
-              ],
-            ]
-          }
-        });
-
-
-        datos.content.push({
-          layout: 'noBorders',
-          table: {
-            widths: ['*'],
-            margin: [0,0,0,0],
-            body: [
-              [
-                //{ text: "\nC.FERMIN SERVANDO MARTINEZ MARTINEZ\n M01006 MEDICO GENERAL 'A' (CSSSA004764)\n CENTRO DE SALUD RURAL 1 NÚCLEO BÁSICO ROBERTO BARRIOS", style: "texto_depto"},
-                { text: "\nC. "+datos_trabajador.nombre+" "+datos_trabajador.apellido_paterno+" "+datos_trabajador.apellido_materno+"\n"+
-                datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+"\n"+
-                "("+datos_trabajador.datoslaboralesnomina.cr.clues+") "+datos_trabajador.datoslaboralesnomina.cr.descripcion, style: "texto_depto"},
-              ],
-            ]
-          }
-        });
-
-
-        datos.content.push({
-          layout: 'noBorders',
-          table: {
-            widths: ['*'],
-            margin: [0,0,0,0],
-            body: [
-              [
-                //{ text: "", colSpan:2},{},
-                { text: "\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+this.convertirFechaTexto(comision.fecha_inicio)+","+" SE LE COMISIONA TEMPORALMENTE DEL "+
-                datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
-                "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
-                datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+") "+
-                " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
-                "DEBIÉNDOSE PRESENTAR CON EL "+datos_trabajador.datoslaborales.cr_fisico.nombre_responsable+", "+
-                "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. (CONTRATO)\n\n"+
-                "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO "+
-                " EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+
-                "SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.", style: "texto_leyenda"},
-                //{ text: "\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE A PARTIR DEL "+fecha_hoy.toUpperCase()+" DEL AÑO EN CURSO,\n"+" SE LE COMISIONA TEMPORALMENTE DEL "+" Centro de salud rural 1 nucleo basico roberto barrios (CSSSA004764);\n DEPENDIENTE DE LA "+ "JURISDICCION SANITARIA No. VI,"+"AL "+"Hospital General Palenque (CSSSA004595);\n"+" CON CÓDIGO FUNCIONAL M01006 MÉDICO GENERAL 'A', "+"DEBIENDOSE PRESENTAR CON EL "+"Dr. Jean Michel Gamez López,\n"+"QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. (CONTRATO)\n\n"+"ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIADAD DE SU\n ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRORROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+"SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.", style: "texto_leyenda"},
-                //{ text: "", colSpan:4},{},{},{},
-              ],
-            ]
-          }
-        });
-
-        datos.content.push({
-          layout: 'noBorders',
-          table: {
-            widths: ['*'],
-            margin: [0,0,0,0],
-            body: [
-              [
-                //{ text: "", colSpan:2},{},
-                { text: "\n\n\n", style: "texto_num_oficio"},
-                //{ text: "", colSpan:4},{},{},{},
-              ],
-            ]
-          }
-        });
-
-        datos.content.push({
-          layout: 'noBorders',
-          table: {
-            widths: ['*'],
-            margin: [0,0,0,0],
-            body: [
-              [
-                //{ text: "", colSpan:2},{},
-                { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. SAMUEL SILVA OLÁN\n"+"DIRECTOR DE ADMINISTRACIÓN Y FINANZAS", style: "texto_depto"},
-                //{ text: "", colSpan:4},{},{},{},
-              ],
-            ]
-          }
-        });*/
+       
 
 
        

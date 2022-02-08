@@ -1,3 +1,4 @@
+import { exit } from "process";
 import { LOGOS } from "../../logos";
 
 
@@ -13,6 +14,26 @@ export class ReporteComision {
 
         let Origenfirmate = reportData.firmanteOrigen;
         let DestinoFirmante = reportData.firmanteDestino;
+        let nombres = reportData.nombres;
+        
+        let director = nombres.direccion_admon.responsable;
+        let nombre_director = director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno;
+        
+        let control = nombres.control.responsable;
+        let nombre_control = control.nombre+" "+control.apellido_paterno+" "+control.apellido_materno;
+
+        let relaciones_laborales = nombres.relaciones_laborales.responsable;
+        let nombre_relaciones_laborales = relaciones_laborales.nombre+" "+relaciones_laborales.apellido_paterno+" "+relaciones_laborales.apellido_materno;
+
+        let sistematizacion = nombres.sistematizacion.responsable;
+        let nombre_sistematizacion = sistematizacion.nombre+" "+sistematizacion.apellido_paterno+" "+sistematizacion.apellido_materno;
+
+        let subdireccion_rh = nombres.subdireccion_rh.responsable;
+        let nombre_subdireccion_rh = subdireccion_rh.nombre+" "+subdireccion_rh.apellido_paterno+" "+subdireccion_rh.apellido_materno;
+
+        let elaboracion = nombres.elaboracion;
+        let nombre_elaboracion = elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno;
+        
         let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
 
         let mes_inicio = (parseInt(comision.fecha_inicio.substr(5,2)) - 1);
@@ -38,7 +59,7 @@ export class ReporteComision {
                 {
                     margin: [10, 0, 0, 0],
                     // text: 'SECRETARÍA DE SALUD\n'+reportData.config.title,
-                    text: '\n"2021, Año de la Independencia"',
+                    text: '\n"2022, AÑO DE RICARDO FLORES MAGÓN"',
 
                     bold: false,
                     fontSize: 9,
@@ -67,7 +88,7 @@ export class ReporteComision {
                   //     alignment: 'center'
                   // },
                   {
-                    text: "16 DE JUNIO DEL 2021",//fecha_hoy.toString(),
+                    text: fecha_hoy.toString(),
                     alignment:'right',
                     fontSize: 7,
                 }
@@ -189,8 +210,8 @@ export class ReporteComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                //{ text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/2021\n\nASUNTO:COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio"},
-                { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/2021\n\nASUNTO:COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A 16 DE JUNIO DEL 2021", style: "texto_num_oficio"},
+                { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/"+(new Date()).getFullYear()+"\n\nASUNTO:COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio"},
+                //{ text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/2021\n\nASUNTO:COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A 16 DE JUNIO DEL 2021", style: "texto_num_oficio"},
                 //{ text: "", colSpan:4},{},{},{},
               ],
             ]
@@ -224,8 +245,8 @@ export class ReporteComision {
           " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
           "DEBIÉNDOSE PRESENTAR CON EL C. "+firmante_destino+", "+
           "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
-          "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN, COMO LO ESTABLECE LAS CONDICIONES GENERALES DE TRABAJO "+
-          " EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+
+          "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN."+
+          +"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN.\n\n"+
           "SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.";
         }else{
           contenido= "\n\n\n\nPOR NECESIDADES DEL SERVICIO, CIB FUNDAMENTO EN EL ARTÍCULO 149 DE LAS CONDICIONES GENERALES DE TRABAJO DE LA SECRETARIA DE SALUD, ME PERMITO COMUNICARLE QUE A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
@@ -275,7 +296,7 @@ export class ReporteComision {
             body: [
               [
                 //{ text: "", colSpan:2},{},
-                { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. SAMUEL SILVA OLÁN\n"+"DIRECTOR DE ADMINISTRACIÓN Y FINANZAS\n\n", style: "texto_depto"},
+                { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
                 //{ text: "", colSpan:4},{},{},{},
               ],
             ]
@@ -298,11 +319,12 @@ export class ReporteComision {
               [
                 //{ text: "", colSpan:2},{},
                 { text: copias+
-                        "Cc.p. LIC. JULIO ALBERTO BEZARES DOMÍNGUEZ. JEFE DEL DEPARTAMENTO DE CONTROL DEL PAGO\n"+
-                        "C.c.p. ING. GABRIEL DE LA GUARDIA NAGANO.- JEFE DEL DEPARTAMENTO DE OPERACIÓN Y SISTEMATIZACIÓN\n\n"+
-                        "Vo.Bo. L.A.E. ANITA DEL CARMEN GARCÍA LEÓN - SUBDIRECTORA DE RECURSOS HUMANOS\n"+
-                        "REVISÓ: LIC. ALINE ALEJANDRA FONZ MURILLO - JEFE DEL DEPTO. DE RELACIONES LABORALES", style: "texto_firmas"},
-                //{ text: "", colSpan:4},{},{},{},
+                        "Cc.p. "+nombre_control+". - "+nombres.control.cargo+"\n"+
+                        "C.c.p. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo+"\n\n"+
+                        "Vo.Bo. "+nombre_subdireccion_rh+". - "+nombres.subdireccion_rh.cargo+"\n"+
+                        "REVISÓ: "+nombre_relaciones_laborales+". - "+nombres.relaciones_laborales.cargo+"\n"+
+                        "ELABORÓ: "+nombre_elaboracion+".", style: "texto_firmas"},
+
               ],
             ]
           }

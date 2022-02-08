@@ -222,8 +222,11 @@ class TramitesController extends Controller
                 $fecha_calculada->addDays(14);
                 $fecha_final = $fecha_calculada->format("Y/m/d");
             }
-            $object->fecha_inicio = $fecha_inicial;
-            $object->fecha_final = $fecha_final;
+            //Se quitar por el momento
+            //$object->fecha_inicio = $fecha_inicial;
+            //$object->fecha_final = $fecha_final;
+            $object->fecha_inicio ="2022/01/01";
+            $object->fecha_final ="2022/06/15";
 
             //return Response::json(['error' => $trabajador], HttpResponse::HTTP_CONFLICT);
             $object->save();
@@ -246,17 +249,26 @@ class TramitesController extends Controller
 
             $firmante_origen = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", $tramite->cr_firmante_origen)->first();
             $firmante_destino = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", $tramite->cr_firmante_destino)->first();
-            /*foreach ($permisos->roles as $key => $value) {
-                foreach ($value->permissions as $key2 => $value2) {
-                    if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
-                    {
-                        $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
-                    }
-                }
-            }*/
-            //$tramite = $tramite->first();
+            //Copias y validaciones
+            //Control del pago
+            $control = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700250010")->first();
+            //sistematizacion
+            $sistematizacion = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700250008")->first();
+            //subdireccion rh
+            $subdireccion_rh = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700250007")->first();
+            //direccion de administracion y finanzas
+            $direccion_admon_finanzas = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700250001")->first();
+            //departamento de rh
+            $relaciones_laborales = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700250009")->first();
+            //secretario
+            $secretario = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700200001")->first();
 
-            return response()->json(["data"=>$tramite, "firmanteOrigen"=>$firmante_origen, "firmanteDestino"=>$firmante_destino],HttpResponse::HTTP_OK);
+            //Elaboracion
+            $loggedUser = auth()->userOrFail();
+            $elaboracion = Trabajador::where("rfc", $loggedUser->username)->first();
+            $nombres = ["control"=>$control, "sistematizacion" => $sistematizacion, "subdireccion_rh" => $subdireccion_rh, 
+            "direccion_admon"=> $direccion_admon_finanzas, "relaciones_laborales"=>$relaciones_laborales, "elaboracion"=>$elaboracion, "secretario"=>$secretario];
+            return response()->json(["data"=>$tramite, "firmanteOrigen"=>$firmante_origen, "firmanteDestino"=>$firmante_destino, "nombres" => $nombres ],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
