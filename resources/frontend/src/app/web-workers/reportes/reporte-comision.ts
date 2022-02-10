@@ -33,9 +33,10 @@ export class ReporteComision {
 
         let elaboracion = nombres.elaboracion;
         let nombre_elaboracion = "";
+        console.log(elaboracion);
         if(elaboracion != null)
         {
-          let nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno;
+          nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno;
         }
         let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
 
