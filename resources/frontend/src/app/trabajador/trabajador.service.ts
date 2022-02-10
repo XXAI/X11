@@ -19,7 +19,7 @@ export class TrabajadorService {
   url_trabajador = `${environment.base_url}/busqueda-firmantes`;
   url_info_trabajador = `${environment.base_url}/ver-info-trabajador/`;
   url_clue_asistencia = `${environment.base_url}/clues_asistencia`;
-  url_asistencia = 'http://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
+  url_asistencia = 'https://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
 

@@ -1,12 +1,14 @@
 <section style="height: 100%; overflow: auto; flex: 1 1 0%;">
     <div fxLayout="row" fxLayoutAlign="space-around" style="height: 100%; padding:15px;">
         <section fxFlex fxLayout="column" fxLayoutAlign="center">
-            <div class="data-loading-shade" *ngIf="isLoading"><mat-spinner></mat-spinner></div>
+            <div class="data-loading-shade" *ngIf="isLoading">
+                <mat-spinner></mat-spinner>
+            </div>
             <mat-card fxFlex fxLayout="column">
                 <div fxFlex="none">
                     <mat-form-field appearance="fill" style="width: 100%;">
                         <mat-label>Buscar Tramite</mat-label>
-                        <input matInput [type]="'text'" [(ngModel)]="searchQuery" (keyup.enter)="applyFilter()" >
+                        <input matInput [type]="'text'" [(ngModel)]="searchQuery" (keyup.enter)="applyFilter()">
                         <button mat-icon-button matSuffix (click)="applyFilter()" [attr.aria-label]="'Buscar tramites'">
                           <mat-icon>search</mat-icon>
                         </button>
@@ -14,57 +16,57 @@
                 </div>
                 <div fxFlex style="overflow: auto;">
                     <mat-tab-group fxFlex>
-                        <mat-tab label="COMISIÓN (RECEPCIÓN)"  *ngIf="permisoRh">
+                        <mat-tab label="COMISIÓN (RECEPCIÓN)" *ngIf="permisoRh">
                             <table #dataTable mat-table [dataSource]="dataSourceRecepcion" class="data-table" matSort>
                                 <!-- ID Column -->
                                 <ng-container matColumnDef="tramite">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> TRAMITE </th>
-                                    <td mat-cell *matCellDef="let row"> 
+                                    <td mat-cell *matCellDef="let row">
                                         Solicitud de Comisión
                                     </td>
-                                </ng-container> 
+                                </ng-container>
                                 <ng-container matColumnDef="datos_tramite">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> PERSONAL / UNIDAD </th>
-                                    <td mat-cell *matCellDef="let row"> 
+                                    <td mat-cell *matCellDef="let row">
                                         <b>TRABAJADOR:</b> {{ row.trabajador.rfc }} {{ row.trabajador.nombre }} {{ row.trabajador.apellido_paterno }} {{ row.trabajador.apellido_materno }}<br>
                                         <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ (row.trabajador.datoslaboralesnomina.cr)?row.trabajador.datoslaboralesnomina.cr.descripcion:'Sin CR Asignado' }}<br>
                                         <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ (row.trabajador.datoslaborales.cr_fisico)?row.trabajador.datoslaborales.cr_fisico.descripcion:'Sin CR Asignado' }}
                                     </td>
-                                </ng-container>   
-    
-                                <ng-container matColumnDef="acciones" >
+                                </ng-container>
+
+                                <ng-container matColumnDef="acciones">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> ACCIONES </th>
-                                    <td mat-cell *matCellDef="let row" fxHide.xs="true"> 
-                                        
+                                    <td mat-cell *matCellDef="let row" fxHide.xs="true">
+
                                         <button mat-button mat-stroked-button [matMenuTriggerFor]="menu" *ngIf="row.estatus_destino == 0">Acciones</button>
                                         <mat-menu #menu="matMenu">
-                                            <button mat-menu-item  (click)="cambioEstatus(row.id, 1, 1)">ACREDITAR</button>
+                                            <button mat-menu-item (click)="cambioEstatus(row.id, 1, 1)">ACREDITAR</button>
                                             <button mat-menu-item (click)="cambioEstatus(row.id, 1, 2)">DENEGAR</button>
-                                        </mat-menu> 
+                                        </mat-menu>
                                         <div *ngIf="row.estatus_destino != 0">
                                             {{ row.fecha_respuesta_destino }}
                                         </div>
                                     </td>
                                 </ng-container>
-    
-                                <ng-container matColumnDef="estatus" >
+
+                                <ng-container matColumnDef="estatus">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> ESTATUS </th>
                                     <td mat-cell *matCellDef="let row" fxHide.xs="true">
-                                        <div *ngIf="row.estatus_destino == 0">SOLICITUD PENDIENTE</div>    
-                                        <div *ngIf="row.estatus_destino == 1">ACREDITADO</div>    
-                                        <div *ngIf="row.estatus_destino == 2">NO ACREDITADO</div>    
+                                        <div *ngIf="row.estatus_destino == 0">SOLICITUD PENDIENTE</div>
+                                        <div *ngIf="row.estatus_destino == 1">ACREDITADO</div>
+                                        <div *ngIf="row.estatus_destino == 2">NO ACREDITADO</div>
                                     </td>
                                 </ng-container>
-    
+
                                 <ng-container matColumnDef="noResultsFound">
                                     <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
-                                        No se encontraron registros 
+                                        No se encontraron registros
                                     </td>
                                 </ng-container>
-                                
+
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                                 <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
-    
+
                                 <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSourceRecepcion!=null && dataSourceRecepcion.length==0)}"></tr>
                             </table>
                         </mat-tab>
@@ -73,52 +75,52 @@
                                 <!-- ID Column -->
                                 <ng-container matColumnDef="tramite">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> TRAMITE </th>
-                                    <td mat-cell *matCellDef="let row"> 
+                                    <td mat-cell *matCellDef="let row">
                                         Solicitud de Comisión
                                     </td>
-                                </ng-container> 
+                                </ng-container>
                                 <ng-container matColumnDef="datos_tramite">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> PERSONAL / UNIDAD </th>
-                                    <td mat-cell *matCellDef="let row"> 
+                                    <td mat-cell *matCellDef="let row">
                                         <b>TRABAJADOR:</b> {{ row.trabajador.rfc }} {{ row.trabajador.nombre }} {{ row.trabajador.apellido_paterno }} {{ row.trabajador.apellido_materno }}<br>
                                         <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ (row.trabajador.datoslaboralesnomina.cr)?row.trabajador.datoslaboralesnomina.cr.descripcion:'Sin CR Asignado' }}<br>
                                         <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ (row.trabajador.datoslaborales.cr_fisico)?row.trabajador.datoslaborales.cr_fisico.descripcion:'Sin CR Asignado' }}
                                     </td>
-                                </ng-container>   
-    
-                                <ng-container matColumnDef="acciones" >
+                                </ng-container>
+
+                                <ng-container matColumnDef="acciones">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> ACCIONES </th>
-                                    <td mat-cell *matCellDef="let row" fxHide.xs="true"> 
-                                        
+                                    <td mat-cell *matCellDef="let row" fxHide.xs="true">
+
                                         <button mat-button mat-stroked-button [matMenuTriggerFor]="menu" *ngIf="row.estatus_origen == 0">Acciones</button>
                                         <mat-menu #menu="matMenu">
                                             <button mat-menu-item (click)="cambioEstatus(row.id, 2, 1)">ACREDITAR</button>
                                             <button mat-menu-item (click)="cambioEstatus(row.id, 2, 2)">DENEGAR</button>
-                                        </mat-menu> 
+                                        </mat-menu>
                                         <div *ngIf="row.estatus_origen != 0">
                                             {{ row.fecha_respuesta_origen }}
-                                            </div>
+                                        </div>
                                     </td>
                                 </ng-container>
-    
-                                <ng-container matColumnDef="estatus" >
+
+                                <ng-container matColumnDef="estatus">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> ESTATUS </th>
                                     <td mat-cell *matCellDef="let row" fxHide.xs="true">
-                                        <div *ngIf="row.estatus_origen == 0">SOLICITUD PENDIENTE</div>    
-                                        <div *ngIf="row.estatus_origen == 1">ACREDITADO</div>    
-                                        <div *ngIf="row.estatus_origen == 2">NO ACREDITADO</div>    
+                                        <div *ngIf="row.estatus_origen == 0">SOLICITUD PENDIENTE</div>
+                                        <div *ngIf="row.estatus_origen == 1">ACREDITADO</div>
+                                        <div *ngIf="row.estatus_origen == 2">NO ACREDITADO</div>
                                     </td>
                                 </ng-container>
-    
+
                                 <ng-container matColumnDef="noResultsFound">
                                     <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
-                                        No se encontraron registros 
+                                        No se encontraron registros
                                     </td>
                                 </ng-container>
-                                
+
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                                 <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
-    
+
                                 <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSourceEnvio!=null && dataSourceEnvio.length==0)}"></tr>
                             </table>
                         </mat-tab>
@@ -127,59 +129,59 @@
                                 <!-- ID Column -->
                                 <ng-container matColumnDef="tramite">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> TRAMITE </th>
-                                    <td mat-cell *matCellDef="let row"> 
+                                    <td mat-cell *matCellDef="let row">
                                         Solicitud de Comisión
                                     </td>
-                                </ng-container> 
+                                </ng-container>
                                 <ng-container matColumnDef="datos_tramite">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> PERSONAL / UNIDAD </th>
-                                    <td mat-cell *matCellDef="let row"> 
+                                    <td mat-cell *matCellDef="let row">
                                         <b>TRABAJADOR:</b> {{ row.trabajador.rfc }} {{ row.trabajador.nombre }} {{ row.trabajador.apellido_paterno }} {{ row.trabajador.apellido_materno }}<br>
                                         <b>DE:</b> {{ row.trabajador.datoslaboralesnomina.cr_nomina_id }} {{ (row.trabajador.datoslaboralesnomina.cr)?row.trabajador.datoslaboralesnomina.cr.descripcion:'Sin CR Asignado' }}<br>
                                         <b>PARA:</b> {{ row.trabajador.datoslaborales.cr_fisico_id }} {{ (row.trabajador.datoslaborales.cr_fisico)?row.trabajador.datoslaborales.cr_fisico.descripcion:'Sin CR Asignado' }}
                                     </td>
-                                </ng-container>   
-    
-                                <ng-container matColumnDef="acciones" >
+                                </ng-container>
+
+                                <ng-container matColumnDef="acciones">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> ACCIONES </th>
-                                    <td mat-cell *matCellDef="let row" fxHide.xs="true"> 
-                                        
+                                    <td mat-cell *matCellDef="let row" fxHide.xs="true">
+
                                         <button mat-button mat-stroked-button [matMenuTriggerFor]="menu" *ngIf="row.estatus_validacion == 0">Acciones</button>
                                         <mat-menu #menu="matMenu">
                                             <button mat-menu-item (click)="cambioEstatus(row.id, 3, 1)">ACREDITAR</button>
                                             <button mat-menu-item (click)="cambioEstatus(row.id, 3, 2)">DENEGAR</button>
-                                        </mat-menu> 
+                                        </mat-menu>
                                         <div *ngIf="row.estatus_validacion != 0">
-                                            <button mat-raised-button color="accent" (click)="imprimirComprobante(row.id)">
+                                            <button mat-raised-button color="accent" (click)="imprimirComprobante(row.id)" [disabled]="disabledDownload">
                                                 <mat-icon>download</mat-icon>
                                             </button>
-                                            </div>
+                                        </div>
                                     </td>
                                 </ng-container>
-    
-                                <ng-container matColumnDef="estatus" >
+
+                                <ng-container matColumnDef="estatus">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> ESTATUS </th>
                                     <td mat-cell *matCellDef="let row" fxHide.xs="true">
-                                        <div *ngIf="row.estatus_validacion == 0">SOLICITUD PENDIENTE</div>    
-                                        <div *ngIf="row.estatus_validacion == 1">ACREDITADO</div>    
-                                        <div *ngIf="row.estatus_validacion == 2">NO ACREDITADO</div>    
+                                        <div *ngIf="row.estatus_validacion == 0">SOLICITUD PENDIENTE</div>
+                                        <div *ngIf="row.estatus_validacion == 1">ACREDITADO</div>
+                                        <div *ngIf="row.estatus_validacion == 2">NO ACREDITADO</div>
                                     </td>
                                 </ng-container>
-    
+
                                 <ng-container matColumnDef="noResultsFound">
                                     <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
-                                        No se encontraron registros 
+                                        No se encontraron registros
                                     </td>
                                 </ng-container>
-                                
+
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                                 <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
-    
+
                                 <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSourceValidacion!=null && dataSourceValidacion.length==0)}"></tr>
                             </table>
                         </mat-tab>
-                        </mat-tab-group>
-                        <!--div fxFlex="none">
+                    </mat-tab-group>
+                    <!--div fxFlex="none">
                         <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLengthValidacion" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadTramitesData($event)"></mat-paginator>
                         </div-->
                 </div>

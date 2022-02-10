@@ -607,11 +607,28 @@ export class ListaComponent implements OnInit {
     this.sharedService.setDataToCurrentApp('paginator',paginator);
 
     let configDialog = {};
-    if(this.mediaSize == 'xs'){
+    console.log(this.mediaSize);
+    if(this.mediaSize == 'lg'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '90vh',
+        height: '600px',
+        width: '100%',
+        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
+      }
+    }else if(this.mediaSize == "md"){
       configDialog = {
         maxWidth: '100vw',
         maxHeight: '100vh',
         height: '100%',
+        width: '100%',
+        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
+      }
+    }else if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '70%',
         width: '100%',
         data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize, cluesAsistencia: this.cluesAsistencia}
       };
@@ -619,7 +636,7 @@ export class ListaComponent implements OnInit {
       configDialog = {
         width: '99%',
         maxHeight: '90vh',
-        height: '680px',
+        height: '600px',
         data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
       }
     }

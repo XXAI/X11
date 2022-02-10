@@ -32,8 +32,11 @@ export class ReporteComision {
         let nombre_subdireccion_rh = subdireccion_rh.nombre+" "+subdireccion_rh.apellido_paterno+" "+subdireccion_rh.apellido_materno;
 
         let elaboracion = nombres.elaboracion;
-        let nombre_elaboracion = elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno;
-        
+        let nombre_elaboracion = "";
+        if(elaboracion != null)
+        {
+          let nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno;
+        }
         let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
 
         let mes_inicio = (parseInt(comision.fecha_inicio.substr(5,2)) - 1);
@@ -245,8 +248,8 @@ export class ReporteComision {
           " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
           "DEBIÉNDOSE PRESENTAR CON EL C. "+firmante_destino+", "+
           "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
-          "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN."+
-          +"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN.\n\n"+
+          "ASIMISMO SE LE INFORMA QUE AL TERMINO DE LA PRESENTE COMISIÓN, DEBERÁ REINCORPORARSE A LA UNIDAD DE SU ADSCRIPCIÓN.  \n\n"+
+          "CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN.\n\n"+
           "SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.";
         }else{
           contenido= "\n\n\n\nPOR NECESIDADES DEL SERVICIO, CIB FUNDAMENTO EN EL ARTÍCULO 149 DE LAS CONDICIONES GENERALES DE TRABAJO DE LA SECRETARIA DE SALUD, ME PERMITO COMUNICARLE QUE A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
@@ -323,7 +326,7 @@ export class ReporteComision {
                         "C.c.p. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo+"\n\n"+
                         "Vo.Bo. "+nombre_subdireccion_rh+". - "+nombres.subdireccion_rh.cargo+"\n"+
                         "REVISÓ: "+nombre_relaciones_laborales+". - "+nombres.relaciones_laborales.cargo+"\n"+
-                        "ELABORÓ: "+nombre_elaboracion+".", style: "texto_firmas"},
+                        nombre_elaboracion+".", style: "texto_firmas"},
 
               ],
             ]

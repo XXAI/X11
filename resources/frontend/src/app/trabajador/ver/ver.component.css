@@ -165,3 +165,11 @@ th {
 .mat-list-icon {
     color: rgba(0, 0, 0, 0.54);
 }
+
+.linea_registro {
+    background-color: gainsboro;
+}
+
+mat-card-title {
+    color: brown;
+}

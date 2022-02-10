@@ -14,6 +14,7 @@ export class ReporteTrabajadorCredencialSalud{
         let signo_sanguineo:any[] =  ["", "-", "+"];
         let formato = "data:image/jpeg;base64,"+reportData.formato;
 
+        
         //Configuracion del archivo
         let datos = {
           pageOrientation: 'portrait',
@@ -63,6 +64,13 @@ export class ReporteTrabajadorCredencialSalud{
                 color:"#FFFFFF",
                 alignment:"center"
               },
+              no_distrito_central:
+              {
+                fontSize: 26,
+                bold:true,
+                color:"#FFFFFF",
+                alignment:"center"
+              },
               tabla_datos:
               {
                 fontSize: 30,
@@ -103,9 +111,11 @@ export class ReporteTrabajadorCredencialSalud{
         let tamano_arreglo = data.length;
 
         data.forEach(element => {
-          console.log(element);
+          let letras_distrito = "DISTRITO";
           let foto = "data:image/jpeg;base64,"+element.credencial.foto_trabajador;
           let imagen_tipo_unidad = "";
+          let estilo_distrito = "no_distrito";
+          let letra_distrito = distrito[parseInt(element.rel_datos_laborales.clues_fisico.cve_jurisdiccion)];
           
           let palabra = region[parseInt(element.rel_datos_laborales.clues_fisico.cve_jurisdiccion)];
           let longitud:number = 0;
@@ -141,6 +151,9 @@ export class ReporteTrabajadorCredencialSalud{
           {
             area = element.rel_datos_laborales.cr_fisico.descripcion;
             area += "\n"+element.rel_datos_laborales.clues_fisico.nombre_unidad;
+            letras_distrito = "\n";
+            estilo_distrito = "no_distrito_central";
+            letra_distrito = "OFC";
           }else
           {
             area = element.rel_datos_laborales.cr_fisico.descripcion;
@@ -199,20 +212,20 @@ export class ReporteTrabajadorCredencialSalud{
                 ],
                 [
                   { text: this.recorrer_palabra(palabra), rowSpan:3, fontSize:(longitud), style: "laterales"},
-                  { text: "DISTRITO", style: "distrito"},
+                  { text: letras_distrito, style: "distrito"},
                   { image: foto, width: 70, height: 86, rowSpan:3, margin:[0,0,0,0] }, 
                   { text: "", style: "arriba_credencial_datos"},
                   { text: "ID\n"+this.recorrer_palabra(id), rowSpan:3, style: "laterales",fontSize:10},
                   { text: "", rowSpan:2, style: "tabla_datos"}, {},
                 ],
                 [
-                  {},{ text: distrito[parseInt(element.rel_datos_laborales.clues_fisico.cve_jurisdiccion)], style: "no_distrito" },{},
+                  {},{ text: letra_distrito, style: estilo_distrito },{},
                   { text: "VIGENCIA:\n31/DIC/22", style: "arriba_credencial_datos"}, {}, {}, {}
                 ],
                 [
                   {}, { image: imagen_tipo_unidad, width: 30, height: 35, alignment: 'center' }, {},
                   { text: "TIPO SANGRE:\n"+tipo_sanguineo[element.credencial.tipo_sanguineo]+" RH "+signo_sanguineo[element.credencial.rh], margin: [ 0,4,0,0 ], style: "arriba_credencial_datos"},
-                  {}, {qr: "https://funcionarios.saludchiapas.gob.mx/#/ssa/"+element.encriptar, fit: "70"/*,eccLevel:"L"/*, alignment: 'center', version:6*/, rowSpan:4, margin: [ 20,4,0,0 ]}, 
+                  {}, {qr: "https://funcionarios.saludchiapas.gob.mx/#/ssa/"+element.encriptar, fit: "70"/*,eccLevel:"L"/*, alignment: 'center', version:6*/, rowSpan:4, margin: [ 20,7,0,0 ]}, 
                 { image: donador, width: 75, height: 75, alignment: 'right', margin: [ 0,2,2,0 ], rowSpan:5 },
                 ],
                 [
