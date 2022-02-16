@@ -449,11 +449,7 @@ class CredencializacionController extends Controller
         
         if(isset($parametros['active_filter']) && $parametros['active_filter']){
             if(isset($parametros['clues']) && $parametros['clues']){
-                if(isset($parametros['adscripcion']) && $parametros['adscripcion'] && $parametros['adscripcion'] == 'EOU'){
-                    $main_query = $main_query->where('datos_nominales.clues_adscripcion_nomina',$parametros['clues']);
-                }else{
-                    $main_query = $main_query->where('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$parametros['clues']);
-                }
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where clues_adscripcion_fisica ='".$parametros['clues']."')");
             }
 
             if(isset($parametros['cr']) && $parametros['cr']){
@@ -483,11 +479,7 @@ class CredencializacionController extends Controller
         
         if(isset($parametros['active_filter']) && $parametros['active_filter']){
             if(isset($parametros['clues']) && $parametros['clues']){
-                if(isset($parametros['adscripcion']) && $parametros['adscripcion'] && $parametros['adscripcion'] == 'EOU'){
-                    $main_query = $main_query->whereRaw("id in (select trabajador_id from rel_trabajador_datos_laborales where clues_adscripcion_fisica in ('".$parametros['clues']."'))");
-                }else{
-                    $main_query = $main_query->whereRaw("id in (select trabajador_id from rel_trabajador_datos_laborales where clues_adscripcion_fisica in ('".$parametros['clues']."'))");
-                }
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where clues_adscripcion_fisica ='".$parametros['clues']."')");
             }
 
             if(isset($parametros['cr']) && $parametros['cr']){
@@ -499,6 +491,14 @@ class CredencializacionController extends Controller
                                           ->where('estatus',1)
                                           ->where('actualizado',1)
                                           ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_credencial where deleted_at is null and foto=1)");
+            }else if(isset($parametros['imprimible']) && $parametros['imprimible'] == 2)
+            {
+                $main_query = $main_query->Where(function($query) {
+                    $query->where('validado',0)
+                    ->orWhere('estatus',0)
+                    ->orWhere('actualizado',0)
+                    ->orWhereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_credencial where deleted_at is null and foto=1)");
+                });
             }
         }
         return $main_query;

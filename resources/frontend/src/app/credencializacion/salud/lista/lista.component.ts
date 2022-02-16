@@ -218,7 +218,7 @@ export class ListaComponent implements OnInit {
         this.filterCatalogs = {
           'clues': response.data.clues,
           'cr': response.data.cr,
-          'imprimible': [{id:'0',descripcion:'TODOS'},{id:'1',descripcion:'SI'}],
+          'imprimible': [{id:'0',descripcion:'TODOS'},{id:'1',descripcion:'SI'},{id:'2',descripcion:'NO'}],
         };
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
@@ -458,6 +458,7 @@ export class ListaComponent implements OnInit {
       estatus: obj.estatus,
       actualizado: obj.actualizado,
       credencial: obj.credencial,
+      validado: obj.validado,
       foto: 0,
       nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno,
     }

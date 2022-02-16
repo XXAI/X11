@@ -65,8 +65,20 @@ export class ListaComponent implements OnInit {
 
   permisoImpresion:boolean = false;
 
-  paginas:any[] = [1,2,3,4];
+  paginas:any[] = [];
   
+  catalogoDistritos = [{id:1, descripcion:"TUXTLA GUTIERREZ"},
+                        {id:2, descripcion:"SAN CRISTOBAL"},
+                        {id:3, descripcion:"COMITAN DE DOMÍNGUEZ"},
+                        {id:4, descripcion:"VILLAFLORES"},
+                        {id:5, descripcion:"PICHUCALCO"},
+                        {id:6, descripcion:"PALENQUE"},
+                        {id:7, descripcion:"TAPACHULA"},
+                        {id:8, descripcion:"TONALA"},
+                        {id:9, descripcion:"OCOSINGO"},
+                        {id:10, descripcion:"MOTOZINTLA"},
+                        {id:11, descripcion:"OFICINA CENTRAL"}];
+
   statusIcon:any = {
     '1':'remove_circle', //inactivo
     '2':'person_remove', //activo verificado 
@@ -85,6 +97,7 @@ export class ListaComponent implements OnInit {
   filterChips:any = []; 
 
   filterForm = this.fb.group({
+    'distrito': [undefined],
     'clues': [undefined],
     'cr': [undefined],
     'imprimible': [undefined],

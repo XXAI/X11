@@ -10,6 +10,7 @@ export interface VerTrabajadorData {
   trabajador_id: number;
   nombre?:string;
   estatus?:string;
+  validado?:string;
   actualizado?:string;
   foto?:string;
   credencial?:string;
@@ -22,6 +23,7 @@ export interface VerTrabajadorData {
 })
 export class DetallesComponent implements OnInit {
 
+  estatus:boolean = false;
   validado:boolean = false;
   actualizado:boolean = false;
   credencial:boolean = false;
@@ -39,6 +41,10 @@ export class DetallesComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data.estatus == 1)
+    {
+      this.estatus = true;
+    }
+    if(this.data.validado == 1)
     {
       this.validado = true;
     }
