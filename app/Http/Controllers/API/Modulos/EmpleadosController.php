@@ -1319,23 +1319,40 @@ class EmpleadosController extends Controller
     public function getFilterCatalogs(){
         try{
             $access = $this->getUserAccessData();
-            
-            /*
-                $posts = App\Post::whereHas('comments', function (Builder $query) {
-                    $query->where('content', 'like', 'foo%');
-                })->get();
-            */
 
             $catalogo_clues = Clues::orderBy('nombre_unidad');
             $catalogo_cr = Cr::orderBy("descripcion");
+            $loggedUser = auth()->userOrFail();
+            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
+            $permiso_rh_central = false;
+            
 
+            foreach ($permisos->roles as $key => $value) {
+                    
+                foreach ($value->permissions as $key2 => $value2) {
+                    if($value2->id == 'a1LC0TC1p9OkNd9zaIWKwUuM8qYKpprT')
+                    {
+                        $permiso_rh_central = true;
+                    }
+                }
+                foreach ($permisos->permissions as $key2 => $value2) {
+                    if($value2->id == 'a1LC0TC1p9OkNd9zaIWKwUuM8qYKpprT')
+                    {
+                        $permiso_rh_central = true;
+                    }
+                }
+            }
+            
             if(!$access->is_admin){
-                $catalogo_clues = $catalogo_clues->whereIn('clues',$access->lista_clues);
-                $catalogo_cr = $catalogo_cr->whereIn('cr',$access->lista_cr);
+                if(!$permiso_rh_central)
+                {
+                    $catalogo_clues = $catalogo_clues->whereIn('clues',$access->lista_clues);
+                    $catalogo_cr = $catalogo_cr->whereIn('cr',$access->lista_cr);
 
-                $catalogo_clues = $catalogo_clues->with(['cr'=>function($query)use($access){
-                    $query->whereIn('cr',$access->lista_cr);
-                }]);
+                    $catalogo_clues = $catalogo_clues->with(['cr'=>function($query)use($access){
+                        $query->whereIn('cr',$access->lista_cr);
+                    }]);
+                }
             }else{
                 $catalogo_clues = $catalogo_clues->with('cr');
             }
