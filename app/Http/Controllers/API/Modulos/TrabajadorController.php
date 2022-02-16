@@ -400,7 +400,7 @@ class TrabajadorController extends Controller
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
             $params = $request->all();
 
-            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'datoslaboralesnomina', 'rel_datos_comision', 'credencial'/*, 'capacitacionDetalles'*/)->where("id", "=", $id);
+            $trabajador = Trabajador::with('municipio_nacimiento','capacitacion','datoslaborales','escolaridad','escolaridadcursante','horario', 'datoslaboralesnomina.clues', 'datoslaboralesnomina.cr', 'rel_datos_comision', 'credencial'/*, 'capacitacionDetalles'*/)->where("id", "=", $id);
 
             foreach ($permisos->roles as $key => $value) {
                 foreach ($value->permissions as $key2 => $value2) {
