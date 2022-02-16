@@ -9,6 +9,7 @@ import { ReporteTrabajadorCredencialSalud } from './reporte-personal-credencial-
 import { ReporteConstanciaDengue } from './reporte-constancia-dengue';
 import { ReporteComision } from './reporte-comision';
 import { ReporteSolicitudComision } from './reporte-solicitud-comision';
+import { ReporteTrabajadorCambioAdscripcion } from './reporte-cambio-adscripcion';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -18,6 +19,7 @@ const reportes = {
   'empleados/personal-asistencia': new ReportePersonalAsistencia(),
   'trabajador/personal-activo': new ReporteTrabajadorActivo(),
   'trabajador/credencial-salud': new ReporteTrabajadorCredencialSalud(),
+  'trabajador/cambio-adscripcion': new ReporteTrabajadorCambioAdscripcion(),
   'participante/constancia': new ReporteConstanciaDengue(),
   'archivo/comision': new ReporteComision(),
   'archivo/solicitudComision': new ReporteSolicitudComision()

@@ -199,7 +199,7 @@ class TrabajadorController extends Controller
                 $trabajador = $trabajador->orderBy('nombre');
 
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
-    
+               
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
             }else{
                 if(isset($parametros['reporte'])){

@@ -130,8 +130,13 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('tramite-documentacion',       'API\Modulos\TramiteDocumentacionController');
     
     Route::post('comision-sindical',                    'API\Modulos\TrabajadorController@comisionSindical');
-    Route::post('tramite-documentacion-upload',       'API\Modulos\TramiteDocumentacionController@Upload');
-    Route::get('tramite-documentacion-download/{id}',       'API\Modulos\TramiteDocumentacionController@Download');
+    //Rutas de Tramites
+    Route::post('tramite-documentacion-upload',         'API\Modulos\TramiteDocumentacionController@Upload');
+    Route::get('tramite-documentacion-download/{id}',   'API\Modulos\TramiteDocumentacionController@Download');
+    Route::apiResource('tramite-adscripcion',           'API\Modulos\TramiteAdscripcionController');
+    Route::get('tramite-adscripcion-lote',              'API\Modulos\TramiteAdscripcionController@ObtenerLote');
+    Route::apiResource('tramite-reincorporacion',       'API\Modulos\TramiteReincorporacionController');
+    Route::get('tramite-reincorporacion-lote',          'API\Modulos\TramiteReincorporacionController@ObtenerLote');
     
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
     //Credencializacion

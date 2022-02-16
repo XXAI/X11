@@ -24,10 +24,10 @@ class Trabajador extends Model
     }
     
     public function datoslaboralesnomina(){
-        return $this->hasOne('App\Models\RelDatosLaboralesNomina')->with('clues', 'cr.directorio', 'codigo');
+        return $this->hasOne('App\Models\RelDatosLaboralesNomina');//->with('clues', 'cr.directorio', 'codigo');
     }
-    
 
+    
     public function escolaridad(){
         return $this->hasMany('App\Models\RelEscolaridad')->with('grado_academico', 'institucion', 'nombre_estudio');
     }
@@ -112,6 +112,12 @@ class Trabajador extends Model
 
     public function credencial(){
         return $this->hasOne('App\Models\Credencializacion');
+    }
+
+    //Tramite
+    //Adscripcion
+    public function rel_trabajador_adscripcion(){
+        return $this->hasOne('App\Models\RelAdscripcion')->where("adjudicado", "1");
     }
 
 }

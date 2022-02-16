@@ -24,4 +24,9 @@ class Cr extends Model
     public function directorioResponsable(){
         return $this->hasOne('App\Models\Directorio','cr')->where("tipo_responsable_id", 1);
     }
+
+    public function dependencia(){
+        return $this->hasOne(Cr::class, "cr","cr_dependencia");
+    }
+    
 }

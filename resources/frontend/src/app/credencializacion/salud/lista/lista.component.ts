@@ -17,7 +17,6 @@ import * as FileSaver from 'file-saver';
 
 import { FormularioComponent } from '../formulario/formulario.component';
 import { DetallesComponent } from '../detalles/detalles.component';
-import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-lista',
@@ -297,15 +296,7 @@ export class ListaComponent implements OnInit {
 
     this.saludService.getTrabajadorList(params).subscribe(
       response =>{
-        
-        /*if(response.error) {
-          let errorMessage = response.error.message;
-          this.sharedService.showSnackBar(errorMessage, null, 3000);
-        } else {
 
-          
-          */
-         //console.log(response);
           this.dataSource = [];
           this.resultsLength = 0;
           if(response.data.total > 0){
@@ -433,10 +424,6 @@ export class ListaComponent implements OnInit {
       tipo_unidad: obj.rel_datos_laborales.clues_fisico.tipo_unidad_id
     }
 
-    /*let encrip = CryptoJS.AES.encrypt(obj.rfc, "%ubp$$BG%kU0");
-    console.log(encrip.toString());
-    console.log(CryptoJS.AES.decrypt(encrip.toString(), "%ubp$$BG%kU0").toString(CryptoJS.enc.Utf8));
-    */
     let configDialog = {};
 
     if(this.mediaSize == 'xs'){
@@ -482,7 +469,6 @@ export class ListaComponent implements OnInit {
       }
       
     }
-
     let configDialog = {};
 
     if(this.mediaSize == 'xs'){

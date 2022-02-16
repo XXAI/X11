@@ -1,0 +1,202 @@
+<section class="profile">
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <section fxFlex="95" fxLayout="column" fxLayoutAlign="center">
+            <div class="data-loading-shade" *ngIf="isLoading">
+                <mat-spinner></mat-spinner>
+            </div>
+            <mat-card fxFlex.xs="100%" fxFlex="90%">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex fxLayout="row wrap">
+                        <mat-form-field fxFill appearance="outline">
+                            <mat-label>Buscar</mat-label>
+                            <input matInput [(ngModel)]="searchQuery" (keyup.escape)="cleanSearch()" (keyup.enter)="applyFilter()" placeholder="Buscar">
+                            <button matSuffix *ngIf="searchQuery" mat-icon-button (click)="cleanSearch()" [attr.aria-label]="'Clean Query'" [attr.aria-pressed]="'cleanQuery'">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-hint>
+                                <mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)">Filtro Avanzado</mat-slide-toggle>
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="none" fxFlex.xs="100" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
+                        <div fxFlex></div>
+                        <section class="search-button">
+                            <button mat-raised-button color="accent" (click)="applyFilter()">
+                                <mat-icon>search</mat-icon> Buscar
+                            </button>
+
+                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote">
+                                <mat-icon>print</mat-icon> Imprimir Lote
+                            </button>
+                            <mat-menu #menuLote="matMenu">
+                                <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirOficio(null, i)">{{ (i + 1) }}</button>
+                            </mat-menu>
+                        </section>
+                    </div>
+                </div>
+            </mat-card>
+
+            <div *ngIf="showReportForm || showMyStepper">
+                <div *ngIf="showReportForm">
+                    <section fxLayout="row">
+                        <mat-form-field fxFlex>
+                            <input matInput [(ngModel)]="reportTitle" type="text" placeholder="Titulo del Reporte">
+                        </mat-form-field>
+                        <section fxFlex="none">
+                            <mat-checkbox [(ngModel)]="reportIncludeSigns" class="check-box">Incluir Firmas</mat-checkbox>
+                        </section>
+                        <button mat-stroked-button color="primary"><mat-icon>insert_drive_file</mat-icon>Generar PDF</button>
+                        <button mat-button color="accent" [class.button-spinner]="isLoadingExcel" [disabled]="isLoadingExcel"><mat-icon fontSet="material-icons-outlined">insert_drive_file</mat-icon>Excel</button>
+                    </section>
+                </div>
+                <div class="my-stepper" *ngIf="showMyStepper">
+                    <ng-container *ngFor="let step of stepperConfig.steps; let i = index">
+                        <div class="my-step" [class.my-step-active]="step.status == 2" [class.my-step-done]="step.status == 3" [class.my-step-error]="step.status == 0">
+                            <mat-icon>{{step.icon}}</mat-icon>
+                            <div class="my-step-label">
+                                {{(step.status
+                                < 2)?step.label.standBy:((step.status==2 )?step.label.active:step.label.done)}} <mat-progress-bar *ngIf="step.status == 2" mode="indeterminate">
+                                    </mat-progress-bar>
+                                    <small *ngIf="step.status == 0" class="my-step-error-message">{{step.errorMessage}}</small>
+                            </div>
+                            <mat-icon *ngIf="step.status == 3">done</mat-icon>
+                            <mat-icon *ngIf="step.status == 0">error</mat-icon>
+                        </div>
+                        <div *ngIf="(i+1) < stepperConfig.steps.length" class="my-step-separator"></div>
+                    </ng-container>
+                </div>
+
+            </div>
+
+            <mat-divider [inset]="true"></mat-divider>
+
+            <mat-accordion class="advanced-filter-container">
+                <mat-expansion-panel #advancedFilter class="advanced-filter" [formGroup]="filterForm">
+                    <br>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
+                        <mat-form-field fxFlex="33">
+                            <mat-label>CLUES</mat-label>
+                            <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
+                            <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
+                                <mat-option *ngFor="let item of filteredCatalogs['clues'] | async" [value]="item">
+                                    [{{item.clues}}] {{item.nombre_unidad}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33">
+                            <mat-label>CR</mat-label>
+                            <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
+                            <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('cr')" [panelWidth]="'auto'">
+                                <mat-option *ngFor="let item of filteredCatalogs['cr'] | async" [value]="item">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-hint *ngIf="filterForm.get('cr').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33">
+                            <mat-label>IMPRIMIBLE</mat-label>
+                            <mat-select #ramaFilter formControlName="imprimible" [compareWith]="compareImprimibleSelect">
+                                <mat-option *ngFor="let item of filterCatalogs['imprimible']" [value]="item">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div fxFlex="none">
+                            <button mat-flat-button (click)="filterForm.reset()">
+                                Limpiar
+                            </button>
+                        </div>
+                        <div fxFlex="none">
+                            <button mat-raised-button color="accent" (click)="applyFilter()">
+                                <mat-icon>search</mat-icon> Aplicar
+                            </button>
+                            <button mat-raised-button color="primary" style="margin-left: 10px;">
+                                <mat-icon>print</mat-icon> Imprimir Lote
+                            </button>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <mat-card fxFlex.xs="100%" fxFlex="90%">
+
+
+                <mat-divider [inset]="true"></mat-divider>
+
+                <div class="data-container ">
+                    <div class="data-table-container">
+                        <table #dataTable mat-table [dataSource]="dataSource" class="data-table" matSort>
+                            <ng-container matColumnDef="estatus">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> TRABAJADOR </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                    <b>{{row.trabajador.nombre}}  {{ row.trabajador.apellido_paterno }} {{ row.trabajador.apellido_materno }}</b>
+                                    <div style="font-size: 8pt;">
+                                        {{row.trabajador.rfc}}
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="RFC">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ORIGEN </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <b>{{ row.trabajador.rel_datos_laborales_nomina.clues.nombre_unidad }}</b><br>
+                                    <div style="font-size: 8pt;">
+                                        {{ row.trabajador.rel_datos_laborales_nomina.clues_adscripcion_nomina }}
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Nombre">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> DESTINO </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <b>{{ row.cr_destino.clues.nombre_unidad }}</b>
+                                    <b>{{ (row.cr_destino.clues.clues == "CSSSA017213")? " ("+row.cr_destino.descripcion+") ":""}}</b>
+                                    <br>
+                                    <div style="font-size: 8pt;">
+                                        {{ row.cr_destino.clues.clues }}
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="imprimible">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <b>{{ row.fecha_cambio }}</b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
+                                <td mat-cell *matCellDef="let row; let i = index">
+                                    <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu" style="display: block; margin: auto;">
+                                            <mat-icon>menu</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="imprimirOficio(row)"><mat-icon color="primary">print</mat-icon>GENERAR OFICIO</button>
+                                        <button mat-menu-item (click)="detalles(row)" style="color: red;"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
+                                    </mat-menu>
+
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noResultsFound">
+                                <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                    No se encontraron registros
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+                            <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
+                        </table>
+                    </div>
+                    <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadTrabajadorData($event)"></mat-paginator>
+                </div>
+            </mat-card>
+        </section>
+    </div>
+</section>

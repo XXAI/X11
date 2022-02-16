@@ -19,7 +19,10 @@ import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CancelarDocumentacionDialogComponent } from './cancelar-documentacion-dialog/cancelar-documentacion-dialog.component';
 import { VerInformacionDialogComponent } from './ver-informacion-dialog/ver-informacion-dialog.component';
-import { VisorPdfDialogComponent } from './visor-pdf-dialog/visor-pdf-dialog.component'
+import { VisorPdfDialogComponent } from './visor-pdf-dialog/visor-pdf-dialog.component';
+
+import { AdscripcionModule } from './adscripcion/adscripcion.module';
+import { ReincorporacionModule } from './reincorporacion/reincorporacion.module';
 
 @NgModule({
   declarations: [ListaComponent, DocumentacionComponent, DocumentacionImportacionDialogComponent, CancelarDocumentacionDialogComponent, VerInformacionDialogComponent, VisorPdfDialogComponent/*, FormatoFechaPipe*/],
@@ -31,7 +34,9 @@ import { VisorPdfDialogComponent } from './visor-pdf-dialog/visor-pdf-dialog.com
     MatNativeDateModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AdscripcionModule,
+    ReincorporacionModule
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

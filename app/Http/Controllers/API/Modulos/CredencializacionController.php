@@ -457,7 +457,7 @@ class CredencializacionController extends Controller
             }
 
             if(isset($parametros['cr']) && $parametros['cr']){
-                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id =".$parametros['cr'].")");//where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id ='".$parametros['cr']."')");//where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
             }
 
             if(isset($parametros['imprimible']) && $parametros['imprimible'] == 1){
@@ -491,7 +491,7 @@ class CredencializacionController extends Controller
             }
 
             if(isset($parametros['cr']) && $parametros['cr']){
-                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id =".$parametros['cr'].")");//where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id ='".$parametros['cr']."')");//where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
             }
 
             if(isset($parametros['imprimible']) && $parametros['imprimible'] == 1){
