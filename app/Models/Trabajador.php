@@ -117,7 +117,7 @@ class Trabajador extends Model
     //Tramite
     //Adscripcion
     public function rel_trabajador_adscripcion(){
-        return $this->hasOne('App\Models\RelAdscripcion');
+        return $this->hasOne('App\Models\RelAdscripcion')->where("activo", 1);
     }
     
     public function rel_trabajador_reincorporacion(){

@@ -286,8 +286,8 @@ export class ListaComponent implements OnInit {
         }else if(i == 'imprimible'){
           params[i] = filterFormValues[i].id;
         }else if(i == 'fecha_cambio'){
-          console.log(Date.parse(filterFormValues[i]));
-          console.log(this.filterForm.controls['fecha_cambio'].value);
+          //console.log(Date.parse(filterFormValues[i]));
+          //console.log(this.filterForm.controls['fecha_cambio'].value);
           //params[i] = filterFormValues[i].substring(0,10);
         }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
@@ -489,7 +489,6 @@ export class ListaComponent implements OnInit {
           if(response.error) {
             this.error_pdf(response);
           } else {    
-            console.log(response);
              const reportWorker = this.iniciateWorker('CambioAdscripcion');
               let config = {  title: this.reportTitle, lote:true };
               console.log(response.data.data);

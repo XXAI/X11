@@ -185,22 +185,27 @@ class TramiteAdscripcionController extends Controller
 
             $access = $this->getUserAccessData();
 
-            /*$trabajador = RelAdscripcion::with("cr_origen.directorioResponsable.responsable",
-                                                "cr_origen.dependencia.directorioResponsable.responsable", 
-                                                "cr_destino.directorioResponsable.responsable", 
-                                                "cr_destino.dependencia.directorioResponsable.responsable", 
-                                                "trabajador.rel_datos_laborales_nomina")->where("cr_origen", "!=", "")
-                                                ->whereRaw(" trabajador_id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");*/
-
-            $trabajador = Trabajador::with("rel_trabajador_adscripcion.cr_origen.directorioResponsable.responsable",
+            /*$trabajador = Trabajador::with("rel_trabajador_adscripcion.cr_origen.directorioResponsable.responsable",
                                                 "rel_trabajador_adscripcion.cr_origen.dependencia.directorioResponsable.responsable", 
                                                 "rel_trabajador_adscripcion.cr_destino.directorioResponsable.responsable", 
                                                 "rel_trabajador_adscripcion.cr_destino.dependencia.directorioResponsable.responsable", 
                                                 "rel_datos_laborales_nomina")
                                                 //->where("cr_origen", "!=", "")
-                                                ->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
+                                                ->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");*/
 
-            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
+                                                $trabajador = Trabajador::with("rel_trabajador_adscripcion.cr_origen.directorioResponsable.responsable",
+                                                "rel_trabajador_adscripcion.cr_origen.dependencia.directorioResponsable.responsable", 
+                                                "rel_trabajador_adscripcion.cr_destino.directorioResponsable.responsable", 
+                                                "rel_trabajador_adscripcion.cr_destino.dependencia.directorioResponsable.responsable", 
+                                                "rel_datos_laborales_nomina")
+                                                ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_adscripcion where activo=1)")
+                                                ->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
+                                                //->where("cr_origen", "!=", "")
+                                                //->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
+
+//echo "1";
+//$trabajador = Trabajador::with("rel_trabajador_adscripcion");
+            //$trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
             if(isset($parametros['page'])){
                 $trabajador = $trabajador->orderBy('apellido_paterno');
 
@@ -227,8 +232,7 @@ class TramiteAdscripcionController extends Controller
             $loggedUser = auth()->userOrFail();
             $elaboracion = Trabajador::where("rfc", $loggedUser->username)->first();
             $nombres = ["control"=>$control, "sistematizacion" => $sistematizacion, "subdireccion_rh" => $subdireccion_rh, 
-            "direccion_admon"=> $direccion_admon_finanzas, "relaciones_laborales"=>$relaciones_laborales, "elaboracion"=>$elaboracion, "secretario"=>$secretario,
-        /*"jurisdicciones"=>$jurisdicciones*/];
+            "direccion_admon"=> $direccion_admon_finanzas, "relaciones_laborales"=>$relaciones_laborales, "elaboracion"=>$elaboracion, "secretario"=>$secretario];
 
             return response()->json(['data'=>$trabajador, "nombres"=>$nombres],HttpResponse::HTTP_OK);
         }catch(\Exception $e){

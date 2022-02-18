@@ -31,8 +31,10 @@ export class ReporteTrabajadorCambioAdscripcion {
         let nombre_elaboracion = "";
         if(elaboracion != null)
         {
-          nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno;
+          nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno+" - ADMINISTRATIVO";
         }
+
+        //nombre_elaboracion = "ELABORÓ: DULCE NAYELI PEREZ OZUNA - APOYO ADMINISTRATIVO";
 
         
         let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
@@ -160,13 +162,13 @@ export class ReporteTrabajadorCambioAdscripcion {
           let dato_hacia = "";
           let jurisdiccion_igual = "";
           let copia_dependencia = "";
-
+          //console.log(element);
           if(element.rel_trabajador_adscripcion.fecha_oficio != null)
           {
             fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_oficio).toLowerCase();
           }
           
-          console.log(iteracciones);
+          //console.log(iteracciones);
           
           if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia == element.rel_trabajador_adscripcion.cr_destino.cr_dependencia)
           {
