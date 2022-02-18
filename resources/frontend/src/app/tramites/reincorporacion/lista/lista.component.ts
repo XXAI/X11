@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTable } from '@angular/material/table';
-
+import { map, startWith } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { trigger, transition, animate, style } from '@angular/animations';
 
@@ -57,11 +57,26 @@ export class ListaComponent implements OnInit {
   filteredCatalogs:any = {};
 
   filterChips:any = []; 
+  
+  catalogoDistritos = [{id:0, descripcion:"TODOS"},
+  {id:1, descripcion:"TUXTLA GUTIERREZ"},
+  {id:2, descripcion:"SAN CRISTOBAL"},
+  {id:3, descripcion:"COMITAN DE DOMÍNGUEZ"},
+  {id:4, descripcion:"VILLAFLORES"},
+  {id:5, descripcion:"PICHUCALCO"},
+  {id:6, descripcion:"PALENQUE"},
+  {id:7, descripcion:"TAPACHULA"},
+  {id:8, descripcion:"TONALA"},
+  {id:9, descripcion:"OCOSINGO"},
+  {id:10, descripcion:"MOTOZINTLA"},
+  {id:11, descripcion:"OFICINA CENTRAL"}];
 
   filterForm = this.fb.group({
+    'distrito': [undefined],
     'clues': [undefined],
     'cr': [undefined],
     'imprimible': [undefined],
+    //'fecha_cambio': [undefined],
     
   });
 
@@ -149,13 +164,14 @@ export class ListaComponent implements OnInit {
   }
 
   public loadFilterCatalogs(){
-    /*this.saludService.getFilterCatalogs().subscribe(
+    this.reincorporacionService.getFilterCatalogs().subscribe(
       response => {
         //console.log(response);
         this.filterCatalogs = {
+          'distrito': this.catalogoDistritos,
           'clues': response.data.clues,
           'cr': response.data.cr,
-          'imprimible': [{id:'0',descripcion:'TODOS'},{id:'1',descripcion:'SI'}],
+          'imprimible': [{id:'0',descripcion:'TODOS'},{id:'1',descripcion:'SI'},{id:'2',descripcion:'NO'}],
         };
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
@@ -170,7 +186,7 @@ export class ListaComponent implements OnInit {
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
       }
-    );*/
+    );
   }
 
   public loadTrabajadorData(event?:PageEvent){

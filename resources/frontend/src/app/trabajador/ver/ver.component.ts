@@ -146,6 +146,7 @@ export class VerComponent implements OnInit {
         this.dataSource = this.dataTrabajador.escolaridad;
         this.verTramites(response.id);
         this.Asitencia = (response.actualizado == 0)?false:true;
+        console.log(this.Asitencia);
 
         this.datosNominales = this.dataTrabajador.rel_datos_laborales_nomina;
         

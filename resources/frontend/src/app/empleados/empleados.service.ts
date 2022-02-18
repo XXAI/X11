@@ -28,8 +28,8 @@ export class EmpleadosService {
   url_catalogos = `${environment.base_url}/catalogos`;
   url_catalogo_tipo_baja =  `${environment.base_url}/catalogo-tipo-baja`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
-  url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
-  url_asistencia = 'http://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
+  url_credencial = 'https://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
+  url_asistencia = 'https://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
   url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
   url_codigos_catalogo = `${environment.base_url}/busqueda-codigos`;

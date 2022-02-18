@@ -11,6 +11,7 @@ export class AdscripcionService {
 
   url           = `${environment.base_url}/tramite-adscripcion`;
   url_lote      = `${environment.base_url}/tramite-adscripcion-lote`;
+  url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
   
   constructor(private http: HttpClient) { }
 
@@ -37,12 +38,20 @@ export class AdscripcionService {
   imprimirLoteAdscripcion(id:any = null, payload:any)
   {
     payload.page = id;
-    payload.per_page = 5;
+    payload.per_page = 100;
     return this.http.get<any>(this.url_lote, {params: payload}).pipe(
       map( (response: any) => {        
         return response;
       }
     ));
+  }
+
+  getFilterCatalogs():Observable<any>{
+    return this.http.get<any>(this.url_filter_catalogs).pipe(
+      map(response => {
+        return response;
+      })
+    );
   }
 
 }

@@ -33,6 +33,8 @@ export class ReporteTrabajadorCambioAdscripcion {
         {
           nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno;
         }
+
+        
         let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
 
         let datos = {
@@ -153,52 +155,60 @@ export class ReporteTrabajadorCambioAdscripcion {
         data.forEach(element => {
 
           let contenido = "";
-          let datos_trabajador = element.trabajador;
+          let datos_trabajador = element;
           let dato_desde = "";
           let dato_hacia = "";
           let jurisdiccion_igual = "";
+          let copia_dependencia = "";
 
-          
-          
-          if(element.cr_origen.cr_dependencia == element.cr_destino.cr_dependencia)
+          if(element.rel_trabajador_adscripcion.fecha_oficio != null)
           {
-            if(element.cr_origen.cr_dependencia != element.cr_origen.cr && element.cr_destino.cr_dependencia != element.cr_destino.cr )
+            fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_oficio).toLowerCase();
+          }
+          
+          console.log(iteracciones);
+          
+          if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia == element.rel_trabajador_adscripcion.cr_destino.cr_dependencia)
+          {
+            if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr )
             {
-              jurisdiccion_igual = " ambas dependientes de "+element.cr_origen.dependencia.descripcion_actualizada+", ";
+              jurisdiccion_igual = " ambas dependientes de "+element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada+", ";
             }else{
-              if(element.cr_origen.cr_dependencia != element.cr_origen.cr && element.cr_destino.cr_dependencia != element.cr_destino.cr)
+              if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr)
               {
-                dato_desde =" dependiente de "+ element.cr_origen.dependencia.descripcion_actualizada;
+                dato_desde =" dependiente de "+ element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada;
               }
-              if(element.cr_destino.cr_dependencia != element.cr_destino.cr){
+              if(element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr){
                 dato_hacia = " dependiente de la misma jurisdicción";
               }
             }
             
           }else{
-            if(element.cr_origen.cr_dependencia != element.cr_origen.cr){
-              dato_desde =" dependiente de "+ element.cr_origen.dependencia.descripcion_actualizada;
+            if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr){
+              dato_desde =" dependiente de "+ element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada;
             }
-            if(element.cr_destino.cr_dependencia != element.cr_destino.cr){
-              dato_hacia = " dependiente de "+element.cr_destino.dependencia.descripcion_actualizada;
+            if(element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr){
+              dato_hacia = " dependiente de "+element.rel_trabajador_adscripcion.cr_destino.dependencia.descripcion_actualizada;
             }
+            let datos_origen = element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
+            copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
           }
 
-          dato_desde = element.cr_origen.descripcion_actualizada+" ("+element.cr_origen.clues.clues+") "+dato_desde;
-          dato_hacia = element.cr_destino.descripcion_actualizada+" ("+element.cr_destino.clues.clues+") "+dato_hacia;
+          dato_desde = element.rel_trabajador_adscripcion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_origen.clues.clues+") "+dato_desde;
+          dato_hacia = element.rel_trabajador_adscripcion.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_destino.clues.clues+") "+dato_hacia;
           
           let nombre_responsable = "";
           let nombre_responsable_copia = "";
-          if(element.cr_destino.dependencia.clues == "CSSSA017213")
+          if(element.rel_trabajador_adscripcion.cr_destino.dependencia.clues == "CSSSA017213")
           {
-            let responsable = element.cr_destino.directorio_responsable.responsable;
-            nombre_responsable = "C. "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.cr_destino.directorio_responsable.cargo;
-            nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.cr_destino.directorio_responsable.cargo;
+            let responsable = element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.responsable;
+            nombre_responsable = "C. "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.cargo;
+            nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.cargo;
           
           }else{
-            let responsable = element.cr_destino.dependencia.directorio_responsable.responsable;
-            nombre_responsable = "DR(A). "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.cr_destino.dependencia.directorio_responsable.cargo;
-            nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.cr_destino.dependencia.directorio_responsable.cargo;
+            let responsable = element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.responsable;
+            nombre_responsable = "DR(A). "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.cargo;
+            nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.cargo;
           }  
           let jurisdiccion_origen = "";
           let jurisdiccion_destino = "";
@@ -222,7 +232,7 @@ export class ReporteTrabajadorCambioAdscripcion {
 
           if(ur == "CON_CAR" || ur == "CON_INS" || ur == "CON_OFI" || ur == "CON_UNI" || ur == "EST_CH" || ur == "EST_MMI" || ur == "EST_PAC" || ur == "X00" || ur == "HON")
           {
-            contenido = "\n\nPor necesidades del servicio, tengo a bien comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.fecha_cambio).toLowerCase())+
+            contenido = "\n\nPor necesidades del servicio, tengo a bien comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_cambio).toLowerCase())+
                         ", cambiará de adscripción de "+dato_desde+jurisdiccion_origen+" a "+dato_hacia+jurisdiccion_destino+
                         ", "+jurisdiccion_igual+" con código funcional: "+datos_nominales.codigo_puesto_id+" "+this.convertirLetraCapital(datos_nominales.codigo.descripcion)+
                         " debiéndose presentar con el "+nombre_responsable+", quien "+
@@ -230,16 +240,32 @@ export class ReporteTrabajadorCambioAdscripcion {
                         "Asimismo se le informa que se le radicarán sus sueldos a la nueva unidad de adscripción. \n\n Sin otro particular, le envío un cordial saludo.";
           }else{
             contenido = "\n\nPor necesidades del servicio y con fundamento en el artículo 179 fracción VI de las Condiciones Generales de Trabajo, "+
-                        "me permito comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.fecha_cambio).toLowerCase())+
+                        "me permito comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_cambio).toLowerCase())+
                         ", cambiará de adscripción de "+dato_desde+jurisdiccion_origen+" a "+dato_hacia+jurisdiccion_destino+
                         ", "+jurisdiccion_igual+" con plaza clave de "+denominacion+": "+datos_nominales.clave_presupuestal+", con código funcional: "+datos_nominales.codigo_puesto_id+" "+
                         this.convertirLetraCapital(datos_nominales.codigo.descripcion)+" debiéndose presentar con el "+nombre_responsable+", quien "+
                         "le indicará su jornada laboral y funciones a desempeñar.  \n\n"+
                         "Asimismo se le informa que se le radicarán sus sueldos a la nueva unidad de adscripción. \n\n Sin otro particular, le envío un cordial saludo.";
           }
+
+          let acuse_qr = "ACUSE DE AUTENTICACIÓN \n\n"+
+          "Con el propósito de garantizar la validez de los documentos emitidos por el Departamento de Relaciones Laborales, dependiente de la Subdirección de Recursos Humanos,"+
+          " de la Dirección de Administración y Finanzas del Instituto de Salud del Estado de Chiapas, y con fundamento en lo dispuesto en los artículos 37 y 65 del Reglamento "+
+          "Interior, así como en el Manual de Organización del Instituto de Salud, se emite el presente Acuse de Autenticación que avala que los datos contenidos en este oficio "+
+          "a nombre del(a) C. "+datos_trabajador.nombre+" "+datos_trabajador.apellido_paterno+" "+datos_trabajador.apellido_materno+", CURP(o RFC):"+datos_trabajador.rfc+", "+
+          "con Código Funcional: "+datos_nominales.codigo_puesto_id+" "+this.convertirLetraCapital(datos_nominales.codigo.descripcion)+" y Clave Presupuestal "+datos_nominales.clave_presupuestal+", "+
+          "fueron verificados en la página SISTEMA DE RECURSOS HUMANO (SIRH) con fecha "+fecha_hoy+", manifestandose en la presente que todos los datos son autenticos y que en la Subdirección de Recursos Humanos"+
+          " se cuenta físicamente con el documento debidamente integrado en el expediente único de personal correspondiente al/la trabajador(a) antes mencionado(a). \n\n"+
+          "Para lo anterior, se da veracidad a la consulta hecha para la autentificación de este oficio, mediante la firma electrónica del funcionario en turno. "+
+          "Se emite el presente en la Ciudad de Tuxtla Gutiérrez, Chiapas, con fecha "+fecha_hoy+", para los efectos legales y administrativos a que haya lugar."
+
           
           let copias = "C.C.P. "+nombre_secretario+" - "+nombres.secretario.cargo.toUpperCase()+"\n"+"C..C.P. "+nombre_responsable_copia+"\n";
 
+          if(copia_dependencia != "")
+          {
+            copias += copia_dependencia+"\n";
+          }
           let informacion_oficio = {
             layout: 'noBorders',
             pageBreak:'',
@@ -267,7 +293,7 @@ export class ReporteTrabajadorCambioAdscripcion {
                 ],
                 [
                   { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
-                  {qr: "Documeto Validado por la El departamento de Relaciones Laborales", fit: "120"},
+                  {qr: acuse_qr, fit: "210"},
                 ],
                 [
                   { text: copias+

@@ -67,7 +67,8 @@ export class ListaComponent implements OnInit {
 
   paginas:any[] = [];
   
-  catalogoDistritos = [{id:1, descripcion:"TUXTLA GUTIERREZ"},
+  catalogoDistritos = [{id:0, descripcion:"TODOS"},
+                        {id:1, descripcion:"TUXTLA GUTIERREZ"},
                         {id:2, descripcion:"SAN CRISTOBAL"},
                         {id:3, descripcion:"COMITAN DE DOMÍNGUEZ"},
                         {id:4, descripcion:"VILLAFLORES"},
@@ -101,6 +102,7 @@ export class ListaComponent implements OnInit {
     'clues': [undefined],
     'cr': [undefined],
     'imprimible': [undefined],
+    'fecha_cambio': [undefined],
     
   });
 
@@ -224,13 +226,14 @@ export class ListaComponent implements OnInit {
   }
 
   public loadFilterCatalogs(){
-    /*this.saludService.getFilterCatalogs().subscribe(
+    this.adscripcionService.getFilterCatalogs().subscribe(
       response => {
         //console.log(response);
         this.filterCatalogs = {
+          'distrito': this.catalogoDistritos,
           'clues': response.data.clues,
           'cr': response.data.cr,
-          'imprimible': [{id:'0',descripcion:'TODOS'},{id:'1',descripcion:'SI'}],
+          'imprimible': [{id:'0',descripcion:'TODOS'},{id:'1',descripcion:'SI'},{id:'2',descripcion:'NO'}],
         };
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
@@ -245,7 +248,7 @@ export class ListaComponent implements OnInit {
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
       }
-    );*/
+    );
   }
 
   public loadTrabajadorData(event?:PageEvent){
@@ -270,16 +273,22 @@ export class ListaComponent implements OnInit {
     let filterFormValues = this.filterForm.value;
     let countFilter = 0;
 
-    this.loadFilterChips(filterFormValues);
+    //this.loadFilterChips(filterFormValues);
 
     for(let i in filterFormValues){
       if(filterFormValues[i]){
-        if(i == 'clues'){
+        if(i == 'distrito'){
+          params[i] = filterFormValues[i].id;
+        }else if(i == 'clues'){
           params[i] = filterFormValues[i].clues;
         }else if(i == 'cr'){
           params[i] = filterFormValues[i].cr;
         }else if(i == 'imprimible'){
           params[i] = filterFormValues[i].id;
+        }else if(i == 'fecha_cambio'){
+          console.log(Date.parse(filterFormValues[i]));
+          console.log(this.filterForm.controls['fecha_cambio'].value);
+          //params[i] = filterFormValues[i].substring(0,10);
         }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
         }
@@ -352,7 +361,7 @@ export class ListaComponent implements OnInit {
     }
   }
 
-  loadFilterChips(data){
+  /*loadFilterChips(data){
     this.filterChips = [];
     for(let i in data){
       
@@ -366,6 +375,10 @@ export class ListaComponent implements OnInit {
         if(i == 'clues'){
           item.tag = data[i].clues;
           item.tooltip += data[i].nombre_unidad;
+        }else if(i == 'distrito'){
+          item.tag = data[i];
+          console.log(data[i]);
+          //item.tooltip += data[i].nombre_unidad;
         }else if(i == 'cr'){
           item.tag = data[i].cr;
           item.tooltip += data[i].descripcion;
@@ -383,13 +396,7 @@ export class ListaComponent implements OnInit {
         this.filterChips.push(item);
       }
     }
-  }
-
-  editTrabajador(index){
-    let paginator = this.sharedService.getDataFromCurrentApp('paginator');
-    paginator.selectedIndex = index;
-    this.sharedService.setDataToCurrentApp('paginator',paginator);
-  }
+  }*/
 
   getDisplayFn(label: string){
     return (val) => this.displayFn(val,label);
@@ -433,16 +440,6 @@ export class ListaComponent implements OnInit {
   cleanFilter(filter){
     filter.value = '';
     //filter.closePanel();
-  }
-
-  editar(obj)
-  {
-   
-  }
-
-  detalles(obj)
-  {
-    
   }
 
   compareImprimibleSelect(op,value){
@@ -495,7 +492,7 @@ export class ListaComponent implements OnInit {
             console.log(response);
              const reportWorker = this.iniciateWorker('CambioAdscripcion');
               let config = {  title: this.reportTitle, lote:true };
-              //console.log(response.data.data);
+              console.log(response.data.data);
               reportWorker.postMessage({data:{items: response.data.data, responsable:response.nombres, config:config},reporte:'trabajador/cambio-adscripcion'});
           }
           this.isLoading = false;

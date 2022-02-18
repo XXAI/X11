@@ -74,7 +74,33 @@
                 <mat-expansion-panel #advancedFilter class="advanced-filter" [formGroup]="filterForm">
                     <br>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                        <mat-form-field fxFlex="33">
+                        <mat-form-field fxFlex="50">
+                            <mat-label>DISTRITO</mat-label>
+                            <mat-select formControlName="distrito">
+                                <mat-option *ngFor="let item of filterCatalogs['distrito']" [value]="item">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="50">
+                            <mat-label>IMPRIMIBLE</mat-label>
+                            <mat-select #ramaFilter formControlName="imprimible" [compareWith]="compareImprimibleSelect">
+                                <mat-option *ngFor="let item of filterCatalogs['imprimible']" [value]="item">
+                                    {{item.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!--<mat-form-field fxFlex="33">
+                            <input matInput [matDatepicker]="fechaPicker" placeholder="Fecha de Cambio" formControlName="fecha_cambio" readonly required>
+                            <mat-datepicker-toggle matSuffix [for]="fechaPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fechaPicker disabled="false"></mat-datepicker>
+                            <mat-hint align="end">seleccionar fecha
+                                <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
+                        </mat-form-field>-->
+
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
+                        <mat-form-field fxFlex="50">
                             <mat-label>CLUES</mat-label>
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
                             <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
@@ -84,23 +110,15 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="33">
+                        <mat-form-field fxFlex="50">
                             <mat-label>CR</mat-label>
                             <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
                             <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('cr')" [panelWidth]="'auto'">
                                 <mat-option *ngFor="let item of filteredCatalogs['cr'] | async" [value]="item">
-                                    {{item.descripcion}}
+                                    {{item.descripcion_actualizada}}
                                 </mat-option>
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('cr').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>
-                        </mat-form-field>
-                        <mat-form-field fxFlex="33">
-                            <mat-label>IMPRIMIBLE</mat-label>
-                            <mat-select #ramaFilter formControlName="imprimible" [compareWith]="compareImprimibleSelect">
-                                <mat-option *ngFor="let item of filterCatalogs['imprimible']" [value]="item">
-                                    {{item.descripcion}}
-                                </mat-option>
-                            </mat-select>
                         </mat-form-field>
 
                     </div>
@@ -114,9 +132,12 @@
                             <button mat-raised-button color="accent" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Aplicar
                             </button>
-                            <button mat-raised-button color="primary" style="margin-left: 10px;">
+                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote">
                                 <mat-icon>print</mat-icon> Imprimir Lote
                             </button>
+                            <mat-menu #menuLote="matMenu">
+                                <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirOficio(null, i)">{{ (i + 1) }}</button>
+                            </mat-menu>
                         </div>
                     </div>
                 </mat-expansion-panel>
@@ -133,9 +154,9 @@
                             <ng-container matColumnDef="estatus">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> TRABAJADOR </th>
                                 <td mat-cell *matCellDef="let row" fxHide.xs="true">
-                                    <b>{{row.trabajador.nombre}}  {{ row.trabajador.apellido_paterno }} {{ row.trabajador.apellido_materno }}</b>
+                                    <b>{{row.nombre}}  {{ row.apellido_paterno }} {{ row.apellido_materno }}</b>
                                     <div style="font-size: 8pt;">
-                                        {{row.trabajador.rfc}}
+                                        {{row.rfc}}
                                     </div>
                                 </td>
                             </ng-container>
@@ -143,9 +164,9 @@
                             <ng-container matColumnDef="RFC">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ORIGEN </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <b>{{ row.trabajador.rel_datos_laborales_nomina.clues.nombre_unidad }}</b><br>
+                                    <b>{{ row.rel_datos_laborales_nomina.clues.nombre_unidad }}</b><br>
                                     <div style="font-size: 8pt;">
-                                        {{ row.trabajador.rel_datos_laborales_nomina.clues_adscripcion_nomina }}
+                                        {{ row.rel_datos_laborales_nomina.clues_adscripcion_nomina }}
                                     </div>
                                 </td>
                             </ng-container>
@@ -153,18 +174,18 @@
                             <ng-container matColumnDef="Nombre">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> DESTINO </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <b>{{ row.cr_destino.clues.nombre_unidad }}</b>
-                                    <b>{{ (row.cr_destino.clues.clues == "CSSSA017213")? " ("+row.cr_destino.descripcion+") ":""}}</b>
+                                    <b>{{ row.rel_trabajador_reincorporacion.cr_destino.clues.nombre_unidad }}</b>
+                                    <b>{{ (row.rel_trabajador_reincorporacion.cr_destino.clues.clues == "CSSSA017213")? " ("+row.rel_trabajador_reincorporacion.cr_destino.descripcion+") ":""}}</b>
                                     <br>
                                     <div style="font-size: 8pt;">
-                                        {{ row.cr_destino.clues.clues }}
+                                        {{ row.rel_trabajador_reincorporacion.cr_destino.clues.clues }}
                                     </div>
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="imprimible">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <b>{{ row.fecha_cambio }}</b>
+                                    <b>{{ row.rel_trabajador_reincorporacion.fecha_oficio }}</b>
                                 </td>
                             </ng-container>
 

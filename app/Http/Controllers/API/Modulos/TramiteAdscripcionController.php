@@ -115,12 +115,14 @@ class TramiteAdscripcionController extends Controller
                 
             }*/
             
-            //$trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);
-            $trabajador = RelAdscripcion::with("cr_origen", "cr_destino", "trabajador.rel_datos_laborales_nomina")->where("cr_origen", "!=", "");
-                                    //->whereRaw("(trabajador_id in (select trabajador_id from rel_trabajador_adscripcion where deleted_at is null group by trabajador_id)");
-                                   
+            //
+            $trabajador = Trabajador::with("rel_datos_laborales_nomina", "rel_trabajador_adscripcion.cr_origen", "rel_trabajador_adscripcion.cr_destino")
+            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_adscripcion where activo=1)");
+            /*$trabajador = RelAdscripcion::with("cr_origen", "cr_destino", "trabajador.rel_datos_laborales_nomina")->where("cr_origen", "!=", "");*/
+            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
+            
             if(isset($parametros['page'])){
-                $trabajador = $trabajador->orderBy('fecha_cambio');
+                $trabajador = $trabajador->orderBy('apellido_paterno');
 
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
@@ -137,11 +139,18 @@ class TramiteAdscripcionController extends Controller
     public function show(Request $request, $id)
     {
         try{
-            $trabajador = RelAdscripcion::with("cr_origen.directorioResponsable.responsable",
+            /*$trabajador = RelAdscripcion::with("cr_origen.directorioResponsable.responsable",
             "cr_origen.dependencia.directorioResponsable.responsable", 
             "cr_destino.directorioResponsable.responsable", 
             "cr_destino.dependencia.directorioResponsable.responsable", 
-            "trabajador.rel_datos_laborales_nomina")->find($id);
+            "trabajador.rel_datos_laborales_nomina")->find($id);*/
+            $trabajador = Trabajador::with("rel_trabajador_adscripcion.cr_origen.directorioResponsable.responsable",
+                                                "rel_trabajador_adscripcion.cr_origen.dependencia.directorioResponsable.responsable", 
+                                                "rel_trabajador_adscripcion.cr_destino.directorioResponsable.responsable", 
+                                                "rel_trabajador_adscripcion.cr_destino.dependencia.directorioResponsable.responsable", 
+                                                "rel_datos_laborales_nomina")
+                                                //->where("cr_origen", "!=", "")
+                                                ->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)")->find($id);
   
             //Copias y validaciones
             //Control del pago
@@ -174,34 +183,31 @@ class TramiteAdscripcionController extends Controller
         try{
             $parametros = $request->all();
 
-            $trabajador = RelAdscripcion::with("cr_origen.directorioResponsable.responsable",
+            $access = $this->getUserAccessData();
+
+            /*$trabajador = RelAdscripcion::with("cr_origen.directorioResponsable.responsable",
                                                 "cr_origen.dependencia.directorioResponsable.responsable", 
                                                 "cr_destino.directorioResponsable.responsable", 
                                                 "cr_destino.dependencia.directorioResponsable.responsable", 
                                                 "trabajador.rel_datos_laborales_nomina")->where("cr_origen", "!=", "")
-                                                ->whereRaw(" trabajador_id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
+                                                ->whereRaw(" trabajador_id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");*/
 
+            $trabajador = Trabajador::with("rel_trabajador_adscripcion.cr_origen.directorioResponsable.responsable",
+                                                "rel_trabajador_adscripcion.cr_origen.dependencia.directorioResponsable.responsable", 
+                                                "rel_trabajador_adscripcion.cr_destino.directorioResponsable.responsable", 
+                                                "rel_trabajador_adscripcion.cr_destino.dependencia.directorioResponsable.responsable", 
+                                                "rel_datos_laborales_nomina")
+                                                //->where("cr_origen", "!=", "")
+                                                ->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
+
+            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
             if(isset($parametros['page'])){
-                $trabajador = $trabajador->orderBy('fecha_cambio');
+                $trabajador = $trabajador->orderBy('apellido_paterno');
 
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 1;
     
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
             }
-            
-            
-           /*$jurisdicciones = Cr::where("tipo_unidad", 1)
-                                        ->LeftJoin("catalogo_clues", "catalogo_clues.clues", "=", "catalogo_cr.clues")
-                                        ->leftJoin("rel_trabajador_cr_responsables", "rel_trabajador_cr_responsables.cr", "catalogo_cr.cr")
-                                        ->leftJoin("trabajador", "trabajador.id", "rel_trabajador_cr_responsables.trabajador_id")
-                                        ->where("rel_trabajador_cr_responsables.tipo_responsable_id", "=", 1)
-                                        ->whereNull("rel_trabajador_cr_responsables.deleted_at")
-                                        ->whereNull("catalogo_clues.deleted_at")
-                                        ->whereNull("catalogo_cr.deleted_at")
-                                        ->whereNull("trabajador.deleted_at")
-                                        ->select("trabajador.nombre", "trabajador.apellido_paterno", "trabajador.apellido_materno", "rel_trabajador_cr_responsables.cargo",
-                                                "catalogo_clues.cve_jurisdiccion")
-                                        ->get();*/
                                     
             //Copias y validaciones
             //Control del pago
@@ -253,5 +259,61 @@ class TramiteAdscripcionController extends Controller
         $accessData->is_admin = ($loggedUser->is_superuser == 0)?false:true;
        
         return $accessData;
+    }
+
+    private function aplicarFiltros($main_query, $parametros, $access){
+        //Filtros, busquedas, ordenamiento
+        if(isset($parametros['query']) && $parametros['query']){
+            $main_query = $main_query->where(function($query)use($parametros){
+                return $query//->where('nombre','LIKE','%'.$parametros['query'].'%')
+                            ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
+                            ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
+                            ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
+            });
+        }
+       
+        if(isset($parametros['active_filter']) && $parametros['active_filter']){
+            if(isset($parametros['clues']) && $parametros['clues']){
+                $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_adscripcion where  activo=1 and cr_destino = (select cr from catalogo_cr where clues='".$parametros['clues']."'))");
+            }
+
+            if(isset($parametros['cr']) && $parametros['cr']){
+                $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_adscripcion where activo=1 and cr_destino ='".$parametros['cr']."')");
+            }
+
+            if(isset($parametros['distrito']) && $parametros['distrito'] && $parametros['distrito'] != 0){
+                $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_adscripcion where activo=1 and cr_destino in (select cr from catalogo_cr where clues in (select clues from catalogo_clues where cve_jurisdiccion='".$parametros['distrito']."')))");
+            }
+
+            if(isset($parametros['imprimible']) && $parametros['imprimible']){
+                if($parametros['imprimible'] == 1)
+                {
+                    $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
+                }
+                if($parametros['imprimible'] == 2)
+                {
+                    $main_query = $main_query->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
+                }
+            }
+
+            /*if(isset($parametros['fecha_cambio']) && $parametros['fecha_cambio']!=""){
+                $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_adscripcion where fecha_cambio ='".$parametros['fecha_cambio']."' and activo=1)");
+            }*/
+
+            /*if(isset($parametros['comisionado']) && $parametros['comisionado'] == 1){
+                $main_query = $main_query->whereRaw("trabajador.id in (select rl.trabajador_id from rel_trabajador_datos_laborales rl, rel_trabajador_datos_laborales_nomina rln where rl.trabajador_id=rln.trabajador_id and rl.cr_fisico_id!=rln.cr_nomina_id)");
+            }
+           
+
+            if($access->is_admin){
+                if(isset($parametros['grupos']) && $parametros['grupos']){
+                    $grupo = GrupoUnidades::with('listaCR')->find($parametros['grupos']);
+                    $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
+
+                    $main_query = $main_query->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$lista_cr);
+                }
+            }*/
+        }
+        return $main_query;
     }
 }
