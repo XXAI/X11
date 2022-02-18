@@ -200,12 +200,12 @@ class TramiteAdscripcionController extends Controller
                                                 "rel_datos_laborales_nomina")
                                                 ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_adscripcion where activo=1)")
                                                 ->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
-                                                //->where("cr_origen", "!=", "")
+                                                //->where("cr_origen", "!=", "");
                                                 //->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
 
 //echo "1";
 //$trabajador = Trabajador::with("rel_trabajador_adscripcion");
-            //$trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
+            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
             if(isset($parametros['page'])){
                 $trabajador = $trabajador->orderBy('apellido_paterno');
 
@@ -292,7 +292,9 @@ class TramiteAdscripcionController extends Controller
             if(isset($parametros['imprimible']) && $parametros['imprimible']){
                 if($parametros['imprimible'] == 1)
                 {
-                    $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
+                    $main_query = $main_query
+                            ->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_datos_laborales_nomina)")
+                            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_adscripcion where activo=1  and cr_origen!='' and cr_destino!='')");
                 }
                 if($parametros['imprimible'] == 2)
                 {
