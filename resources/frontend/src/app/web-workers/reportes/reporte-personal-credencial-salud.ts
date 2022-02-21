@@ -156,7 +156,7 @@ export class ReporteTrabajadorCredencialSalud{
             letra_distrito = "OFC";
           }else
           {
-            area = element.rel_datos_laborales.cr_fisico.descripcion;
+            area = element.rel_datos_laborales.cr_fisico.descripcion_actualizada;
           }
           /*if(element.credencial.area_opcional != null && element.credencial.area_opcional!= '')
           {

@@ -11,6 +11,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use \Validator,\Hash, \Response, \DB, \File, \Store;
 use Illuminate\Facades\Storage;
+use Carbon\Carbon;
 
 use App\Models\Trabajador;
 use App\Models\Credencializacion;
@@ -28,6 +29,8 @@ class CredencializacionController extends Controller
         $responsable_clues = array();
         $loggedUser = auth()->userOrFail();
 
+        $carbon = Carbon::now();
+
         $permiso_impresion = false;
         $permiso_visualizar_todos = false;
         $permison_individual = false; 
@@ -37,7 +40,8 @@ class CredencializacionController extends Controller
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
             $parametros = $request->all();
-            $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial");
+            $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial")
+                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )");
                             //->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id");
                             //->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
                             //->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
@@ -123,8 +127,10 @@ class CredencializacionController extends Controller
         try{
             $response_data = [];
             //$loggedUser = auth()->userOrFail();
-            
-            $trabajador = Trabajador::with('credencial.cargo', 'rel_datos_laborales')->find($id);
+            $carbon = Carbon::now();
+            $trabajador = Trabajador::with('credencial.cargo', 'rel_datos_laborales')
+            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )")
+            ->find($id);
 
             /*foreach ($permisos->roles as $key => $value) {
                 foreach ($value->permissions as $key2 => $value2) {
@@ -321,11 +327,13 @@ class CredencializacionController extends Controller
         try{
             $access = $this->getUserAccessData();
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
-
+            $carbon = Carbon::now();
             $parametros = $request->all();
             $trabajador = Trabajador::with('credencial.cargo', 'rel_datos_laborales')
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and deleted_at is null)")
-                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id is null)");
+                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id is null)")
+                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )");
+                            
                             
 
             $permison_individual = false;                

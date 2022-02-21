@@ -240,7 +240,9 @@ export class ReporteComision {
         });
 
         let contenido = "";
-        if(datos_trabajador.datoslaboralesnomina.ur == "CON")
+        let ur = datos_trabajador.rel_datos_laborales_nomina.ur;
+
+        if(ur == "CON_CAR" || ur == "CON_INS" || ur == "CON_OFI" || ur == "CON_UNI" || ur == "EST_CH" || ur == "EST_MMI" || ur == "EST_PAC" || ur == "X00" || ur == "HON")
         {
           contenido = "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
           datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
@@ -284,9 +286,7 @@ export class ReporteComision {
             margin: [0,0,0,0],
             body: [
               [
-                //{ text: "", colSpan:2},{},
                 { text: "\n\n\n", style: "texto_num_oficio"},
-                //{ text: "", colSpan:4},{},{},{},
               ],
             ]
           }
@@ -299,9 +299,7 @@ export class ReporteComision {
             margin: [0,0,0,0],
             body: [
               [
-                //{ text: "", colSpan:2},{},
                 { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
-                //{ text: "", colSpan:4},{},{},{},
               ],
             ]
           }
@@ -321,7 +319,6 @@ export class ReporteComision {
             margin: [0,0,0,0],
             body: [
               [
-                //{ text: "", colSpan:2},{},
                 { text: copias+
                         "Cc.p. "+nombre_control+". - "+nombres.control.cargo+"\n"+
                         "C.c.p. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo+"\n\n"+
