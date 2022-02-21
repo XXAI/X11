@@ -42,13 +42,15 @@ export class SaludService {
 
   getTrabajadorList(payload):Observable<any> {
       if(payload.reporte && payload.export_excel){
+        console.log("entro");
           return this.http.get<any>(this.url, {params:payload, responseType: 'blob' as 'json'});
+      }else{
+        return this.http.get<any>(this.url, {params: payload}).pipe(
+            map( response => {
+              return response;
+            })
+        );
       }
-      return this.http.get<any>(this.url, {params: payload}).pipe(
-          map( response => {
-            return response;
-          })
-      );
   }
 
   buscarCredencial(id:any, payload:any):Observable<any>{
@@ -59,8 +61,11 @@ export class SaludService {
     ));
   };
 
-  imprimirLoteCredencial(payload:any):Observable<any>{
-    return this.http.get<any>(this.url_imprimir_lote, {params:payload}).pipe(
+  imprimirLoteCredencial(id:any = null, payload:any){
+    payload.page = id;
+    payload.per_page = 100;
+    return this.http.get<any>(this.url_imprimir_lote, {params: payload}).pipe(
+    //return this.http.get<any>(this.url_imprimir_lote, {params:payload}).pipe(
       map( (response: any) => {        
         return response;
       }

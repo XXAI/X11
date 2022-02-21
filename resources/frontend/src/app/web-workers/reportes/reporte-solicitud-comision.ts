@@ -314,13 +314,7 @@ export class ReporteSolicitudComision {
             ]
           }
         });
-        
-        
-       
-
-
-       
-        return datos;
+       return datos;
       }
 
       

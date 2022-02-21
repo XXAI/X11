@@ -33,8 +33,18 @@
                             <button mat-raised-button color="accent" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Buscar
                             </button>
-                            <button mat-raised-button color="primary" style="margin-left: 10px;" *ngIf="permisoImpresion == true" (click)="imprimirCredencial()">
+                            <!--<button mat-raised-button color="primary" style="margin-left: 10px;" *ngIf="permisoImpresion == true" (click)="imprimirCredencial()">
                                 <mat-icon>print</mat-icon> Imprimir Lote
+                            </button>-->
+                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote">
+                                <mat-icon>print</mat-icon> Imprimir Lote
+                            </button>
+                            <mat-menu #menuLote="matMenu">
+                                <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirCredencial(null, i)">{{ (i + 1) }}</button>
+                            </mat-menu>
+
+                            <button mat-raised-button color="primary" (click)="imprimirListado()">
+                                <mat-icon>list</mat-icon> Imprimir Lista
                             </button>
                         </section>
                     </div>
@@ -119,9 +129,12 @@
                             <button mat-raised-button color="accent" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Aplicar
                             </button>
-                            <button mat-raised-button color="primary" style="margin-left: 10px;" *ngIf="permisoImpresion == true" (click)="imprimirCredencial()">
+                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote">
                                 <mat-icon>print</mat-icon> Imprimir Lote
                             </button>
+                            <mat-menu #menuLote="matMenu">
+                                <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirCredencial(null, i)">{{ (i + 1) }}</button>
+                            </mat-menu>
                         </div>
                     </div>
                 </mat-expansion-panel>
@@ -216,7 +229,7 @@
                                         <button mat-menu-item (click)="editar(row)"><mat-icon color="primary">edit</mat-icon>EDITAR</button>
                                         <div *ngIf="row.credencial != null">
                                             <div *ngIf="row.credencial.foto == 1">
-                                                <button mat-menu-item *ngIf="row.validado == 1 && row.actualizado == 1 &&  permisoImpresion == true" (click)="imprimirCredencial(row)"><mat-icon color="primary">print</mat-icon>IMPRIMIR</button>
+                                                <button mat-menu-item *ngIf="row.validado == 1 && row.actualizado == 1 &&  permisoImpresion == true" (click)="imprimirCredencial(row, null)"><mat-icon color="primary">print</mat-icon>IMPRIMIR</button>
                                             </div>
                                         </div>
 

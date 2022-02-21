@@ -67,6 +67,7 @@ export class ListaComponent implements OnInit {
   selectedItemIndex: number = -1;
 
   permisoImpresion:boolean = false;
+  paginas:any[] = [];
   
   statusIcon:any = {
     '1':'remove_circle', //inactivo
@@ -140,6 +141,7 @@ export class ListaComponent implements OnInit {
     this.loadFilterCatalogs();
   }
 
+  
   toggleReportPanel(){
     this.reportIncludeSigns = false;
     this.reportTitle = 'Listado de Personal Activo';
@@ -299,6 +301,7 @@ export class ListaComponent implements OnInit {
 
           this.dataSource = [];
           this.resultsLength = 0;
+          this.llenarPaginasLote(response.data.total);
           if(response.data.total > 0){
             this.dataSource = response.data.data;
             this.resultsLength = response.data.total;
@@ -326,6 +329,17 @@ export class ListaComponent implements OnInit {
       }
     );
     return event;
+  }
+
+  llenarPaginasLote(total)
+  {
+    let paginacion = Math.ceil(total / 100);
+    this.paginas = [];
+    let i:number = 1;
+    for(i; i<= paginacion; i++)
+    {
+      this.paginas.push(1);
+    }
   }
 
   loadFilterChips(data){
@@ -501,7 +515,7 @@ export class ListaComponent implements OnInit {
   }
 
 
-  imprimirCredencial(obj:any = null)
+  imprimirCredencial(obj:any = null, lote:number = null)
   {
     this.toggleReportPanel();
     this.isLoadingPDF = true;
@@ -537,7 +551,7 @@ export class ListaComponent implements OnInit {
       if(countFilter > 0){
         params.active_filter = true;
       }
-      this.saludService.imprimirLoteCredencial(params).subscribe(
+      this.saludService.imprimirLoteCredencial((lote + 1), params).subscribe(
         response =>{
           if(response.error) {
             this.error_pdf(response);
@@ -570,6 +584,50 @@ export class ListaComponent implements OnInit {
         }
       );
     }
+  }
+
+  imprimirListado()
+  {
+    let params:any = {};
+    let countFilter = 0;
+
+    let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','filter']);
+    if(appStoredData['searchQuery']){
+      params.query = appStoredData['searchQuery'];
+    }
+
+    for(let i in appStoredData['filter']){
+      if(appStoredData['filter'][i]){
+        if(i == 'clues'){
+          params[i] = appStoredData['filter'][i].clues;
+        }else if(i == 'cr'){
+          params[i] = appStoredData['filter'][i].cr;
+        }else{ //profesion y rama
+          params[i] = appStoredData['filter'][i].id;
+        }
+        countFilter++;
+      }
+    }
+
+    if(countFilter > 0){
+      params.active_filter = true;
+    }
+
+    params.reporte = true;
+    params.export_excel = true;
+
+    this.saludService.getTrabajadorList(params).subscribe(
+      response =>{
+        this.isLoading = false;
+        FileSaver.saveAs(response);
+        FileSaver.saveAs(response,'reporteListado');
+        console.log(response);
+      },
+      errorResponse =>{
+        console.log("error");
+        this.error_api(errorResponse);
+      });
+    
   }
 
   error_pdf(obj:any)

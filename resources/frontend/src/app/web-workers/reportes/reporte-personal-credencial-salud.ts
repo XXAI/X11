@@ -6,7 +6,7 @@ export class ReporteTrabajadorCredencialSalud{
     getDocumentDefinition(reportData:any) {
         //console.log("entro");
         //Variables Generales
-        
+        console.log(reportData);
         let config = reportData.config;
         let distrito:any[] = ['','I','II','III','IV','V', 'VI', 'VII', 'VIII','IX','X', 'I'];
         let region:any[] = ['','TUXTLA', "SCLC", "COMITAN", "VILLAFLORES", "PICHUCALCO", "PALENQUE", "TAPACHULA", "TONALA", "OCOSINGO", "MOTOZINTLA", "ESTATAL"];
@@ -102,9 +102,10 @@ export class ReporteTrabajadorCredencialSalud{
           //data.push(reportData.items);
           //data.push(reportData.items);
         }else{
-          data = reportData.items;
+          data = reportData.items.data;
         }
 
+   
 
         let iteraccion = 1;
         let bandera = 0;

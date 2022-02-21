@@ -5,13 +5,12 @@ import { LOGOS } from "../../logos";
 export class ReporteComision {
 
     getDocumentDefinition(reportData:any) {
-        //console.log("ONDE",reportData);
-        
-        //console.log(reportData);
-        //return;
+
         let comision = reportData.data;
         let datos_trabajador = reportData.data.trabajador;
-
+        console.log(datos_trabajador);
+        console.log("1");
+        console.log("_____________________________________________");
         let Origenfirmate = reportData.firmanteOrigen;
         let DestinoFirmante = reportData.firmanteDestino;
         let nombres = reportData.nombres;
@@ -33,18 +32,27 @@ export class ReporteComision {
 
         let elaboracion = nombres.elaboracion;
         let nombre_elaboracion = "";
+        
         console.log(elaboracion);
+        console.log("2");
+        console.log("_____________________________________________");
+        
         if(elaboracion != null)
         {
-          nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno;
+          nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno+" - ADMINISTRATIVO";
         }
-        let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
+        //let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
+        let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(2022,0,31));
 
         let mes_inicio = (parseInt(comision.fecha_inicio.substr(5,2)) - 1);
         let fecha_inicio =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision.fecha_inicio.substr(0,4), mes_inicio,comision.fecha_inicio.substr(8,2)));
         let mes_fin = (parseInt(comision.fecha_final.substr(5,2)) - 1);
         let fecha_fin =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision.fecha_final.substr(0,4), mes_fin,comision.fecha_final.substr(8,2)));
 
+        console.log("fechas");
+        console.log("3");
+        console.log("_____________________________________________");
+        
         let datos = {
           pageOrientation: 'portrait',
           pageSize: 'LETTER',
@@ -159,20 +167,6 @@ export class ReporteComision {
             }
         };
 
-        // datos.content.push({
-        //   layout: 'noBorders',
-        //   table: {
-        //     widths: ['*'],
-        //     margin: [0,0,0,0],
-        //     body: [
-        //       [
-        //         //{ text: "", colSpan:2},{},
-        //         { text: "\n\n2021, Año de la Independencia", style: "texto_independencia"},
-        //         //{ text: "", colSpan:4},{},{},{},
-        //       ],
-        //     ]
-        //   }
-        // });
         let firmante_origen = "";
         let cargo_origen = "";
         let firmante_destino = "";
@@ -190,6 +184,10 @@ export class ReporteComision {
           firmante_destino = obj_destino.nombre+" "+obj_destino.apellido_paterno+" "+obj_destino.apellido_materno;
           cargo_destino = DestinoFirmante.cargo;
         }
+
+        console.log("firmantes");
+        console.log("4");
+        console.log("_____________________________________________");
 
         datos.content.push({
           layout: 'noBorders',
@@ -231,23 +229,30 @@ export class ReporteComision {
             body: [
               [
                 //{ text: "\nC.FERMIN SERVANDO MARTINEZ MARTINEZ\n M01006 MEDICO GENERAL 'A' (CSSSA004764)\n CENTRO DE SALUD RURAL 1 NÚCLEO BÁSICO ROBERTO BARRIOS", style: "texto_depto"},
-                { text: "\n\nC. "+datos_trabajador.nombre+" "+datos_trabajador.apellido_paterno+" "+datos_trabajador.apellido_materno+"\n"+
+                /*{ text: "\n\nC. "+datos_trabajador.nombre+" "+datos_trabajador.apellido_paterno+" "+datos_trabajador.apellido_materno+"\n"+
                 datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+"\n"+
-                "("+datos_trabajador.datoslaboralesnomina.cr.clues+") "+datos_trabajador.datoslaboralesnomina.cr.descripcion, style: "texto_depto"},
+                "("+datos_trabajador.datoslaboralesnomina.cr.clues+") "+datos_trabajador.datoslaboralesnomina.cr.descripcion, style: "texto_depto"},*/
               ],
             ]
           }
         });
 
-        let contenido = "";
-        let ur = datos_trabajador.rel_datos_laborales_nomina.ur;
+        console.log("("+datos_trabajador.datoslaboralesnomina.cr.clues+") "+datos_trabajador.datoslaboralesnomina.cr.descripcion);
+        console.log("5");
+        console.log("_____________________________________________");
 
+        let contenido = "";
+        let ur = datos_trabajador.datoslaboralesnomina.ur;
+
+        console.log(ur);
+        console.log("6");
+        console.log("_____________________________________________");
         if(ur == "CON_CAR" || ur == "CON_INS" || ur == "CON_OFI" || ur == "CON_UNI" || ur == "EST_CH" || ur == "EST_MMI" || ur == "EST_PAC" || ur == "X00" || ur == "HON")
         {
-          contenido = "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
-          datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
-          "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
-          datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+") "+
+          contenido = "\n\n\n\nPOR NECESIDADES DEL SERVICIO, ME PERMITO COMUNICARLE QUE, A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DE "+
+          datos_trabajador.datoslaboralesnomina.cr.descripcion_actualizada+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
+          "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", A "+
+          datos_trabajador.datoslaborales.cr_fisico.descripcion_actualizada+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+") "+
           " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
           "DEBIÉNDOSE PRESENTAR CON EL C. "+firmante_destino+", "+
           "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
@@ -255,10 +260,10 @@ export class ReporteComision {
           "CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN.\n\n"+
           "SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.";
         }else{
-          contenido= "\n\n\n\nPOR NECESIDADES DEL SERVICIO, CIB FUNDAMENTO EN EL ARTÍCULO 149 DE LAS CONDICIONES GENERALES DE TRABAJO DE LA SECRETARIA DE SALUD, ME PERMITO COMUNICARLE QUE A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DEL "+
-          datos_trabajador.datoslaboralesnomina.cr.descripcion+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
-          "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", AL "+
-          datos_trabajador.datoslaborales.cr_fisico.descripcion+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+"); CON PLAZA CLAVE BASÉ: "+datos_trabajador.datoslaboralesnomina.clave_presupuestal+
+          contenido= "\n\n\n\nPOR NECESIDADES DEL SERVICIO, CIB FUNDAMENTO EN EL ARTÍCULO 149 DE LAS CONDICIONES GENERALES DE TRABAJO DE LA SECRETARIA DE SALUD, ME PERMITO COMUNICARLE QUE A PARTIR DEL "+fecha_inicio.toUpperCase()+" AL "+fecha_fin.toUpperCase()+", SE LE COMISIONA TEMPORALMENTE DE "+
+          datos_trabajador.datoslaboralesnomina.cr.descripcion_actualizada+" ("+datos_trabajador.datoslaboralesnomina.cr.clues+"); DEPENDIENTE DE LA "+ 
+          "JURISDICCIÓN SANITARIA No. "+this.convertirJurisdiccion(datos_trabajador.datoslaboralesnomina.clues.cve_jurisdiccion)+", A "+
+          datos_trabajador.datoslaborales.cr_fisico.descripcion_actualizada+" ("+datos_trabajador.datoslaborales.cr_fisico.clues+"); CON PLAZA CLAVE BASÉ: "+datos_trabajador.datoslaboralesnomina.clave_presupuestal+
           " CON CÓDIGO FUNCIONAL "+datos_trabajador.datoslaboralesnomina.codigo_puesto_id+" "+datos_trabajador.datoslaboralesnomina.codigo.descripcion+", "+
           "DEBIÉNDOSE PRESENTAR CON EL C. "+firmante_destino+", "+
           "QUIEN LE INDICA SUS FUNCIONES Y JORNADAS LABORALES A DESARROLLAR. \n\n"+
@@ -266,6 +271,11 @@ export class ReporteComision {
           " EN SU ARTÍCULO 151."+"\n\n"+"CABE HACER MENCIÓN, QUE LA CONTINUIDAD DE LA PRÓRROGA DE COMISIÓN, NO LE DA DERECHO DE ANTIGÜEDAD, PARA CAMBIO DE ADSCRIPCIÓN, DONDE ACTUALMENTE SE ENCUENTRA COMISIONADO.\n\n"+
           "SIN OTRO PARTICULAR, LE ENVIÓ UN CORDIAL SALUDO.";;
         }
+
+        console.log(contenido);
+        console.log("6");
+        console.log("_____________________________________________");
+
         datos.content.push({
           layout: 'noBorders',
           table: {
@@ -331,7 +341,7 @@ export class ReporteComision {
           }
         });
 
-        
+        console.log(datos);
         return datos;
       }
 

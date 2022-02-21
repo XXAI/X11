@@ -188,16 +188,22 @@ export class ReporteTrabajadorReincorporacion {
           }*/
           let jurisdiccion = "";
           let cabecera = "";
-          if(element.rel_trabajador_reincorporacion.cr_origen.clues.cve_jurisdiccion != 11)
+          /*if(element.rel_trabajador_reincorporacion.cr_origen.clues.cve_jurisdiccion != 11)
           {
-            cabecera = this.convertirJurisdiccionLetra(element.rel_trabajador_reincorporacion.cr_origen.clues.cve_jurisdiccion)+", ";
-          }
+            if(element.rel_trabajador_reincorporacion.cr_destino.cr != element.rel_trabajador_reincorporacion.cr_origen.cr_dependencia)
+            {
+              cabecera = this.convertirJurisdiccionLetra(element.rel_trabajador_reincorporacion.cr_origen.clues.cve_jurisdiccion)+", ";
+            }
+          }*/
           
           if(element.rel_trabajador_reincorporacion.cr_origen.cr != element.rel_trabajador_reincorporacion.cr_origen.cr_dependencia)
           {
             jurisdiccion = ", dependiente de "+ element.rel_trabajador_reincorporacion.cr_origen.dependencia.descripcion_actualizada;
           }
-          dato_desde = element.rel_trabajador_reincorporacion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_reincorporacion.cr_origen.clues.clues+") "+jurisdiccion+", "+cabecera;
+
+          //console.log(element.rel_trabajador_reincorporacion.cr_destino.cr +"-- "+element.rel_trabajador_reincorporacion.cr_origen.cr_dependencia);
+          dato_desde = element.rel_trabajador_reincorporacion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_reincorporacion.cr_origen.clues.clues+") "+jurisdiccion+" "+cabecera+",";
+          //dato_desde = element.rel_trabajador_reincorporacion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_reincorporacion.cr_origen.clues.clues+") "+jurisdiccion+", "+cabecera;
           //dato_hacia = element.rel_trabajador_reincorporacion.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_reincorporacion.cr_destino.clues.clues+") "+dato_hacia;
           
           let nombre_responsable = "";
@@ -210,7 +216,7 @@ export class ReporteTrabajadorReincorporacion {
           
           }else{
             let responsable = element.rel_trabajador_reincorporacion.cr_origen.dependencia.directorio_responsable.responsable;
-            nombre_responsable = "DR(A). "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_reincorporacion.cr_destino.dependencia.directorio_responsable.cargo;
+            nombre_responsable = "DR(A). "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", JEFE JURISDICCIONAL";
             nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_reincorporacion.cr_destino.dependencia.directorio_responsable.cargo;
           }  
           let datos_nominales = datos_trabajador.rel_datos_laborales_nomina;
@@ -243,7 +249,7 @@ export class ReporteTrabajadorReincorporacion {
             contenido = "\n\nPor necesidades del servicio y con fundamento en el artículo 134, 47 fracción X de la Ley federal del trabajo, 133 fracción i, vi y demás "+
             "rElativas y aplicables de las condiciones generales de trabajo de la secretaría de salud, tengo a bien comunicarle que deberá de reincorporarse al dia siguiente de notificada y/o recibido el presente documento, "+
             "a su lugar de adscripción, siendo este "+dato_desde+" debiendose presentar con la "+nombre_responsable+
-            ", quien le indicará su jornada laboral y funciones a desempeñar. (contrato) \n\n"+
+            ", quien le indicará su jornada laboral y funciones a desempeñar. \n\n"+
             "En el entendido que de no presentarse, se procederá en términos de la legislación vigente en la materia.\n\n"+
             "Sin otro particular, le envío un cordial saludo.";
           }

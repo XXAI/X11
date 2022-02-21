@@ -20,6 +20,8 @@ use App\Models\Cr;
 use App\Models\Clues;
 use App\Models\User;
 
+use App\Exports\DevReportExport;
+
 
 class CredencializacionController extends Controller
 {
@@ -99,7 +101,25 @@ class CredencializacionController extends Controller
 
             $trabajador = $trabajador->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null )")
             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where (cr_fisico_id is null or clues_adscripcion_fisica is null))");
-            if(isset($parametros['page'])){
+            
+            if(isset($parametros['export_excel']) && $parametros['export_excel']){
+                ini_set('memory_limit', '-1');
+                
+                             $trabajadorx = Trabajador::whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )");        
+                             $trabajadorx = $this->aplicarFiltrosIndex($trabajadorx, $parametros, $access);
+                             $trabajadorx = $trabajadorx->select(
+                                 \DB::Raw("concat(nombre,' ', apellido_paterno,' ',apellido_materno) as nombre"), "rfc", "curp",
+                                 \DB::Raw("(select clues from catalogo_cr where cr=(select cr_fisico_id from rel_trabajador_datos_laborales where trabajador_id=trabajador.id)) as clues"),
+                                 \DB::Raw("(select descripcion_actualizada from catalogo_cr where cr=(select cr_fisico_id from rel_trabajador_datos_laborales where trabajador_id=trabajador.id)) as nombre_unidad"));
+                             $trabajadorx = $trabajadorx->get();
+                             $columnas = array_keys(collect($trabajadorx[0])->toArray());
+
+                $filename = "LISTADO_CREDENCIALIZACION";
+                
+                //return $columnas;
+                return (new DevReportExport($trabajadorx,$columnas))->download('hola.xlsx');
+                
+            }else if(isset($parametros['page'])){
                 $trabajador = $trabajador->orderBy('nombre');
 
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
@@ -334,8 +354,15 @@ class CredencializacionController extends Controller
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id is null)")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )");
                             
-                            
+            $parametros['imprimible'] = 1;
+            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);       
+            if(isset($parametros['page'])){
+                $trabajador = $trabajador->orderBy('nombre');
 
+                $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
+    
+                $trabajador = $trabajador->paginate($resultadosPorPagina);
+            } 
             $permison_individual = false;                
             /*if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
@@ -357,18 +384,17 @@ class CredencializacionController extends Controller
                     $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
                 });
             }*/
-            $parametros['imprimible'] = 1;
-            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);
-            $trabajador = $trabajador->get();
+            
+            //$trabajador = $trabajador->get();
 
             $formato = base64_encode(\Storage::get('public\\FromatoCredencial\\default.jpg'));
             
             $encriptacion = "ubp((%kU0";
             foreach ($trabajador as $key => $value) {
-                $trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$value->id.'.'.$value->credencial->extension));
+                //$trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$value->id.'.'.$value->credencial->extension));
+                $trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\1.jpg'));
                 
                 $trabajador[$key]->encriptar = encrypt($trabajador[$key]->rfc, $encriptacion);
-                //$trabajador[$key]->decriptar = decrypt($trabajador[$key]->encriptar, $encriptacion); 
             }
             
         return response()->json(['data'=>$trabajador, 'formato'=>$formato],HttpResponse::HTTP_OK);
