@@ -36,14 +36,14 @@
                             <!--<button mat-raised-button color="primary" style="margin-left: 10px;" *ngIf="permisoImpresion == true" (click)="imprimirCredencial()">
                                 <mat-icon>print</mat-icon> Imprimir Lote
                             </button>-->
-                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote">
+                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote" *ngIf="permisoImpresion == true">
                                 <mat-icon>print</mat-icon> Imprimir Lote
                             </button>
                             <mat-menu #menuLote="matMenu">
                                 <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirCredencial(null, i)">{{ (i + 1) }}</button>
                             </mat-menu>
 
-                            <button mat-raised-button color="primary" (click)="imprimirListado()">
+                            <button mat-raised-button color="primary" (click)="imprimirListado()" *ngIf="permisoImpresion == true">
                                 <mat-icon>list</mat-icon> Imprimir Lista
                             </button>
                         </section>
@@ -129,12 +129,15 @@
                             <button mat-raised-button color="accent" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Aplicar
                             </button>
-                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote">
+                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote" *ngIf="permisoImpresion == true">
                                 <mat-icon>print</mat-icon> Imprimir Lote
                             </button>
                             <mat-menu #menuLote="matMenu">
                                 <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirCredencial(null, i)">{{ (i + 1) }}</button>
                             </mat-menu>
+                            <button mat-raised-button color="primary" (click)="imprimirListado()" *ngIf="permisoImpresion == true">
+                                <mat-icon>list</mat-icon> Imprimir Lista
+                            </button>
                         </div>
                     </div>
                 </mat-expansion-panel>
