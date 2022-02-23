@@ -35,8 +35,7 @@ export class ReporteTrabajadorReincorporacion {
         }
 
         
-        let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
-
+        
         let datos = {
           pageOrientation: 'portrait',
           pageSize: 'LETTER',
@@ -84,7 +83,7 @@ export class ReporteTrabajadorReincorporacion {
                   //     alignment: 'center'
                   // },
                   {
-                    text: fecha_hoy.toString(),
+                    text: /*fecha_hoy.toString()*/"",
                     alignment:'right',
                     fontSize: 7,
                 }
@@ -236,6 +235,11 @@ export class ReporteTrabajadorReincorporacion {
           {
             denominacion = "REGULARIZADO";
           }*/
+          let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
+          if(element.rel_trabajador_reincorporacion.fecha_oficio != null)
+          {
+            fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_reincorporacion.fecha_oficio).toLowerCase();
+          }
 
           if(ur == "CON_CAR" || ur == "CON_INS" || ur == "CON_OFI" || ur == "CON_UNI" || ur == "EST_CH" || ur == "EST_MMI" || ur == "EST_PAC" || ur == "X00" || ur == "HON")
           {
