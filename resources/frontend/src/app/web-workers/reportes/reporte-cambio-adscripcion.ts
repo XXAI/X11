@@ -192,8 +192,13 @@ export class ReporteTrabajadorCambioAdscripcion {
             if(element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr){
               dato_hacia = " dependiente de "+element.rel_trabajador_adscripcion.cr_destino.dependencia.descripcion_actualizada;
             }
-            let datos_origen = element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
-            copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
+            let datos_origen;
+            if(element.rel_trabajador_adscripcion.cr_origen.directorio_responsable != null)
+            {
+              datos_origen = element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
+              element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
+              copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
+            }
           }
 
           dato_desde = element.rel_trabajador_adscripcion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_origen.clues.clues+") "+dato_desde;
@@ -207,11 +212,12 @@ export class ReporteTrabajadorCambioAdscripcion {
             nombre_responsable = "C. "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.cargo;
             nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.cargo;
           
-          }else{
+          }else if(element.rel_trabajador_adscripcion.cr_destino.dependencia.clues.startsWith('CSSSA')){
             let responsable = element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.responsable;
             nombre_responsable = "DR(A). "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.cargo;
             nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.cargo;
-          }  
+          }
+
           let jurisdiccion_origen = "";
           let jurisdiccion_destino = "";
           let datos_nominales = datos_trabajador.rel_datos_laborales_nomina;
