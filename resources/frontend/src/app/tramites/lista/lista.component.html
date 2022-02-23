@@ -152,7 +152,7 @@
                                             <button mat-menu-item (click)="cambioEstatus(row.id, 3, 2)">DENEGAR</button>
                                         </mat-menu>
                                         <div *ngIf="row.estatus_validacion != 0">
-                                            <button mat-raised-button color="accent" (click)="imprimirComprobante(row.id)" [disabled]="disabledDownload">
+                                            <button mat-raised-button color="accent" (click)="imprimirComprobante(row.trabajador.id)" [disabled]="disabledDownload">
                                                 <mat-icon>download</mat-icon>
                                             </button>
                                         </div>

@@ -391,8 +391,8 @@ class CredencializacionController extends Controller
             
             $encriptacion = "ubp((%kU0";
             foreach ($trabajador as $key => $value) {
-                //$trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$value->id.'.'.$value->credencial->extension));
-                $trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\1.jpg'));
+                $trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$value->id.'.'.$value->credencial->extension));
+                //$trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\1.jpg'));
                 
                 $trabajador[$key]->encriptar = encrypt($trabajador[$key]->rfc, $encriptacion);
             }

@@ -120,6 +120,9 @@ class Trabajador extends Model
         return $this->hasOne('App\Models\RelAdscripcion')->where("activo", 1);
     }
     
+    public function rel_trabajador_tramite(){
+        return $this->hasOne('App\Models\Tramites');//->where("activo", 1);
+    }
     public function rel_trabajador_reincorporacion(){
         return $this->hasOne('App\Models\RelReincorporacion');
     }

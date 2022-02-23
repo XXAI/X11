@@ -164,6 +164,7 @@ class TramitesController extends Controller
             $object->tipo_tramite_id = 1;
             //$object->estatus = 1;
             
+            
             $trabajador = Trabajador::with("datoslaborales", "datoslaboralesnomina")->find($inputs['trabajador']);
             $object->cr_origen = $trabajador->datoslaboralesnomina->cr_nomina_id;
             $object->cr_destino = $trabajador->datoslaborales->cr_fisico_id;
@@ -184,16 +185,17 @@ class TramitesController extends Controller
             }else{
                 $cr_firmante_destino = $trabajador->datoslaborales->cr_fisico_id;
                 $cr_responsable_destino = Directorio::where("tipo_responsable_id",1)->where("cr", $cr_firmante_destino)->first();
-
-                if($cr_responsable_destino->trabajador_id == $trabajador->id){
+                //DB::rollback();
+                //return response()->json($cr_firmante_destino,HttpResponse::HTTP_OK);
+                /*if($cr_responsable_destino->trabajador_id == $trabajador->id){
                     $cr_destino = Cr::where('cr',$trabajador->datoslaborales->cr_fisico_id)->first();
                     $desglose_area = explode('.',$cr_destino->area);
 
                     $cr_firma_destino = Cr::where('clues',$cr_destino->clues)->where('area',$desglose_area[0])->first();
                     $object->cr_firmante_destino = $cr_firma_destino->cr;
-                }else{
+                }else{*/
                     $object->cr_firmante_destino = $cr_firmante_destino;
-                }
+                //}
             }
             
             $fecha_actual = Carbon::now();
@@ -245,11 +247,21 @@ class TramitesController extends Controller
         try{
             $params = $request->all();
 
-            $tramite = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina")->find($id);
+            //$tramite = Tramites::with("trabajador.datoslaborales", "trabajador.datoslaboralesnomina")->find($id);
+            $tramite = Trabajador::with("datoslaborales", 
+                                        "datoslaboralesnomina",
+                                        "rel_trabajador_tramite.cr_origen.directorioResponsable.responsable",
+                                        "rel_trabajador_tramite.cr_origen.dependencia.directorioResponsable.responsable",
+                                        "rel_trabajador_tramite.cr_destino.dependencia.directorioResponsable.responsable",
+                                        "rel_trabajador_tramite.cr_destino.directorioResponsable.responsable"
+                                        )
+            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_tramites)")
+            ->find($id);
 
             $firmante_origen = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", $tramite->cr_firmante_origen)->first();
             $firmante_destino = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", $tramite->cr_firmante_destino)->first();
             //Copias y validaciones
+            
             //Control del pago
             $control = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700250010")->first();
             //sistematizacion

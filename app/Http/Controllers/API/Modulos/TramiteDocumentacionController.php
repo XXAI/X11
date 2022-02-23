@@ -297,7 +297,7 @@ class TramiteDocumentacionController extends Controller
                 
                 $documentacion->save();
             }else{
-                return response()->json(['error' => "Formato de correo incorrento, favor de verificar" ], HttpResponse::HTTP_CONFLICT);
+                return response()->json(['error' => "Formato de archivo incorrento,extensión pdf en minusculas, favor de verificar" ], HttpResponse::HTTP_CONFLICT);
             }
              
             DB::commit();
