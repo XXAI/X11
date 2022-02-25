@@ -173,3 +173,12 @@ th {
 mat-card-title {
     color: brown;
 }
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.alineacion {
+    margin-top: 8px;
+}

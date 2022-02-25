@@ -60,11 +60,18 @@ class TrabajadorServiceController extends Controller
             //return response()->json($id,HttpResponse::HTTP_CONFLICT);
             $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
 
+            //return @getimagesize(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
             if($trabajador->credencial != null)
             {
                 if($trabajador->credencial->foto == 1)
                 {
-                    $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
+                    if(\Storage::exists('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension))
+                    {
+                        $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
+                    }else{
+                        $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\default.jpg'));
+                    }
+                    
                 }
             }
             return response()->json($trabajador,HttpResponse::HTTP_OK);

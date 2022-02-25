@@ -1,6 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { MatTable } from '@angular/material/table';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { TrabajadorService } from '../trabajador.service';
 import { SharedService } from '../../shared/shared.service';
 import { Router } from '@angular/router';
@@ -34,6 +36,9 @@ export class VerComponent implements OnInit {
     public dialog: MatDialog, 
   ) { }
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatTable) usersTable: MatTable<any>;
+
   dataTrabajador: any;
   mediaSize: string;
   disabledDownload:boolean = false;
@@ -58,14 +63,21 @@ export class VerComponent implements OnInit {
   validadorEstudios:boolean = false;
   datosNominales:any;
 
+  pageEvent: PageEvent;
+  pageSize: number = 5;
+  resultsLength: number = 0;
+  currentPage: number = 0;
+  selectedItemIndex: number = -1;
+  dataAsistencia:any = [];
+
   verInfoExpediente:boolean = true;
 
   //Para el listado de las asistencias
   isLoadingAsistencia:boolean = false;
   asistenciasCargadas:boolean = false;
-  verifData:any;
+  verifData:any = { id:0, faltas:0, retardos:0 };
   fechaInicioAsist: any;
-  fechaFinAsist: any;
+  fechaFinAsist: any = new Date().toISOString();
   displayedScheduleColumns: string[] = ['dia','fecha','hora_entrada','hora_salida','justificado'];
   arregloTipoTramite: string[] = ['', 'Comisión'];
   assistSource: any = [];
@@ -99,6 +111,9 @@ export class VerComponent implements OnInit {
     }else{
       this.puedeVerAsistencias = false;
     }*/
+    let dia_actual = new Date();
+    let primer_dia = new Date(dia_actual.getFullYear(), dia_actual.getMonth(),1);
+    this.fechaInicioAsist = primer_dia.toISOString();
     this.cluesAsistencia = this.data.cluesAsistencia;
    
     if(this.data.puedeEditar){
@@ -108,6 +123,13 @@ export class VerComponent implements OnInit {
     this.loadDataTrabajador(this.data.id);
   }
 
+  public verAsistencia(event?:PageEvent){
+    //rellenarAsistencia(page:number, datos:any)
+    console.log(event);
+    let page = event.pageIndex;
+    this.rellenarAsistencia(page);
+    return event;
+  }
   
   loadDataTrabajador(id:any){
     let params = {};
@@ -146,7 +168,7 @@ export class VerComponent implements OnInit {
         this.dataSource = this.dataTrabajador.escolaridad;
         this.verTramites(response.id);
         this.Asitencia = (response.actualizado == 0)?false:true;
-        console.log(this.Asitencia);
+        
 
         this.datosNominales = this.dataTrabajador.rel_datos_laborales_nomina;
         
@@ -366,15 +388,25 @@ export class VerComponent implements OnInit {
 
   dataTabChange(event){
     
-    if(event.index == 2 && this.puedeVerAsistencias){
+    /*if(event.index == 2 && this.puedeVerAsistencias){
       //console.log('corriendo listado de asistencia');
       this.cargarAssistencias(this.dataTrabajador.clave_credencial);
-    }
+    }*/
   }
 
   buscarFechasAssitencia(){
-    let fecha_inicio = this.fechaInicioAsist.toISOString().slice(0,10);
-    let fecha_fin = this.fechaFinAsist.toISOString().slice(0,10);
+    console.log(this.fechaInicioAsist);
+    let fecha_inicio:any;
+    let fecha_fin:any;
+    if(this.fechaInicioAsist.toISOString())
+    {
+      fecha_inicio = this.fechaInicioAsist.toISOString().slice(0,10);
+      fecha_fin = this.fechaFinAsist.toISOString().slice(0,10);
+    }else
+    {
+      fecha_inicio = this.fechaInicioAsist.slice(0,10);
+      fecha_fin = this.fechaFinAsist.slice(0,10);  
+    }
     this.cargarAssistencias(this.dataTrabajador.clave_credencial, fecha_inicio, fecha_fin);
   }
 
@@ -399,12 +431,14 @@ export class VerComponent implements OnInit {
     this.trabajadorService.getDatosAsistencia(payload).subscribe(
       response => {
         //console.log(response);
-        let conversionAsistencia = [];
+        
 
-        for(let i in response.data){
+        /*for(let i in response.data){
           conversionAsistencia.push(response.data[i]);
         }
-        this.assistSource = conversionAsistencia;
+        this.assistSource = conversionAsistencia;*/
+        this.dataAsistencia = response.data;
+        this.rellenarAsistencia(0);
         
         let startingDate = new Date(response.fecha_inicial+'T00:00:00');
         console.log(startingDate);
@@ -426,6 +460,24 @@ export class VerComponent implements OnInit {
         this.sharedService.showSnackBar('Error al intentar recuperar datos de asistencia', null, 4000);
       }
     );
+  }
+
+  rellenarAsistencia(page:number)
+  {
+    let conversionAsistencia = [];
+    let tamano = 0;
+    let bandera = 1;
+    let inicio = page * 5;
+    for(let i in this.dataAsistencia){
+      if(bandera < 6 && inicio <= tamano)
+      {
+        conversionAsistencia.push(this.dataAsistencia[i]);
+        bandera++;
+      }
+      tamano++;
+    }
+    this.resultsLength = tamano;
+    this.assistSource = conversionAsistencia;
   }
 
   reporteAsistencias(){

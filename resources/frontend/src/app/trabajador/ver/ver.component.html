@@ -15,6 +15,7 @@
             <div fxFlex="100" fxFlex.xs="50">
                 <h1 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}</h1>
                 <h2 style="margin-bottom:0px; text-shadow: 1px 1px #AAAAAA;">{{ (dataTrabajador.rel_datos_laborales.cr_fisico)?dataTrabajador.rel_datos_laborales.cr_fisico.descripcion:'CR físico no asignado' }}</h2>
+
                 <mat-chip-list aria-label="Fish selection">
                     <mat-chip color="primary" [selected]="dataTrabajador.validado == 1">
                         <mat-icon *ngIf="dataTrabajador.validado">verified_user</mat-icon>{{(dataTrabajador.validado)?' Validado':'No Validado'}}</mat-chip>
@@ -425,7 +426,7 @@
                         </div>
                     </mat-tab>
                     <!--<mat-tab *ngIf="pestanaTramites">-->
-                    <mat-tab *ngIf="true">
+                    <mat-tab *ngIf="false">
                         <!--mat-tab *ngIf="false"-->
                         <ng-template mat-tab-label>
                             <mat-icon class="example-tab-icon">file_present</mat-icon>

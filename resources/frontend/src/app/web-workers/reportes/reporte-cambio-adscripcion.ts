@@ -57,7 +57,7 @@ export class ReporteTrabajadorCambioAdscripcion {
                 {
                     margin: [10, 0, 0, 0],
                     // text: 'SECRETARÍA DE SALUD\n'+reportData.config.title,
-                    text: '\n"2022, AÑO DE RICARDO FLORES MAGÓN"',
+                    text: '\n"2022, AÑO DE RICARDO FLORES MAGÓN, PRECURSOR DE LA REVOLUCIÓN MEXICANA"',
 
                     bold: false,
                     fontSize: 9,
