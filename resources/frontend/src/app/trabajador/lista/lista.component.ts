@@ -611,8 +611,8 @@ export class ListaComponent implements OnInit {
     if(this.mediaSize == 'lg'){
       configDialog = {
         maxWidth: '100vw',
-        maxHeight: '90vh',
-        height: '600px',
+        maxHeight: '91vh',
+        height: '620px',
         width: '100%',
         data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
       }
@@ -628,15 +628,15 @@ export class ListaComponent implements OnInit {
       configDialog = {
         maxWidth: '100vw',
         maxHeight: '100vh',
-        height: '70%',
+        height: '72%',
         width: '100%',
         data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize, cluesAsistencia: this.cluesAsistencia}
       };
     }else{
       configDialog = {
         width: '99%',
-        maxHeight: '90vh',
-        height: '600px',
+        maxHeight: '91vh',
+        height: '620px',
         data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
       }
     }

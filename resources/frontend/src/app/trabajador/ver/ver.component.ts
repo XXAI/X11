@@ -42,7 +42,7 @@ export class VerComponent implements OnInit {
   dataTrabajador: any;
   mediaSize: string;
   disabledDownload:boolean = false;
-
+  cargadoFechas:boolean = false;
   cluesAsistencia = [];
 
   datosCredencial:any;
@@ -56,7 +56,7 @@ export class VerComponent implements OnInit {
   dataTramites = [];//[{tramite:'COMISIÓN', periodo:'---', acuse:'---', estatus:1}];
   displayedColumns: string[] = ['institucion','grado','descripcion','cedula']; //'Agente',
   displayedColumnsTramite: string[] = ['tramite','periodo', 'archivo', 'estatus']; //'Agente',
-  estatusDocumentacion:string[] = ['', 'Enviado','Rechazado', 'En Validación', "Rechazado", "Validado"];
+  estatusDocumentacion:string[] = ['', 'ENVIADO','RECHAZADO', 'EN VALIDACIÓN', "RECHAZADO", "VALIDADO"];
   estatusChip:number = 0;
   navTabSelected:number = 0;
   pestanaTramites:boolean = false;
@@ -77,7 +77,7 @@ export class VerComponent implements OnInit {
   asistenciasCargadas:boolean = false;
   verifData:any = { id:0, faltas:0, retardos:0 };
   fechaInicioAsist: any;
-  fechaFinAsist: any = new Date().toISOString();
+  fechaFinAsist: any;
   displayedScheduleColumns: string[] = ['dia','fecha','hora_entrada','hora_salida','justificado'];
   arregloTipoTramite: string[] = ['', 'Comisión'];
   assistSource: any = [];
@@ -111,9 +111,12 @@ export class VerComponent implements OnInit {
     }else{
       this.puedeVerAsistencias = false;
     }*/
-    let dia_actual = new Date();
-    let primer_dia = new Date(dia_actual.getFullYear(), dia_actual.getMonth(),1);
-    this.fechaInicioAsist = primer_dia.toISOString();
+    let resta_dias = new Date();
+    resta_dias.setDate(resta_dias.getDate() - 5);
+    
+    this.fechaInicioAsist = resta_dias.toISOString();
+    this.fechaFinAsist = new Date().toISOString();
+  
     this.cluesAsistencia = this.data.cluesAsistencia;
    
     if(this.data.puedeEditar){
@@ -388,17 +391,18 @@ export class VerComponent implements OnInit {
 
   dataTabChange(event){
     
-    /*if(event.index == 2 && this.puedeVerAsistencias){
+    if(event.index == 2 && this.puedeVerAsistencias && this.cargadoFechas == false){
       //console.log('corriendo listado de asistencia');
-      this.cargarAssistencias(this.dataTrabajador.clave_credencial);
-    }*/
+      this.cargadoFechas = true;
+      this.cargarAssistencias(this.dataTrabajador.clave_credencial, this.fechaInicioAsist, this.fechaFinAsist);
+    }
   }
 
   buscarFechasAssitencia(){
-    console.log(this.fechaInicioAsist);
+    console.log(typeof this.fechaInicioAsist);
     let fecha_inicio:any;
     let fecha_fin:any;
-    if(this.fechaInicioAsist.toISOString())
+    if(typeof this.fechaInicioAsist != "string")
     {
       fecha_inicio = this.fechaInicioAsist.toISOString().slice(0,10);
       fecha_fin = this.fechaFinAsist.toISOString().slice(0,10);
@@ -422,7 +426,15 @@ export class VerComponent implements OnInit {
     if(fecha_inicial){
       payload.fecha_inicio = fecha_inicial;
       payload.fecha_fin = fecha_final;
-    }
+    }/*else{
+      let fecha_actual = new Date();
+      let resta_dias = new Date();
+      resta_dias.setDate(resta_dias.getDate() - 5);
+      payload.fecha_inicio = resta_dias.toISOString().slice(0,10);
+      payload.fecha_fin = fecha_actual.toISOString().slice(0,10);
+    
+    }*/
+    console.log(payload);
 
     this.isLoadingAsistencia = true;
     this.assistSource = [];

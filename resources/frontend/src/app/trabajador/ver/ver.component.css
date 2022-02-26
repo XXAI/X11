@@ -135,6 +135,9 @@ th {
     .mobile-pc {
         display: none;
     }
+    .mobile {
+        width: 100%;
+    }
 }
 
 .chip-red {
@@ -148,8 +151,9 @@ th {
 }
 
 .chip-pause {
-    background-color: cadetblue;
-    color: white;
+    /*background-color: cadetblue;
+    color: white;*/
+    color: cadetblue;
 }
 
 .chip-green {
@@ -181,4 +185,12 @@ mat-card-title {
 
 .alineacion {
     margin-top: 8px;
+}
+
+.error {
+    color: red;
+}
+
+.correcto {
+    color: darkgreen;
 }
