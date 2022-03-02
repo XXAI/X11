@@ -8,7 +8,7 @@ export class ReporteTrabajadorCambioAdscripcion {
           
         let data = reportData.items;
         let nombres = reportData.responsable;
-        
+        let configuracion = reportData.config;
         let director = nombres.direccion_admon.responsable;
         let nombre_director = director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno;
         
@@ -70,7 +70,6 @@ export class ReporteTrabajadorCambioAdscripcion {
             ]
           },
           footer: function(currentPage, pageCount) { 
-            //return 'Página ' + currentPage.toString() + ' de ' + pageCount; 
             return {
               margin: [30, 20, 30, 0],
               columns: [
@@ -79,12 +78,6 @@ export class ReporteTrabajadorCambioAdscripcion {
                       alignment:'left',
                       fontSize: 7,
                   },
-                  // {
-                  //     margin: [10, 0, 0, 0],
-                  //     text: 'Página ' + currentPage.toString() + ' de ' + pageCount,
-                  //     fontSize: 7,
-                  //     alignment: 'center'
-                  // },
                   {
                     text: fecha_hoy.toString(),
                     alignment:'right',
@@ -162,164 +155,293 @@ export class ReporteTrabajadorCambioAdscripcion {
           let dato_hacia = "";
           let jurisdiccion_igual = "";
           let copia_dependencia = "";
-          console.log(element);
-          if(element.rel_trabajador_adscripcion.fecha_oficio != null)
-          {
-            fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_oficio).toLowerCase();
-          }
           
-          console.log(iteracciones);
-          
-          if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia == element.rel_trabajador_adscripcion.cr_destino.cr_dependencia)
+          if(configuracion.externo)
           {
-            if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr )
+            if(element.fecha_oficio != null)
             {
-              jurisdiccion_igual = " ambas dependientes de "+element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada+", ";
-            }else{
-              if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr)
+              fecha_hoy = this.convertirFechaTexto(element.fecha_oficio).toLowerCase();
+            }
+            console.log(element);
+            /*if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia == element.rel_trabajador_adscripcion.cr_destino.cr_dependencia)
+            {
+              if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr )
               {
+                jurisdiccion_igual = " ambas dependientes de "+element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada+", ";
+              }else{
+                if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr)
+                {
+                  dato_desde =" dependiente de "+ element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada;
+                }
+                if(element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr){
+                  dato_hacia = " dependiente de la misma jurisdicción";
+                }
+              }
+              
+            }else{
+              if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr){
                 dato_desde =" dependiente de "+ element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada;
               }
               if(element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr){
-                dato_hacia = " dependiente de la misma jurisdicción";
+                dato_hacia = " dependiente de "+element.rel_trabajador_adscripcion.cr_destino.dependencia.descripcion_actualizada;
               }
-            }
+              let datos_origen;
+              if(element.rel_trabajador_adscripcion.cr_origen.directorio_responsable != null)
+              {
+                datos_origen = element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
+                element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
+                copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
+              }
+            }*/
+
+            dato_desde = element.adscripcion;
+            dato_hacia = element.cr_destino.descripcion_actualizada+" ("+element.cr_destino.clues.clues+") "+dato_hacia;
             
-          }else{
-            if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr){
-              dato_desde =" dependiente de "+ element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada;
-            }
-            if(element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr){
-              dato_hacia = " dependiente de "+element.rel_trabajador_adscripcion.cr_destino.dependencia.descripcion_actualizada;
-            }
-            let datos_origen;
-            if(element.rel_trabajador_adscripcion.cr_origen.directorio_responsable != null)
+            let nombre_responsable = "";
+            let nombre_responsable_copia = "";
+            if(element.cr_destino.dependencia.clues == "CSSSA017213")
             {
-              datos_origen = element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
-              element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
-              copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
+              let responsable = element.cr_destino.directorio_responsable.responsable;
+              nombre_responsable = "C. "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.cr_destino.directorio_responsable.cargo;
+              nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.cr_destino.directorio_responsable.cargo;
+            
+            }else if(element.cr_destino.dependencia.clues.startsWith('CSSSA')){
+              let responsable = element.cr_destino.dependencia.directorio_responsable.responsable;
+              nombre_responsable = "DR(A). "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.cr_destino.dependencia.directorio_responsable.cargo;
+              nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.cr_destino.dependencia.directorio_responsable.cargo;
             }
-          }
 
-          dato_desde = element.rel_trabajador_adscripcion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_origen.clues.clues+") "+dato_desde;
-          dato_hacia = element.rel_trabajador_adscripcion.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_destino.clues.clues+") "+dato_hacia;
-          
-          let nombre_responsable = "";
-          let nombre_responsable_copia = "";
-          if(element.rel_trabajador_adscripcion.cr_destino.dependencia.clues == "CSSSA017213")
-          {
-            let responsable = element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.responsable;
-            nombre_responsable = "C. "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.cargo;
-            nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.cargo;
-          
-          }else if(element.rel_trabajador_adscripcion.cr_destino.dependencia.clues.startsWith('CSSSA')){
-            let responsable = element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.responsable;
-            nombre_responsable = "DR(A). "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.cargo;
-            nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.cargo;
-          }
-
-          let jurisdiccion_origen = "";
-          let jurisdiccion_destino = "";
-          let datos_nominales = datos_trabajador.rel_datos_laborales_nomina;
-          
-          let ur = datos_trabajador.rel_datos_laborales_nomina.ur;
-          let denominacion = "";
-          if(ur == "416")
-          {
-            denominacion = "BASE";
-          }else if(ur == "FO2" || ur == "FO3" || ur == "FOR" )
-          {
-            denominacion = "FORMALIZADO";
-          }else if(ur == "HOM" )
-          {
-            denominacion = "HOMOLOGADO";
-          }else if(ur == "REG" )
-          {
-            denominacion = "REGULARIZADO";
-          }
-
-          if(ur == "CON_CAR" || ur == "CON_INS" || ur == "CON_OFI" || ur == "CON_UNI" || ur == "EST_CH" || ur == "EST_MMI" || ur == "EST_PAC" || ur == "X00" || ur == "HON")
-          {
-            contenido = "\n\nPor necesidades del servicio, tengo a bien comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_cambio).toLowerCase())+
+            let jurisdiccion_origen = "";
+            let jurisdiccion_destino = "";
+            
+            contenido = "\n\nPor necesidades del servicio, tengo a bien comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.fecha_cambio).toLowerCase())+
                         ", cambiará de adscripción de "+dato_desde+jurisdiccion_origen+" a "+dato_hacia+jurisdiccion_destino+
-                        ", "+jurisdiccion_igual+" con código funcional: "+datos_nominales.codigo_puesto_id+" "+this.convertirLetraCapital(datos_nominales.codigo.descripcion)+
+                        ", "+jurisdiccion_igual+" con código funcional: "+element.codigo+
                         " debiéndose presentar con el "+nombre_responsable+", quien "+
                         "le indicará su jornada laboral y funciones a desempeñar. (Contrato) \n\n"+
                         "Asimismo se le informa que se le radicarán sus sueldos a la nueva unidad de adscripción. \n\n Sin otro particular, le envío un cordial saludo.";
-          }else{
-            contenido = "\n\nPor necesidades del servicio y con fundamento en el artículo 179 fracción VI de las Condiciones Generales de Trabajo, "+
-                        "me permito comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_cambio).toLowerCase())+
-                        ", cambiará de adscripción de "+dato_desde+jurisdiccion_origen+" a "+dato_hacia+jurisdiccion_destino+
-                        ", "+jurisdiccion_igual+" con plaza clave de "+denominacion+": "+datos_nominales.clave_presupuestal+", con código funcional: "+datos_nominales.codigo_puesto_id+" "+
-                        this.convertirLetraCapital(datos_nominales.codigo.descripcion)+" debiéndose presentar con el "+nombre_responsable+", quien "+
-                        "le indicará su jornada laboral y funciones a desempeñar.  \n\n"+
-                        "Asimismo se le informa que se le radicarán sus sueldos a la nueva unidad de adscripción. \n\n Sin otro particular, le envío un cordial saludo.";
-          }
-
-          let acuse_qr = "ACUSE DE AUTENTICACIÓN \n\n"+
-          "Con el propósito de garantizar la validez de los documentos emitidos por el Departamento de Relaciones Laborales, dependiente de la Subdirección de Recursos Humanos,"+
-          " de la Dirección de Administración y Finanzas del Instituto de Salud del Estado de Chiapas, y con fundamento en lo dispuesto en los artículos 37 y 65 del Reglamento "+
-          "Interior, así como en el Manual de Organización del Instituto de Salud, se emite el presente Acuse de Autenticación que avala que los datos contenidos en este oficio "+
-          "a nombre del(a) C. "+datos_trabajador.nombre+" "+datos_trabajador.apellido_paterno+" "+datos_trabajador.apellido_materno+", CURP(o RFC):"+datos_trabajador.rfc+", "+
-          "con Código Funcional: "+datos_nominales.codigo_puesto_id+" "+this.convertirLetraCapital(datos_nominales.codigo.descripcion)+" y Clave Presupuestal "+datos_nominales.clave_presupuestal+", "+
-          "fueron verificados en la página SISTEMA DE RECURSOS HUMANO (SIRH) con fecha "+fecha_hoy+", manifestandose en la presente que todos los datos son autenticos y que en la Subdirección de Recursos Humanos"+
-          " se cuenta físicamente con el documento debidamente integrado en el expediente único de personal correspondiente al/la trabajador(a) antes mencionado(a). \n\n"+
-          "Para lo anterior, se da veracidad a la consulta hecha para la autentificación de este oficio, mediante la firma electrónica del funcionario en turno. "+
-          "Se emite el presente en la Ciudad de Tuxtla Gutiérrez, Chiapas, con fecha "+fecha_hoy+", para los efectos legales y administrativos a que haya lugar."
-
           
-          let copias = "C.C.P. "+nombre_secretario+" - "+nombres.secretario.cargo.toUpperCase()+"\n"+"C..C.P. "+nombre_responsable_copia+"\n";
 
-          if(copia_dependencia != "")
-          {
-            copias += copia_dependencia+"\n";
-          }
-          let informacion_oficio = {
-            layout: 'noBorders',
-            pageBreak:'',
-            table: {
-              widths: [400,'*'],
-              margin: [0,0,0,0],
-              body: [
-                [
-                  { text: "\n\nSECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
-                ],
-                [
-                  { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/"+(new Date()).getFullYear()+"\n\nASUNTO:CAMBIO DE ADSCRIPCIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio", colSpan:2},{},
-                ],
-                [
-                  //{ text: "\nC.FERMIN SERVANDO MARTINEZ MARTINEZ\n M01006 MEDICO GENERAL 'A' (CSSSA004764)\n CENTRO DE SALUD RURAL 1 NÚCLEO BÁSICO ROBERTO BARRIOS", style: "texto_depto"},
-                  { text: "\n\nC. "+datos_trabajador.nombre+" "+datos_trabajador.apellido_paterno+" "+datos_trabajador.apellido_materno+"\n"+
-                  datos_trabajador.rel_datos_laborales_nomina.codigo_puesto_id+" "+datos_trabajador.rel_datos_laborales_nomina.codigo.descripcion+"\n"+
-                  "("+datos_trabajador.rel_datos_laborales_nomina.cr.clues+") "+datos_trabajador.rel_datos_laborales_nomina.cr.descripcion_actualizada, style: "texto_depto", colSpan:2},{},
-                ],
-                [
-                  { text: contenido.toUpperCase(), style: "texto_leyenda", colSpan:2},{},
-                ],
-                [
-                  { text: "\n\n\n", style: "texto_num_oficio", colSpan:2},{},
-                ],
-                [
-                  { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
-                  {qr: acuse_qr, fit: "210"},
-                ],
-                [
-                  { text: copias+
-                          "Cc.p. "+nombre_control+". - "+nombres.control.cargo+"\n"+
-                          "C.c.p. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo+"\n\n"+
-                          "Vo.Bo. "+nombre_subdireccion_rh+". - "+nombres.subdireccion_rh.cargo+"\n"+
-                          "REVISÓ: "+nombre_relaciones_laborales+". - "+nombres.relaciones_laborales.cargo+"\n"+
-                          nombre_elaboracion+".", style: "texto_firmas", colSpan:2},{},
-                ],
-              ]
+            let acuse_qr = "ACUSE DE AUTENTICACIÓN \n\n"+
+            "Con el propósito de garantizar la validez de los documentos emitidos por el Departamento de Relaciones Laborales, dependiente de la Subdirección de Recursos Humanos,"+
+            " de la Dirección de Administración y Finanzas del Instituto de Salud del Estado de Chiapas, y con fundamento en lo dispuesto en los artículos 37 y 65 del Reglamento "+
+            "Interior, así como en el Manual de Organización del Instituto de Salud, se emite el presente Acuse de Autenticación que avala que los datos contenidos en este oficio "+
+            "a nombre del(a) C. "+element.nombre+", "+
+            "con Código Funcional: "+element.codigo+", "+
+            "fueron verificados en la página SISTEMA DE RECURSOS HUMANO (SIRH) con fecha "+fecha_hoy+", manifestandose en la presente que todos los datos son autenticos y que en la Subdirección de Recursos Humanos"+
+            " se cuenta físicamente con el documento debidamente integrado en el expediente único de personal correspondiente al/la trabajador(a) antes mencionado(a). \n\n"+
+            "Para lo anterior, se da veracidad a la consulta hecha para la autentificación de este oficio, mediante la firma electrónica del funcionario en turno. "+
+            "Se emite el presente en la Ciudad de Tuxtla Gutiérrez, Chiapas, con fecha "+fecha_hoy+", para los efectos legales y administrativos a que haya lugar."
+
+            
+            let copias = "C.C.P. "+nombre_secretario+" - "+nombres.secretario.cargo.toUpperCase()+"\n"+"C..C.P. "+nombre_responsable_copia+"\n";
+
+            if(copia_dependencia != "")
+            {
+              copias += copia_dependencia+"\n";
             }
-          };
-          
-          if(iteracciones != data.length)
-          {
-            informacion_oficio.pageBreak = 'after';
+            let informacion_oficio = {
+              layout: 'noBorders',
+              pageBreak:'',
+              table: {
+                widths: [400,'*'],
+                margin: [0,0,0,0],
+                body: [
+                  [
+                    { text: "\n\nSECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
+                  ],
+                  [
+                    { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/"+(new Date()).getFullYear()+"\n\nASUNTO:CAMBIO DE ADSCRIPCIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio", colSpan:2},{},
+                  ],
+                  [
+                    { text: "\n\nC. "+element.nombre+"\n"+
+                    element.codigo+"\n"+
+                    element.adscripcion, style: "texto_depto", colSpan:2},{},
+                  ],
+                  [
+                    { text: contenido.toUpperCase(), style: "texto_leyenda", colSpan:2},{},
+                  ],
+                  [
+                    { text: "\n\n\n", style: "texto_num_oficio", colSpan:2},{},
+                  ],
+                  [
+                    { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
+                    {qr: acuse_qr, fit: "210"},
+                  ],
+                  [
+                    { text: copias+
+                            "Cc.p. "+nombre_control+". - "+nombres.control.cargo+"\n"+
+                            "C.c.p. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo+"\n\n"+
+                            "Vo.Bo. "+nombre_subdireccion_rh+". - "+nombres.subdireccion_rh.cargo+"\n"+
+                            "REVISÓ: "+nombre_relaciones_laborales+". - "+nombres.relaciones_laborales.cargo+"\n"+
+                            nombre_elaboracion+".", style: "texto_firmas", colSpan:2},{},
+                  ],
+                ]
+              }
+            };
+            if(iteracciones != data.length)
+            {
+              informacion_oficio.pageBreak = 'after';
+            }
+            datos.content.push(informacion_oficio);
+          }else{
+
+            if(element.rel_trabajador_adscripcion.fecha_oficio != null)
+            {
+              fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_oficio).toLowerCase();
+            }
+            
+            if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia == element.rel_trabajador_adscripcion.cr_destino.cr_dependencia)
+            {
+              if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr )
+              {
+                jurisdiccion_igual = " ambas dependientes de "+element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada+", ";
+              }else{
+                if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr)
+                {
+                  dato_desde =" dependiente de "+ element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada;
+                }
+                if(element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr){
+                  dato_hacia = " dependiente de la misma jurisdicción";
+                }
+              }
+              
+            }else{
+              if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr){
+                dato_desde =" dependiente de "+ element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada;
+              }
+              if(element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr){
+                dato_hacia = " dependiente de "+element.rel_trabajador_adscripcion.cr_destino.dependencia.descripcion_actualizada;
+              }
+              let datos_origen;
+              if(element.rel_trabajador_adscripcion.cr_origen.directorio_responsable != null)
+              {
+                datos_origen = element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
+                element.rel_trabajador_adscripcion.cr_origen.directorio_responsable;
+                copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
+              }
+            }
+
+            dato_desde = element.rel_trabajador_adscripcion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_origen.clues.clues+") "+dato_desde;
+            dato_hacia = element.rel_trabajador_adscripcion.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_destino.clues.clues+") "+dato_hacia;
+            
+            let nombre_responsable = "";
+            let nombre_responsable_copia = "";
+            if(element.rel_trabajador_adscripcion.cr_destino.dependencia.clues == "CSSSA017213")
+            {
+              let responsable = element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.responsable;
+              nombre_responsable = "C. "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.cargo;
+              nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_adscripcion.cr_destino.directorio_responsable.cargo;
+            
+            }else if(element.rel_trabajador_adscripcion.cr_destino.dependencia.clues.startsWith('CSSSA')){
+              let responsable = element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.responsable;
+              nombre_responsable = "DR(A). "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+", "+element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.cargo;
+              nombre_responsable_copia = responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" - "+element.rel_trabajador_adscripcion.cr_destino.dependencia.directorio_responsable.cargo;
+            }
+
+            let jurisdiccion_origen = "";
+            let jurisdiccion_destino = "";
+            let datos_nominales = datos_trabajador.rel_datos_laborales_nomina;
+            
+            let ur = datos_trabajador.rel_datos_laborales_nomina.ur;
+            let denominacion = "";
+            if(ur == "416")
+            {
+              denominacion = "BASE";
+            }else if(ur == "FO2" || ur == "FO3" || ur == "FOR" )
+            {
+              denominacion = "FORMALIZADO";
+            }else if(ur == "HOM" )
+            {
+              denominacion = "HOMOLOGADO";
+            }else if(ur == "REG" )
+            {
+              denominacion = "REGULARIZADO";
+            }
+
+            if(ur == "CON" || ur == "EST" || ur == "X00" || ur == "HON")
+            {
+              contenido = "\n\nPor necesidades del servicio, tengo a bien comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_cambio).toLowerCase())+
+                          ", cambiará de adscripción de "+dato_desde+jurisdiccion_origen+" a "+dato_hacia+jurisdiccion_destino+
+                          ", "+jurisdiccion_igual+" con código funcional: "+datos_nominales.codigo_puesto_id+" "+this.convertirLetraCapital(datos_nominales.codigo.descripcion)+
+                          " debiéndose presentar con el "+nombre_responsable+", quien "+
+                          "le indicará su jornada laboral y funciones a desempeñar. (Contrato) \n\n"+
+                          "Asimismo se le informa que se le radicarán sus sueldos a la nueva unidad de adscripción. \n\n Sin otro particular, le envío un cordial saludo.";
+            }else{
+              contenido = "\n\nPor necesidades del servicio y con fundamento en el artículo 179 fracción VI de las Condiciones Generales de Trabajo, "+
+                          "me permito comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_cambio).toLowerCase())+
+                          ", cambiará de adscripción de "+dato_desde+jurisdiccion_origen+" a "+dato_hacia+jurisdiccion_destino+
+                          ", "+jurisdiccion_igual+" con plaza clave de "+denominacion+": "+datos_nominales.clave_presupuestal+", con código funcional: "+datos_nominales.codigo_puesto_id+" "+
+                          this.convertirLetraCapital(datos_nominales.codigo.descripcion)+" debiéndose presentar con el "+nombre_responsable+", quien "+
+                          "le indicará su jornada laboral y funciones a desempeñar.  \n\n"+
+                          "Asimismo se le informa que se le radicarán sus sueldos a la nueva unidad de adscripción. \n\n Sin otro particular, le envío un cordial saludo.";
+            }
+
+            let acuse_qr = "ACUSE DE AUTENTICACIÓN \n\n"+
+            "Con el propósito de garantizar la validez de los documentos emitidos por el Departamento de Relaciones Laborales, dependiente de la Subdirección de Recursos Humanos,"+
+            " de la Dirección de Administración y Finanzas del Instituto de Salud del Estado de Chiapas, y con fundamento en lo dispuesto en los artículos 37 y 65 del Reglamento "+
+            "Interior, así como en el Manual de Organización del Instituto de Salud, se emite el presente Acuse de Autenticación que avala que los datos contenidos en este oficio "+
+            "a nombre del(a) C. "+datos_trabajador.nombre+" "+datos_trabajador.apellido_paterno+" "+datos_trabajador.apellido_materno+", CURP(o RFC):"+datos_trabajador.rfc+", "+
+            "con Código Funcional: "+datos_nominales.codigo_puesto_id+" "+this.convertirLetraCapital(datos_nominales.codigo.descripcion)+" y Clave Presupuestal "+datos_nominales.clave_presupuestal+", "+
+            "fueron verificados en la página SISTEMA DE RECURSOS HUMANO (SIRH) con fecha "+fecha_hoy+", manifestandose en la presente que todos los datos son autenticos y que en la Subdirección de Recursos Humanos"+
+            " se cuenta físicamente con el documento debidamente integrado en el expediente único de personal correspondiente al/la trabajador(a) antes mencionado(a). \n\n"+
+            "Para lo anterior, se da veracidad a la consulta hecha para la autentificación de este oficio, mediante la firma electrónica del funcionario en turno. "+
+            "Se emite el presente en la Ciudad de Tuxtla Gutiérrez, Chiapas, con fecha "+fecha_hoy+", para los efectos legales y administrativos a que haya lugar."
+
+            
+            let copias = "C.C.P. "+nombre_secretario+" - "+nombres.secretario.cargo.toUpperCase()+"\n"+"C..C.P. "+nombre_responsable_copia+"\n";
+
+            if(copia_dependencia != "")
+            {
+              copias += copia_dependencia+"\n";
+            }
+            let informacion_oficio = {
+              layout: 'noBorders',
+              pageBreak:'',
+              table: {
+                widths: [400,'*'],
+                margin: [0,0,0,0],
+                body: [
+                  [
+                    { text: "\n\nSECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
+                  ],
+                  [
+                    { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/"+(new Date()).getFullYear()+"\n\nASUNTO:CAMBIO DE ADSCRIPCIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio", colSpan:2},{},
+                  ],
+                  [
+                    //{ text: "\nC.FERMIN SERVANDO MARTINEZ MARTINEZ\n M01006 MEDICO GENERAL 'A' (CSSSA004764)\n CENTRO DE SALUD RURAL 1 NÚCLEO BÁSICO ROBERTO BARRIOS", style: "texto_depto"},
+                    { text: "\n\nC. "+datos_trabajador.nombre+" "+datos_trabajador.apellido_paterno+" "+datos_trabajador.apellido_materno+"\n"+
+                    datos_trabajador.rel_datos_laborales_nomina.codigo_puesto_id+" "+datos_trabajador.rel_datos_laborales_nomina.codigo.descripcion+"\n"+
+                    "("+datos_trabajador.rel_datos_laborales_nomina.cr.clues+") "+datos_trabajador.rel_datos_laborales_nomina.cr.descripcion_actualizada, style: "texto_depto", colSpan:2},{},
+                  ],
+                  [
+                    { text: contenido.toUpperCase(), style: "texto_leyenda", colSpan:2},{},
+                  ],
+                  [
+                    { text: "\n\n\n", style: "texto_num_oficio", colSpan:2},{},
+                  ],
+                  [
+                    { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
+                    {qr: acuse_qr, fit: "210"},
+                  ],
+                  [
+                    { text: copias+
+                            "Cc.p. "+nombre_control+". - "+nombres.control.cargo+"\n"+
+                            "C.c.p. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo+"\n\n"+
+                            "Vo.Bo. "+nombre_subdireccion_rh+". - "+nombres.subdireccion_rh.cargo+"\n"+
+                            "REVISÓ: "+nombre_relaciones_laborales+". - "+nombres.relaciones_laborales.cargo+"\n"+
+                            nombre_elaboracion+".", style: "texto_firmas", colSpan:2},{},
+                  ],
+                ]
+              }
+            };
+            if(iteracciones != data.length)
+            {
+              informacion_oficio.pageBreak = 'after';
+            }
+            datos.content.push(informacion_oficio);
           }
-          datos.content.push(informacion_oficio);
+          
           iteracciones++;
         });
 

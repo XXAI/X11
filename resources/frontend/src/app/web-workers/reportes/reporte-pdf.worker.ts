@@ -22,8 +22,9 @@ const reportes = {
   'trabajador/credencial-salud': new ReporteTrabajadorCredencialSalud(),
   'trabajador/cambio-adscripcion': new ReporteTrabajadorCambioAdscripcion(),
   'trabajador/reincorporacion': new ReporteTrabajadorReincorporacion(),
+  'trabajador/comision-interna': new ReporteComision(),
   'participante/constancia': new ReporteConstanciaDengue(),
-  'archivo/comision': new ReporteComision(),
+  
   'archivo/solicitudComision': new ReporteSolicitudComision()
 };
 

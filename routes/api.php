@@ -120,23 +120,28 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('busqueda-cr',                'API\Modulos\EmpleadosController@getCrComplete');
     Route::get('reporte-empleados-validados',   'API\Modulos\EmpleadosController@reporteValidados');
 
-    Route::apiResource('tramites',       'API\Modulos\TramitesController');
+    //Route::apiResource('tramites',       'API\Modulos\TramitesController');
     Route::apiResource('directorio',       'API\Modulos\DirectorioController');
     Route::get('directorio-trabajador',       'API\Modulos\DirectorioController@buscarResponsable');
     Route::post('responsable-unidad',       'API\Modulos\DirectorioController@AgregarResponsable');
     //Route::post('responsable-unidad/{id}',       'API\Modulos\DirectorioController@EliminarResponsable');
-    Route::get('tramites-trabajador/{id}',    'API\Modulos\TramitesController@ListTramites');
+    //Route::get('tramites-trabajador/{id}',    'API\Modulos\TramitesController@ListTramites');
     Route::get('clues_asistencia',              'API\Modulos\TrabajadorController@ListCluesAsistencia');
-    Route::apiResource('tramite-documentacion',       'API\Modulos\TramiteDocumentacionController');
+    
     
     Route::post('comision-sindical',                    'API\Modulos\TrabajadorController@comisionSindical');
     //Rutas de Tramites
+    Route::apiResource('tramite-documentacion',       'API\Modulos\TramiteDocumentacionController');
     Route::post('tramite-documentacion-upload',         'API\Modulos\TramiteDocumentacionController@Upload');
     Route::get('tramite-documentacion-download/{id}',   'API\Modulos\TramiteDocumentacionController@Download');
     Route::apiResource('tramite-adscripcion',           'API\Modulos\TramiteAdscripcionController');
     Route::get('tramite-adscripcion-lote',              'API\Modulos\TramiteAdscripcionController@ObtenerLote');
+    Route::apiResource('tramite-adscripcion-externa',   'API\Modulos\TramiteAdscripcionExternaController');
+    Route::get('tramite-adscripcion-externa-lote',      'API\Modulos\TramiteAdscripcionExternaController@ObtenerLote');
     Route::apiResource('tramite-reincorporacion',       'API\Modulos\TramiteReincorporacionController');
     Route::get('tramite-reincorporacion-lote',          'API\Modulos\TramiteReincorporacionController@ObtenerLote');
+    Route::apiResource('tramite-comision',           'API\Modulos\TramiteComisionInternaController');
+    Route::get('tramite-comision-lote',              'API\Modulos\TramiteComisionInternaController@ObtenerLote');
     
     Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
     //Credencializacion

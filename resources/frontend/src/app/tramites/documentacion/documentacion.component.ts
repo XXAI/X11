@@ -71,8 +71,6 @@ export class DocumentacionComponent implements OnInit {
     '1':'remove_circle', //inactivo
     '2':'person_remove', //activo verificado 
     '3':'block', //baja
-    //'3':'warning', // No identificado
-    //'4':'swap_horizontal_circle' //en transferencia
   };
 
   validateIcon:any = {

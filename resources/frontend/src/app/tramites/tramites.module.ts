@@ -22,7 +22,9 @@ import { VerInformacionDialogComponent } from './ver-informacion-dialog/ver-info
 import { VisorPdfDialogComponent } from './visor-pdf-dialog/visor-pdf-dialog.component';
 
 import { AdscripcionModule } from './adscripcion/adscripcion.module';
+import { AdscripcionExternaModule } from './adscripcion-externa/adscripcion-externa.module';
 import { ReincorporacionModule } from './reincorporacion/reincorporacion.module';
+import { ComisionModule } from './comision/comision.module';
 
 @NgModule({
   declarations: [ListaComponent, DocumentacionComponent, DocumentacionImportacionDialogComponent, CancelarDocumentacionDialogComponent, VerInformacionDialogComponent, VisorPdfDialogComponent/*, FormatoFechaPipe*/],
@@ -36,7 +38,9 @@ import { ReincorporacionModule } from './reincorporacion/reincorporacion.module'
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AdscripcionModule,
-    ReincorporacionModule
+    AdscripcionExternaModule,
+    ReincorporacionModule,
+    ComisionModule
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

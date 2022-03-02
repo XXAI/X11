@@ -80,7 +80,7 @@ Muchas gracias,<br>
                 <tr>
                     <td>
                         <div class="centrado datos">
-                            <a href="http://sirh.saludchiapas.gob.mx/#/update-password?token={{$token}}"><img src='http://sirh.saludchiapas.gob.mx/assets/ResetPass_1024px.png' alt="Cambiar Contraseña"/></a>
+                            <a href="https://sirh.saludchiapas.gob.mx/#/update-password?token={{$token}}"><img src='https://sirh.saludchiapas.gob.mx/assets/ResetPass_1024px.png' alt="Cambiar Contraseña"/></a>
                             {{-- <img src='../aviso.png' width="100px"/> --}}
                         </div>
                     </td>

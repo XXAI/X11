@@ -169,7 +169,7 @@ export class VerComponent implements OnInit {
         //console.log(this.dataTrabajador);
         //console.log("--");
         this.dataSource = this.dataTrabajador.escolaridad;
-        this.verTramites(response.id);
+        //this.verTramites(response.id);
         this.Asitencia = (response.actualizado == 0)?false:true;
         
 
@@ -192,7 +192,7 @@ export class VerComponent implements OnInit {
           this.validadorEstudios = true;
         }
     
-        if(this.dataTrabajador.rel_datos_laborales_nomina)
+        /*if(this.dataTrabajador.rel_datos_laborales_nomina)
         {
           if(this.dataTrabajador.rel_datos_laborales.cr_fisico_id != this.dataTrabajador.rel_datos_laborales_nomina.cr_nomina_id)
           {
@@ -202,7 +202,7 @@ export class VerComponent implements OnInit {
             }
             
           }
-        }
+        }*/
 
         if(this.dataTrabajador.rel_trabajador_documentos != null)
         {

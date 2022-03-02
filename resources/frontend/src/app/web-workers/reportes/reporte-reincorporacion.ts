@@ -57,7 +57,7 @@ export class ReporteTrabajadorReincorporacion {
                     text: '\n"2022, AÑO DE RICARDO FLORES MAGÓN, PRECURSOR DE LA REVOLUCIÓN MEXICANA"',
 
                     bold: false,
-                    fontSize: 9,
+                    fontSize: 8,
                     alignment: 'center'
                 },
                 {
@@ -241,7 +241,7 @@ export class ReporteTrabajadorReincorporacion {
             fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_reincorporacion.fecha_oficio).toLowerCase();
           }
 
-          if(ur == "CON_CAR" || ur == "CON_INS" || ur == "CON_OFI" || ur == "CON_UNI" || ur == "EST_CH" || ur == "EST_MMI" || ur == "EST_PAC" || ur == "X00" || ur == "HON")
+          if(ur == "CON" || ur == "EST" || ur == "X00" || ur == "HON")
           {
             contenido = "\n\nPor necesidades del servicio y con la finalidad de dar debido cumplimiento a los compromisos, obligaciones y encomiendas institucionales "+
                         "de esta secretaría de salud, tengo a bien comunicarle que deberá de reincorporarse al dia siguiente de notificada y/o recibido el presente documento, "+

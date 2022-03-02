@@ -127,4 +127,8 @@ class Trabajador extends Model
         return $this->hasOne('App\Models\RelReincorporacion');
     }
 
+    public function rel_trabajador_comision_interna(){
+        return $this->hasOne('App\Models\RelComisionInterna');
+    }
+
 }
