@@ -361,6 +361,10 @@ class TrabajadorController extends Controller
                 if(isset($estatus[1])){
                     $main_query = $main_query->where('trabajador.validado',$estatus[1]);
                 }
+                if(isset($estatus[2])){
+                    $main_query = $main_query->where('trabajador.actualizado',$estatus[2]);
+                    
+                }
             }
 
             if(isset($parametros['adscripcion']) && $parametros['adscripcion']){

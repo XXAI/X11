@@ -1366,7 +1366,9 @@ class EmpleadosController extends Controller
                                     ['id'=>'1','descripcion'=>'Activos'],
                                     ['id'=>'1-0','descripcion'=>'Activos - Sin Validar'],
                                     ['id'=>'1-1','descripcion'=>'Activos - Validados'],
-                                    ['id'=>'4','descripcion'=>'En Transferencia']
+                                    ['id'=>'4','descripcion'=>'En Transferencia'],
+                                    ['id'=>'1-1-1','descripcion'=>'Actualizados'],
+                                    ['id'=>'1-1-0','descripcion'=>'No Actualizados']
                                     //['id'=>'2','descripcion'=>'Baja'],
                                     //['id'=>'3','descripcion'=>'Indefinidos'],
                                     
