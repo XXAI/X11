@@ -169,6 +169,7 @@ class CredencializacionController extends Controller
             $image = base64_encode(\Storage::get('public\\FromatoCredencial\\default.jpg'));
             if($trabajador->credencial != null)
             {
+                
                 if($trabajador->credencial->foto == 1)
                 {
                     $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));

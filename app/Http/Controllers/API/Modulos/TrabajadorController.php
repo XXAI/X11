@@ -423,7 +423,13 @@ class TrabajadorController extends Controller
             {
                 if($trabajador->credencial->foto == 1)
                 {
-                    $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
+                    if(\Storage::exists('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension))
+                    {
+                        $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
+                    }else{
+                        $trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\default.jpg'));
+                    }
+                    //$trabajador->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\'.$trabajador->id.'.'.$trabajador->credencial->extension));
                 }
             }
             
