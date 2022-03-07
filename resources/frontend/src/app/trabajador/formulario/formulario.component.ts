@@ -70,6 +70,10 @@ export class FormularioComponent implements OnInit {
   nombre_trabajador:string;
   tab_proceso:number = 1;
 
+  trabajador:any;
+  estatusDocumentacion:string[] = ['', 'ENVIADO','RECHAZADO', 'EN VALIDACIÓN', "RECHAZADO", "VALIDADO"];
+  estatusChip:number = 0;
+
   constructor(
     private sharedService: SharedService, 
     private trabajadorService: TrabajadorService,
@@ -219,10 +223,10 @@ export class FormularioComponent implements OnInit {
   ngOnInit() {
     this.miniPagination = {total:0};
 
-    this.cargarDatosDefault();
+    //this.cargarDatosDefault();
     this.cargarCatalogos();
-    this.cargarBuscadores();
-
+    
+    let cargador = true;
     this.trabajadorForm.markAllAsTouched();
     this.trabajadorForm.updateValueAndValidity();
     this.datosLaborelesForm.markAllAsTouched();
@@ -238,7 +242,7 @@ export class FormularioComponent implements OnInit {
       this.trabajador_id = params.get('id');
       
       if(this.trabajador_id){
-        
+        this.cargarBuscadores(!cargador);
         //console.log("entra");
         this.cargarTrabajador(this.trabajador_id);
         this.trabajadorForm.get("cr").disable();
@@ -249,6 +253,7 @@ export class FormularioComponent implements OnInit {
         
       }else{
         //this.trabajadorForm.get('rfc').enable();
+        this.cargarBuscadores(cargador);
         this.editable = false;
       }
     });
@@ -451,7 +456,7 @@ export class FormularioComponent implements OnInit {
         if(response.mini_paginador){
           let paginator = this.sharedService.getDataFromCurrentApp('paginator');
 
-          let paginationIndex = response.mini_paginador.next_prev.findIndex(item => item.id == response.data.id);
+          /*let paginationIndex = response.mini_paginador.next_prev.findIndex(item => item.id == response.data.id);
           //Aqui verificar estatus
           if(paginationIndex < 0){
             this.miniPagination.next = (response.mini_paginador.next_prev[1])?response.mini_paginador.next_prev[1].id:0;
@@ -463,44 +468,44 @@ export class FormularioComponent implements OnInit {
 
           this.miniPagination.total = response.mini_paginador.total;
 
-          this.miniPagination.current = (paginator.pageSize*paginator.pageIndex)+paginator.selectedIndex+1;
+          this.miniPagination.current = (paginator.pageSize*paginator.pageIndex)+paginator.selectedIndex+1;*/
         }
 
-        let trabajador = response.data;
+        this.trabajador = response.data;
 
 
-        this.Actualizado = (trabajador.actualizado == 0)?false:true;
-        this.verificarNivel(trabajador.nivel_maximo_id);
-        if(trabajador.actualizado == 1){
+        this.Actualizado = (this.trabajador.actualizado == 0)?false:true;
+        this.verificarNivel(this.trabajador.nivel_maximo_id);
+        if(this.trabajador.actualizado == 1){
           this.actualizado = true;  
-        }else if(trabajador.actualizado == 0){
+        }else if(this.trabajador.actualizado == 0){
           this.actualizado = false;
         }
 
-        if(trabajador.rel_datos_comision == null)
+        if(this.trabajador.rel_datos_comision == null)
         {
           this.puedeDesligar = true;
         }
-        //this.actualizado = trabajador.actualizado;
+        //this.actualizado = this.trabajador.actualizado;
         this.datos_personales = response.data;
-        //console.log(trabajador);
-        this.datos_laborales_nomina = trabajador.datoslaboralesnomina;
-        this.idioma(trabajador.idioma_id);
-        this.lengua(trabajador.lengua_indigena_id);
+        //console.log(this.trabajador);
+        this.datos_laborales_nomina = this.trabajador.datoslaboralesnomina;
+        this.idioma(this.trabajador.idioma_id);
+        this.lengua(this.trabajador.lengua_indigena_id);
         
-        this.nombre_trabajador= trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+trabajador.nombre;
-        this.trabajadorForm.patchValue(trabajador);  //carga datos de trabajador
-        this.verificar_curp(trabajador.curp);
-        if(trabajador.idioma_id == null)
+        this.nombre_trabajador= this.trabajador.apellido_paterno+" "+this.trabajador.apellido_materno+" "+this.trabajador.nombre;
+        this.trabajadorForm.patchValue(this.trabajador);  //carga datos de trabajador
+        this.verificar_curp(this.trabajador.curp);
+        if(this.trabajador.idioma_id == null)
         {
             this.trabajadorForm.patchValue({idioma_id: 0});
         }
-        this.trabajadorForm.patchValue({municipio: trabajador.municipio_nacimiento});
+        this.trabajadorForm.patchValue({municipio: this.trabajador.municipio_nacimiento});
         /* Fech de ingreso */ // Carga datos laborales
         let ingreso;
-        this.datosLaborelesForm.patchValue(trabajador.datoslaborales);
+        this.datosLaborelesForm.patchValue(this.trabajador.datoslaborales);
         
-        this.datos_laborales = trabajador.datoslaborales;
+        this.datos_laborales = this.trabajador.datoslaborales;
         if(this.datos_laborales != null)
         {
           if(this.datos_laborales.fecha_ingreso){
@@ -534,7 +539,7 @@ export class FormularioComponent implements OnInit {
           //Caga datos dehorario
          
         }
-        let datos_horario = trabajador.horario;
+        let datos_horario = this.trabajador.horario;
         
         if(datos_horario != "")
         {
@@ -562,8 +567,8 @@ export class FormularioComponent implements OnInit {
         }
 
         //Escolaridad
-        this.datosEscolaresForm.patchValue({ nivel_maximo_id: trabajador.nivel_maximo_id});
-        let datos_escolares = trabajador.escolaridad;
+        this.datosEscolaresForm.patchValue({ nivel_maximo_id: this.trabajador.nivel_maximo_id});
+        let datos_escolares = this.trabajador.escolaridad;
         
         for(let i = 0; i < datos_escolares.length; i++)
         {
@@ -583,7 +588,13 @@ export class FormularioComponent implements OnInit {
         }
         this.datosEstudios = datos_escolares;
         this.dataSourceEstudios.data = datos_escolares;
-        this.EstudiosRestantes = this.EstudiosActualizado - datos_escolares.length;
+        if((this.EstudiosActualizado - datos_escolares.length) <= 0)
+        {
+          this.EstudiosRestantes = 0;  
+        }else
+        {
+          this.EstudiosRestantes = this.EstudiosActualizado - datos_escolares.length;
+        }
         /*
         //Capacitacion
         let Capacitacion = trabajador.capacitacion;
@@ -613,11 +624,11 @@ export class FormularioComponent implements OnInit {
         this.tiene_certificado(datosEscolaridadCursante.certificacion);*/
 
         this.isLoadingCredential = true;
-        if(trabajador.credencial != null) 
+        if(this.trabajador.credencial != null) 
         {
-          if(trabajador.credencial.foto == 1)
+          if(this.trabajador.credencial.foto == 1)
           {
-            this.imagen_trabajador = "data:image/png;base64,"+trabajador.credencial.foto_trabajador
+            this.imagen_trabajador = "data:image/png;base64,"+this.trabajador.credencial.foto_trabajador
           }else{
 
           }
@@ -663,8 +674,9 @@ export class FormularioComponent implements OnInit {
     );
   }
 
-  cargarBuscadores():void
+  cargarBuscadores(edit:boolean = true):void
   {
+    
       this.trabajadorForm.get('municipio').valueChanges
       .pipe(
         debounceTime(300),
@@ -826,7 +838,8 @@ export class FormularioComponent implements OnInit {
           }
         ),
       ).subscribe(items => this.filteredColegio = items);*/
-    
+    if(edit == true)
+    {
       this.trabajadorForm.get('cr').valueChanges
       .pipe(
         debounceTime(300),
@@ -845,11 +858,8 @@ export class FormularioComponent implements OnInit {
           }
         ),
       ).subscribe(items => this.filteredCr = items);
-  }
-
-  cargarDatosDefault():void{
-    //let datos = { colegiacion:0, certificacion:0, capacitacion_anual:0};
-    //this.trabajadorForm.patchValue(datos);
+    }
+      
   }
 
   cargarCatalogos():void{

@@ -130,10 +130,10 @@
                                     <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
                                         <div fxFlex="50" fxFlex.xs="100">
                                             <b>INGRESO SSA:</b>
-                                            <BR>{{ (dataTrabajador.rel_datos_laborales)?dataTrabajador.rel_datos_laborales.fecha_ingreso:'NO REGISTRADO' }}
+                                            <BR>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso:'NO REGISTRADO' }}
                                         </div>
                                         <div fxFlex="50" fxFlex.xs="100">
-                                            <b>INGRESO GOBIERNO FEDERAL:</b> <br>{{ (dataTrabajador.rel_datos_laborales)?dataTrabajador.rel_datos_laborales.fecha_ingreso_federal:'NO REGISTRADO' }}
+                                            <b>INGRESO GOBIERNO FEDERAL:</b> <br>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso_federal:'NO REGISTRADO' }}
                                         </div>
                                     </div>
                                     <div fxLayout="row" fxLayout.xs="column">
@@ -169,7 +169,7 @@
                                     </div>
                                     <div fxLayout="row" fxLayout.xs="column">
                                         <div fxFlex="100" fxFlex.xs="100">
-                                            <b>CENTRO DE RESPONSABILIDAD (ADSCRIPCIÓN):</b><br> {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.clues:'NO REGISTRADO':'NO REGISTRADO' }} {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.descripcion_actualizada:'':''
+                                            <b>CENTRO DE RESPONSABILIDAD (ADSCRIPCIÓN NOMINAL):<b style="color: red;"> NO EDITABLE</b></b><br> {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.clues:'NO REGISTRADO':'NO REGISTRADO' }} {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.descripcion_actualizada:'':''
                                             }}
                                         </div>
 

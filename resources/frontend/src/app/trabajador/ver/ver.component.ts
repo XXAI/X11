@@ -399,7 +399,7 @@ export class VerComponent implements OnInit {
   }
 
   buscarFechasAssitencia(){
-    console.log(typeof this.fechaInicioAsist);
+    //console.log(typeof this.fechaInicioAsist);
     let fecha_inicio:any;
     let fecha_fin:any;
     if(typeof this.fechaInicioAsist != "string")
@@ -497,7 +497,8 @@ export class VerComponent implements OnInit {
     const reportWorker = new ReportWorker();
     reportWorker.onmessage().subscribe(
       data => {
-        console.log(data);
+        console.log("reporte");
+        console.log(data.data);
         FileSaver.saveAs(data.data,'ReporteAsistencia');
         reportWorker.terminate();
 
@@ -554,9 +555,9 @@ export class VerComponent implements OnInit {
       horario: datohorario,
       resumen: this.resumenAsistencias
     };
+    console.log(reportData);
     //console.log(reportData);
-    //console.log(reportData);
-    reportWorker.postMessage({data:{items: this.assistSource, data: reportData },reporte:'empleados/personal-asistencia'});
+    reportWorker.postMessage({data:{items: this.dataAsistencia, data: reportData },reporte:'empleados/personal-asistencia'});
   }
 
   solicitar(valor:number, trabajador_id:string)

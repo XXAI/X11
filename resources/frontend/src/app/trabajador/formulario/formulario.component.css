@@ -6,7 +6,7 @@
 .data-table-container {
     position: relative;
     max-height: 400px;
-    min-height:200px;
+    min-height: 200px;
     overflow: auto;
 }
 
@@ -24,72 +24,93 @@
 }
 
 table {
-  width: 100%;
+    width: 100%;
 }
-  
+
 .mat-form-field {
-  font-size: 14px;
-  width: 100%;
+    font-size: 14px;
+    width: 100%;
 }
+
 
 /* Column Widths */
-.mat-column-actions{
-  max-width: 75px;
-  min-width: 60px;
+
+.mat-column-actions {
+    max-width: 75px;
+    min-width: 60px;
 }
 
-.selected-item{
-  background-color: lightskyblue;
+.selected-item {
+    background-color: lightskyblue;
 }
 
-.not-results-found{
-  text-align: center;
-  font-style: italic;
+.not-results-found {
+    text-align: center;
+    font-style: italic;
 }
 
-.loading-results{
-  width: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  text-align: center;
-  font-style: italic;
+.loading-results {
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    text-align: center;
+    font-style: italic;
 }
 
-.loading-results mat-spinner{
-  margin:0 auto;
+.loading-results mat-spinner {
+    margin: 0 auto;
 }
 
-.hide{
-  display: none;
+.hide {
+    display: none;
 }
 
 .mat-tab-label {
-  min-width: 25px !important;
-  padding: 5px;
-  background-color: transparent;
-  color: red !important;
-  font-weight: 700;
+    min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    color: red !important;
+    font-weight: 700;
 }
+
 
 /* Styles for the active tab label */
+
 .mat-tab-label.mat-tab-label-active {
-  min-width: 25px !important;
-  padding: 5px;
-  background-color: transparent;
-  color: red !important;
-  font-weight: 700;
+    min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    color: red !important;
+    font-weight: 700;
 }
 
-@media (max-width: 768px) { 
-  .mobile-pc
-  {
-    display: none;
-  }
+@media (max-width: 768px) {
+    .mobile-pc {
+        display: none;
+    }
 }
 
 .mat-dialog-actions {
+    justify-content: flex-end;
+}
 
-  justify-content: flex-end;
+.error {
+    /*color: white;
+    background-color: red;*/
+    color: red;
+}
+
+.correcto {
+    /*color: white;
+    background-color: darkgreen;*/
+    color: darkgreen;
+}
+
+mat-card-title {
+    color: brown;
+    font-size: 11pt;
+    margin-bottom: 0px !important;
+    margin-top: 5px !important;
 }

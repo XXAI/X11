@@ -18,13 +18,33 @@
                 </div>
                 <img mat-card-image src="{{ imagen_trabajador }}" alt="Foto del trabajador">
             </mat-card-content>
-            <mat-card-content>{{ nombre_trabajador }}</mat-card-content>
+            <div style="font-size: 13pt; text-align: center; line-height: 15px;">
+                {{ nombre_trabajador }}
+            </div>
+            <br>
+            <mat-divider></mat-divider>
+
+            <mat-card-title>CR FISICO</mat-card-title>
+            <div style="font-size: 9pt; text-align: center;margin-top: 5px; line-height: 23px;" *ngIf="datos_laborales != null">
+                {{ (datos_laborales.clues_fisico)?datos_laborales.clues_fisico.clues:'' }} {{ (datos_laborales.cr_fisico)?datos_laborales.cr_fisico.descripcion_actualizada:'CR físico no asignado' }}
+            </div>
+            <mat-card-title>CR NOMINAL</mat-card-title>
+
+            <div style="font-size: 9pt; text-align: center; line-height: 19px;" *ngIf="datos_laborales_nomina != null">
+                {{ datos_laborales_nomina.clues.clues }} {{ datos_laborales_nomina.clues.nombre_unidad }}
+            </div>
+            <mat-divider></mat-divider>
             <mat-card-content>
-                <span *ngIf="!actualizado && trabajador_id != null" style="color: red; font-weight: bold;">NO ACTUALIZADO</span>
-                <span *ngIf="actualizado && trabajador_id != null" style="font-weight: bold; color: blue;">ACTUALIZADO</span>
-                <br>
-                <span *ngIf="datos_personales.validado == 0" style="color: red; font-weight: bold;">NO VERIFICADO</span>
-                <span *ngIf="datos_personales.validado == 1" style="font-weight: bold; color: blue;">VERIFICADO</span>
+
+
+                <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px" *ngIf="trabajador_id != null">
+                    <div fxFlex="100" fxFlex.xs="100" fxFlex.sm="100" fxFlex.xl="48">
+                        <button mat-button style="width: 100%;" [ngClass]="{'error': trabajador.validado == 0, 'correcto':trabajador.validado == 1}"><mat-icon *ngIf="trabajador.validado == 1">check</mat-icon><mat-icon *ngIf="trabajador.validado == 0">close</mat-icon> VALIDADO</button>
+                    </div>
+                    <div fxFlex="100" fxFlex.xs="100" fxFlex.sm="100" fxFlex.xl="48">
+                        <button mat-button style="width: 100%;" [ngClass]="{'error': trabajador.actualizado == 0, 'correcto':trabajador.actualizado == 1}"><mat-icon *ngIf="trabajador.actualizado == 1">check</mat-icon><mat-icon *ngIf="trabajador.actualizado == 0">close</mat-icon> ACTUALIZADO</button>
+                    </div>
+                </div>
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px" *ngIf="trabajador_id != null">
                     <div fxFlex="100" fxFlex.xs="100">
                         <button mat-raised-button color="warn" style="width: 100%;" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" *ngIf="puedeDesligar" (click)="desligarTrabajador()"><mat-icon>link_off</mat-icon> Desligar</button>
@@ -40,7 +60,7 @@
     </section>
     <section fxFlex="78" fxFlex.xs="100">
         <mat-card fxFlex="100">
-            <mat-tab-group mat-stretch-tabs [(selectedIndex)]="indexTab">
+            <mat-tab-group mat-stretch-tabs [(selectedIndex)]="indexTab" [color]="'accent'" [backgroundColor]="'primary'">
 
                 <mat-tab [formGroup]="trabajadorForm" [disabled]='(tab_proceso != 1 && !actualizado)'>
                     <ng-template mat-tab-label>
@@ -321,6 +341,14 @@
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top: 10px;">
                         <div fxFlex="100" fxFlex.xs="100">
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <!--<div fxFlex="25" fxFlex.xs="100">
+                                    <label style="font-size: 8pt; color: grey;">FECHA DE INGRESO:</label><br>
+                                    <label style="font-size: 10pt; color: grey;">{{ (datos_laborales_nomina)?datos_laborales_nomina.fecha_ingreso:'0000-00-00' }}</label>
+                                </div>
+                                <div fxFlex="25" fxFlex.xs="100">
+                                    <label style="font-size: 8pt; color: grey;">FECHA DE INGRESO AL GOBIERNO FEDERAL:</label><br>
+                                    <label style="font-size: 10pt; color: grey;">{{ (datos_laborales_nomina)?(datos_laborales_nomina.fecha_ingreso_federal != null)?datos_laborales_nomina.fecha_ingreso_federal:'0000-00-00':'0000-00-00'}}</label>
+                                </div>-->
                                 <mat-form-field fxFlex="25" fxFlex.xs="100">
                                     <input matInput [matDatepicker]="fecha_ssa_picker" autocomplete="off" (click)="fecha_ssa_picker.open()" formControlName="fecha_ingreso" placeholder="Fecha Ingreso SSA">
                                     <mat-datepicker-toggle matPrefix [for]="fecha_ssa_picker"></mat-datepicker-toggle>
@@ -334,9 +362,6 @@
                                     <mat-datepicker-toggle matPrefix [for]="fecha_gf_picker"></mat-datepicker-toggle>
                                     <mat-datepicker #fecha_gf_picker [disabled]="false"></mat-datepicker>
 
-                                    <!--<mat-error *ngIf="datosLaborelesForm.get('fecha_ingreso_federal').invalid && (datosLaborelesForm.get('fecha_ingreso_federal').dirty || datosLaborelesForm.get('fecha_ingreso_federal').touched)">
-                                        <span *ngIf="datosLaborelesForm.get('fecha_ingreso_federal').errors.required">Campo obligatorio</span>
-                                    </mat-error>-->
                                 </mat-form-field>
 
                                 <mat-form-field fxFlex="50" fxFlex.xs="100">
@@ -500,7 +525,7 @@
 
 
 
-                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
+                    <!--<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
                         <div fxFlex="100" fxFlex.xs="100">
                             <mat-accordion>
                                 <mat-expansion-panel>
@@ -509,7 +534,7 @@
                                             Lugar de Adscripción
                                             <div class="example-button-container" style="margin-left: 10px;" *ngIf="!datos_laborales_nomina ">
                                                 <button mat-flat-button color="warn" style="line-height: 25px; padding: 0px 7px;">
-                                                    <mat-icon color="warn" style="color: white;">close</mat-icon> No Identificado
+                                                    <mat-icon color="warn" style="color: white;">close</mat-icon> No Identificado (ADSCRIPCION NOMINAL NO EDITABLE)
                                                 </button>
                                             </div>
 
@@ -545,7 +570,7 @@
                                 </mat-expansion-panel>
                             </mat-accordion>
                         </div>
-                    </div>
+                    </div>-->
                     <br>
 
                     <br>
