@@ -932,6 +932,7 @@ export class FormularioComponent implements OnInit {
   accionGuardar(tipo:number):void{
     let data;
     let countError = 0;
+    let datos_sep:any;
     if(tipo == 1)
     {
       data = this.trabajadorForm.value;
@@ -968,6 +969,24 @@ export class FormularioComponent implements OnInit {
     {
       data = this.datosEscolaresForm.value;
       data.datos = this.datosEstudios;
+      this.trabajadorService.verificacionCedula(this.trabajador).subscribe(
+        response =>{
+          //console.log(response);
+          //console.log("entro");
+          datos_sep = response;
+        },
+        errorResponse =>{
+          this.isLoading = false;
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.error){
+            errorMessage = errorResponse.error.message;
+          }
+          console.log("error cedula");
+          //this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
+          
+        }
+      );
+      //
     }/*else if(tipo == 5)
     {
       data = this.datosCapacitacionForm.value;
@@ -977,13 +996,15 @@ export class FormularioComponent implements OnInit {
       data = this.datosCursosForm.value;
       //data.datos = this.datosEstudios;
     }*/
-    
+    //datos_sep = {'items':[{'id':"nombre", 'descripcion':'apellido'}]};
     this.isLoading = true;
     data.tipo_dato = tipo;
+    data.sep = datos_sep;
+    
     
     if(this.trabajador_id != null && countError == 0)
     {
-      this.trabajadorService.guardarTrabajador(this.trabajador_id, data).subscribe(
+      this.trabajadorService.guardarTrabajador(this.trabajador_id, data, datos_sep).subscribe(
         response =>{
           //console.log(response);
           this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);

@@ -11,6 +11,7 @@ import * as FileSaver from 'file-saver';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentacionImportacionDialogComponent } from '../../tramites/documentacion-importacion-dialog/documentacion-importacion-dialog.component';
+import { VerInformacionDialogComponent } from '../../tramites/ver-informacion-dialog/ver-informacion-dialog.component';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
 export interface VerEmpleadoData {
@@ -314,16 +315,48 @@ export class VerComponent implements OnInit {
 
   verExpediente(obj:any)
   {
-    console.log(!this.verInfoExpediente);
+    //console.log(!this.verInfoExpediente);
+    console.log(obj);
     if(!this.verInfoExpediente)
     {
-      window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
+      if(obj.rel_trabajador_documentos.estatus == 2 || obj.rel_trabajador_documentos.estatus == 4)
+      {
+        this.cargarDetalles(obj);
+      }else
+      {
+        window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
+      }
     }else{
-      console.log(obj);
+      //console.log(obj);
       this.CargarDocumento(obj);
       
     }
     
+  }
+
+  public cargarDetalles(obj)
+  {
+    let configDialog = {};
+    if(this.mediaSize == 'xs'){
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '60%',
+        width: '100%',
+        data:{scSize:this.mediaSize, id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno, arreglo:obj.rel_trabajador_documentos.detalles, observacion:obj.rel_trabajador_documentos.observacion}
+      };
+    }else{
+      configDialog = {
+        width: '30%',
+        data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno, arreglo:obj.rel_trabajador_documentos.detalles, observacion:obj.rel_trabajador_documentos.observacion }
+      }
+    }
+    const dialogRef = this.dialog.open(VerInformacionDialogComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+      }
+    });
   }
 
   public CargarDocumento(obj)

@@ -117,7 +117,8 @@ export class TrabajadorService {
     ));
   }
 
-  guardarTrabajador(id:any, payload:any):Observable<any> {
+  guardarTrabajador(id:any, payload:any, sep:any):Observable<any> {
+    console.log(payload);
     return this.http.put<any>(this.url + "/" + id, payload).pipe(
       map( (response: any) => {        
         return response;
@@ -287,4 +288,15 @@ export class TrabajadorService {
         })
     );
   }
+
+  verificacionCedula(data:any):Observable<any> {
+    let datos:any = "?json={'maxResult':'1000','nombre':"+data.nombre+",'paterno':"+data.apellido_paterno+",'materno':"+data.apellido_materno+",'idCedula':''}";
+    return this.http.get<any>('https://www.cedulaprofesional.sep.gob.mx/cedula/buscaCedulaJson.action'+datos, {}).pipe(
+        map( response => {
+          return response;
+        })
+    );
+  }
+
+  
 }

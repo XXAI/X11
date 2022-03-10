@@ -96,9 +96,7 @@ class TramiteDocumentacionController extends Controller
                 if(!isset($parametros['estatus']))
                 {
                     $trabajador = $trabajador->whereRaw(DB::RAW("(trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus in (3,5)))")); 
-                }
-
-                                                              
+                }                                             
             }
             /*if($permison_rh || $access->is_admin){
                 $trabajador = Trabajador::leftJoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
