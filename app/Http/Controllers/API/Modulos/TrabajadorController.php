@@ -666,7 +666,7 @@ class TrabajadorController extends Controller
                 'actividad_voluntaria_id'   => 'required',
                 'area_trabajo_id'           => 'required',
                 'tipo_personal_id'         => 'required',
-                'fecha_ingreso'             => 'required',
+                //'fecha_ingreso'             => 'required',
                 'seguro_salud'              => 'required',
                 'licencia_maternidad'       => 'required',
                 'seguro_retiro'             => 'required',
@@ -794,8 +794,8 @@ class TrabajadorController extends Controller
                 $objectRL->actividad_voluntaria_id  = $inputs['actividad_voluntaria_id'];
                 $objectRL->area_trabajo_id          = $inputs['area_trabajo_id'];
                 $objectRL->tipo_personal_id         = $inputs['tipo_personal_id'];
-                $objectRL->fecha_ingreso            = $inputs['fecha_ingreso'];
-                $objectRL->fecha_ingreso_federal    = $inputs['fecha_ingreso_federal'];
+                //$objectRL->fecha_ingreso            = $inputs['fecha_ingreso'];
+                //$objectRL->fecha_ingreso_federal    = $inputs['fecha_ingreso_federal'];
                 //$objectRL->unidad_administradora_id = $inputs['unidad_administradora_id'];
                 $objectRL->seguro_salud             = $inputs['seguro_salud'];
                 $objectRL->licencia_maternidad      = $inputs['licencia_maternidad'];

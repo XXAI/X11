@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { App } from 'src/app/apps-list/apps';
 import { AuthService } from 'src/app/auth/auth.service';
 import { AppsListService } from 'src/app/apps-list/apps-list.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import {MatSidenav} from '@angular/material/sidenav';
 
 @Component({
   selector: 'drawer-list',
@@ -13,12 +14,15 @@ import { filter } from 'rxjs/operators';
 })
 export class DrawerListComponent implements OnInit {
   
+  @ViewChild('drawer') sidenav: MatSidenav;
+
   public isAuthenticated:boolean;
   authSubscription: Subscription;
   selectedApp: any;
   selectedChild: any;
   apps: App[];
   expandDrawer:boolean = true;
+  visualizarButton: boolean = true;
 
   constructor(private authService:AuthService, private appsService: AppsListService, private router: Router) {
     router.events.pipe(
@@ -65,6 +69,12 @@ export class DrawerListComponent implements OnInit {
 
   ngOnDestroy(){
     this.authSubscription.unsubscribe();
+  }
+
+  cerrar()
+  {
+    this.sidenav.close();
+    this.visualizarButton = true;
   }
 
 }
