@@ -124,8 +124,8 @@ export class FormularioComponent implements OnInit {
 
   public datosLaborelesForm = this.fb.group({
     //Datos laborales
-    'fecha_ingreso': ['',[Validators.required]],
-    'fecha_ingreso_federal': [],
+    //'fecha_ingreso': ['',[Validators.required]],
+    //'fecha_ingreso_federal': [],
     //'codigo_puesto_id': [],
     rama_id: ['',[Validators.required]],
 
