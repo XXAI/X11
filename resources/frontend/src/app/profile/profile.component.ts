@@ -26,15 +26,17 @@ export class ProfileComponent implements OnInit {
 
   isLoading:boolean = false;
   hidePassword:boolean = true;
+  nombre:any = "";
+  username:any = "";
 
   authUser: User;
   
   usuario:any = {};
 
   usuarioForm = this.fb.group({
-    'name': ['',Validators.required],
+    //'name': ['',Validators.required],
     'email': ['',[Validators.required, Validators.email]],
-    'username': ['',[Validators.required, Validators.minLength(4)]],
+    //'username': ['',[Validators.required, Validators.minLength(4)]],
     'password': ['',[Validators.minLength(6)]],
     'is_superuser': [false],
     'avatar': [''],
@@ -63,9 +65,10 @@ export class ProfileComponent implements OnInit {
 
     this.profileService.getProfileData(id).subscribe(
       response => {
-        console.log(response);
-
-        this.usuario = response.data;
+       this.usuario = response.data;
+       //console.log(this.usuario);
+       this.nombre = this.usuario.name;
+       this.username = this.usuario.username;
         this.usuarioForm.patchValue(this.usuario);
 
         this.selectedAvatar = this.usuario.avatar;
@@ -149,6 +152,14 @@ export class ProfileComponent implements OnInit {
         }
         
         this.isLoading = false;
+      },
+      errorResponse =>{
+        this.isLoading = false;
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
       }
     );
   }

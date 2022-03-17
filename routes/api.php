@@ -143,7 +143,8 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('tramite-comision',           'API\Modulos\TramiteComisionInternaController');
     Route::get('tramite-comision-lote',              'API\Modulos\TramiteComisionInternaController@ObtenerLote');
     
-    Route::apiResource('profile',       'API\ProfileController')->only([ 'show', 'update']);
+    Route::apiResource('profile',                   'API\ProfileController')->only([ 'show', 'update']);
+    Route::get('reset-contrasena/{id}',     'API\Admin\UserController@resetPassword');
     //Credencializacion
     Route::apiResource('credencializacion',         'API\Modulos\CredencializacionController');
     Route::get('credencializacion-lote',            'API\Modulos\CredencializacionController@ImprimirLote');

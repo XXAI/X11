@@ -36,6 +36,7 @@ export class TrabajadorService {
   url_tramite_trabajador = `${environment.base_url}/tramites-trabajador`;
   url_valida_rfc = `${environment.base_url}/valida-rfc`;
   url_comision_sindical = `${environment.base_url}/comision-sindical`;
+  url_reset             = `${environment.base_url}/reset-contrasena`;
   
 
   constructor(private http: HttpClient) { }
@@ -283,6 +284,14 @@ export class TrabajadorService {
   }
   getValidadorRfc(rfc):Observable<any> {
     return this.http.get<any>(this.url_valida_rfc+"/"+rfc, {}).pipe(
+        map( response => {
+          return response;
+        })
+    );
+  }
+
+  resetearCuenta(rfc):Observable<any> {
+    return this.http.get<any>(this.url_reset+"/"+rfc, {}).pipe(
         map( response => {
           return response;
         })

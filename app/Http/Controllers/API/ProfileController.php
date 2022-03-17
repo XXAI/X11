@@ -50,16 +50,16 @@ class ProfileController extends Controller
     {
         try{
             $validation_rules = [
-                'name' => 'required',
+                //'name' => 'required',
                 'email' => 'required'
             ];
         
             $validation_eror_messages = [
-                'name.required' => 'El nombre es obligatorio',
+                //'name.required' => 'El nombre es obligatorio',
                 'email.required' => 'Es correo electronico es obligatorio'
             ];
 
-            $usuario = User::find($id);
+            $usuario = User::where("id","!=",1)->find($id);
 
             $parametros = $request->all();
 
@@ -68,9 +68,9 @@ class ProfileController extends Controller
             if($resultado->passes()){
                 DB::beginTransaction();
 
-                $usuario->name = $parametros['name'];
+                //$usuario->name = $parametros['name'];
                 $usuario->email = $parametros['email'];
-                $usuario->username = $parametros['username'];
+                //$usuario->username = $parametros['username'];
                 $usuario->avatar = $parametros['avatar'];
                 
                 if($parametros['password']){

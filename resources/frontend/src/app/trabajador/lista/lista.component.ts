@@ -903,6 +903,41 @@ export class ListaComponent implements OnInit {
     this.sharedService.setDataToCurrentApp('paginator',paginator);
   }
 
+  ResetContrasena(obj)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Resetear Contraseña',dialogMessage:'¿Realmente desea resetear la contraseña de acceso al trabajador, la contraseña que se registrara será su RFC con homoclave? Escriba ACEPTAR a continuación para realizar el proceso.',validationString:'ACEPTAR',btnColor:'primary',btnText:'RESETEAR'}
+    });
+    this.isLoading = true;
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.trabajadorService.resetearCuenta(obj.rfc).subscribe(
+          response =>{
+            /*if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {*/
+              this.sharedService.showSnackBar("Se ha reseteado la contraseña del trabajador, favor de verificar", null, 3000);
+            //}
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }else
+      {
+        this.isLoading = false;
+      }
+    });
+  }
+
   getDisplayFn(label: string){
     return (val) => this.displayFn(val,label);
   }

@@ -129,6 +129,32 @@ class UserController extends Controller
     {
         return response()->json(['data'=>User::with('roles','permissions','gruposUnidades')->find($id)],HttpResponse::HTTP_OK);
     }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function resetPassword($id)
+    {
+        try{
+            $obj = User::where("username",$id)->first();
+            if($obj)
+            {
+                $obj->password = Hash::make($id);
+                $obj->save();
+            }else{
+                return response()->json(['error'=>['message'=>"Usuario no registrado"]], 500);
+            }
+            
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+
+        //return response()->json(['data'=>User::with('roles','permissions','gruposUnidades')->find($id)],HttpResponse::HTTP_OK);
+    }
 
     /**
      * Update the specified resource in storage.
