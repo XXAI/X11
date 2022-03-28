@@ -117,7 +117,7 @@ class TramiteAdscripcionController extends Controller
             
             //
             $trabajador = Trabajador::with("rel_datos_laborales_nomina", "rel_trabajador_adscripcion.cr_origen", "rel_trabajador_adscripcion.cr_destino")
-            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_adscripcion where activo=1)");
+            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_adscripcion where activo=1 and deleted_at is null)");
             /*$trabajador = RelAdscripcion::with("cr_origen", "cr_destino", "trabajador.rel_datos_laborales_nomina")->where("cr_origen", "!=", "");*/
             $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
             
@@ -173,6 +173,131 @@ class TramiteAdscripcionController extends Controller
             "direccion_admon"=> $direccion_admon_finanzas, "relaciones_laborales"=>$relaciones_laborales, "elaboracion"=>$elaboracion, "secretario"=>$secretario];
 
             return response()->json(['data'=>$trabajador, "nombres"=>$nombres],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $mensajes = [ 
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = $request->all();
+        $inputs = $inputs['params'];
+    
+        $reglas = [
+            'trabajador_id'           => 'required',
+            'clues'                     => 'required',
+            'fecha_oficio'           => 'required',
+            'fecha_cambio'           => 'required',
+        ];
+        
+    
+        DB::beginTransaction();
+        $v = Validator::make($inputs, $reglas, $mensajes);
+       
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+        try {
+            $update = RelAdscripcion::where("trabajador_id", $inputs['trabajador_id'])->first();
+            
+            if($update)
+            {
+                //return Response::json(['error' => $update], HttpResponse::HTTP_CONFLICT);
+                $update->activo = 0;
+                $update->save();    
+            }
+            
+            $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
+            $object = new RelAdscripcion();
+            $object->cr_origen          = $origen->cr;
+            $object->cr_destino         = $inputs['clues']['cr'];
+            $object->trabajador_id      = $inputs['trabajador_id'];
+            $object->fecha_oficio       = $inputs['fecha_oficio'];
+            $object->fecha_cambio       = $inputs['fecha_cambio'];
+            $object->save();
+            
+            
+            DB::commit();
+            
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        $mensajes = [ 
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = $request->all();
+        $inputs = $inputs['params'];
+    
+        $reglas = [
+            'trabajador_id'           => 'required',
+            'clues'                     => 'required',
+            'fecha_oficio'           => 'required',
+            'fecha_cambio'           => 'required',
+        ];
+        
+    
+        DB::beginTransaction();
+        $v = Validator::make($inputs, $reglas, $mensajes);
+       
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+        try {
+            
+            
+            $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
+            $object = RelAdscripcion::find($id);
+            $object->cr_origen          = $origen->cr;
+            $object->cr_destino         = $inputs['clues']['cr'];
+            $object->trabajador_id      = $inputs['trabajador_id'];
+            $object->fecha_oficio       = $inputs['fecha_oficio'];
+            $object->fecha_cambio       = $inputs['fecha_cambio'];
+            $object->save();
+            
+            
+            DB::commit();
+            
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
+
+    public function Destroy($id)
+    {
+        try{
+            
+            $busqueda = RelAdscripcion::where("trabajador_id", $id)->max('id');
+            $responsable = RelAdscripcion::find($busqueda);
+            $responsable->delete();
+
+            $object = RelAdscripcion::find(RelAdscripcion::max('id'));
+            if($object)
+            {
+                $object->activo = 1;
+                $object->save();
+    
+            }
+            
+            return response()->json(['data'=>"Registro Eliminado"], HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

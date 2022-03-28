@@ -21,15 +21,21 @@
                     <div fxFlex="none" fxFlex.xs="100" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
                         <div fxFlex></div>
                         <section class="search-button">
-                            <button mat-raised-button color="accent" (click)="applyFilter()">
+                            <button mat-raised-button color="accent" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Buscar
                             </button>
 
-                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote">
-                                <mat-icon>print</mat-icon> Imprimir Lote
+                            <button color="primary" mat-stroked-button style="margin-left: 5px; padding: 10px; font-size: 14pt;" [matMenuTriggerFor]="menuLote">
+                                <mat-icon>print</mat-icon>
                             </button>
                             <mat-menu #menuLote="matMenu">
-                                <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirOficio(null, i)">{{ (i + 1) }}</button>
+                                <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirOficio(null, i)">LOTE {{ (i + 1) }}</button>
+                            </mat-menu>
+
+                            <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="Agregar()"><mat-icon>add</mat-icon> AGREGAR</button>
+
                             </mat-menu>
                         </section>
                     </div>
@@ -202,8 +208,9 @@
                                             <mat-icon>menu</mat-icon>
                                     </button>
                                     <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="Agregar(row)"><mat-icon color="primary">print</mat-icon>EDITAR</button>
                                         <button mat-menu-item (click)="imprimirOficio(row)"><mat-icon color="primary">print</mat-icon>GENERAR OFICIO</button>
-                                        <button mat-menu-item style="color: red;"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
+                                        <button mat-menu-item style="color: red;" (click)="eliminarAdscripcion(row)"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
                                     </mat-menu>
 
                                 </td>

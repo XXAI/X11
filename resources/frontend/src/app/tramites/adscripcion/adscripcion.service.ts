@@ -12,6 +12,7 @@ export class AdscripcionService {
   url           = `${environment.base_url}/tramite-adscripcion`;
   url_lote      = `${environment.base_url}/tramite-adscripcion-lote`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
+  url_filter_trabajador =  `${environment.base_url}/busqueda-trabajador-tramite`;
   
   constructor(private http: HttpClient) { }
 
@@ -29,6 +30,41 @@ export class AdscripcionService {
   buscarTrabajador(id:any = null, payload:any)
   {
     return this.http.get<any>(this.url + "/"+id , {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  eliminarCambioAdscripcion(id:any = null, payload:any)
+  {
+    return this.http.delete<any>(this.url + "/"+id , {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  guardarAdscripcion(payload:any)
+  {
+    return this.http.post<any>(this.url , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  editarAdscripcion(id:number, payload:any)
+  {
+    return this.http.put<any>(this.url+"/"+id , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  
+  getTrabajador( payload:any)
+  {
+    return this.http.get<any>(this.url_filter_trabajador , {params:payload}).pipe(
       map( (response: any) => {        
         return response;
       }

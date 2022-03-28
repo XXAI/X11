@@ -10,9 +10,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdscripcionRoutingModule } from './adscripcion-routing.module';
 import { ListaComponent } from './lista/lista.component';
+import { FormularioComponent } from './formulario/formulario.component';
 
 @NgModule({
-  declarations: [ListaComponent],
+  declarations: [ListaComponent, FormularioComponent],
   imports: [
     CommonModule,
     AdscripcionRoutingModule,

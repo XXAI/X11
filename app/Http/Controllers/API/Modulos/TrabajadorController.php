@@ -1127,6 +1127,27 @@ class TrabajadorController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    public function getTrabajadoresTramite(Request $request)
+    {
+        try{
+            $parametros = $request->all();
+
+            $access = $this->getUserAccessData();
+            
+            $trabajador = Trabajador::with("datoslaboralesnomina")
+            //->join("rel_trabajador_datos_laborales_nomina", "rel_trabajador_datos_laborales_nomina.trabajador_id","=","trabajador.id")
+            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)")
+            ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
+            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null)");
+
+             $trabajador = $trabajador->get();
+            
+            return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
     public function getCatalogos()
     {
         try{

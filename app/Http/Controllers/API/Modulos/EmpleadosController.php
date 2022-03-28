@@ -26,6 +26,7 @@ use App\Models\GrupoUnidades;
 use Carbon\Carbon;
 
 use App\Exports\DevReportExport;
+use App\Models\Trabajador;
 
 class EmpleadosController extends Controller
 {
@@ -1322,6 +1323,7 @@ class EmpleadosController extends Controller
 
             $catalogo_clues = Clues::orderBy('nombre_unidad');
             $catalogo_cr = Cr::orderBy("descripcion");
+            //$catalogo_trabajador = Trabajador::select("id", "rfc",DB::RAW("concat(nombre,' ', apellido_paterno,' ',apellido_materno) as nombre_completo") )->orderBy("nombre");
             $loggedUser = auth()->userOrFail();
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
             $permiso_rh_central = false;

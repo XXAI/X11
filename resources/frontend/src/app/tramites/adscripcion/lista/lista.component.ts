@@ -8,12 +8,15 @@ import { MatTable } from '@angular/material/table';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
+import { ConfirmActionDialogComponent } from '../../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
 import { MediaObserver } from '@angular/flex-layout';
 import { AdscripcionService } from '../adscripcion.service';
 
 import { ReportWorker } from '../../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
+
+import { FormularioComponent } from '../formulario/formulario.component';
 
 @Component({
   selector: 'app-lista',
@@ -517,6 +520,95 @@ export class ListaComponent implements OnInit {
         }
       );
     }
+  }
+
+  public eliminarAdscripcion(obj)
+  {
+    let nombre =obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno;
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'ELIMINAR',dialogMessage:'¿Realmente desea eliminar el ultimo cambio de adscripción registrada de '+nombre+'? Escriba ACEPTAR a continuación para realizar el proceso.',validationString:'ACEPTAR',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.adscripcionService.eliminarCambioAdscripcion(obj.id,{}).subscribe(
+          response =>{
+            this.sharedService.showSnackBar("SE HA ELIMINADO CORRECTAMENTE EL REGISTRO", null, 3000);
+            this.isLoading = false;
+            this.loadTrabajadorData();
+          },
+          errorResponse =>{
+            this.sharedService.showSnackBar("OCURRIO UN ERROR, POR FAVOR VUELVA A INTENTARLO", null, 3000);
+            //this.error_api(errorResponse);
+          }
+        );
+      }
+    });
+  }
+
+  public Agregar(obj = null) {
+
+    //console.log(obj);
+    let configDialog = {};
+    let row: any = {};
+    if(obj != null)
+    {
+      row ={
+        id: obj.rel_trabajador_adscripcion.id, 
+        trabajador: obj, 
+        fecha_oficio:obj.rel_trabajador_adscripcion.fecha_oficio, 
+        fecha_cambio: obj.rel_trabajador_adscripcion.fecha_cambio, 
+        clues: obj.rel_trabajador_adscripcion.cr_destino,
+        clues_adscripcion: obj.rel_datos_laborales_nomina.cr,
+        catalogo_cr: this.filterCatalogs['cr']
+      };
+
+    }else{
+      row ={
+        catalogo_cr: this.filterCatalogs['cr']
+      };
+    } 
+          
+
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '91vh',
+        height: '620px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '60vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '60vh',
+        height: '400px',
+        data: row
+      }
+    }
+    
+    const dialogRef = this.dialog.open(FormularioComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      //this.loadRegistroData();
+    });
   }
 
   error_pdf(obj:any)

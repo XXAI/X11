@@ -1,0 +1,91 @@
+<h3 style="color: grey;">ADSCRIPCIÓN</h3>
+<mat-divider></mat-divider>
+<div [formGroup]="formularioForm">
+    <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">person_pin</mat-icon>
+        <div class="mobile-pc"> Datos Personales</div>
+    </ng-template>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+        <div fxFlex="100" fxFlex.xs="100">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="40" fxFlex.xs="100" appearance="fill">
+                    <mat-label>Trabajador</mat-label>
+                    <input matInput placeholder="Trabajador" formControlName='trabajador' (keyup.escape)="buscarTrabajador()" (keyup.enter)="buscarTrabajador()">
+                </mat-form-field>
+                <div fxFlex="10" fxFlex.xs="100" appearance="fill">
+                    <button mat-raised-button color="accent" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="buscarTrabajador()" [disabled]="buscador">
+                        <mat-icon>search</mat-icon> Buscar
+                    </button>
+                </div>
+                <mat-form-field fxFlex="50" fxFlex.xs="100" appearance="fill">
+                    <mat-label>TRABAJADORES</mat-label>
+                    <mat-select formControlName="trabajador_id" required #datatrabajador (valueChange)="obtenerDatos(datatrabajador.value)">
+                        <mat-option *ngFor="let item of arreglo_trabajador" [value]="item.id">
+                            {{item.nombre}} {{item.apellido_paterno}} {{item.apellido_materno}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formularioForm.get('trabajador_id').invalid && (formularioForm.get('trabajador_id').dirty || formularioForm.get('trabajador_id').touched)">
+                        <span *ngIf="formularioForm.get('trabajador_id').errors.required">Campo obligatorio</span>
+                    </mat-error>
+
+                </mat-form-field>
+            </div>
+        </div>
+
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+        <div fxFlex="100" fxFlex.xs="100">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <div fxFlex="100" fxFlex.xs="100" appearance="fill">
+                    <b>{{ clues_nominal }}</b><br>
+                    <label>{{ cr_nominal }}</label><br>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+        <div fxFlex="100" fxFlex.xs="100">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="50" fxFlex.xs="100" appearance="fill">
+                    <mat-label>CLUES DESTINO</mat-label>
+                    <input matInput placeholder="UNIDAD MEDICA DESTINO" [matAutocomplete]="cluesAutocomplete" formControlName='clues'>
+                    <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="displaycluesFn('descripcion_actualizada')" [panelWidth]="'auto'">
+                        <mat-option *ngFor="let item of filteredCatalogs['cr'] | async" [value]="item">
+                            [{{item.cr}}] {{item.descripcion_actualizada}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-hint *ngIf="formularioForm.get('clues').value">[ {{formularioForm.get('clues').value.cr}} ]</mat-hint>
+
+                    <mat-error *ngIf="formularioForm.get('clues').invalid && (formularioForm.get('clues').dirty || formularioForm.get('clues').touched)">
+                        <span *ngIf="formularioForm.get('clues').errors.required">Campo obligatorio</span>
+                    </mat-error>
+
+                </mat-form-field>
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                    <input matInput [matDatepicker]="fecha_oficio_picker" autocomplete="off" (click)="fecha_oficio_picker.open()" formControlName="fecha_oficio" placeholder="Fecha Oficio">
+                    <mat-datepicker-toggle matPrefix [for]="fecha_oficio_picker"></mat-datepicker-toggle>
+                    <mat-datepicker #fecha_oficio_picker [disabled]="false"></mat-datepicker>
+                    <mat-error *ngIf="formularioForm.get('fecha_oficio').invalid && (formularioForm.get('fecha_oficio').dirty || formularioForm.get('fecha_oficio').touched)">
+                        <span *ngIf="formularioForm.get('fecha_oficio').errors.required">Campo obligatorio</span>
+                    </mat-error>
+
+                </mat-form-field>
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                    <input matInput [matDatepicker]="fecha_cambio_picker" autocomplete="off" (click)="fecha_cambio_picker.open()" formControlName="fecha_cambio" placeholder="Fecha Cambio">
+                    <mat-datepicker-toggle matPrefix [for]="fecha_cambio_picker"></mat-datepicker-toggle>
+                    <mat-datepicker #fecha_cambio_picker [disabled]="false"></mat-datepicker>
+                    <mat-error *ngIf="formularioForm.get('fecha_cambio').invalid && (formularioForm.get('fecha_cambio').dirty || formularioForm.get('fecha_cambio').touched)">
+                        <span *ngIf="formularioForm.get('fecha_cambio').errors.required">Campo obligatorio</span>
+                    </mat-error>
+
+                </mat-form-field>
+            </div>
+        </div>
+
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+    <button mat-flat-button color="primary" (click)="GUARDAR()" [disabled]="!formularioForm.valid || isLoading">GUARDAR</button>
+    <button mat-flat-button (click)="cerrar()">CERRAR</button>
+</div>
