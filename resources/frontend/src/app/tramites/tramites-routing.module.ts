@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../auth/auth.guard';
-import { ListaComponent } from './lista/lista.component';
+import { InicioComponent } from './inicio/inicio.component';
 import { DocumentacionComponent } from './documentacion/documentacion.component';
 
 
 const routes: Routes = [
-  { path: 'tramites', component: DocumentacionComponent, canActivate: [AuthGuard] },
+  { path: 'tramites', component: InicioComponent, canActivate: [AuthGuard] },
   //{ path: 'tramites/comision', component: ListaComponent, canActivate: [AuthGuard] },
   { path: 'tramites/documentacion', component: DocumentacionComponent, canActivate: [AuthGuard] },
   

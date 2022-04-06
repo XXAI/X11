@@ -25,9 +25,10 @@ import { AdscripcionModule } from './adscripcion/adscripcion.module';
 import { AdscripcionExternaModule } from './adscripcion-externa/adscripcion-externa.module';
 import { ReincorporacionModule } from './reincorporacion/reincorporacion.module';
 import { ComisionModule } from './comision/comision.module';
+import { InicioComponent } from './inicio/inicio.component';
 
 @NgModule({
-  declarations: [ListaComponent, DocumentacionComponent, DocumentacionImportacionDialogComponent, CancelarDocumentacionDialogComponent, VerInformacionDialogComponent, VisorPdfDialogComponent/*, FormatoFechaPipe*/],
+  declarations: [ListaComponent, DocumentacionComponent, DocumentacionImportacionDialogComponent, CancelarDocumentacionDialogComponent, VerInformacionDialogComponent, VisorPdfDialogComponent, InicioComponent/*, FormatoFechaPipe*/],
   imports: [
     CommonModule,
     TramitesRoutingModule,

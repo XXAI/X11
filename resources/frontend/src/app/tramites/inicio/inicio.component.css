@@ -1,0 +1,13 @@
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.element {
+    margin-top: 20%;
+    font-size: 60pt;
+    color: grey;
+    /*padding: 100px;*/
+    text-align: center;
+    line-height: 50px;
+}

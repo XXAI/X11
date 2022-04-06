@@ -53,6 +53,7 @@ use App\Models\CluesAsistencia;
 use App\Models\RelCapacitacion;
 use App\Models\RelCapacitacionDetalles;
 use App\Models\RelDatosLaborales;
+use App\Models\RelDatosLaboralesNomina;
 use App\Models\RelEscolaridad;
 use App\Models\RelEscolaridadCursante;
 use App\Models\RelHorario;
@@ -1078,6 +1079,14 @@ class TrabajadorController extends Controller
             $objectRL->tiene_fiel = 0;
 
             $objectRL->save();
+
+            $objectRLN = RelDatosLaboralesNomina::where("rfc_nomina", $object->rfc)->orWhere('curp_nomina',$object->curp)->first();
+            if($objectRLN)
+            {
+                $objectRLN->trabajador_id = $object->id;
+                $objectRLN->save();
+            }
+            
             //$object ->id = 1;
             DB::commit();
             

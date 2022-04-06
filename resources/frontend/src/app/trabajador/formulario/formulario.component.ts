@@ -494,6 +494,7 @@ export class FormularioComponent implements OnInit {
         this.lengua(this.trabajador.lengua_indigena_id);
         
         this.nombre_trabajador= this.trabajador.apellido_paterno+" "+this.trabajador.apellido_materno+" "+this.trabajador.nombre;
+        console.log(this.trabajador);
         this.trabajadorForm.patchValue(this.trabajador);  //carga datos de trabajador
         this.verificar_curp(this.trabajador.curp);
         if(this.trabajador.idioma_id == null)
@@ -919,12 +920,16 @@ export class FormularioComponent implements OnInit {
         this.trabajadorForm.get('entidad_nacimiento_id').disable();
         this.trabajadorForm.patchValue({nacionalidad_id: 2047952, entidad_nacimiento_id:2499 });
         
-      }else{
+      }else if(estado == "CS"){
         //console.log("no entro");
         this.trabajadorForm.get('municipio').enable();
         this.trabajadorForm.get('entidad_nacimiento_id').enable();
         this.trabajadorForm.patchValue({nacionalidad_id: 2047951, pais_nacimiento_id:142, entidad_nacimiento_id:7});
 
+      }else{
+        this.trabajadorForm.get('municipio').enable();
+        this.trabajadorForm.get('entidad_nacimiento_id').enable();
+        this.trabajadorForm.patchValue({nacionalidad_id: 2047951});
       }
     }
   }

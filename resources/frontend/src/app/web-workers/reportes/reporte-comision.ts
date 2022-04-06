@@ -181,7 +181,7 @@ export class ReporteComision {
         {
           datos_origen = element.rel_trabajador_comision_interna.cr_origen.directorio_responsable;
           element.rel_trabajador_comision_interna.cr_origen.directorio_responsable;
-          copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
+          copia_dependencia = "C.C.P. "+datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
         }
       }
 
@@ -301,8 +301,8 @@ export class ReporteComision {
             ],
             [
               { text: copias.toUpperCase()+
-                      "Cc.p. "+nombre_control+". - "+nombres.control.cargo+"\n"+
-                      "C.c.p. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo+"\n\n"+
+                      "C.C.P. "+nombre_control+". - "+nombres.control.cargo+"\n"+
+                      "C.C.P. "+nombre_sistematizacion+". - "+nombres.sistematizacion.cargo+"\n\n"+
                       "Vo.Bo. "+nombre_subdireccion_rh+". - "+nombres.subdireccion_rh.cargo+"\n"+
                       "REVISÓ: "+nombre_relaciones_laborales+". - "+nombres.relaciones_laborales.cargo+"\n"+
                       nombre_elaboracion+".", style: "texto_firmas", colSpan:2},{},

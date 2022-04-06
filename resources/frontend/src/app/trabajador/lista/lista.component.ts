@@ -543,7 +543,7 @@ export class ListaComponent implements OnInit {
   public loadFilterCatalogs(){
     this.trabajadorService.getFilterCatalogs().subscribe(
       response => {
-        //console.log(response);
+        console.log(response);
         this.filterCatalogs = {
           'clues': response.data.clues,
           'cr': response.data.cr,

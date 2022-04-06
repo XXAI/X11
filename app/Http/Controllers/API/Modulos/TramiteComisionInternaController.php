@@ -21,10 +21,41 @@ class TramiteComisionInternaController extends Controller
         try{
             $access = $this->getUserAccessData();
             $parametros = $request->all();
-            
+            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
+
+            $permiso_adjudicado = false;
+            $permiso_no_adjudicado = false;
+            if(!$access->is_admin){
+                foreach ($permisos->roles as $key => $value) {
+                    
+                    foreach ($value->permissions as $key2 => $value2) {
+                        if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_adjudicado = true; }
+                        if($value2->id == 'sAcg0BNbntiAUP79tlopqc1gMYWMuXhc'){ $permiso_no_adjudicado = true; }
+                        
+                    }
+                }
+                    
+                foreach ($permisos->permissions as $key2 => $value2) {
+                    if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_adjudicado = true; }
+                    if($value2->id == 'sAcg0BNbntiAUP79tlopqc1gMYWMuXhc'){ $permiso_no_adjudicado = true; }
+                }   
+            }
+
+            $adjudicado = "";
+            if(!$access->is_admin){
+                if($permiso_adjudicado == true)
+                {
+                    $adjudicado = " and adjudicado = 1";
+                }else if($permiso_no_adjudicado == true){
+                    $adjudicado = " and adjudicado = 0";
+                }else{
+                    $adjudicado = " and adjudicado = 2";
+                }
+            }
+
             $trabajador = Trabajador::with("rel_datos_laborales_nomina", "rel_trabajador_comision_interna.cr_origen", "rel_trabajador_comision_interna.cr_destino")
-            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1)");
-            
+            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1 ".$adjudicado." and deleted_at is null)");
+
             $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
             
             if(isset($parametros['page'])){
@@ -83,13 +114,45 @@ class TramiteComisionInternaController extends Controller
             $parametros = $request->all();
 
             $access = $this->getUserAccessData();
+            $loggedUser = auth()->userOrFail();
+
+            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
+            $permiso_adjudicado = false;
+            if(!$access->is_admin){
+                foreach ($permisos->roles as $key => $value) {
+                    
+                    foreach ($value->permissions as $key2 => $value2) {
+                        if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC')
+                        {
+                            $permiso_adjudicado = true;
+                        }
+                    }
+                }
+                    
+                foreach ($permisos->permissions as $key2 => $value2) {
+                    if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC')
+                    {
+                        $permiso_adjudicado = true;
+                    }
+                }   
+            }
+
+            $adjudicado = "";
+            if(!$access->is_admin){
+                if($permiso_adjudicado == true)
+                {
+                    $adjudicado = " and adjudicado = 1";
+                }else{
+                    $adjudicado = " and adjudicado = 0";
+                }
+            }
 
             $trabajador = Trabajador::with("rel_trabajador_comision_interna.cr_origen.directorioResponsable.responsable",
             "rel_trabajador_comision_interna.cr_origen.dependencia.directorioResponsable.responsable", 
             "rel_trabajador_comision_interna.cr_destino.directorioResponsable.responsable", 
             "rel_trabajador_comision_interna.cr_destino.dependencia.directorioResponsable.responsable", 
             "rel_datos_laborales_nomina")
-            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1)")
+            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1 and deleted_at is null ".$adjudicado.")")
             ->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
 
             $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
