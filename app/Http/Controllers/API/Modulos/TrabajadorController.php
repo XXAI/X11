@@ -741,12 +741,12 @@ class TrabajadorController extends Controller
             }
         }
         foreach ($permisos->permissions as $key1 => $value1) {
-            if($value2->id == 'qXiGxkagVGjh0sUrapubXuLptlpj2gNY')
+            
+            if($value1->id == 'qXiGxkagVGjh0sUrapubXuLptlpj2gNY')
             {
                 $permiso_rfc_curp = true;
             }
         }
-
         DB::beginTransaction();
         try {
             
@@ -779,10 +779,19 @@ class TrabajadorController extends Controller
                 $object->municipio_federativo_id    = 186;
                 $object->edad                       = $edad;
                 $object->observacion                = $inputs['observacion'];
-                if($permiso_rfc_curp == true)
+                if($permiso_rfc_curp == true || $loggedUser->is_superuser == 1)
                 {
                     $object->rfc                        = strtoupper($inputs['rfc']);
                     $object->curp                       = $inputs['curp'];
+                    
+                    $objectRLN = RelDatosLaboralesNomina::where("rfc_nomina", $object->rfc)->orWhere('curp_nomina',$object->curp)->first();
+                    if($objectRLN)
+                    {
+                        $objectRLN->trabajador_id = $object->id;
+                        $objectRLN->save();
+                    }
+                    $loggedUser->username = $object->rfc;
+                    $loggedUser->save();
                 }
                 if($inputs['idioma_id'] != 0)
                 {
@@ -803,6 +812,8 @@ class TrabajadorController extends Controller
                 
                 $object->lenguaje_senias = $inputs['lenguaje_senias'];
                 $object->save();
+
+                
             }else if($inputs['tipo_dato'] == 2)
             {
                 $objectRL = RelDatosLaborales::where("trabajador_id", "=", $id)->first();
