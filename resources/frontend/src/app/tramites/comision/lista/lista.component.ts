@@ -361,6 +361,67 @@ export class ListaComponent implements OnInit {
     }
   }
 
+  public Agregar(obj = null) {
+    let configDialog = {};
+    let row: any = {};
+    if(obj != null)
+    {
+      row ={
+        id: obj.rel_trabajador_adscripcion.id, 
+        trabajador: obj, 
+        fecha_oficio:obj.rel_trabajador_adscripcion.fecha_oficio, 
+        fecha_cambio: obj.rel_trabajador_adscripcion.fecha_cambio, 
+        clues: obj.rel_trabajador_adscripcion.cr_destino,
+        clues_adscripcion: obj.rel_datos_laborales_nomina.cr,
+        catalogo_cr: this.filterCatalogs['cr']
+      };
+
+    }else{
+      row ={
+        catalogo_cr: this.filterCatalogs['cr']
+      };
+    } 
+          
+
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '91vh',
+        height: '620px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '60vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '60vh',
+        height: '400px',
+        data: row
+      }
+    }
+    
+    /*const dialogRef = this.dialog.open(FormularioComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      //this.loadRegistroData();
+    });*/
+  }
 
   getDisplayFn(label: string){
     return (val) => this.displayFn(val,label);

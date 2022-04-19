@@ -1,4 +1,4 @@
-<section class="profile" >
+<section class="profile">
     <!--<mat-toolbar class="employee-advance-bar" [class.mat-elevation-z2]="true" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
         <mat-toolbar-row class="porcentaje">
             <mat-icon aria-hidden="false" aria-label="Estatus Empleado">speed</mat-icon>
@@ -11,7 +11,9 @@
 
     <div fxLayout="row" fxLayoutAlign="space-evenly center">
         <section fxFlex="95" fxLayout="column" fxLayoutAlign="center">
-            <div class="data-loading-shade" *ngIf="isLoading"><mat-spinner></mat-spinner></div>
+            <div class="data-loading-shade" *ngIf="isLoading">
+                <mat-spinner></mat-spinner>
+            </div>
             <mat-card fxFlex.xs="100%" fxFlex="90%">
                 <div fxLayout="row" fxLayout.xs="column">
                     <div fxFlex fxLayout="row wrap">
@@ -21,7 +23,9 @@
                             <button matSuffix *ngIf="searchQuery" mat-icon-button (click)="cleanSearch()" [attr.aria-label]="'Clean Query'" [attr.aria-pressed]="'cleanQuery'">
                                 <mat-icon>close</mat-icon>
                             </button>
-                            <mat-hint><mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)">Filtro Avanzado</mat-slide-toggle></mat-hint>
+                            <mat-hint>
+                                <mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)">Filtro Avanzado</mat-slide-toggle>
+                            </mat-hint>
                         </mat-form-field>
                     </div>
                     <div fxFlex="none" fxFlex.xs="100" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
@@ -34,11 +38,11 @@
                     </div>
                 </div>
             </mat-card>
-            
+
             <mat-divider [inset]="true"></mat-divider>
 
             <mat-accordion class="advanced-filter-container">
-                <mat-expansion-panel #advancedFilter  class="advanced-filter" [formGroup]="filterForm">
+                <mat-expansion-panel #advancedFilter class="advanced-filter" [formGroup]="filterForm">
                     <br>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
                         <mat-form-field fxFlex="50">
@@ -64,28 +68,28 @@
                         <mat-form-field fxFlex="50">
                             <mat-label>¿ENVIADO A VALIDACIÓN?</mat-label>
                             <mat-select formControlName="enviado" required>
-                                <mat-option  [value]="0">TODOS</mat-option>
-                                <mat-option  [value]="1">SI</mat-option>
-                                <mat-option  [value]="2">NO</mat-option>  
+                                <mat-option [value]="0">TODOS</mat-option>
+                                <mat-option [value]="1">SI</mat-option>
+                                <mat-option [value]="2">NO</mat-option>
                             </mat-select>
                             <!--<mat-hint *ngIf="filterForm.get('enviado').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>-->
                         </mat-form-field>
                         <mat-form-field fxFlex="50">
                             <mat-label>ESTATUS VALIDACIÓN</mat-label>
                             <mat-select formControlName="estatus" required>
-                                <mat-option  [value]="0">TODOS</mat-option>
-                                <mat-option  [value]="1">PENDIENTE A APROBAR</mat-option>
-                                <mat-option  [value]="2">RECHAZADO POR RH</mat-option>  
-                                <mat-option  [value]="3">PENDIENTE A APROBAR POR RH CENTRAL</mat-option>  
-                                <mat-option  [value]="4">RECHAZADO POR RH CENTRAL</mat-option>  
-                                <mat-option  [value]="5">VALIDADO POR RH CENTRAL</mat-option>  
+                                <mat-option [value]="0">TODOS</mat-option>
+                                <mat-option [value]="1">PENDIENTE A APROBAR</mat-option>
+                                <mat-option [value]="2">RECHAZADO POR RH</mat-option>
+                                <mat-option [value]="3">PENDIENTE A APROBAR POR RH CENTRAL</mat-option>
+                                <mat-option [value]="4">RECHAZADO POR RH CENTRAL</mat-option>
+                                <mat-option [value]="5">VALIDADO POR RH CENTRAL</mat-option>
                             </mat-select>
                             <!--<mat-hint *ngIf="filterForm.get('enviado').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>-->
                         </mat-form-field>
-                       
+
                     </div>
                     <div fxLayout="row wrap">
-                       
+
                         <div fxFlex></div>
                         <div fxFlex="none">
                             <button mat-flat-button (click)="filterForm.reset()">
@@ -100,18 +104,18 @@
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>
-            
+
             <mat-card fxFlex.xs="100%" fxFlex="90%">
-                
-                
+
+
                 <mat-divider [inset]="true"></mat-divider>
 
                 <div class="data-container ">
                     <div class="data-table-container">
                         <table #dataTable mat-table class='tabla_datos' [dataSource]="dataSource" class="data-table" matSort>
-                           
+
                             <!-- Name Column -->
-                            <ng-container matColumnDef="ESTATUS" >
+                            <ng-container matColumnDef="ESTATUS">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> ESTATUS </th>
                                 <td mat-cell *matCellDef="let row" fxHide.xs="true">
                                     <div *ngIf="row.estatus != null">
@@ -122,15 +126,15 @@
                                     </div>
                                     <div *ngIf="row.estatus == null">
                                         <mat-icon>pending</mat-icon>
-                                        
+
                                     </div>
-                                    
+
                                 </td>
                             </ng-container>
                             <!-- Name Column -->
-                            <ng-container matColumnDef="RFC" >
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > NOMBRE </th>
-                                <td mat-cell *matCellDef="let row"> 
+                            <ng-container matColumnDef="RFC">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE </th>
+                                <td mat-cell *matCellDef="let row">
                                     <b>{{row.nombre}}  {{ row.apellido_paterno }} {{ row.apellido_materno }}</b><br>
                                     <span style="font-size: 8pt;">{{row.rfc}}</span> </td>
                             </ng-container>
@@ -148,9 +152,9 @@
                             </ng-container>-->
                             <ng-container matColumnDef="CR">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> CR </th>
-                                <td mat-cell *matCellDef="let row"> 
+                                <td mat-cell *matCellDef="let row">
                                     <span style="font-size: 9pt;" *ngIf="row.descripcion != null">{{row.descripcion}}</span><br>
-                                    <span style="font-size: 8pt;" *ngIf="row.cr != null">{{row.cr}}</span>                                    
+                                    <span style="font-size: 8pt;" *ngIf="row.cr != null">{{row.cr}}</span>
                                     <!--<div *ngIf="row.rel_trabajador_documentos">
                                         <div *ngIf="row.estatus == 2" style="color: red;">
                                             <b>{{ row.rel_trabajador_documentos.observacion }} </b>
@@ -159,117 +163,117 @@
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="actions" >
+                            <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
-                                    
-                                    
+
+
                                     <div *ngIf="row.estatus == null">
-                                        
-                                        <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+
+                                        <!--<button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
                                             <mat-icon>menu</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
                                                 <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
-                                        </mat-menu>
+                                        </mat-menu>-->
                                     </div>
-                                    
+
                                     <div *ngIf="row.estatus != null">
-                                        
+
                                         <div *ngIf="row.estatus == 1">
                                             <button mat-mini-fab color="warn" mat-stroked-button [matMenuTriggerFor]="menu">
                                                     <mat-icon>menu</mat-icon>
                                             </button>
                                             <mat-menu #menu="matMenu">
-                                                <button mat-menu-item (click)="VerificacionDenegar(row.id, 2);" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
-                                                <button mat-menu-item (click)="VerificacionAprobar(row.id, 3);" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
-                                                <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                <button mat-menu-item (click)="VerificacionDenegar(row.id, 2);"><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>
+                                                <button mat-menu-item (click)="VerificacionAprobar(row.id, 3);"><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
+                                                <button mat-menu-item color="primary" (click)="descargar(row)">
                                                     <mat-icon color="warn">visibility</mat-icon> Ver
-                                                </button> 
-                                                   
-                                                
+                                                </button>
+
+
                                             </mat-menu>
-                                            
+
                                         </div>
                                         <div *ngIf="row.estatus == 2">
-                                            <button mat-mini-fab color="warn" mat-stroked-button [matMenuTriggerFor]="menu">
+                                            <!--<button mat-mini-fab color="warn" mat-stroked-button [matMenuTriggerFor]="menu">
                                                     <mat-icon>menu</mat-icon>
                                             </button>
                                             <mat-menu #menu="matMenu">
                                                 <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>                
-                                            </mat-menu>
+                                            </mat-menu>-->
                                         </div>
-                                        <div *ngIf="row.estatus == 3  && permiso_validador == false" >
+                                        <div *ngIf="row.estatus == 3  && permiso_validador == false">
                                             Pendiente de Validar por Rh oficina central
                                         </div>
-                                        <div *ngIf="row.estatus == 3  && permiso_validador == true" >
-                                            
+                                        <div *ngIf="row.estatus == 3  && permiso_validador == true">
+
                                             <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
                                                     <mat-icon>menu</mat-icon>
                                             </button>
                                             <mat-menu #menu="matMenu">
-                                                    <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 4);" ><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>            
-                                                    <button mat-menu-item (click)="VerificacionAprobar(row.id, 5);" ><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
-                                                    <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 4);"><mat-icon color="primary">cancel</mat-icon>DENEGAR</button>
+                                                <button mat-menu-item (click)="VerificacionAprobar(row.id, 5);"><mat-icon color="primary">check_circle</mat-icon>APROBAR</button>
+                                                <button mat-menu-item color="primary" (click)="descargar(row)">
                                                         <mat-icon color="warn">visibility</mat-icon> Ver
-                                                    </button> 
-                                                    <button  mat-menu-item (click)="verInformacion(row)" *ngIf="row.rel_trabajador_documentos.detalles.length >0">
+                                                    </button>
+                                                <button mat-menu-item (click)="verInformacion(row)" *ngIf="row.rel_trabajador_documentos.detalles.length >0">
                                                         <mat-icon  color="warn">
                                                             error
                                                         </mat-icon>
                                                         DATOS
-                                                    </button>           
-                                                
+                                                    </button>
+
                                             </mat-menu>
-                                           
+
                                         </div>
                                         <div *ngIf="row.estatus == 4">
                                             <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
                                                     <mat-icon>menu</mat-icon>
                                             </button>
                                             <mat-menu #menu="matMenu">
-                                                    <div>
-                                                        <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
-                                                        <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                <div>
+                                                    <!--<button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>-->
+                                                    <button mat-menu-item color="primary" (click)="descargar(row)">
                                                             <mat-icon color="warn">visibility</mat-icon> Ver
-                                                        </button> 
-                                                        <button  mat-menu-item (click)="verInformacion(row)">
+                                                        </button>
+                                                    <button mat-menu-item (click)="verInformacion(row)">
                                                             <mat-icon  color="warn">
                                                                 error
                                                             </mat-icon>
                                                             DATOS
-                                                        </button>           
-                                                    </div>
-                                                
+                                                        </button>
+                                                </div>
+
                                             </mat-menu>
-                                        </div>   
+                                        </div>
                                         <div *ngIf="row.estatus == 5">
                                             <button mat-mini-fab color="success" mat-stroked-button [matMenuTriggerFor]="menu">
                                                     <mat-icon>menu</mat-icon>
                                             </button>
                                             <mat-menu #menu="matMenu">
-                                                    <div>
-                                                        <button mat-menu-item color="primary" (click)="descargar(row)" >
+                                                <div>
+                                                    <button mat-menu-item color="primary" (click)="descargar(row)">
                                                             <mat-icon color="warn">visibility</mat-icon> Ver
-                                                        </button> 
-                                                                   
-                                                    </div>
-                                                
+                                                        </button>
+
+                                                </div>
+
                                             </mat-menu>
-                                        </div>    
-                                        
+                                        </div>
+
                                     </div>
-                                      
-                                    
+
+
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="noResultsFound">
                                 <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
-                                    No se encontraron registros 
+                                    No se encontraron registros
                                 </td>
                             </ng-container>
-                            
+
                             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                             <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
 
@@ -277,7 +281,7 @@
                         </table>
                     </div>
                     <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadTrabajadorData($event)"></mat-paginator>
-                </div>                
+                </div>
             </mat-card>
         </section>
     </div>

@@ -188,7 +188,7 @@ export class DocumentacionComponent implements OnInit {
         data:{ id: obj.id, rfc: obj.rfc, nombre: obj.nombre+" "+obj.apellido_paterno+" "+obj.apellido_materno, tipo:2}
       }
     }
-    console.log(configDialog);
+    //console.log(configDialog);
     const dialogRef = this.dialog.open(DocumentacionImportacionDialogComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {

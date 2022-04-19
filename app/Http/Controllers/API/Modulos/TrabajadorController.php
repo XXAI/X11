@@ -729,6 +729,24 @@ class TrabajadorController extends Controller
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
 
+        $loggedUser = auth()->userOrFail();
+        $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
+        $permiso_rfc_curp = false;
+        foreach ($permisos->roles as $key => $value) {
+            foreach ($value->permissions as $key2 => $value2) {
+                if($value2->id == 'qXiGxkagVGjh0sUrapubXuLptlpj2gNY')
+                {
+                    $permiso_rfc_curp = true;
+                }
+            }
+        }
+        foreach ($permisos->permissions as $key1 => $value1) {
+            if($value2->id == 'qXiGxkagVGjh0sUrapubXuLptlpj2gNY')
+            {
+                $permiso_rfc_curp = true;
+            }
+        }
+
         DB::beginTransaction();
         try {
             
@@ -741,8 +759,8 @@ class TrabajadorController extends Controller
                 $object->nombre                     = strtoupper($inputs['nombre']);
                 $object->apellido_paterno           = strtoupper($inputs['apellido_paterno']);
                 $object->apellido_materno           = strtoupper($inputs['apellido_materno']);
-                //$object->rfc                        = strtoupper($inputs['rfc']);
-                $object->curp                       = $inputs['curp'];
+                //
+                
                 $object->sexo_id                    = $inputs['sexo'];
                 $object->calle                      = strtoupper($inputs['calle']);
                 $object->no_exterior                = $inputs['no_exterior'];
@@ -761,6 +779,11 @@ class TrabajadorController extends Controller
                 $object->municipio_federativo_id    = 186;
                 $object->edad                       = $edad;
                 $object->observacion                = $inputs['observacion'];
+                if($permiso_rfc_curp == true)
+                {
+                    $object->rfc                        = strtoupper($inputs['rfc']);
+                    $object->curp                       = $inputs['curp'];
+                }
                 if($inputs['idioma_id'] != 0)
                 {
                     $object->idioma_id = $inputs['idioma_id'];

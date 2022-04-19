@@ -37,7 +37,7 @@ export class ReporteTrabajadorCambioAdscripcion {
 
         
         let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
-
+       
         let datos = {
           pageOrientation: 'portrait',
           pageSize: 'LETTER',
@@ -147,7 +147,7 @@ export class ReporteTrabajadorCambioAdscripcion {
 
         let iteracciones = 1;
         data.forEach(element => {
-
+          
           let contenido = "";
           let datos_trabajador = element;
           let dato_desde = "";
@@ -161,7 +161,7 @@ export class ReporteTrabajadorCambioAdscripcion {
             {
               fecha_hoy = this.convertirFechaTexto(element.fecha_oficio).toLowerCase();
             }
-            console.log(element);
+            //console.log(element);
             /*if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia == element.rel_trabajador_adscripcion.cr_destino.cr_dependencia)
             {
               if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr && element.rel_trabajador_adscripcion.cr_destino.cr_dependencia != element.rel_trabajador_adscripcion.cr_destino.cr )
@@ -192,7 +192,7 @@ export class ReporteTrabajadorCambioAdscripcion {
                 copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
               }
             }*/
-
+            console.log(element.cr_destino.descripcion_actualizada);
             dato_desde = element.adscripcion;
             dato_hacia = element.cr_destino.descripcion_actualizada+" ("+element.cr_destino.clues.clues+") "+dato_hacia;
             
@@ -284,7 +284,7 @@ export class ReporteTrabajadorCambioAdscripcion {
             }
             datos.content.push(informacion_oficio);
           }else{
-
+            //console.log(datos_trabajador.id+" "+element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada);
             if(element.rel_trabajador_adscripcion.fecha_oficio != null)
             {
               fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_adscripcion.fecha_oficio).toLowerCase();
@@ -304,7 +304,6 @@ export class ReporteTrabajadorCambioAdscripcion {
                   dato_hacia = " dependiente de la misma jurisdicción";
                 }
               }
-              
             }else{
               if(element.rel_trabajador_adscripcion.cr_origen.cr_dependencia != element.rel_trabajador_adscripcion.cr_origen.cr){
                 dato_desde =" dependiente de "+ element.rel_trabajador_adscripcion.cr_origen.dependencia.descripcion_actualizada;
@@ -323,7 +322,6 @@ export class ReporteTrabajadorCambioAdscripcion {
 
             dato_desde = element.rel_trabajador_adscripcion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_origen.clues.clues+") "+dato_desde;
             dato_hacia = element.rel_trabajador_adscripcion.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_destino.clues.clues+") "+dato_hacia;
-            
             let nombre_responsable = "";
             let nombre_responsable_copia = "";
             if(element.rel_trabajador_adscripcion.cr_destino.dependencia.clues == "CSSSA017213")

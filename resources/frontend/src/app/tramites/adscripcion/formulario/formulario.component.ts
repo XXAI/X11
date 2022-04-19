@@ -48,6 +48,7 @@ export class FormularioComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog,
     public mediaObserver: MediaObserver,
+    public dialogRef: MatDialogRef<FormularioComponent>,
     @Inject(MAT_DIALOG_DATA) public data: RegistroData,
     public router: Router,
     public adscripcionService:AdscripcionService
@@ -217,6 +218,6 @@ export class FormularioComponent implements OnInit {
 
   cerrar()
   {
-
+    this.dialogRef.close();
   }
 }

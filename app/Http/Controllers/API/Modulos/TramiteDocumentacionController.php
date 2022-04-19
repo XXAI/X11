@@ -278,7 +278,8 @@ class TramiteDocumentacionController extends Controller
             $extension = $request->file('archivo')->getClientOriginalExtension();
             if($extension == "pdf")
             {
-                $name = $fileName.".".$extension;
+                //$name = $fileName.".".$extension;
+                $name = $parametros['trabajador_id'].".".$extension;
                 $request->file("archivo")->storeAs("public/documentacion", $name);
                 
                 $documentacion->trabajador_id = $parametros['trabajador_id']; 

@@ -316,7 +316,7 @@ export class VerComponent implements OnInit {
   verExpediente(obj:any)
   {
     //console.log(!this.verInfoExpediente);
-    console.log(obj);
+    //console.log(obj);
     if(!this.verInfoExpediente)
     {
       if(obj.rel_trabajador_documentos.estatus == 2 || obj.rel_trabajador_documentos.estatus == 4)
@@ -324,7 +324,7 @@ export class VerComponent implements OnInit {
         this.cargarDetalles(obj);
       }else
       {
-        window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
+        window.open(this.url+`\\documentacion\\`+obj.id+`.pdf`, "_blank");
       }
     }else{
       //console.log(obj);
