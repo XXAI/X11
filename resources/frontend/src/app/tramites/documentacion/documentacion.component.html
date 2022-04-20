@@ -170,12 +170,12 @@
 
                                     <div *ngIf="row.estatus == null">
 
-                                        <!--<button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
+                                        <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
                                             <mat-icon>menu</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
-                                                <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>            
-                                        </mat-menu>-->
+                                            <button mat-menu-item (click)="CargarDocumento(row)"><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>
+                                        </mat-menu>
                                     </div>
 
                                     <div *ngIf="row.estatus != null">
@@ -196,12 +196,12 @@
 
                                         </div>
                                         <div *ngIf="row.estatus == 2">
-                                            <!--<button mat-mini-fab color="warn" mat-stroked-button [matMenuTriggerFor]="menu">
+                                            <button mat-mini-fab color="warn" mat-stroked-button [matMenuTriggerFor]="menu">
                                                     <mat-icon>menu</mat-icon>
                                             </button>
                                             <mat-menu #menu="matMenu">
-                                                <button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>                
-                                            </mat-menu>-->
+                                                <button mat-menu-item (click)="CargarDocumento(row)"><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>
+                                            </mat-menu>
                                         </div>
                                         <div *ngIf="row.estatus == 3  && permiso_validador == false">
                                             Pendiente de Validar por Rh oficina central
@@ -233,7 +233,7 @@
                                             </button>
                                             <mat-menu #menu="matMenu">
                                                 <div>
-                                                    <!--<button mat-menu-item (click)="CargarDocumento(row)" ><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>-->
+                                                    <button mat-menu-item (click)="CargarDocumento(row)"><mat-icon color="primary">arrow_upward</mat-icon>Cargar PDF</button>
                                                     <button mat-menu-item color="primary" (click)="descargar(row)">
                                                             <mat-icon color="warn">visibility</mat-icon> Ver
                                                         </button>

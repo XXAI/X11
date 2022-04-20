@@ -274,7 +274,7 @@ class TramiteDocumentacionController extends Controller
        }
         if($request->hasFile('archivo')) {
             
-            $fileName = $parametros['rfc'];
+            //$fileName = $parametros['rfc'];
             $extension = $request->file('archivo')->getClientOriginalExtension();
             if($extension == "pdf")
             {
