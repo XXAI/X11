@@ -324,7 +324,19 @@ export class VerComponent implements OnInit {
         this.cargarDetalles(obj);
       }else
       {
-        window.open(this.url+`\\documentacion\\`+obj.id+`.pdf`, "_blank");
+        //window.open(this.url+`\\documentacion\\`+obj.id+`.pdf`, "_blank");
+        /* Cargando pdf */
+        this.trabajadorService.getExpediente(obj.id).subscribe(
+          response => {
+            //saveAs(response, "download.pdf");
+            const file = new Blob([response], { type: 'application/pdf' });
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL);
+          },
+          responsError =>{
+            this.sharedService.showSnackBar('Error al intentar descargar el expediente', null, 4000);
+          }
+        );
       }
     }else{
       //console.log(obj);

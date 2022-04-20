@@ -115,6 +115,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('busqueda-empleados',         'API\Modulos\EmpleadosController@getEmpleadosComplete');
     Route::get('busqueda-firmantes',         'API\Modulos\FirmantesController@getTrabajadorComplete');
     Route::get('busqueda-trabajadores',      'API\Modulos\TrabajadorController@getTrabajadoresComplete');
+    Route::put('activar-trabajador-sindical/{id}',      'API\Modulos\TrabajadorController@activarTrabajadorSindical');
     Route::get('busqueda-trabajador-tramite',      'API\Modulos\TrabajadorController@getTrabajadoresTramite');
     Route::get('busqueda-responsable',       'API\Modulos\EmpleadosController@getResponsableComplete');
     Route::get('busqueda-cr-adscripcion',    'API\Modulos\EmpleadosController@getCrAdscripcionComplete');
@@ -132,7 +133,7 @@ Route::group(['middleware'=>'auth'],function($router){
     
     Route::post('comision-sindical',                    'API\Modulos\TrabajadorController@comisionSindical');
     //Rutas de Tramites
-    Route::apiResource('tramite-documentacion',       'API\Modulos\TramiteDocumentacionController');
+    Route::apiResource('tramite-documentacion',         'API\Modulos\TramiteDocumentacionController');
     Route::post('tramite-documentacion-upload',         'API\Modulos\TramiteDocumentacionController@Upload');
     Route::get('tramite-documentacion-download/{id}',   'API\Modulos\TramiteDocumentacionController@Download');
     Route::apiResource('tramite-adscripcion',           'API\Modulos\TramiteAdscripcionController');
@@ -141,11 +142,11 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('tramite-adscripcion-externa-lote',      'API\Modulos\TramiteAdscripcionExternaController@ObtenerLote');
     Route::apiResource('tramite-reincorporacion',       'API\Modulos\TramiteReincorporacionController');
     Route::get('tramite-reincorporacion-lote',          'API\Modulos\TramiteReincorporacionController@ObtenerLote');
-    Route::apiResource('tramite-comision',           'API\Modulos\TramiteComisionInternaController');
-    Route::get('tramite-comision-lote',              'API\Modulos\TramiteComisionInternaController@ObtenerLote');
+    Route::apiResource('tramite-comision',              'API\Modulos\TramiteComisionInternaController');
+    Route::get('tramite-comision-lote',                 'API\Modulos\TramiteComisionInternaController@ObtenerLote');
     
-    Route::apiResource('profile',                   'API\ProfileController')->only([ 'show', 'update']);
-    Route::get('reset-contrasena/{id}',     'API\Admin\UserController@resetPassword');
+    Route::apiResource('profile',                       'API\ProfileController')->only([ 'show', 'update']);
+    Route::get('reset-contrasena/{id}',                 'API\Admin\UserController@resetPassword');
     //Credencializacion
     Route::apiResource('credencializacion',         'API\Modulos\CredencializacionController');
     Route::get('credencializacion-lote',            'API\Modulos\CredencializacionController@ImprimirLote');

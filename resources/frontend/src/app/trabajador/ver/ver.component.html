@@ -29,9 +29,9 @@
             </div>
             <div fxLayout="row" fxLayoutGap="0px">
                 <div fxFlex.xs="100" fxFlex="100" matTooltip="INTEGRACIÓN DEL EXPEDIENTE ELECTRÓNICO LABORAL">
-                    <!--<button mat-button (click)="verExpediente(dataTrabajador)" *ngIf="dataTrabajador.rel_trabajador_documentos != null" [ngClass]="{'chip-pause': estatusChip ==1 || estatusChip==3, 'chip-red': estatusChip ==4 || estatusChip ==2, 'chip-green': estatusChip ==5}"><mat-icon>picture_as_pdf</mat-icon>EXPEDIENTE {{ estatusDocumentacion[estatusChip]}}</button>
-                    <button mat-button color="warn" *ngIf="dataTrabajador.rel_trabajador_documentos == null" (click)="verExpediente(dataTrabajador)"><mat-icon>picture_as_pdf</mat-icon> EXP. ELECTRÓNICO</button>-->
-                    <button mat-button color="info"><mat-icon>picture_as_pdf</mat-icon> EN MANTENIMIENTO</button>
+                    <button mat-button (click)="verExpediente(dataTrabajador)" *ngIf="dataTrabajador.rel_trabajador_documentos != null" [ngClass]="{'chip-pause': estatusChip ==1 || estatusChip==3, 'chip-red': estatusChip ==4 || estatusChip ==2, 'chip-green': estatusChip ==5}"><mat-icon>picture_as_pdf</mat-icon>EXPEDIENTE {{ estatusDocumentacion[estatusChip]}}</button>
+                    <button mat-button color="warn" *ngIf="dataTrabajador.rel_trabajador_documentos == null" (click)="verExpediente(dataTrabajador)"><mat-icon>picture_as_pdf</mat-icon> EXP. ELECTRÓNICO</button>
+
                 </div>
             </div>
 

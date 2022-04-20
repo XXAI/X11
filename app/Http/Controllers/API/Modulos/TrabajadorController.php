@@ -1140,7 +1140,7 @@ class TrabajadorController extends Controller
 
             $access = $this->getUserAccessData();
             
-            $trabajador = Trabajador::with("rel_datos_laborales", "rel_datos_laborales_nomina", "rel_trabajador_baja.baja")->where(function($query)use($parametros){
+            $trabajador = Trabajador::with("rel_datos_laborales", "rel_datos_laborales_nomina", "rel_trabajador_baja.baja", "rel_datos_comision")->where(function($query)use($parametros){
                 return $query->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
                             ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
@@ -1340,6 +1340,20 @@ class TrabajadorController extends Controller
             $trabajador_datos_laborales->save();
 
             return response()->json(['datos_trabajador'=>$trabajador, 'datos_laborales'=>$trabajador_datos_laborales],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function activarTrabajadorSindical($id){
+        try{
+            
+            $trabajador = RelComision::where("trabajador_id",$id)->first();
+            $trabajador->estatus = "E";
+            
+            $trabajador->save();
+            
+            return response()->json(['datos_trabajador'=>$trabajador],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

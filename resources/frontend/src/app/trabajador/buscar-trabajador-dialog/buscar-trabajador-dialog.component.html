@@ -58,6 +58,11 @@
                                                     <br> <small>Sin CR asignado</small>
                                                 </div>
                                             </div>
+                                            <div *ngIf="row.rel_datos_comision != null">
+                                                <small style="font-size: 8pt; font-weight: bold;">COMISIÓN SINDICAL: {{ row.rel_datos_comision.sindicato.descripcion}}</small>
+
+
+                                            </div>
                                             <div *ngIf="row.rel_trabajador_baja != null">
                                                 {{ row.rel_trabajador_baja.baja.descripcion}}
                                                 <BR>
@@ -75,7 +80,11 @@
 
                                         <td mat-cell *matCellDef="let row; let i = index">
 
-                                            <button *ngIf="row.estatus == 3 || row.estatus == 2" mat-raised-button color="primary" (click)="activarEmpleado(row)" matTooltip="Activar Empleado" [matTooltipPosition]="'before'">
+                                            <button *ngIf="row.estatus == 3 || row.estatus == 2" mat-raised-button color="primary" (click)="activarEmpleado(row)" matTooltip="Activar Trabajador" [matTooltipPosition]="'before'">
+                                                <mat-icon>link</mat-icon>
+                                            </button>
+
+                                            <button *ngIf="row.rel_datos_comision" mat-raised-button color="primary" (click)="activarEmpleadoComision(row)" matTooltip="Activar Trabajador" [matTooltipPosition]="'before'">
                                                 <mat-icon>link</mat-icon>
                                             </button>
                                             <button *ngIf="row.estatus != 3 && row.empleado_propio == 0" mat-raised-button color="accent" (click)="solicitarEmpleado(row)" matTooltip="Solicitar Empleado" [matTooltipPosition]="'before'">

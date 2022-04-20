@@ -315,13 +315,11 @@ class TramiteDocumentacionController extends Controller
         /*$obj = Trabajador::where("id", $id)->first();
         return response()->file("public//documentacion//".$documentacion->rfc.".pdf");*/
         ini_set('memory_limit', '-1');
-        DB::beginTransaction();
+        
         
      try{  
-       $documentacion = RelDocumentacion::where("trabajador_id", $id)->first();
-       
-
-        return \Storage::download("public//documentacion//".$documentacion->rfc.".pdf");
+       //$documentacion = RelDocumentacion::where("trabajador_id", $id)->first();
+        return \Storage::download("public//documentacion//".$id.".pdf");
         //return response()->json(['data'=>$documentacion],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             DB::rollback();

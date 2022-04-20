@@ -436,7 +436,19 @@ export class DocumentacionComponent implements OnInit {
 
   descargar(obj:any){
     
-    window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
+    this.tramitesService.getExpediente(obj.id).subscribe(
+      response => {
+        //saveAs(response, "download.pdf");
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      },
+      responsError =>{
+        this.sharedService.showSnackBar('Error al intentar descargar el expediente', null, 4000);
+      }
+    );
+
+    //window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
     /*this.tramitesService.getFile(obj.id).subscribe(
       response =>{
         console.log(response);

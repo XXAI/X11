@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 
@@ -19,6 +19,9 @@ export class TrabajadorService {
   url_trabajador = `${environment.base_url}/busqueda-firmantes`;
   url_info_trabajador = `${environment.base_url}/ver-info-trabajador/`;
   url_clue_asistencia = `${environment.base_url}/clues_asistencia`;
+  url_expediente = `${environment.base_url}/tramite-documentacion-download`;
+  url_activar_comision = `${environment.base_url}/activar-trabajador-sindical`;
+
   url_asistencia = 'https://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
   url_credencial = 'https://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
@@ -51,6 +54,8 @@ export class TrabajadorService {
           })
       );
   }
+  
+  
 
   getFirmantesList():Observable<any> {
     return this.http.get<any>(this.url_firmantes,{}).pipe(
@@ -104,6 +109,14 @@ export class TrabajadorService {
 
   bajaTrabajador(id:any, payload:any):Observable<any> {
     return this.http.put<any>(this.url_baja + "/" + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  activarTrabajadorSindical(id:any, payload:any):Observable<any> {
+    return this.http.put<any>(this.url_activar_comision + "/" + id, payload).pipe(
       map( (response: any) => {        
         return response;
       }
@@ -307,5 +320,14 @@ export class TrabajadorService {
     );
   }
 
+  getExpediente(id):Observable<any> {
+    
+    return this.http.get<any>(this.url_expediente+"/"+id, {params:{}, responseType: 'blob' as 'json'}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+    
+  }
   
 }

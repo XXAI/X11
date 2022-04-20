@@ -14,6 +14,7 @@ export class TramitesService {
   url_documentacion_upload = `${environment.base_url}/tramite-documentacion-upload`;
   url_documentacion_download = `${environment.base_url}/tramite-documentacion-download`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
+  url_expediente = `${environment.base_url}/tramite-documentacion-download`;
 
   constructor(private http: HttpClient) { }
 
@@ -81,6 +82,16 @@ export class TramitesService {
 
   getFile(id:any):Observable<any>{
     return this.http.get<any>(this.url_documentacion_download+"/"+id, {responseType: 'blob' as 'json'});
+  }
+
+  getExpediente(id):Observable<any> {
+    
+    return this.http.get<any>(this.url_expediente+"/"+id, {params:{}, responseType: 'blob' as 'json'}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+    
   }
   /*Fin documentacion */
 }

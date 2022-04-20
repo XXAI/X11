@@ -170,6 +170,32 @@ export class BuscarTrabajadorDialogComponent implements OnInit {
     this.datosCredencial = undefined;
   }
 
+  activarEmpleadoComision(obj)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'ACTIVAR TRABAJADOR',dialogMessage:'¿Realmente desea activar el trabajador? Escriba ACTIVAR a continuación para realizar el proceso.',validationString:'ACTIVAR',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        let params = {};
+        this.TrabajadoresService.activarTrabajadorSindical(obj.id,params).subscribe(
+          response =>{
+           this.buscarTrabajadores();
+           var errorMessage = "Trabajador Activado";
+           this.sharedService.showSnackBar(errorMessage, null, 3000);
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error al activar el trabajador.";
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }
+    });
+  }
+
   confirmarSolicitar(){
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
