@@ -790,8 +790,11 @@ class TrabajadorController extends Controller
                         $objectRLN->trabajador_id = $object->id;
                         $objectRLN->save();
                     }
-                    $loggedUser->username = $object->rfc;
-                    $loggedUser->save();
+                    if($loggedUser->username != $object->rfc)
+                    {   
+                        $loggedUser->username = $object->rfc;
+                        $loggedUser->save();
+                    }
                 }
                 if($inputs['idioma_id'] != 0)
                 {
