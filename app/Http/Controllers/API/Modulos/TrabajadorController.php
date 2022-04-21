@@ -781,8 +781,7 @@ class TrabajadorController extends Controller
                 $object->observacion                = $inputs['observacion'];
                 if($permiso_rfc_curp == true || $loggedUser->is_superuser == 1)
                 {
-                    $object->rfc                        = strtoupper($inputs['rfc']);
-                    $object->curp                       = $inputs['curp'];
+                    $rfc = $object->rfc;
                     
                     $objectRLN = RelDatosLaboralesNomina::where("rfc_nomina", $object->rfc)->orWhere('curp_nomina',$object->curp)->first();
                     if($objectRLN)
@@ -790,11 +789,15 @@ class TrabajadorController extends Controller
                         $objectRLN->trabajador_id = $object->id;
                         $objectRLN->save();
                     }
-                    if($loggedUser->username != $object->rfc)
+                    $usuario = User::where("username", $rfc)->first();
+                    if($usuario)
                     {   
-                        $loggedUser->username = $object->rfc;
-                        $loggedUser->save();
+                        $$usuario->username = strtoupper($inputs['rfc']);
+                        $usuario->save();
                     }
+
+                    $object->rfc                        = strtoupper($inputs['rfc']);
+                    $object->curp                       = $inputs['curp'];
                 }
                 if($inputs['idioma_id'] != 0)
                 {
