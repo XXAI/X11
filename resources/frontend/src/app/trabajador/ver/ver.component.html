@@ -129,10 +129,11 @@
                                 <mat-card-title>Datos Laborales</mat-card-title>
                                 <mat-card-content>
                                     <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
-                                        <div fxFlex="50" fxFlex.xs="100">
+                                        <!--div fxFlex="50" fxFlex.xs="100">
                                             <b>INGRESO SSA:</b>
-                                            <BR>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso:'NO REGISTRADO' }}
-                                        </div>
+                                            <BR>
+                                            {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso:'NO REGISTRADO' }}
+                                        </div-->
                                         <div fxFlex="50" fxFlex.xs="100">
                                             <b>INGRESO GOBIERNO FEDERAL:</b> <br>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso_federal:'NO REGISTRADO' }}
                                         </div>
