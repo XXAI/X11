@@ -779,22 +779,26 @@ class TrabajadorController extends Controller
                 $object->municipio_federativo_id    = 186;
                 $object->edad                       = $edad;
                 $object->observacion                = $inputs['observacion'];
+                
                 if($permiso_rfc_curp == true || $loggedUser->is_superuser == 1)
                 {
                     $rfc = $object->rfc;
                     
                     $objectRLN = RelDatosLaboralesNomina::where("rfc_nomina", $object->rfc)->orWhere('curp_nomina',$object->curp)->first();
-                    if($objectRLN)
+                    
+                    if($objectRLN != null)
                     {
                         $objectRLN->trabajador_id = $object->id;
                         $objectRLN->save();
                     }
                     $usuario = User::where("username", $rfc)->first();
-                    if($usuario)
+                    
+                    if($usuario != null)
                     {   
-                        $$usuario->username = strtoupper($inputs['rfc']);
+                        $usuario->username = strtoupper($inputs['rfc']);
                         $usuario->save();
                     }
+                   
 
                     $object->rfc                        = strtoupper($inputs['rfc']);
                     $object->curp                       = $inputs['curp'];
