@@ -255,6 +255,10 @@ export class VerComponent implements OnInit {
       });
   }
 
+  goToLink(url: string){
+    window.open(url, "_blank");
+  }
+
   verificarAsistencia(obj:any)
   {
     //console.log(obj);

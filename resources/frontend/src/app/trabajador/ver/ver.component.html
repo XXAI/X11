@@ -448,6 +448,48 @@
                         </table>
                     </div>-->
                 </mat-tab>
+
+                <mat-tab label="AVISOS">
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon" matBadge="N" matBadgeColor="warn">feedback</mat-icon>
+                        <div class="mobile-pc"> &nbsp;&nbsp;&nbsp;AVISOS</div>
+                    </ng-template>
+                    <div fxFlex.xs="50" fxFlex="50">
+                        <mat-card class="example-card">
+                            <mat-card-title-group>
+                                <mat-card-title>
+                                    Convocatoria
+                                    <img mat-card-md-image src="https://play-lh.googleusercontent.com/9XKD5S7rwQ6FiPXSyp9SzLXfIue88ntf9sJ9K250IuHTL7pmn2-ZB0sngAX4A2Bw4w=w240-h480-rw" (click)="goToLink('https://saludchiapas.gob.mx/storage/app/media/Documentos/CONVOCATORIA%20COMITE%20DE%20ETICA%2027-04-22.pdf')"
+                                        style="cursor: pointer;">
+                                </mat-card-title>
+
+                                <div style="padding: 12px; font-size: 9pt; text-align: justify; line-height: 14pt;">
+                                    Convocatoria para llevar a cabo la nominación y eleccion de integrantes del comité de ética y de prevención de conflictos de interés (CEPCI) del instituto de salud.
+                                    <div style="color: red;">Ojo: El usuario y contraseña es el curp</div>
+                                    <br>
+                                    <button mat-raised-button color="primary" (click)="goToLink('http://ti.shyfpchiapas.gob.mx:8080/votacion/login')">LINK</button>
+                                </div>
+                            </mat-card-title-group>
+
+                        </mat-card>
+                        <!--<mat-card class="example-card">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image"></div>
+                                <mat-card-title>Convocatoria</mat-card-title>
+                            </mat-card-header>
+                            <img mat-card-image src="https://play-lh.googleusercontent.com/9XKD5S7rwQ6FiPXSyp9SzLXfIue88ntf9sJ9K250IuHTL7pmn2-ZB0sngAX4A2Bw4w=w240-h480-rw" alt="Pdf">
+                            <mat-card-content>
+                                <p>
+                                    Convocatoria para llevar a cabo la nominación y eleccion de integrantes del comité de ética y de prevención de conflictos de interés (CEPCI) del instituto de salud.
+                                </p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button color="warn" (click)="goToLink('http://ti.shyfpchiapas.gob.mx:8080/votacion/login')">LINK</button>
+                            </mat-card-actions>
+                        </mat-card>-->
+                    </div>
+
+                </mat-tab>
             </mat-tab-group>
         </div>
 
