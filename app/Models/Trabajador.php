@@ -93,6 +93,10 @@ class Trabajador extends Model
         return $this->hasOne('App\Models\RelDatosLaboralesNomina')->with('codigo', 'clues', 'cr', 'tipoNomina');#'area_trabajo','cr_fisico','programa','rama');
     }
 
+    public function rel_datos_fiscales(){
+        return $this->hasOne('App\Models\RelDatosFiscales');
+    }
+
     public function rel_trabajador_escolaridad(){
         return $this->hasMany('App\Models\RelEscolaridad')->with('grado_academico', 'institucion', 'nombre_estudio');
     }

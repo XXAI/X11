@@ -127,7 +127,7 @@ export class FormularioComponent implements OnInit {
     //'fecha_ingreso': ['',[Validators.required]],
     //'fecha_ingreso_federal': [],
     //'codigo_puesto_id': [],
-    rama_id: ['',[Validators.required]],
+    'rama_id': ['',[Validators.required]],
 
     'actividad_id': ['',[Validators.required]],
     'actividad_voluntaria_id': [],
@@ -147,11 +147,37 @@ export class FormularioComponent implements OnInit {
     'actividades': ['',[Validators.required]],
     
   });
+
+  public datosFiscalesForm = this.fb.group({
+    
+    'tipo_vialidad': ['',[Validators.required]],
+    'nombre_vialidad': ['',[Validators.required]],
+    'no_exterior': ['',[Validators.required]],
+    'no_interior': [''],
+    'colonia': ['',[Validators.required]],
+    'cp': ['',[Validators.required]],
+    'localidad': ['',[Validators.required]],
+    'municipio': ['',[Validators.required]],
+    'entidad': ['', Validators.required],
+    'calle1': ['',[Validators.required]],
+    'calle2': ['',[Validators.required]],
+    'correo': ['',[Validators.required]],
+    'lada1': [],
+    'telefono1': [],
+    'lada2': [],
+    'telefono2': [],
+    'estado_domicilio': [],
+    'estado_contribuyente': [],
+    'actividad_economina': ['',[Validators.required]],
+    'fecha_inicio_actividad': ['',[Validators.required]],
+    'regimen': ['',[Validators.required]],
+    'fecha_regimen': ['',[Validators.required]],
+    //'documento_digital': ['',[Validators.required]],
+  });
   
   public datosEscolaresForm = this.fb.group({
     //Estudios
     'nivel_maximo_id':[],
-
   });
 
   public datosHorarioForm = this.fb.group({
@@ -243,7 +269,6 @@ export class FormularioComponent implements OnInit {
       
       if(this.trabajador_id){
         this.cargarBuscadores(!cargador);
-        //console.log("entra");
         this.cargarTrabajador(this.trabajador_id);
         this.trabajadorForm.get("cr").disable();
         if(parseInt(params.get('step')))
@@ -277,9 +302,6 @@ export class FormularioComponent implements OnInit {
 
   verificarNivel(valor)
   {
-    console.log(valor);
-    /*console.log("netro");
-    console.log(valor);*/
     switch(valor)
     {
       case 2039842:
@@ -311,8 +333,6 @@ export class FormularioComponent implements OnInit {
       case 2039857:
         this.EstudiosActualizado = 0; break;
     }
-    //console.log(this.EstudiosActualizado+"<--1");
-    //console.log(this.dataSourceEstudios.data.length+"<--2");
   }
 
   loadPrevious(){
@@ -330,11 +350,6 @@ export class FormularioComponent implements OnInit {
     this.router.navigate(['/trabajadores/editar/'+prevId]);
   }
 
-  checar()
-  {
-    console.log(this.datosLaborelesForm);
-  }
-
   retroceder(number):void{
     this.tab_proceso = number;
     this.indexTab = number - 1;
@@ -343,19 +358,16 @@ export class FormularioComponent implements OnInit {
 
   avanzar(number):void
   {
-    //console.log(this.tab_proceso);
-    //console.log(this.indexTab);
+
       this.tab_proceso = number + 1;
       this.indexTab = number;
   }
 
   verificarRfc(rfc){
-    //console.log(rfc.length);
     if(rfc.length == 13 && this.trabajador_id == null)
     {
       this.trabajadorService.getValidadorRfc(rfc).subscribe(
         response => {
-          console.log(response);
           if(response == 1)
           {
             this.sharedService.showSnackBar("El trabajador ya existe, por favor, verifique su estatus o ubicación", null, 5000); 
@@ -390,7 +402,6 @@ export class FormularioComponent implements OnInit {
               let errorMessage = response.error.message;
               this.sharedService.showSnackBar(errorMessage, null, 3000);
             } else {
-              console.log(response);
               this.loadEmpleadoData(id);
 
               let paginator = this.sharedService.getDataFromCurrentApp('paginator');
@@ -488,13 +499,13 @@ export class FormularioComponent implements OnInit {
         }
         //this.actualizado = this.trabajador.actualizado;
         this.datos_personales = response.data;
-        //console.log(this.trabajador);
+;
         this.datos_laborales_nomina = this.trabajador.datoslaboralesnomina;
         this.idioma(this.trabajador.idioma_id);
         this.lengua(this.trabajador.lengua_indigena_id);
         
         this.nombre_trabajador= this.trabajador.apellido_paterno+" "+this.trabajador.apellido_materno+" "+this.trabajador.nombre;
-        console.log(this.trabajador);
+
         this.trabajadorForm.patchValue(this.trabajador);  //carga datos de trabajador
         this.verificar_curp(this.trabajador.curp);
         if(this.trabajador.idioma_id == null)
@@ -540,6 +551,46 @@ export class FormularioComponent implements OnInit {
           //Caga datos dehorario
          
         }
+        let datosFiscales = this.trabajador.rel_datos_fiscales;
+       
+        if(datosFiscales != null)
+        {
+          
+          this.datosFiscalesForm.patchValue(
+            {
+              tipo_vialidad: datosFiscales.tipo_vialidad,
+              nombre_vialidad: datosFiscales.nombre_vialidad,
+              no_exterior: datosFiscales.no_exterior,
+              no_interior: datosFiscales.no_interior,
+              cp: datosFiscales.cp,
+              colonia: datosFiscales.colonia,
+              calle1: datosFiscales.calle1,
+              calle2: datosFiscales.calle2,
+              localidad: datosFiscales.localidad,
+              municipio: datosFiscales.municipio,
+              entidad: datosFiscales.entidad,
+              correo: datosFiscales.correo,
+              lada1: datosFiscales.lada_telefono1,
+              telefono1: datosFiscales.telefono1,
+              lada2: datosFiscales.lada_telefono2,
+              telefono2: datosFiscales.telefono2,
+              estado_domicilio: datosFiscales.estado_domicilio,
+              estado_contribuyente: datosFiscales.estado_contribuyente,
+              actividad_economina: datosFiscales.actividad_economina,
+              fecha_inicio_actividad: datosFiscales.fecha_actividad_economica,
+              regimen: datosFiscales.regimen,
+              fecha_regimen: datosFiscales.fecha_regimen,
+            }
+          );
+        
+        }else{
+          this.datosFiscalesForm.patchValue(
+            {
+              actividad_economina: "Consultorios de medicina general pertenecientes al sector público",
+              regimen: "Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios",
+            });
+        }
+        
         let datos_horario = this.trabajador.horario;
         
         if(datos_horario != "")
@@ -600,7 +651,7 @@ export class FormularioComponent implements OnInit {
         //Capacitacion
         let Capacitacion = trabajador.capacitacion;
         let CapacitacionDetalles = trabajador.capacitacion_detalles;
-        console.log(CapacitacionDetalles);
+
         this.datosCapacitacionForm.patchValue(Capacitacion);
         this.tiene_capacitacion(Capacitacion.capacitacion_anual);
         if(!Capacitacion.titulo_capacitacion)
@@ -620,7 +671,7 @@ export class FormularioComponent implements OnInit {
         //Escolaridad Cursante
         let datosEscolaridadCursante = trabajador.escolaridadcursante;
         this.datosCursosForm.patchValue(datosEscolaridadCursante);
-        //console.log(datosEscolaridadCursante.colegiacion);
+
         this.tiene_colegio(datosEscolaridadCursante.colegiacion);
         this.tiene_certificado(datosEscolaridadCursante.certificacion);*/
 
@@ -772,7 +823,7 @@ export class FormularioComponent implements OnInit {
               let descripcion = this.datosCursosForm.get('carrera_ciclo').value;
               if(descripcion!="")
               {
-                console.log("entra");
+
                 return this.trabajadorService.buscar({tipo: 4, query:value }).pipe(finalize(() => this.carreraIsLoading = false ));
               }else{
                 return [];
@@ -886,7 +937,7 @@ export class FormularioComponent implements OnInit {
     if(curp.length == 18)
     {
       let rfc = this.trabajadorForm.get('rfc').value;
-      //console.log(rfc);
+
       if(rfc.length == 0)
       {
         this.trabajadorForm.patchValue({rfc: curp.substring(0, 10)}); 
@@ -895,13 +946,11 @@ export class FormularioComponent implements OnInit {
       
       let sexo = curp.substring(10,11);
       let estado = curp.substring(11,13);
-      console.log(estado);
       let fecha_nacimiento = curp.substring(4,10);
       
       let anio = fecha_nacimiento.substring(0,2);
       let mes = parseInt(fecha_nacimiento.substring(2,4));
       let dia = parseInt(fecha_nacimiento.substring(4,6));
-      console.log(new Date(anio+"-"+mes+"-"+dia));
       this.trabajadorForm.patchValue({fecha_nacimiento: new Date(anio+"-"+mes+"-"+dia)}); 
       
 
@@ -915,13 +964,11 @@ export class FormularioComponent implements OnInit {
       
       if(estado == "NE")
       {
-        //console.log("entro");
         this.trabajadorForm.get('municipio').disable();
         this.trabajadorForm.get('entidad_nacimiento_id').disable();
         this.trabajadorForm.patchValue({nacionalidad_id: 2047952, entidad_nacimiento_id:2499 });
         
       }else if(estado == "CS"){
-        //console.log("no entro");
         this.trabajadorForm.get('municipio').enable();
         this.trabajadorForm.get('entidad_nacimiento_id').enable();
         this.trabajadorForm.patchValue({nacionalidad_id: 2047951, pais_nacimiento_id:142, entidad_nacimiento_id:7});
@@ -969,15 +1016,16 @@ export class FormularioComponent implements OnInit {
      
     }else if(tipo == 3)
     {
-      data = this.datosHorarioForm.value;
+      data = this.datosFiscalesForm.value;
     }else if(tipo == 4)
+    {
+      data = this.datosHorarioForm.value;
+    }else if(tipo == 5)
     {
       data = this.datosEscolaresForm.value;
       data.datos = this.datosEstudios;
-      this.trabajadorService.verificacionCedula(this.trabajador).subscribe(
+      /*this.trabajadorService.verificacionCedula(this.trabajador).subscribe(
         response =>{
-          //console.log(response);
-          //console.log("entro");
           datos_sep = response;
         },
         errorResponse =>{
@@ -986,11 +1034,8 @@ export class FormularioComponent implements OnInit {
           if(errorResponse.error){
             errorMessage = errorResponse.error.message;
           }
-          console.log("error cedula");
-          //this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
-          
         }
-      );
+      );*/
       //
     }/*else if(tipo == 5)
     {
@@ -1011,18 +1056,14 @@ export class FormularioComponent implements OnInit {
     {
       this.trabajadorService.guardarTrabajador(this.trabajador_id, data, datos_sep).subscribe(
         response =>{
-          //console.log(response);
           this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
           this.isLoading = false;
-          if(tipo != 4)
+          if(tipo != 6)
           {
             this.tab_proceso = tipo + 1;
             this.indexTab = tipo;
           }else{
             this.finalizarActualizacion = false;
-            console.log(!this.finalizarActualizacion+"<--");
-            console.log(this.Actualizado+"<--");
-            console.log((this.EstudiosActualizado +" - "+ this.dataSourceEstudios.data.length));
           }
         },
         errorResponse =>{
@@ -1048,7 +1089,6 @@ export class FormularioComponent implements OnInit {
 
         this.trabajadorService.guardarNuevoTrabajador( data).subscribe(
           response =>{
-            //console.log(response);
             this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
             this.isLoading = false;
             this.router.navigate(['/trabajadores/editar/'+response.id+"/1"]);
@@ -1275,8 +1315,6 @@ export class FormularioComponent implements OnInit {
   }
 
   lengua(valor):void{
-    console.log("entro");
-    console.log(valor);
     if(valor == '102')
     {
       this.trabajadorForm.get('nivel_lengua_id').disable();
@@ -1506,6 +1544,47 @@ export class FormularioComponent implements OnInit {
       if(valid){
         this.datosEstudios.splice(index, 1);
         this.dataSourceEstudios.data = this.datosEstudios;
+      }
+    });
+  }
+  
+  CopiarDatosLaborales()
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Copiar Datos Personales',dialogMessage:'¿Realmente desea copiar sus datos personales a los datos fiscales?',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        let indice_entidad = this.catalogo['entidad'].findIndex(x=>x.id == this.trabajadorForm.get('entidad_nacimiento_id').value);
+        let actividad = this.datosFiscalesForm.get('actividad_economina').value;
+        let regimen = this.datosFiscalesForm.get('regimen').value;
+        if(this.datosFiscalesForm.get('actividad_economina').value == '')
+        {
+          actividad = "Consultorios de medicina general pertenecientes al sector público";
+        }
+        if(this.datosFiscalesForm.get('regimen').value == '')
+        {
+          regimen = "Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios";
+        }
+        this.datosFiscalesForm.patchValue(
+          {
+            cp: this.trabajadorForm.get('cp').value,
+            nombre_vialidad: this.trabajadorForm.get('calle').value,
+            no_exterior: this.trabajadorForm.get('no_exterior').value,
+            no_interior: this.trabajadorForm.get('no_interior').value,
+            colonia: this.trabajadorForm.get('colonia').value,
+            correo: this.trabajadorForm.get('correo_electronico').value,
+            telefono1: this.trabajadorForm.get('telefono_fijo').value,
+            telefono2: this.trabajadorForm.get('telefono_celular').value,
+            entidad: this.catalogo['entidad'][indice_entidad].descripcion,
+            municipio: this.trabajadorForm.get('municipio').value.descripcion,
+            localidad: this.trabajadorForm.get('municipio').value.descripcion,
+            actividad_economina: actividad,
+            regimen: regimen,
+          }
+        );
       }
     });
   }

@@ -522,58 +522,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-                    <!--<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
-                        <div fxFlex="100" fxFlex.xs="100">
-                            <mat-accordion>
-                                <mat-expansion-panel>
-                                    <mat-expansion-panel-header>
-                                        <mat-panel-title>
-                                            Lugar de Adscripción
-                                            <div class="example-button-container" style="margin-left: 10px;" *ngIf="!datos_laborales_nomina ">
-                                                <button mat-flat-button color="warn" style="line-height: 25px; padding: 0px 7px;">
-                                                    <mat-icon color="warn" style="color: white;">close</mat-icon> No Identificado (ADSCRIPCION NOMINAL NO EDITABLE)
-                                                </button>
-                                            </div>
-
-                                        </mat-panel-title>
-                                        <mat-panel-description>
-
-                                        </mat-panel-description>
-                                    </mat-expansion-panel-header>
-                                    <p>Clues: <span *ngIf="(datos_laborales_nomina != null)"><b>{{ datos_laborales_nomina.clues.clues }} {{ datos_laborales_nomina.clues.nombre_unidad }}</b><br></span>
-                                        <span *ngIf="(datos_laborales_nomina == null)"><b>SIN CLUES</b><br></span> Centro de Responsabilidad (CR):
-                                        <span *ngIf="(datos_laborales_nomina != null)"><b>{{ datos_laborales_nomina.cr.descripcion }}</b></span>
-                                        <span *ngIf="(datos_laborales_nomina == null)"><b>SIN CENTRO DE RESPONSABILIDAD</b></span></p>
-                                </mat-expansion-panel>
-                                <mat-expansion-panel>
-                                    <mat-expansion-panel-header>
-                                        <mat-panel-title>
-                                            Lugar de Trabajo (Fisicamente)
-                                            <div class="example-button-container" style="margin-left: 10px;" *ngIf="!datos_laborales">
-                                                <button mat-flat-button color="warn" style="line-height: 25px; padding: 0px 7px;">
-                                                    <mat-icon color="warn" style="color: white;">close</mat-icon> No Identificado
-                                                </button>
-                                            </div>
-                                        </mat-panel-title>
-                                        <mat-panel-description>
-
-                                        </mat-panel-description>
-                                    </mat-expansion-panel-header>
-                                    <p>Clues:
-                                        <span *ngIf="(datos_laborales != null)"><b>{{ datos_laborales.clues_fisico.clues }} {{ datos_laborales.clues_fisico.nombre_unidad }}</b> <br></span>
-                                        <span *ngIf="(datos_laborales == null)"><b>SIN CLUES</b> <br></span> Centro de Responsabilidad (CR):
-                                        <span *ngIf="(datos_laborales != null)"><b>{{ datos_laborales.cr_fisico.cr }} {{ datos_laborales.cr_fisico.descripcion_actualizada }} </b></span>
-                                        <span *ngIf="(datos_laborales == null)"><b>SIN CENTRO DE RESPONSABILIDAD </b></span></p>
-                                </mat-expansion-panel>
-                            </mat-accordion>
-                        </div>
-                    </div>-->
-                    <br>
-
                     <br>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px">
                         <div fxFlex="100" fxFlex.xs="100" *ngIf="datosComision != null">
@@ -603,6 +551,155 @@
                     </div>
 
                 </mat-tab>
+                <!--<mat-tab [formGroup]="datosFiscalesForm" [disabled]='(tab_proceso != 3 && !actualizado)'>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">account_balance</mat-icon>
+                        <div class="mobile-pc"> Datos Fiscales</div>
+                    </ng-template>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+                        <div fxFlex="100" fxFlex.xs="100">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <button mat-raised-button color="primary" (click)="CopiarDatosLaborales()">Copiar Información de Datos Laborales</button>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput formControlName="tipo_vialidad" placeholder="Tipo Vialidad" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('tipo_vialidad').invalid && (datosFiscalesForm.get('tipo_vialidad').dirty || datosFiscalesForm.get('tipo_vialidad').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('tipo_vialidad').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="30" fxFlex.xs="100">
+                                    <input matInput formControlName="nombre_vialidad" placeholder="Nombre Vialidad" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('nombre_vialidad').invalid && (datosFiscalesForm.get('nombre_vialidad').dirty || datosFiscalesForm.get('nombre_vialidad').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('nombre_vialidad').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="10" fxFlex.xs="100">
+                                    <input matInput formControlName="no_exterior" placeholder="No Exterior" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('no_exterior').invalid && (datosFiscalesForm.get('no_exterior').dirty || datosFiscalesForm.get('no_exterior').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('no_exterior').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="10" fxFlex.xs="100">
+                                    <input matInput formControlName="no_interior" placeholder="No Interior" autocomplete="off">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput formControlName="colonia" placeholder="Colonia" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('colonia').invalid && (datosFiscalesForm.get('colonia').dirty || datosFiscalesForm.get('colonia').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('colonia').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="10" fxFlex.xs="100">
+                                    <input matInput formControlName="cp" placeholder="C.P." autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('cp').invalid && (datosFiscalesForm.get('cp').dirty || datosFiscalesForm.get('cp').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('cp').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                    <input matInput formControlName="calle1" placeholder="Entre Calle" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('calle1').invalid && (datosFiscalesForm.get('calle1').dirty || datosFiscalesForm.get('calle1').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('calle1').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                    <input matInput formControlName="calle2" placeholder="Y Calle" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('calle2').invalid && (datosFiscalesForm.get('calle2').dirty || datosFiscalesForm.get('calle2').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('calle2').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                                    <input matInput formControlName="localidad" placeholder="Localidad" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('localidad').invalid && (datosFiscalesForm.get('localidad').dirty || datosFiscalesForm.get('localidad').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('localidad').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                                    <input matInput formControlName="municipio" placeholder="Municipio" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('municipio').invalid && (datosFiscalesForm.get('municipio').dirty || datosFiscalesForm.get('municipio').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('municipio').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                                    <input matInput formControlName="entidad" placeholder="Entidad" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('entidad').invalid && (datosFiscalesForm.get('entidad').dirty || datosFiscalesForm.get('entidad').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('entidad').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="40" fxFlex.xs="100">
+                                    <input matInput formControlName="correo" placeholder="Correo" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('correo').invalid && (datosFiscalesForm.get('correo').dirty || datosFiscalesForm.get('correo').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('correo').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="10" fxFlex.xs="100">
+                                    <input matInput formControlName="lada1" placeholder="Lada" autocomplete="off">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput formControlName="telefono1" placeholder="Teléfono Fijo" autocomplete="off">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="10" fxFlex.xs="100">
+                                    <input matInput formControlName="lada2" placeholder="Lada" autocomplete="off">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="20" fxFlex.xs="100">
+                                    <input matInput formControlName="telefono2" placeholder="Teléfono Celular" autocomplete="off">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                    <input matInput formControlName="estado_domicilio" placeholder="Estado Domicilio" autocomplete="off">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                    <input matInput formControlName="estado_contribuyente" placeholder="Estado Contribuyente" autocomplete="off">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="35" fxFlex.xs="100">
+                                    <input matInput formControlName="actividad_economina" placeholder="Actividad Economina" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('actividad_economina').invalid && (datosFiscalesForm.get('actividad_economina').dirty || datosFiscalesForm.get('actividad_economina').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('actividad_economina').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                    <input matInput [matDatepicker]="fecha_actividad" autocomplete="off" (click)="fecha_actividad.open()" formControlName="fecha_inicio_actividad" placeholder="Fecha Inicio Actividad">
+                                    <mat-datepicker-toggle matPrefix [for]="fecha_actividad"></mat-datepicker-toggle>
+                                    <mat-datepicker #fecha_actividad [disabled]="false"></mat-datepicker>
+                                    <mat-error *ngIf="datosFiscalesForm.get('fecha_inicio_actividad').invalid && (datosFiscalesForm.get('fecha_inicio_actividad').dirty || datosFiscalesForm.get('fecha_inicio_actividad').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('fecha_inicio_actividad').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="35" fxFlex.xs="100">
+                                    <input matInput formControlName="regimen" placeholder="Regimen" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('regimen').invalid && (datosFiscalesForm.get('regimen').dirty || datosFiscalesForm.get('regimen').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('regimen').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                    <input matInput [matDatepicker]="fecha_regimen" autocomplete="off" (click)="fecha_regimen.open()" formControlName="fecha_regimen" placeholder="Fecha Inicio Regimen">
+                                    <mat-datepicker-toggle matPrefix [for]="fecha_regimen"></mat-datepicker-toggle>
+                                    <mat-datepicker #fecha_regimen [disabled]="false"></mat-datepicker>
+                                    <mat-error *ngIf="datosFiscalesForm.get('fecha_regimen').invalid && (datosFiscalesForm.get('fecha_regimen').dirty || datosFiscalesForm.get('fecha_regimen').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('fecha_regimen').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <div style="color: red;">Nota:</div> Los datos solicitados, deben de ser identicos a los de su Constancia de Situación Fiscal.
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <button mat-raised-button (click)="accionGuardar(3)" color="success" [disabled]="!datosFiscalesForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
+                        <div *ngIf="!actualizado" align="end" class='mat-dialog-actions'><button mat-stroked-button (click)="retroceder(2)"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button></div>
+                    </div>
+                </mat-tab>-->
+
                 <mat-tab [formGroup]="datosHorarioForm" [disabled]='(tab_proceso != 3 && !actualizado)'>
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">calendar_today</mat-icon>
@@ -771,7 +868,7 @@
                                 </mat-form-field>
                             </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <button mat-raised-button (click)="accionGuardar(3)" color="success" [disabled]="dias == 0 || (!datosHorarioForm.valid || isLoading)"><mat-icon>save</mat-icon> Guardar</button>
+                                <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="dias == 0 || (!datosHorarioForm.valid || isLoading)"><mat-icon>save</mat-icon> Guardar</button>
                                 <div *ngIf="!actualizado" align="end" class='mat-dialog-actions'><button mat-stroked-button (click)="retroceder(2)"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button></div>
                             </div>
 
@@ -782,7 +879,7 @@
                         </div>
                     </div>
                 </mat-tab>
-                <mat-tab [formGroup]="datosEscolaresForm" [disabled]='(tab_proceso != 4 && !actualizado)'>
+                <mat-tab [formGroup]="datosEscolaresForm" [disabled]='(tab_proceso != 5 && !actualizado)'>
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">school</mat-icon>
                         <div class="mobile-pc"> Escolaridad</div>
@@ -888,11 +985,11 @@
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                         <div fxFlex="30">
                             <!--<button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(!datosEscolaresForm.valid || isLoading) || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>-->
-                            <button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="!datosEscolaresForm.valid || (EstudiosActualizado > dataSourceEstudios.data.length) || isLoading || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>
+                            <button mat-raised-button (click)="accionGuardar(5)" color="success" [disabled]="!datosEscolaresForm.valid || (EstudiosActualizado > dataSourceEstudios.data.length) || isLoading || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>
                             <button mat-raised-button (click)="accionFinalizar()" color="success" [disabled]="!datosEscolaresForm.valid || (finalizarActualizacion && (EstudiosActualizado > dataSourceEstudios.data.length)) || Actualizado || finalizarActualizacion"><mat-icon>save</mat-icon> Finalizar Actualización</button>
 
                         </div>
-                        <div *ngIf="!actualizado" align="end" class='mat-dialog-actions' fxFlex="70"><button mat-stroked-button (click)="retroceder(3)"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button></div>
+                        <div *ngIf="!actualizado" align="end" class='mat-dialog-actions' fxFlex="70"><button mat-stroked-button (click)="retroceder(4)"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button></div>
                     </div>
 
                 </mat-tab>

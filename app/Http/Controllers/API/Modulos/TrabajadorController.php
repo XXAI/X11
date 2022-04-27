@@ -55,6 +55,7 @@ use App\Models\RelCapacitacionDetalles;
 use App\Models\RelDatosLaborales;
 use App\Models\RelDatosLaboralesNomina;
 use App\Models\RelEscolaridad;
+use App\Models\RelDatosFiscales;
 use App\Models\RelEscolaridadCursante;
 use App\Models\RelHorario;
 use App\Models\RelNomina;
@@ -405,7 +406,7 @@ class TrabajadorController extends Controller
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
             $params = $request->all();
 
-            $trabajador = Trabajador::with('municipio_nacimiento','datoslaborales','escolaridad','horario', 'datoslaboralesnomina.clues', 'datoslaboralesnomina.cr', 'credencial')->where("id", "=", $id);
+            $trabajador = Trabajador::with('municipio_nacimiento','datoslaborales','escolaridad','horario', 'datoslaboralesnomina.clues', 'datoslaboralesnomina.cr', 'credencial',"rel_datos_fiscales")->where("id", "=", $id);
 
             foreach ($permisos->roles as $key => $value) {
                 foreach ($value->permissions as $key2 => $value2) {
@@ -679,20 +680,46 @@ class TrabajadorController extends Controller
         }else if($inputs['tipo_dato'] == 3)
         {
             $reglas = [
-                'jornada_id'              => 'required',
+                'cp'                    => 'required',
+                'tipo_vialidad'         => 'required',
+                'nombre_vialidad'       => 'required',
+                'no_exterior'           => 'required',
+                //'no_interior'           => 'required',
+                'colonia'               => 'required',
+                'localidad'             => 'required',
+                'municipio'             => 'required',
+                'entidad'               => 'required',
+                'calle1'                => 'required',
+                'calle2'                => 'required',
+                'correo'                => 'required',
+                'lada1'                 => 'required',
+                'telefono1'             => 'required',
+                'lada2'                 => 'required',
+                'telefono2'             => 'required',
+                'estado_domicilio'      => 'required',
+                'estado_contribuyente'  => 'required',
+                'actividad_economina'   => 'required',
+                'fecha_inicio_actividad'=> 'required',
+                'regimen'               => 'required',
+                'fecha_regimen'         => 'required',
             ];
         }else if($inputs['tipo_dato'] == 4)
         {
             $reglas = [
-                'nivel_maximo_id'              => 'required',
+                'jornada_id'              => 'required',
             ];
         }else if($inputs['tipo_dato'] == 5)
+        {
+            $reglas = [
+                'nivel_maximo_id'              => 'required',
+            ];
+        }/*else if($inputs['tipo_dato'] == 6)
         {
             $reglas = [
                 'capacitacion_anual'                => 'required',
                 'ciclo_id'                          => 'required',
             ];
-        }else if($inputs['tipo_dato'] == 6)
+        }else if($inputs['tipo_dato'] == 7)
         {
             $reglas = [
                 'tipo_ciclo_formacion_id'   => 'required',
@@ -706,7 +733,7 @@ class TrabajadorController extends Controller
                 'consejo'                   => 'required',
                 
             ];
-        }
+        }*/
 
         
         $object = Trabajador::find($id);
@@ -858,6 +885,39 @@ class TrabajadorController extends Controller
 
             }else if($inputs['tipo_dato'] == 3)
             {
+                $objectRDF = RelDatosFiscales::where("trabajador_id", "=", $id)->first();
+                if($objectRDF == null)
+                {
+                    $objectRDF = new RelDatosFiscales();
+                    $objectRDF->trabajador_id = $id;
+                }
+                
+                $objectRDF->cp                          = $inputs['cp'];
+                $objectRDF->tipo_vialidad               = $inputs['tipo_vialidad'];
+                $objectRDF->nombre_vialidad             = $inputs['nombre_vialidad'];
+                $objectRDF->no_exterior                 = $inputs['no_exterior'];
+                $objectRDF->no_interior                 = $inputs['no_interior'];
+                $objectRDF->colonia                     = $inputs['colonia'];
+                $objectRDF->localidad                   = $inputs['localidad'];
+                $objectRDF->municipio                   = $inputs['municipio'];
+                $objectRDF->entidad                     = $inputs['entidad'];
+                $objectRDF->calle1                      = $inputs['calle1'];
+                $objectRDF->calle2                      = $inputs['calle2'];
+                $objectRDF->correo                      = $inputs['correo'];
+                $objectRDF->lada_telefono1              = $inputs['lada1'];
+                $objectRDF->telefono1                   = $inputs['telefono1'];
+                $objectRDF->lada_telefono2              = $inputs['lada2'];
+                $objectRDF->telefono2                   = $inputs['telefono2'];
+                $objectRDF->estado_domicilio            = $inputs['estado_domicilio'];
+                $objectRDF->estado_contribuyente        = $inputs['estado_contribuyente'];
+                $objectRDF->actividad_economina         = $inputs['actividad_economina'];
+                $objectRDF->fecha_actividad_economica  = $inputs['fecha_inicio_actividad'];
+                $objectRDF->regimen                     = $inputs['regimen'];
+                $objectRDF->fecha_regimen               = $inputs['fecha_regimen'];
+                
+                $objectRDF->save();
+            }else if($inputs['tipo_dato'] == 4)
+            {
                 $objectRL = RelDatosLaborales::where("trabajador_id", "=", $id)->first();
                 if($objectRL == null)
                 {
@@ -884,7 +944,7 @@ class TrabajadorController extends Controller
                     }
                     $indice++;
                 }
-            }else if($inputs['tipo_dato'] == 4)
+            }else if($inputs['tipo_dato'] == 5)
             {
                 $escolaridad = $inputs['datos'];
                 $indice_escolaridad = 0;
@@ -926,7 +986,7 @@ class TrabajadorController extends Controller
                     $objectEscolaridad->save();
                     $indice_escolaridad++;
                 }
-            }else if($inputs['tipo_dato'] == 5)
+            }/*else if($inputs['tipo_dato'] == 6)
             {
                 $objectCapacitacion = RelCapacitacion::where("trabajador_id", "=", $id)->first();
                 if($objectCapacitacion == null)
@@ -971,7 +1031,7 @@ class TrabajadorController extends Controller
                     $indice_cursos++;
                 }
 
-            }else if($inputs['tipo_dato'] == 6)
+            }else if($inputs['tipo_dato'] == 7)
             {
                 $objectCursos = RelEscolaridadCursante::where("trabajador_id", "=", $id)->first();
                 if($objectCursos == null)
@@ -991,7 +1051,7 @@ class TrabajadorController extends Controller
                
                 $objectCursos->anio_cursa_id = $inputs['anio_cursa_id'];
                 $objectCursos->save();
-            }
+            }*/
             
             $object->save();
             
@@ -1150,7 +1210,7 @@ class TrabajadorController extends Controller
 
             $access = $this->getUserAccessData();
             
-            $trabajador = Trabajador::with("rel_datos_laborales", "rel_datos_laborales_nomina", "rel_trabajador_baja.baja", "rel_datos_comision")->where(function($query)use($parametros){
+            $trabajador = Trabajador::with("rel_datos_laborales", "rel_datos_laborales_nomina", "rel_trabajador_baja.baja", "rel_datos_comision", "rel_datos_fiscales")->where(function($query)use($parametros){
                 return $query->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
                             ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');

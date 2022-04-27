@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild,ViewEncapsulation } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
@@ -23,7 +23,8 @@ export interface VerEmpleadoData {
 @Component({
   selector: 'app-ver',
   templateUrl: './ver.component.html',
-  styleUrls: ['./ver.component.css']
+  styleUrls: ['./ver.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class VerComponent implements OnInit {
 

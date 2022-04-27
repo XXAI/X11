@@ -34,6 +34,13 @@
 
                 </div>
             </div>
+            <!--<div fxLayout="row" fxLayoutGap="0px">
+                <div fxFlex.xs="100" fxFlex="100" matTooltip="CONSTANCIA DE SITUACIÒN FISCAL (CSF)">
+                    <button mat-button (click)="verExpediente(dataTrabajador)" *ngIf="dataTrabajador.rel_trabajador_documentos != null" [ngClass]="{'chip-pause': estatusChip ==1 || estatusChip==3, 'chip-red': estatusChip ==4 || estatusChip ==2, 'chip-green': estatusChip ==5}"><mat-icon>picture_as_pdf</mat-icon>CSF {{ estatusDocumentacion[estatusChip]}}</button>
+                    <button mat-button color="warn" *ngIf="dataTrabajador.rel_trabajador_documentos == null" (click)="verExpediente(dataTrabajador)"><mat-icon>picture_as_pdf</mat-icon> CSF</button>
+
+                </div>
+            </div>-->
 
             <mat-divider></mat-divider>
             <div fxLayout="row" fxLayoutGap="0px">
@@ -448,10 +455,15 @@
                         </table>
                     </div>-->
                 </mat-tab>
-
-                <mat-tab label="AVISOS">
+                <!--<mat-tab label="DOCUMENTACIÒN">
                     <ng-template mat-tab-label>
-                        <mat-icon class="example-tab-icon" matBadge="N" matBadgeColor="warn">feedback</mat-icon>
+                        <mat-icon class="example-tab-icon" matBadge="N" matBadgeColor="warn">file_copy</mat-icon>
+                        <div class="mobile-pc"> &nbsp;&nbsp;&nbsp;DOCUMENTACIÒN</div>
+                    </ng-template>
+                </mat-tab>-->
+                <mat-tab label="AVISOS" class="avisos">
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon" matBadge="N" matBadgeColor="warn">announcement</mat-icon>
                         <div class="mobile-pc"> &nbsp;&nbsp;&nbsp;AVISOS</div>
                     </ng-template>
                     <div fxFlex.xs="50" fxFlex="50">
@@ -472,21 +484,7 @@
                             </mat-card-title-group>
 
                         </mat-card>
-                        <!--<mat-card class="example-card">
-                            <mat-card-header>
-                                <div mat-card-avatar class="example-header-image"></div>
-                                <mat-card-title>Convocatoria</mat-card-title>
-                            </mat-card-header>
-                            <img mat-card-image src="https://play-lh.googleusercontent.com/9XKD5S7rwQ6FiPXSyp9SzLXfIue88ntf9sJ9K250IuHTL7pmn2-ZB0sngAX4A2Bw4w=w240-h480-rw" alt="Pdf">
-                            <mat-card-content>
-                                <p>
-                                    Convocatoria para llevar a cabo la nominación y eleccion de integrantes del comité de ética y de prevención de conflictos de interés (CEPCI) del instituto de salud.
-                                </p>
-                            </mat-card-content>
-                            <mat-card-actions>
-                                <button mat-button color="warn" (click)="goToLink('http://ti.shyfpchiapas.gob.mx:8080/votacion/login')">LINK</button>
-                            </mat-card-actions>
-                        </mat-card>-->
+
                     </div>
 
                 </mat-tab>

@@ -194,3 +194,7 @@ mat-card-title {
 .correcto {
     color: darkgreen;
 }
+
+.avisos {
+    background-color: red !important;
+}
