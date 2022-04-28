@@ -251,7 +251,7 @@ class TramiteDocumentacionController extends Controller
             'unique'        => "unique"
         ];
         $inputs = $request->all();
-        
+
         $reglas = [
             'trabajador_id'       => 'required',
             'rfc'                 => 'required',
@@ -265,13 +265,13 @@ class TramiteDocumentacionController extends Controller
       
         
      try{  
-       $parametros = $request->all();
-       $documentacion = RelDocumentacion::where("trabajador_id", $parametros['trabajador_id'])->first();
+        $parametros = $request->all();
+        $documentacion = RelDocumentacion::where("trabajador_id", $parametros['trabajador_id'])->first();
        
-       if(!$documentacion)
-       {
+        if(!$documentacion)
+        {
             $documentacion = new RelDocumentacion();
-       }
+        }
         if($request->hasFile('archivo')) {
             
             //$fileName = $parametros['rfc'];
@@ -300,10 +300,13 @@ class TramiteDocumentacionController extends Controller
             }
              
             DB::commit();
+            return response()->json(['data'=>$documentacion],HttpResponse::HTTP_OK);
+        }else
+        {
+            DB::rollback();
+            return response()->json(['error'=>['message'=>"Error en archivo"]], HttpResponse::HTTP_CONFLICT);
         }
         
-       
-        return response()->json(['data'=>$documentacion],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             DB::rollback();
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);

@@ -79,8 +79,6 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
         this.archivo = null;
         this.sharedService.showSnackBar("Archivo supera el maximo de tamaño", null, 3000);
       }
-
-    
 		}
   }
   
@@ -104,8 +102,6 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
               this.isLoading = false;
               //console.log(response);
             }, errorResponse => {
-              console.log(errorResponse);
-              console.log(errorResponse.error);
               this.sharedService.showSnackBar(errorResponse.error.error, null, 3000);
               this.isLoading = false;
             });
@@ -115,7 +111,6 @@ export class DocumentacionImportacionDialogComponent implements OnInit {
       
 		} else {
       this.errorArchivo = true;
-      
     }
 	}
   

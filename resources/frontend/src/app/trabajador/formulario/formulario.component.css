@@ -114,3 +114,72 @@ mat-card-title {
     margin-bottom: 0px !important;
     margin-top: 5px !important;
 }
+
+
+/* Formato de etiqueta */
+
+.form-block-input {
+    display: flex;
+    max-width: 450px;
+    overflow: hidden;
+    color: #777;
+    background: #ddd;
+    border: 1px #25a solid;
+    margin: 8pt 0pt;
+    padding: 0;
+    border-radius: 3px;
+    font-size: 15pt;
+}
+
+.form-block-input :hover {
+    cursor: pointer;
+}
+
+
+/* Ocultar campo tipo file */
+
+input[type="file"].form-file {
+    display: none;
+}
+
+
+/* Botón para seleccionar archivos */
+
+button.form-file-button {
+    vertical-align: middle;
+    color: #fff;
+    background: #25a;
+    margin: 0;
+    border: 0;
+    transform: scaleX(-1);
+    /* Invertir botón horizontalmente */
+}
+
+
+/* Lista de archivos */
+
+span.form-file-span {
+    flex: 1;
+    display: inline-block;
+    text-align: left;
+}
+
+
+/* Arhchivos en lista */
+
+span.form-files {
+    display: inline-block;
+    color: #555;
+    background: #ccf;
+    border: 1px #25a solid;
+    margin: 2px 8px 2px 0;
+    white-space: nowrap;
+    border-radius: 3px;
+}
+
+
+/* Quitar margen horizontal al último elemento en la lista */
+
+span.form-block-span:last-child {
+    margin: 2px 0;
+}

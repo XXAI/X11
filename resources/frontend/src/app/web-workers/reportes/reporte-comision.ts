@@ -8,6 +8,7 @@ export class ReporteComision {
     let data = reportData.items;
     let nombres = reportData.responsable;
     
+    let frase_documento = "";
     let director = nombres.direccion_admon.responsable;
     let nombre_director = director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno;
     
@@ -50,7 +51,7 @@ export class ReporteComision {
             },
             {
                 margin: [10, 0, 0, 0],
-                text: '\n"2022, AÑO DE RICARDO FLORES MAGÓN, PRECURSOR DE LA REVOLUCIÓN MEXICANA"',
+                text: "",//'\n"2022, AÑO DE RICARDO FLORES MAGÓN, PRECURSOR DE LA REVOLUCIÓN MEXICANA"',
                 italics: true,
                 bold: false,
                 fontSize: 7,
@@ -153,7 +154,17 @@ export class ReporteComision {
       {
         fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_comision_interna.fecha_oficio).toLowerCase();
       }
-      
+      //console.log("--------------------");
+      let anio_oficio = element.rel_trabajador_comision_interna.fecha_oficio.substr(0,4);
+      if(anio_oficio == 2021)
+      {
+        datos.header.columns[1].text = "2021, Año de la Independencia";
+      }else if(anio_oficio >= 2022){
+        datos.header.columns[1].text = "2022, AÑO DE RICARDO FLORES MAGÓN,  PRECURSOR DE LA REVOLUCIÓN MEXICANA";
+      }
+
+      //console.log(element.rel_trabajador_comision_interna.fecha_oficio.substr(0,4));
+      //console.log("--------------------");
       if(element.rel_trabajador_comision_interna.cr_origen.cr_dependencia == element.rel_trabajador_comision_interna.cr_destino.cr_dependencia)
       {
         if(element.rel_trabajador_comision_interna.cr_origen.cr_dependencia != element.rel_trabajador_comision_interna.cr_origen.cr && element.rel_trabajador_comision_interna.cr_destino.cr_dependencia != element.rel_trabajador_comision_interna.cr_destino.cr )
@@ -281,7 +292,7 @@ export class ReporteComision {
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/"+(new Date()).getFullYear()+"\n\nASUNTO: COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio", colSpan:2},{},
+              { text: "\nOFICIO: IS/DAF/SRH/DRL/5003/________________/"+anio_oficio+"\n\nASUNTO: COMISIÓN\n\n TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_num_oficio", colSpan:2},{},
             ],
             [
               //{ text: "\nC.FERMIN SERVANDO MARTINEZ MARTINEZ\n M01006 MEDICO GENERAL 'A' (CSSSA004764)\n CENTRO DE SALUD RURAL 1 NÚCLEO BÁSICO ROBERTO BARRIOS", style: "texto_depto"},

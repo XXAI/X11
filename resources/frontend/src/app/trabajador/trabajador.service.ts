@@ -20,6 +20,7 @@ export class TrabajadorService {
   url_info_trabajador = `${environment.base_url}/ver-info-trabajador/`;
   url_clue_asistencia = `${environment.base_url}/clues_asistencia`;
   url_expediente = `${environment.base_url}/tramite-documentacion-download`;
+  url_constancia = `${environment.base_url}/constancia-download`;
   url_activar_comision = `${environment.base_url}/activar-trabajador-sindical`;
 
   url_asistencia = 'https://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
@@ -28,13 +29,13 @@ export class TrabajadorService {
 
   url_unlink = `${environment.base_url}/liberar-trabajador/`;
 
-  url_cr = `${environment.base_url}/busqueda-cr`;
-  url_activacion = `${environment.base_url}/activar-trabajador/`;
-  url_validacion = `${environment.base_url}/validar-trabajador/`;
-  url_baja = `${environment.base_url}/baja-trabajador`;
+  url_cr              = `${environment.base_url}/busqueda-cr`;
+  url_activacion      = `${environment.base_url}/activar-trabajador/`;
+  url_validacion      = `${environment.base_url}/validar-trabajador/`;
+  url_baja            = `${environment.base_url}/baja-trabajador`;
   /* Tranferencia */
-  url_transfer = `${environment.base_url}/transferir-trabajador/`;
-  url_clues_catalogo = `${environment.base_url}/busqueda-clues`;
+  url_transfer        = `${environment.base_url}/transferir-trabajador/`;
+  url_clues_catalogo  = `${environment.base_url}/busqueda-clues`;
   url_tramite = `${environment.base_url}/tramites`;
   url_tramite_trabajador = `${environment.base_url}/tramites-trabajador`;
   url_valida_rfc = `${environment.base_url}/valida-rfc`;
@@ -330,4 +331,13 @@ export class TrabajadorService {
     
   }
   
+  getConstancia(id):Observable<any> {
+    
+    return this.http.get<any>(this.url_constancia+"/"+id, {params:{}, responseType: 'blob' as 'json'}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+    
+  }
 }

@@ -551,7 +551,7 @@
                     </div>
 
                 </mat-tab>
-                <!--<mat-tab [formGroup]="datosFiscalesForm" [disabled]='(tab_proceso != 3 && !actualizado)'>
+                <mat-tab [formGroup]="datosFiscalesForm" [disabled]='(tab_proceso != 3 && !actualizado)'>
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">account_balance</mat-icon>
                         <div class="mobile-pc"> Datos Fiscales</div>
@@ -561,7 +561,30 @@
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <button mat-raised-button color="primary" (click)="CopiarDatosLaborales()">Copiar Información de Datos Laborales</button>
                             </div>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" style="margin-top: 5pt;">
+                                <mat-form-field fxFlex="85" fxFlex.xs="100">
+                                    <input matInput formControlName="razon_social" placeholder="NOMBRE DENOMINACIÓN O RAZÓN SOCIAL" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('razon_social').invalid && (datosFiscalesForm.get('razon_social').dirty || datosFiscalesForm.get('razon_social').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('razon_social').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                    <input matInput [matDatepicker]="fecha_regimen" autocomplete="off" (click)="fecha_regimen.open()" formControlName="fecha_regimen" placeholder="Fecha Inicio Regimen">
+                                    <mat-datepicker-toggle matPrefix [for]="fecha_regimen"></mat-datepicker-toggle>
+                                    <mat-datepicker #fecha_regimen [disabled]="false"></mat-datepicker>
+                                    <mat-error *ngIf="datosFiscalesForm.get('fecha_regimen').invalid && (datosFiscalesForm.get('fecha_regimen').dirty || datosFiscalesForm.get('fecha_regimen').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('fecha_regimen').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="10" fxFlex.xs="100">
+                                    <input matInput formControlName="cp" placeholder="C.P." autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('cp').invalid && (datosFiscalesForm.get('cp').dirty || datosFiscalesForm.get('cp').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('cp').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
                                 <mat-form-field fxFlex="20" fxFlex.xs="100">
                                     <input matInput formControlName="tipo_vialidad" placeholder="Tipo Vialidad" autocomplete="off">
                                     <mat-error *ngIf="datosFiscalesForm.get('tipo_vialidad').invalid && (datosFiscalesForm.get('tipo_vialidad').dirty || datosFiscalesForm.get('tipo_vialidad').touched)">
@@ -590,26 +613,7 @@
                                         <span *ngIf="datosFiscalesForm.get('colonia').errors.required">Campo obligatorio</span>
                                     </mat-error>
                                 </mat-form-field>
-                                <mat-form-field fxFlex="10" fxFlex.xs="100">
-                                    <input matInput formControlName="cp" placeholder="C.P." autocomplete="off">
-                                    <mat-error *ngIf="datosFiscalesForm.get('cp').invalid && (datosFiscalesForm.get('cp').dirty || datosFiscalesForm.get('cp').touched)">
-                                        <span *ngIf="datosFiscalesForm.get('cp').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <mat-form-field fxFlex="50" fxFlex.xs="100">
-                                    <input matInput formControlName="calle1" placeholder="Entre Calle" autocomplete="off">
-                                    <mat-error *ngIf="datosFiscalesForm.get('calle1').invalid && (datosFiscalesForm.get('calle1').dirty || datosFiscalesForm.get('calle1').touched)">
-                                        <span *ngIf="datosFiscalesForm.get('calle1').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field>
-                                <mat-form-field fxFlex="50" fxFlex.xs="100">
-                                    <input matInput formControlName="calle2" placeholder="Y Calle" autocomplete="off">
-                                    <mat-error *ngIf="datosFiscalesForm.get('calle2').invalid && (datosFiscalesForm.get('calle2').dirty || datosFiscalesForm.get('calle2').touched)">
-                                        <span *ngIf="datosFiscalesForm.get('calle2').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field>
+
                             </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                                 <mat-form-field fxFlex="33" fxFlex.xs="100">
@@ -632,64 +636,90 @@
                                 </mat-form-field>
                             </div>
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <mat-form-field fxFlex="40" fxFlex.xs="100">
+                                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                    <input matInput formControlName="calle1" placeholder="Entre Calle" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('calle1').invalid && (datosFiscalesForm.get('calle1').dirty || datosFiscalesForm.get('calle1').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('calle1').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                    <input matInput formControlName="calle2" placeholder="Y Calle" autocomplete="off">
+                                    <mat-error *ngIf="datosFiscalesForm.get('calle2').invalid && (datosFiscalesForm.get('calle2').dirty || datosFiscalesForm.get('calle2').touched)">
+                                        <span *ngIf="datosFiscalesForm.get('calle2').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="30" fxFlex.xs="100">
                                     <input matInput formControlName="correo" placeholder="Correo" autocomplete="off">
                                     <mat-error *ngIf="datosFiscalesForm.get('correo').invalid && (datosFiscalesForm.get('correo').dirty || datosFiscalesForm.get('correo').touched)">
                                         <span *ngIf="datosFiscalesForm.get('correo').errors.required">Campo obligatorio</span>
                                     </mat-error>
                                 </mat-form-field>
-                                <mat-form-field fxFlex="10" fxFlex.xs="100">
-                                    <input matInput formControlName="lada1" placeholder="Lada" autocomplete="off">
+                                <mat-form-field fxFlex="5" fxFlex.xs="100">
+                                    <input matInput formControlName="lada" placeholder="Lada" autocomplete="off">
                                 </mat-form-field>
                                 <mat-form-field fxFlex="20" fxFlex.xs="100">
-                                    <input matInput formControlName="telefono1" placeholder="Teléfono Fijo" autocomplete="off">
+                                    <input matInput formControlName="telefono" placeholder="Teléfono Fijo" autocomplete="off">
                                 </mat-form-field>
-                                <mat-form-field fxFlex="10" fxFlex.xs="100">
-                                    <input matInput formControlName="lada2" placeholder="Lada" autocomplete="off">
-                                </mat-form-field>
-                                <mat-form-field fxFlex="20" fxFlex.xs="100">
-                                    <input matInput formControlName="telefono2" placeholder="Teléfono Celular" autocomplete="off">
-                                </mat-form-field>
-                            </div>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <mat-form-field fxFlex="50" fxFlex.xs="100">
-                                    <input matInput formControlName="estado_domicilio" placeholder="Estado Domicilio" autocomplete="off">
-                                </mat-form-field>
-                                <mat-form-field fxFlex="50" fxFlex.xs="100">
-                                    <input matInput formControlName="estado_contribuyente" placeholder="Estado Contribuyente" autocomplete="off">
-                                </mat-form-field>
-                            </div>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                                <mat-form-field fxFlex="35" fxFlex.xs="100">
-                                    <input matInput formControlName="actividad_economina" placeholder="Actividad Economina" autocomplete="off">
-                                    <mat-error *ngIf="datosFiscalesForm.get('actividad_economina').invalid && (datosFiscalesForm.get('actividad_economina').dirty || datosFiscalesForm.get('actividad_economina').touched)">
-                                        <span *ngIf="datosFiscalesForm.get('actividad_economina').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field>
-                                <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                    <input matInput [matDatepicker]="fecha_actividad" autocomplete="off" (click)="fecha_actividad.open()" formControlName="fecha_inicio_actividad" placeholder="Fecha Inicio Actividad">
-                                    <mat-datepicker-toggle matPrefix [for]="fecha_actividad"></mat-datepicker-toggle>
-                                    <mat-datepicker #fecha_actividad [disabled]="false"></mat-datepicker>
-                                    <mat-error *ngIf="datosFiscalesForm.get('fecha_inicio_actividad').invalid && (datosFiscalesForm.get('fecha_inicio_actividad').dirty || datosFiscalesForm.get('fecha_inicio_actividad').touched)">
-                                        <span *ngIf="datosFiscalesForm.get('fecha_inicio_actividad').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field>
-                                <mat-form-field fxFlex="35" fxFlex.xs="100">
+                                <mat-form-field fxFlex="45" fxFlex.xs="100">
                                     <input matInput formControlName="regimen" placeholder="Regimen" autocomplete="off">
                                     <mat-error *ngIf="datosFiscalesForm.get('regimen').invalid && (datosFiscalesForm.get('regimen').dirty || datosFiscalesForm.get('regimen').touched)">
                                         <span *ngIf="datosFiscalesForm.get('regimen').errors.required">Campo obligatorio</span>
                                     </mat-error>
                                 </mat-form-field>
-                                <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                    <input matInput [matDatepicker]="fecha_regimen" autocomplete="off" (click)="fecha_regimen.open()" formControlName="fecha_regimen" placeholder="Fecha Inicio Regimen">
-                                    <mat-datepicker-toggle matPrefix [for]="fecha_regimen"></mat-datepicker-toggle>
-                                    <mat-datepicker #fecha_regimen [disabled]="false"></mat-datepicker>
-                                    <mat-error *ngIf="datosFiscalesForm.get('fecha_regimen').invalid && (datosFiscalesForm.get('fecha_regimen').dirty || datosFiscalesForm.get('fecha_regimen').touched)">
-                                        <span *ngIf="datosFiscalesForm.get('fecha_regimen').errors.required">Campo obligatorio</span>
-                                    </mat-error>
-                                </mat-form-field>
                             </div>
-                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+                                <div fxFlex="33" fxFlex.xs="100">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+                                        <button mat-stroked-button color="warn" *ngIf="datosFiscales.documento_digital == 0">
+                                            <mat-icon>cloud_off</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
+                                        </button>
+                                        <button mat-raised-button color="primary" *ngIf="datosFiscales.documento_digital == 1" (click)="verConstancia()" [disabled]="descargarConstancia">
+                                            <mat-icon>cloud_download</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
+                                        </button>
+                                    </div>
+                                </div>
+                                <div fxFlex="33" fxFlex.xs="100">
+                                    <label class="form-block-input">
+                                        <input type="file" formControlName="file" #fileInput class="form-file" accept="application/pdf" (change)="fileChange($event)">
+                                        <button class="form-file-button" (click)="fileInput.click()"><mat-icon>attach_file</mat-icon></button>
+                                        <span style="padding: 4pt !important;">{{ informacion }}</span>
+                                    </label>
+                                    <!--<input type="file" formControlName="file" class="form-control" accept="application/pdf" (change)="fileChange($event)">-->
+                                </div>
+                                <div fxFlex="33" fxFlex.xs="100">
+                                    Maximo de peso del archivo <b style="color: red;">500 kb.</b>
+                                </div>
+                            </div>
+                            <!--<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                    <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                        <input matInput formControlName="estado_domicilio" placeholder="Estado Domicilio" autocomplete="off">
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="50" fxFlex.xs="100">
+                                        <input matInput formControlName="estado_contribuyente" placeholder="Estado Contribuyente" autocomplete="off">
+                                    </mat-form-field>
+                                </div>-->
+                            <!--<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                                <mat-form-field fxFlex="35" fxFlex.xs="100">
+                                        <input matInput formControlName="actividad_economina" placeholder="Actividad Economina" autocomplete="off">
+                                        <mat-error *ngIf="datosFiscalesForm.get('actividad_economina').invalid && (datosFiscalesForm.get('actividad_economina').dirty || datosFiscalesForm.get('actividad_economina').touched)">
+                                            <span *ngIf="datosFiscalesForm.get('actividad_economina').errors.required">Campo obligatorio</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="15" fxFlex.xs="100">
+                                        <input matInput [matDatepicker]="fecha_actividad" autocomplete="off" (click)="fecha_actividad.open()" formControlName="fecha_inicio_actividad" placeholder="Fecha Inicio Actividad">
+                                        <mat-datepicker-toggle matPrefix [for]="fecha_actividad"></mat-datepicker-toggle>
+                                        <mat-datepicker #fecha_actividad [disabled]="false"></mat-datepicker>
+                                        <mat-error *ngIf="datosFiscalesForm.get('fecha_inicio_actividad').invalid && (datosFiscalesForm.get('fecha_inicio_actividad').dirty || datosFiscalesForm.get('fecha_inicio_actividad').touched)">
+                                            <span *ngIf="datosFiscalesForm.get('fecha_inicio_actividad').errors.required">Campo obligatorio</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                
+
+                            </div>-->
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px" style="margin-top: 5pt;">
                                 <div style="color: red;">Nota:</div> Los datos solicitados, deben de ser identicos a los de su Constancia de Situación Fiscal.
                             </div>
                         </div>
@@ -698,7 +728,7 @@
                         <button mat-raised-button (click)="accionGuardar(3)" color="success" [disabled]="!datosFiscalesForm.valid || isLoading"><mat-icon>save</mat-icon> Guardar</button>
                         <div *ngIf="!actualizado" align="end" class='mat-dialog-actions'><button mat-stroked-button (click)="retroceder(2)"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button></div>
                     </div>
-                </mat-tab>-->
+                </mat-tab>
 
                 <mat-tab [formGroup]="datosHorarioForm" [disabled]='(tab_proceso != 3 && !actualizado)'>
                     <ng-template mat-tab-label>

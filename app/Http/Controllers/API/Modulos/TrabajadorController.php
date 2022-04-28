@@ -5,11 +5,12 @@ namespace App\Http\Controllers\API\Modulos;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Facades\Storage;
 
 use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
-use \Validator,\Hash, \Response, \DB;
+use \Validator,\Hash, \Response, \DB, \File, \Store;
 use Carbon\Carbon;
 
 
@@ -449,6 +450,66 @@ class TrabajadorController extends Controller
         }
     }
 
+    public function Upload(Request $request)
+    {
+        
+        ini_set('memory_limit', '-1');
+        $mensajes = [
+            
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = $request->all();
+        
+        $reglas = [
+            'trabajador_id'       => 'required'
+        ];
+        DB::beginTransaction();
+        $respuesta = 0;
+        $v = Validator::make($inputs, $reglas, $mensajes);
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+        
+     try{  
+       $parametros = $request->all();
+       $documentacion = RelDatosFiscales::where("trabajador_id", $inputs['trabajador_id'])->first();
+       
+       if(!$documentacion)
+       {
+            $documentacion = new RelDocumentacion();
+       }
+      
+        if($request->hasFile('archivo')) {
+             
+            //$fileName = $parametros['rfc'];
+            
+            $extension = $request->file('archivo')->getClientOriginalExtension();
+            if($extension == "pdf")
+            {
+                $name = $parametros['trabajador_id'].".".$extension;
+                $request->file("archivo")->storeAs("public/CSF", $name);
+                
+                $documentacion->trabajador_id = $inputs['trabajador_id']; 
+                $documentacion->documento_digital = 1; 
+                $documentacion->save();
+                $respuesta = 1;
+            }else{
+                return response()->json(['error' => "Formato de archivo incorrento,extensión pdf en minusculas, favor de verificar" ], HttpResponse::HTTP_CONFLICT);
+            }
+             
+            DB::commit();
+        }
+        
+       
+        return response()->json(['data'=>$respuesta],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     private function calcularMiniPaginador($params,$permisos){
         $access = $this->getUserAccessData();
         $per_page = $params['pageSize'];
@@ -525,6 +586,19 @@ class TrabajadorController extends Controller
             return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
         }   
     }
+
+    public function Download(Request $request, $id)
+    {
+        ini_set('memory_limit', '-1');
+    
+     try{  
+        return \Storage::download("public//CSF//".$id.".pdf");
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function comisionSindical(Request $request)
     {
         $mensajes = [
@@ -680,6 +754,7 @@ class TrabajadorController extends Controller
         }else if($inputs['tipo_dato'] == 3)
         {
             $reglas = [
+                'razon_social'          => 'required',
                 'cp'                    => 'required',
                 'tipo_vialidad'         => 'required',
                 'nombre_vialidad'       => 'required',
@@ -692,14 +767,14 @@ class TrabajadorController extends Controller
                 'calle1'                => 'required',
                 'calle2'                => 'required',
                 'correo'                => 'required',
-                'lada1'                 => 'required',
-                'telefono1'             => 'required',
-                'lada2'                 => 'required',
-                'telefono2'             => 'required',
-                'estado_domicilio'      => 'required',
-                'estado_contribuyente'  => 'required',
-                'actividad_economina'   => 'required',
-                'fecha_inicio_actividad'=> 'required',
+                'lada'                 => 'required',
+                'telefono'             => 'required',
+                //'lada2'                 => 'required',
+                //'telefono2'             => 'required',
+                //'estado_domicilio'      => 'required',
+                //'estado_contribuyente'  => 'required',
+                //'actividad_economina'   => 'required',
+                //'fecha_inicio_actividad'=> 'required',
                 'regimen'               => 'required',
                 'fecha_regimen'         => 'required',
             ];
@@ -892,6 +967,7 @@ class TrabajadorController extends Controller
                     $objectRDF->trabajador_id = $id;
                 }
                 
+                $objectRDF->razon_social                = $inputs['razon_social'];
                 $objectRDF->cp                          = $inputs['cp'];
                 $objectRDF->tipo_vialidad               = $inputs['tipo_vialidad'];
                 $objectRDF->nombre_vialidad             = $inputs['nombre_vialidad'];
@@ -904,14 +980,14 @@ class TrabajadorController extends Controller
                 $objectRDF->calle1                      = $inputs['calle1'];
                 $objectRDF->calle2                      = $inputs['calle2'];
                 $objectRDF->correo                      = $inputs['correo'];
-                $objectRDF->lada_telefono1              = $inputs['lada1'];
-                $objectRDF->telefono1                   = $inputs['telefono1'];
-                $objectRDF->lada_telefono2              = $inputs['lada2'];
-                $objectRDF->telefono2                   = $inputs['telefono2'];
-                $objectRDF->estado_domicilio            = $inputs['estado_domicilio'];
-                $objectRDF->estado_contribuyente        = $inputs['estado_contribuyente'];
-                $objectRDF->actividad_economina         = $inputs['actividad_economina'];
-                $objectRDF->fecha_actividad_economica  = $inputs['fecha_inicio_actividad'];
+                //$objectRDF->lada_telefono1              = $inputs['lada1'];
+                //$objectRDF->telefono1                   = $inputs['telefono1'];
+                $objectRDF->lada                        = $inputs['lada'];
+                $objectRDF->telefono                    = $inputs['telefono'];
+                //$objectRDF->estado_domicilio            = $inputs['estado_domicilio'];
+                //$objectRDF->estado_contribuyente        = $inputs['estado_contribuyente'];
+                //$objectRDF->actividad_economina         = $inputs['actividad_economina'];
+                //$objectRDF->fecha_actividad_economica  = $inputs['fecha_inicio_actividad'];
                 $objectRDF->regimen                     = $inputs['regimen'];
                 $objectRDF->fecha_regimen               = $inputs['fecha_regimen'];
                 

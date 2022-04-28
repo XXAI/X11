@@ -16,6 +16,7 @@ import { EstudiosDialogComponent } from '../estudios-dialog/estudios-dialog.comp
 /*Dialogs */
 import { JornadaDialogComponent } from '../jornada-dialog/jornada-dialog.component';
 import { TrabajadorService } from '../trabajador.service';
+import { ImportarService } from '../../tramites/importar.service';
 
 @Component({
   selector: 'app-formulario',
@@ -57,10 +58,12 @@ export class FormularioComponent implements OnInit {
   actualizado:boolean = false;
   editable = true;
   Actualizado:boolean = false;
+  datosFiscales:any;
 
   filteredCr: Observable<any[]>;
   finalizarActualizacion:boolean = true;
   puedeDesligar:boolean = false;
+  informacion:string = "Seleccionar un archivo";
 
   indexTab:number = 0;
 
@@ -70,6 +73,13 @@ export class FormularioComponent implements OnInit {
   nombre_trabajador:string;
   tab_proceso:number = 1;
 
+  archivo: File = null;
+  archivoSubido:boolean;
+  enviandoDatos:boolean;
+  progreso: number = 0; 
+  errorArchivo:boolean;
+  descargarConstancia:boolean = false;
+
   trabajador:any;
   estatusDocumentacion:string[] = ['', 'ENVIADO','RECHAZADO', 'EN VALIDACIÓN', "RECHAZADO", "VALIDADO"];
   estatusChip:number = 0;
@@ -77,6 +87,7 @@ export class FormularioComponent implements OnInit {
   constructor(
     private sharedService: SharedService, 
     private trabajadorService: TrabajadorService,
+    private importarService: ImportarService,
     private authService: AuthService, 
     private route: ActivatedRoute, 
     private fb: FormBuilder,
@@ -150,6 +161,7 @@ export class FormularioComponent implements OnInit {
 
   public datosFiscalesForm = this.fb.group({
     
+    'razon_social': ['',[Validators.required]],
     'tipo_vialidad': ['',[Validators.required]],
     'nombre_vialidad': ['',[Validators.required]],
     'no_exterior': ['',[Validators.required]],
@@ -162,17 +174,18 @@ export class FormularioComponent implements OnInit {
     'calle1': ['',[Validators.required]],
     'calle2': ['',[Validators.required]],
     'correo': ['',[Validators.required]],
-    'lada1': [],
-    'telefono1': [],
-    'lada2': [],
-    'telefono2': [],
-    'estado_domicilio': [],
-    'estado_contribuyente': [],
-    'actividad_economina': ['',[Validators.required]],
-    'fecha_inicio_actividad': ['',[Validators.required]],
+    'lada': [],
+    'telefono': [],
+    //'lada2': [],
+    //'telefono2': [],
+    //'estado_domicilio': [],
+    //'estado_contribuyente': [],
+    ///'actividad_economina': ['',[Validators.required]],
+    //'fecha_inicio_actividad': ['',[Validators.required]],
     'regimen': ['',[Validators.required]],
     'fecha_regimen': ['',[Validators.required]],
     //'documento_digital': ['',[Validators.required]],
+    'file': ['', Validators.required],
   });
   
   public datosEscolaresForm = this.fb.group({
@@ -333,6 +346,23 @@ export class FormularioComponent implements OnInit {
       case 2039857:
         this.EstudiosActualizado = 0; break;
     }
+  }
+
+  fileChange(event) {
+		let fileList: FileList = event.target.files;
+		if (fileList.length > 0) {
+      this.archivo = <File>fileList[0];
+      console.log(this.archivo);
+      if(this.archivo.size > 500000)
+      {
+        
+        this.datosFiscalesForm.patchValue({file:null});
+        this.archivo = null;
+        this.sharedService.showSnackBar("Archivo supera el maximo de tamaño", null, 3000);
+      }else{
+        this.informacion = this.archivo.name;
+      }
+		}
   }
 
   loadPrevious(){
@@ -551,43 +581,54 @@ export class FormularioComponent implements OnInit {
           //Caga datos dehorario
          
         }
-        let datosFiscales = this.trabajador.rel_datos_fiscales;
+        this.datosFiscales = this.trabajador.rel_datos_fiscales;
        
-        if(datosFiscales != null)
+        if(this.datosFiscales != null)
         {
+          if(this.datosFiscales.documento_digital == 1)
+          {
+            this.datosFiscalesForm.get('file').setValidators([]); // or clearValidators()
+            this.datosFiscalesForm.get('file').updateValueAndValidity();
+            /*this.datosFiscalesForm.patchValue(
+              {
+                file: <File>{}
+              });*/
+          }
           
           this.datosFiscalesForm.patchValue(
             {
-              tipo_vialidad: datosFiscales.tipo_vialidad,
-              nombre_vialidad: datosFiscales.nombre_vialidad,
-              no_exterior: datosFiscales.no_exterior,
-              no_interior: datosFiscales.no_interior,
-              cp: datosFiscales.cp,
-              colonia: datosFiscales.colonia,
-              calle1: datosFiscales.calle1,
-              calle2: datosFiscales.calle2,
-              localidad: datosFiscales.localidad,
-              municipio: datosFiscales.municipio,
-              entidad: datosFiscales.entidad,
-              correo: datosFiscales.correo,
-              lada1: datosFiscales.lada_telefono1,
-              telefono1: datosFiscales.telefono1,
-              lada2: datosFiscales.lada_telefono2,
-              telefono2: datosFiscales.telefono2,
-              estado_domicilio: datosFiscales.estado_domicilio,
-              estado_contribuyente: datosFiscales.estado_contribuyente,
-              actividad_economina: datosFiscales.actividad_economina,
-              fecha_inicio_actividad: datosFiscales.fecha_actividad_economica,
-              regimen: datosFiscales.regimen,
-              fecha_regimen: datosFiscales.fecha_regimen,
+              razon_social: this.datosFiscales.razon_social,
+              tipo_vialidad: this.datosFiscales.tipo_vialidad,
+              nombre_vialidad: this.datosFiscales.nombre_vialidad,
+              no_exterior: this.datosFiscales.no_exterior,
+              no_interior: this.datosFiscales.no_interior,
+              cp: this.datosFiscales.cp,
+              colonia: this.datosFiscales.colonia,
+              calle1: this.datosFiscales.calle1,
+              calle2: this.datosFiscales.calle2,
+              localidad: this.datosFiscales.localidad,
+              municipio: this.datosFiscales.municipio,
+              entidad: this.datosFiscales.entidad,
+              correo: this.datosFiscales.correo,
+              lada: this.datosFiscales.lada,
+              telefono: this.datosFiscales.telefono,
+              //lada2: datosFiscales.lada_telefono2,
+              //telefono2: datosFiscales.telefono2,
+              //estado_domicilio: datosFiscales.estado_domicilio,
+              //estado_contribuyente: datosFiscales.estado_contribuyente,
+              //actividad_economina: datosFiscales.actividad_economina,
+              //fecha_inicio_actividad: datosFiscales.fecha_actividad_economica,
+              regimen: this.datosFiscales.regimen,
+              fecha_regimen: this.datosFiscales.fecha_regimen,
             }
+            
           );
         
         }else{
           this.datosFiscalesForm.patchValue(
             {
-              actividad_economina: "Consultorios de medicina general pertenecientes al sector público",
-              regimen: "Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios",
+              //actividad_economina: "Consultorios de medicina general pertenecientes al sector público",
+              regimen: "Sueldos y Salarios e Ingresos Asimilados a Salarios",
             });
         }
         
@@ -722,6 +763,24 @@ export class FormularioComponent implements OnInit {
           errorMessage = errorResponse.error.error.message;
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
+      }
+    );
+  }
+
+  verConstancia()
+  {
+    this.descargarConstancia =true;
+    this.trabajadorService.getConstancia(this.trabajador.id).subscribe(
+      response => {
+        //saveAs(response, "download.pdf");
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+        this.descargarConstancia = false;
+      },
+      responsError =>{
+        this.descargarConstancia = false;
+        this.sharedService.showSnackBar('Error al intentar descargar el expediente', null, 4000);
       }
     );
   }
@@ -985,6 +1044,7 @@ export class FormularioComponent implements OnInit {
     let data;
     let countError = 0;
     let datos_sep:any;
+    let flag_file = true;
     if(tipo == 1)
     {
       data = this.trabajadorForm.value;
@@ -1017,6 +1077,24 @@ export class FormularioComponent implements OnInit {
     }else if(tipo == 3)
     {
       data = this.datosFiscalesForm.value;
+      if (this.archivo) {
+        this.archivoSubido = false;
+        this.isLoading = true;
+        let data = {'trabajador_id': this.trabajador_id };
+        this.importarService.uploadCsf(data, this.archivo, '').subscribe(
+          response => {
+            this.isLoading = false;
+            //console.log(response);
+            if(response.data == 0){
+              flag_file = false;
+            }
+          }, errorResponse => {
+            this.sharedService.showSnackBar(errorResponse.error.error, null, 3000);
+            this.isLoading = false;
+            
+          });
+      }
+      
     }else if(tipo == 4)
     {
       data = this.datosHorarioForm.value;
@@ -1051,47 +1129,23 @@ export class FormularioComponent implements OnInit {
     data.tipo_dato = tipo;
     data.sep = datos_sep;
     
-    
-    if(this.trabajador_id != null && countError == 0)
+    if(!flag_file)
     {
-      this.trabajadorService.guardarTrabajador(this.trabajador_id, data, datos_sep).subscribe(
-        response =>{
-          this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
-          this.isLoading = false;
-          if(tipo != 6)
-          {
-            this.tab_proceso = tipo + 1;
-            this.indexTab = tipo;
-          }else{
-            this.finalizarActualizacion = false;
-          }
-        },
-        errorResponse =>{
-          this.isLoading = false;
-          var errorMessage = "Ocurrió un error.";
-          if(errorResponse.error){
-            errorMessage = errorResponse.error.message;
-          }
-          this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
-          
-        }
-      );
-    }else
-    {
-      if(this.trabajador_id == null && data.cr == null)
+      this.sharedService.showSnackBar("Ocurrio un error al subir tu archivo, favor de volver a intentarlo", null, 3000);
+    }else{
+      if(this.trabajador_id != null && countError == 0)
       {
-        this.sharedService.showSnackBar("DEBE DE SELECCIONAR UN CENTRO DE RESPONSABILIDAD", "ERROR", 3000);
-        countError++;
-      }
-      
-      if(countError == 0)
-      {
-
-        this.trabajadorService.guardarNuevoTrabajador( data).subscribe(
+        this.trabajadorService.guardarTrabajador(this.trabajador_id, data, datos_sep).subscribe(
           response =>{
             this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
             this.isLoading = false;
-            this.router.navigate(['/trabajadores/editar/'+response.id+"/1"]);
+            if(tipo != 6)
+            {
+              this.tab_proceso = tipo + 1;
+              this.indexTab = tipo;
+            }else{
+              this.finalizarActualizacion = false;
+            }
           },
           errorResponse =>{
             this.isLoading = false;
@@ -1103,8 +1157,36 @@ export class FormularioComponent implements OnInit {
             
           }
         );
+      }else
+      {
+        if(this.trabajador_id == null && data.cr == null)
+        {
+          this.sharedService.showSnackBar("DEBE DE SELECCIONAR UN CENTRO DE RESPONSABILIDAD", "ERROR", 3000);
+          countError++;
+        }
+        
+        if(countError == 0)
+        {
+
+          this.trabajadorService.guardarNuevoTrabajador( data).subscribe(
+            response =>{
+              this.sharedService.showSnackBar("Se ha Guardado Correctamente", null, 3000);
+              this.isLoading = false;
+              this.router.navigate(['/trabajadores/editar/'+response.id+"/1"]);
+            },
+            errorResponse =>{
+              this.isLoading = false;
+              var errorMessage = "Ocurrió un error.";
+              if(errorResponse.error){
+                errorMessage = errorResponse.error.message;
+              }
+              this.sharedService.showSnackBar(errorMessage, "ERROR", 3000);
+              
+            }
+          );
+        }
+        this.isLoading = false;
       }
-      this.isLoading = false;
     }
     
   }
@@ -1558,30 +1640,31 @@ export class FormularioComponent implements OnInit {
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
         let indice_entidad = this.catalogo['entidad'].findIndex(x=>x.id == this.trabajadorForm.get('entidad_nacimiento_id').value);
-        let actividad = this.datosFiscalesForm.get('actividad_economina').value;
+        //let actividad = this.datosFiscalesForm.get('actividad_economina').value;
         let regimen = this.datosFiscalesForm.get('regimen').value;
-        if(this.datosFiscalesForm.get('actividad_economina').value == '')
+        /*if(this.datosFiscalesForm.get('actividad_economina').value == '')
         {
           actividad = "Consultorios de medicina general pertenecientes al sector público";
-        }
+        }*/
         if(this.datosFiscalesForm.get('regimen').value == '')
         {
-          regimen = "Régimen de Sueldos y Salarios e Ingresos Asimilados a Salarios";
+          regimen = "Sueldos y Salarios e Ingresos Asimilados a Salarios";
         }
         this.datosFiscalesForm.patchValue(
           {
+            razon_social: this.trabajadorForm.get('nombre').value+" "+this.trabajadorForm.get('apellido_paterno').value+" "+this.trabajadorForm.get('apellido_materno').value,
             cp: this.trabajadorForm.get('cp').value,
             nombre_vialidad: this.trabajadorForm.get('calle').value,
             no_exterior: this.trabajadorForm.get('no_exterior').value,
             no_interior: this.trabajadorForm.get('no_interior').value,
             colonia: this.trabajadorForm.get('colonia').value,
             correo: this.trabajadorForm.get('correo_electronico').value,
-            telefono1: this.trabajadorForm.get('telefono_fijo').value,
-            telefono2: this.trabajadorForm.get('telefono_celular').value,
+            //telefono1: this.trabajadorForm.get('telefono_fijo').value,
+            telefono: this.trabajadorForm.get('telefono_celular').value,
             entidad: this.catalogo['entidad'][indice_entidad].descripcion,
             municipio: this.trabajadorForm.get('municipio').value.descripcion,
             localidad: this.trabajadorForm.get('municipio').value.descripcion,
-            actividad_economina: actividad,
+            //actividad_economina: actividad,
             regimen: regimen,
           }
         );

@@ -11,6 +11,7 @@ export class ImportarService {
   private api: string
   private http: HttpClient;
   url_documentacion_upload = `${environment.base_url}/tramite-documentacion-upload`;
+  url_csf_upload             = `${environment.base_url}/upload-csf`;
 
   constructor( handler: HttpBackend) {
     //To ignore interceptor
@@ -37,6 +38,21 @@ export class ImportarService {
     headers.append('Content-Type','application/x-www-form-urlencoded;charset=UTF-8');
     headers.append('Access-Control-Allow-Origin','*');
     return this.http.post(this.url_documentacion_upload, formData, { headers:headers});
+  }
+
+  uploadCsf(data:any,file:File,path:string): Observable<any>{
+    const formData: FormData = new FormData();
+    formData.append('archivo', file, file.name);
+
+    formData.append('trabajador_id', data.trabajador_id);
+    
+    let token = localStorage.getItem('token');
+    let headers = new HttpHeaders().set(
+      "Authorization",'Bearer '+localStorage.getItem("token"),
+    );
+    headers.append('Content-Type','application/x-www-form-urlencoded;charset=UTF-8');
+    headers.append('Access-Control-Allow-Origin','*');
+    return this.http.post(this.url_csf_upload, formData, { headers:headers});
     
   }
 }

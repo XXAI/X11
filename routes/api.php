@@ -129,13 +129,15 @@ Route::group(['middleware'=>'auth'],function($router){
     //Route::post('responsable-unidad/{id}',       'API\Modulos\DirectorioController@EliminarResponsable');
     //Route::get('tramites-trabajador/{id}',    'API\Modulos\TramitesController@ListTramites');
     Route::get('clues_asistencia',              'API\Modulos\TrabajadorController@ListCluesAsistencia');
-    
+    Route::post('upload-csf',                           'API\Modulos\TrabajadorController@Upload');
     
     Route::post('comision-sindical',                    'API\Modulos\TrabajadorController@comisionSindical');
     //Rutas de Tramites
     Route::apiResource('tramite-documentacion',         'API\Modulos\TramiteDocumentacionController');
     Route::post('tramite-documentacion-upload',         'API\Modulos\TramiteDocumentacionController@Upload');
+    
     Route::get('tramite-documentacion-download/{id}',   'API\Modulos\TramiteDocumentacionController@Download');
+    Route::get('constancia-download/{id}',              'API\Modulos\TrabajadorController@Download');
     Route::apiResource('tramite-adscripcion',           'API\Modulos\TramiteAdscripcionController');
     Route::get('tramite-adscripcion-lote',              'API\Modulos\TramiteAdscripcionController@ObtenerLote');
     Route::apiResource('tramite-adscripcion-externa',   'API\Modulos\TramiteAdscripcionExternaController');
