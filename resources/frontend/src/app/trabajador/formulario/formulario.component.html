@@ -673,12 +673,20 @@
                             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
                                 <div fxFlex="33" fxFlex.xs="100">
                                     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
-                                        <button mat-stroked-button color="warn" *ngIf="datosFiscales.documento_digital == 0">
-                                            <mat-icon>cloud_off</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
-                                        </button>
-                                        <button mat-raised-button color="primary" *ngIf="datosFiscales.documento_digital == 1" (click)="verConstancia()" [disabled]="descargarConstancia">
-                                            <mat-icon>cloud_download</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
-                                        </button>
+                                        <div *ngIf="datosFiscales != null">
+                                            <button mat-stroked-button color="warn" *ngIf="datosFiscales.documento_digital == 0">
+                                                <mat-icon>cloud_off</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
+                                            </button>
+                                            <button mat-raised-button color="primary" *ngIf="datosFiscales.documento_digital == 1" (click)="verConstancia()" [disabled]="descargarConstancia">
+                                                <mat-icon>cloud_download</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
+                                            </button>
+                                        </div>
+                                        <div *ngIf="datosFiscales == null">
+                                            <button mat-stroked-button color="warn">
+                                                <mat-icon>cloud_off</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
+                                            </button>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div fxFlex="33" fxFlex.xs="100">
