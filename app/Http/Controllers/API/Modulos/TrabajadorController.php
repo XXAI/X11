@@ -967,18 +967,18 @@ class TrabajadorController extends Controller
                     $objectRDF->trabajador_id = $id;
                 }
                 
-                $objectRDF->razon_social                = $inputs['razon_social'];
+                $objectRDF->razon_social                = strtoupper($inputs['razon_social']);
                 $objectRDF->cp                          = $inputs['cp'];
-                $objectRDF->tipo_vialidad               = $inputs['tipo_vialidad'];
-                $objectRDF->nombre_vialidad             = $inputs['nombre_vialidad'];
+                $objectRDF->tipo_vialidad               = strtoupper($inputs['tipo_vialidad']);
+                $objectRDF->nombre_vialidad             = strtoupper($inputs['nombre_vialidad']);
                 $objectRDF->no_exterior                 = $inputs['no_exterior'];
                 $objectRDF->no_interior                 = $inputs['no_interior'];
-                $objectRDF->colonia                     = $inputs['colonia'];
-                $objectRDF->localidad                   = $inputs['localidad'];
-                $objectRDF->municipio                   = $inputs['municipio'];
-                $objectRDF->entidad                     = $inputs['entidad'];
-                $objectRDF->calle1                      = $inputs['calle1'];
-                $objectRDF->calle2                      = $inputs['calle2'];
+                $objectRDF->colonia                     = strtoupper($inputs['colonia']);
+                $objectRDF->localidad                   = strtoupper($inputs['localidad']);
+                $objectRDF->municipio                   = strtoupper($inputs['municipio']);
+                $objectRDF->entidad                     = strtoupper($inputs['entidad']);
+                $objectRDF->calle1                      = strtoupper($inputs['calle1']);
+                $objectRDF->calle2                      = strtoupper($inputs['calle2']);
                 $objectRDF->correo                      = $inputs['correo'];
                 //$objectRDF->lada_telefono1              = $inputs['lada1'];
                 //$objectRDF->telefono1                   = $inputs['telefono1'];
@@ -988,7 +988,7 @@ class TrabajadorController extends Controller
                 //$objectRDF->estado_contribuyente        = $inputs['estado_contribuyente'];
                 //$objectRDF->actividad_economina         = $inputs['actividad_economina'];
                 //$objectRDF->fecha_actividad_economica  = $inputs['fecha_inicio_actividad'];
-                $objectRDF->regimen                     = $inputs['regimen'];
+                $objectRDF->regimen                     = strtoupper($inputs['regimen']);
                 $objectRDF->fecha_regimen               = $inputs['fecha_regimen'];
                 
                 $objectRDF->save();

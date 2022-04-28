@@ -569,7 +569,7 @@
                                     </mat-error>
                                 </mat-form-field>
                                 <mat-form-field fxFlex="15" fxFlex.xs="100">
-                                    <input matInput [matDatepicker]="fecha_regimen" autocomplete="off" (click)="fecha_regimen.open()" formControlName="fecha_regimen" placeholder="Fecha Inicio Regimen">
+                                    <input matInput [matDatepicker]="fecha_regimen" autocomplete="off" (click)="fecha_regimen.open()" formControlName="fecha_regimen" placeholder="Fecha Inicio de operaciones">
                                     <mat-datepicker-toggle matPrefix [for]="fecha_regimen"></mat-datepicker-toggle>
                                     <mat-datepicker #fecha_regimen [disabled]="false"></mat-datepicker>
                                     <mat-error *ngIf="datosFiscalesForm.get('fecha_regimen').invalid && (datosFiscalesForm.get('fecha_regimen').dirty || datosFiscalesForm.get('fecha_regimen').touched)">
