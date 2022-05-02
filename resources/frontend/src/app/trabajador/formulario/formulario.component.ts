@@ -602,12 +602,13 @@ export class FormularioComponent implements OnInit {
         console.log(this.datosFiscales.fecha_regimen.substr(5,2));
         console.log(this.datosFiscales.fecha_regimen.substr(8,2));
         */
-        let fecha_actual = this.datosFiscales.fecha_regimen.substr(0,4)+"-"+this.datosFiscales.fecha_regimen.substr(5,2)+"-"+this.datosFiscales.fecha_regimen.substr(8,2)+"T18:51:49.313Z";
-        console.log(fecha_actual);
-        let fecha = new Date().toISOString();
-        console.log(fecha);
         if(this.datosFiscales != null)
         {
+          let fecha_actual = this.datosFiscales.fecha_regimen.substr(0,4)+"-"+this.datosFiscales.fecha_regimen.substr(5,2)+"-"+this.datosFiscales.fecha_regimen.substr(8,2)+"T18:51:49.313Z";
+          console.log(fecha_actual);
+          let fecha = new Date().toISOString();
+          console.log(fecha);
+        
           if(this.datosFiscales.documento_digital == 1)
           {
             this.datosFiscalesForm.get('file').setValidators([]); // or clearValidators()
