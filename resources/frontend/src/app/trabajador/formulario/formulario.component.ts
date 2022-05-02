@@ -26,6 +26,7 @@ import { ImportarService } from '../../tramites/importar.service';
 export class FormularioComponent implements OnInit {
 
   catalogo:any = [];
+  catalogosFiscales:any = [];
   municipioIsLoading: boolean = false;
   filteredMunicipio: Observable<any[]>;
   objeto_puente: Observable<any[]>;
@@ -162,7 +163,7 @@ export class FormularioComponent implements OnInit {
   public datosFiscalesForm = this.fb.group({
     
     'razon_social': ['',[Validators.required]],
-    'tipo_vialidad': ['',[Validators.required]],
+    'tipo_vialidad': [''],
     'nombre_vialidad': ['',[Validators.required]],
     'no_exterior': ['',[Validators.required]],
     'no_interior': [''],
@@ -171,9 +172,9 @@ export class FormularioComponent implements OnInit {
     'localidad': ['',[Validators.required]],
     'municipio': ['',[Validators.required]],
     'entidad': ['', Validators.required],
-    'calle1': ['',[Validators.required]],
-    'calle2': ['',[Validators.required]],
-    'correo': ['',[Validators.required]],
+    'calle1': [''],
+    'calle2': [''],
+    'correo': [''],
     'lada': [],
     'telefono': [],
     //'lada2': [],
@@ -457,6 +458,19 @@ export class FormularioComponent implements OnInit {
     });
   }*/
 
+  ObtenerCatalogos(clave_entidad)
+  {
+    this.trabajadorService.getCatalogosFiscales(clave_entidad).subscribe(
+      response => {
+       this.catalogosFiscales = response.data;
+      },
+      responsError =>{
+        //this.sharedService.showSnackBar('Error al intentar descargar el expediente', null, 4000);
+      }
+    );
+  }
+
+
   cargarTrabajador(id):void{
     this.isLoadingPage = true;
     this.imagen_trabajador = 'assets/trabajador.jpg';
@@ -582,7 +596,16 @@ export class FormularioComponent implements OnInit {
          
         }
         this.datosFiscales = this.trabajador.rel_datos_fiscales;
-       
+        
+        /*console.log(this.datosFiscales);
+        console.log(this.datosFiscales.fecha_regimen.substr(0,4));
+        console.log(this.datosFiscales.fecha_regimen.substr(5,2));
+        console.log(this.datosFiscales.fecha_regimen.substr(8,2));
+        */
+        let fecha_actual = this.datosFiscales.fecha_regimen.substr(0,4)+"-"+this.datosFiscales.fecha_regimen.substr(5,2)+"-"+this.datosFiscales.fecha_regimen.substr(8,2)+"T18:51:49.313Z";
+        console.log(fecha_actual);
+        let fecha = new Date().toISOString();
+        console.log(fecha);
         if(this.datosFiscales != null)
         {
           if(this.datosFiscales.documento_digital == 1)
@@ -619,7 +642,7 @@ export class FormularioComponent implements OnInit {
               //actividad_economina: datosFiscales.actividad_economina,
               //fecha_inicio_actividad: datosFiscales.fecha_actividad_economica,
               regimen: this.datosFiscales.regimen,
-              fecha_regimen: this.datosFiscales.fecha_regimen,
+              fecha_regimen: fecha_actual,
             }
             
           );

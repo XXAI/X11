@@ -40,6 +40,7 @@ export const APPS:App [] = [
         { name:'Reincorporación',     route:'tramites/reincorporacion',  icon:'insert_drive_file', permission:"3T9B0ixmJOwPLZVc69a4EeUPbWl1Dp38" },
         { name:'Documentacion',       route:'tramites/documentacion',   icon:'insert_drive_file', permission:"8HXTiaeI3NvlUWwNyzdKCgTxcepkqvDj" }
       ] },
+      /*{ name:'Archivo',                route: "archivo",                icon: "assets/icons/archivo.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt'},*/  
     { name:'Directorio',              route: "directorio",              icon: "assets/icons/directorio.svg",  permission:"RkggFnAkLcXiLUTbZk3A07y0c4WdjjCO" },
     { name:'Credencialización',       route: "credencializacion",       icon: "assets/icons/credencial.png",  isHub:true, hideHome:true, 
       children:[

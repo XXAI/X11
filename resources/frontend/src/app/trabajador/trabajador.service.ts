@@ -13,6 +13,7 @@ export class TrabajadorService {
   url_finalizar = `${environment.base_url}/trabajador_finalizar`;
   url_firmantes = `${environment.base_url}/firmantes`;
   url_catalogos = `${environment.base_url}/catalogo-trabajador`;
+  url_catalogosFiscales = `${environment.base_url}/catalogo-fiscal`;
   url_buscador = `${environment.base_url}/buscador-datos-trabajador`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
   url_trabajadores = `${environment.base_url}/busqueda-trabajadores`;
@@ -68,6 +69,14 @@ export class TrabajadorService {
   
   getCatalogos():Observable<any> {
       return this.http.get<any>(this.url_catalogos, {}).pipe(
+          map( response => {
+            return response;
+          })
+      );
+  }
+  
+  getCatalogosFiscales(entidad:string):Observable<any> {
+      return this.http.get<any>(this.url_catalogosFiscales+"/"+entidad, {}).pipe(
           map( response => {
             return response;
           })

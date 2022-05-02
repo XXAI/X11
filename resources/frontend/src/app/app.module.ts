@@ -39,7 +39,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { SelectorCrDialogComponent } from './utils/selector-cr-dialog/selector-cr-dialog.component';
 
 //Cuestionario solo por un tiempo
-import { CuestionarioDengueModule } from './cuestionario-dengue/cuestionario-dengue.module';
+//import { CuestionarioDengueModule } from './cuestionario-dengue/cuestionario-dengue.module';
 
 //Modulos Nuevos
 import { TrabajadorModule } from './trabajador/trabajador.module';
@@ -79,7 +79,7 @@ import { CredencializacionModule } from './credencializacion/credencializacion.m
     CatalogosModule,
     ProfileModule,
     AppRoutingModule,
-    CuestionarioDengueModule,
+    //CuestionarioDengueModule,
     CredencializacionModule,
     WildcardRoutingModule,
   ],

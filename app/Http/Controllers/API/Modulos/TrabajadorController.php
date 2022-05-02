@@ -50,6 +50,12 @@ use App\Models\TipoBaja;
 use App\Models\GrupoUnidades;
 use App\Models\CluesAsistencia;
 
+use App\Models\SatEntidad;
+use App\Models\SatLocalidad;
+use App\Models\SatMunicipio;
+use App\Models\SatRegimen;
+
+
 //Relacionales
 use App\Models\RelCapacitacion;
 use App\Models\RelCapacitacionDetalles;
@@ -756,19 +762,19 @@ class TrabajadorController extends Controller
             $reglas = [
                 'razon_social'          => 'required',
                 'cp'                    => 'required',
-                'tipo_vialidad'         => 'required',
+                //'tipo_vialidad'         => 'required',
                 'nombre_vialidad'       => 'required',
                 'no_exterior'           => 'required',
                 //'no_interior'           => 'required',
                 'colonia'               => 'required',
-                'localidad'             => 'required',
+                //'localidad'             => 'required',
                 'municipio'             => 'required',
                 'entidad'               => 'required',
-                'calle1'                => 'required',
-                'calle2'                => 'required',
-                'correo'                => 'required',
-                'lada'                 => 'required',
-                'telefono'             => 'required',
+                //'calle1'                => 'required',
+                //'calle2'                => 'required',
+                //'correo'                => 'required',
+                //'lada'                 => 'required',
+                //'telefono'             => 'required',
                 //'lada2'                 => 'required',
                 //'telefono2'             => 'required',
                 //'estado_domicilio'      => 'required',
@@ -1366,6 +1372,9 @@ class TrabajadorController extends Controller
             $catalogos['nivel_dominio']         = NivelDominio::all();
             $catalogos['actividad_voluntaria']         = ActividadVoluntaria::all();
             $catalogos['codigo']            = Codigo::orderBy("codigo")->get();
+            
+            //$catalogos['regimen']            = SatRegimen::orderBy("descripcion")->get();
+            //$catalogos['entidad']            = SatEntidad::orderBy("descripcion")->get();
             
             return response()->json(['data'=>$catalogos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
