@@ -249,6 +249,97 @@
                     </div>
 
                 </mat-tab>
+                <mat-tab label="DATOS FISCALES">
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">account_balance</mat-icon>
+                        <div class="mobile-pc"> &nbsp;&nbsp;&nbsp;DATOS FISCALES</div>
+                    </ng-template>
+                    <div fxFlex.xs="100" fxFlex="100">
+                        <mat-card>
+                            <mat-card-title>Datos Fiscales</mat-card-title>
+                            <mat-card-content *ngIf="datosFiscales">
+                                <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+
+                                    <div fxFlex="50" fxFlex.xs="100">
+                                        <b>RAZÓN SOCIAL:</b>{{ datosFiscales.razon_social }}
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="50" fxFlex.xs="100">
+                                        <b>CP:</b>{{ datosFiscales.cp }}
+                                    </div>
+                                    <div fxFlex="50" fxFlex.xs="100">
+                                        <b>TIPO VIALIDAD:</b>{{ datosFiscales.tipo_vialidad }}
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+                                    <div fxFlex="100" fxFlex.xs="33">
+                                        <b>NOMBRE VIALIDAD:</b>{{ datosFiscales.nombre_vialidad }}
+                                    </div>
+                                    <div fxFlex="50" fxFlex.xs="33">
+                                        <b>NO EXTERIOR:</b>{{ datosFiscales.no_exterior }}
+                                    </div>
+                                    <div fxFlex="50" fxFlex.xs="33">
+                                        <b>NO INTERIOR:</b>{{ datosFiscales.no_interior }}
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="100" fxFlex.xs="50">
+                                        <b>ENTRE:</b>{{ datosFiscales.calle1 }}
+                                    </div>
+                                    <div fxFlex="100" fxFlex.xs="50">
+                                        <b>Y CALLE:</b>{{ datosFiscales.calle2 }}
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+                                    <div fxFlex="100" fxFlex.xs="25">
+                                        <b>COLONIA:</b>{{ datosFiscales.colonia }}
+                                    </div>
+                                    <div fxFlex="100" fxFlex.xs="25">
+                                        <b>LOCALIDAD:</b>{{ datosFiscales.localidad }}
+                                    </div>
+                                    <div fxFlex="100" fxFlex.xs="25">
+                                        <b>MUNICIPIO:</b>{{ datosFiscales.municipio }}
+                                    </div>
+                                    <div fxFlex="100" fxFlex.xs="25">
+                                        <b>ENTIDAD:</b>{{ datosFiscales.entidad }}
+                                    </div>
+                                </div>
+
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="100" fxFlex.xs="33">
+                                        <b>LADA:</b>{{ datosFiscales.lada }}
+                                    </div>
+                                    <div fxFlex="100" fxFlex.xs="33">
+                                        <b>TELÉFONO:</b>{{ datosFiscales.telefono }}
+                                    </div>
+                                    <div fxFlex="100" fxFlex.xs="33">
+                                        <b>CORREO:</b>{{ datosFiscales.correo }}
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+                                    <div fxFlex="100" fxFlex.xs="50">
+                                        <b>REGIMEN:</b><br>{{ datosFiscales.regimen }}
+                                    </div>
+                                    <div fxFlex="100" fxFlex.xs="50">
+                                        <b>FECHA INICIO DE OPERACIÓN:</b><br>{{ datosFiscales.fecha_regimen }}
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <button mat-stroked-button color="warn" *ngIf="datosFiscales.documento_digital == 0">
+                                        <mat-icon>cloud_off</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
+                                    </button>
+                                    <button mat-raised-button color="primary" *ngIf="datosFiscales.documento_digital == 1" (click)="verConstancia()" [disabled]="descargarConstancia">
+                                        <mat-icon>cloud_download</mat-icon> CONSTANCIA DE SITUACIÓN FISCAL
+                                    </button>
+                                </div>
+
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </mat-tab>
                 <mat-tab label="ASISTENCIA">
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">fingerprint</mat-icon>
@@ -455,13 +546,14 @@
                         </table>
                     </div>-->
                 </mat-tab>
+
                 <!--<mat-tab label="DOCUMENTACIÒN">
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon" matBadge="N" matBadgeColor="warn">file_copy</mat-icon>
                         <div class="mobile-pc"> &nbsp;&nbsp;&nbsp;DOCUMENTACIÒN</div>
                     </ng-template>
                 </mat-tab>-->
-                <mat-tab label="AVISOS" class="avisos">
+                <!--<mat-tab label="AVISOS" class="avisos">
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon" matBadge="N" matBadgeColor="warn">announcement</mat-icon>
                         <div class="mobile-pc"> &nbsp;&nbsp;&nbsp;AVISOS</div>
@@ -487,7 +579,7 @@
 
                     </div>
 
-                </mat-tab>
+                </mat-tab>-->
             </mat-tab-group>
         </div>
 

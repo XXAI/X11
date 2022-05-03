@@ -1047,7 +1047,7 @@
                         <div fxFlex="30">
                             <!--<button mat-raised-button (click)="accionGuardar(4)" color="success" [disabled]="(!datosEscolaresForm.valid || isLoading) || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>-->
                             <button mat-raised-button (click)="accionGuardar(5)" color="success" [disabled]="!datosEscolaresForm.valid || (EstudiosActualizado > dataSourceEstudios.data.length) || isLoading || !finalizarActualizacion"><mat-icon>save</mat-icon> Guardar</button>
-                            <button mat-raised-button (click)="accionFinalizar()" color="success" [disabled]="!datosEscolaresForm.valid || (finalizarActualizacion && (EstudiosActualizado > dataSourceEstudios.data.length)) || Actualizado || finalizarActualizacion"><mat-icon>save</mat-icon> Finalizar Actualización</button>
+                            <button mat-raised-button (click)="accionFinalizar()" color="success" [disabled]="!datosEscolaresForm.valid || (finalizarActualizacion && (EstudiosActualizado > dataSourceEstudios.data.length)) || Actualizado || !finalizarActualizacion"><mat-icon>save</mat-icon> Finalizar Actualización</button>
 
                         </div>
                         <div *ngIf="!actualizado" align="end" class='mat-dialog-actions' fxFlex="70"><button mat-stroked-button (click)="retroceder(4)"><mat-icon>keyboard_arrow_left</mat-icon> Anterior</button></div>

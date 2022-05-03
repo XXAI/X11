@@ -42,7 +42,7 @@ export class SaludService {
 
   getTrabajadorList(payload):Observable<any> {
       if(payload.reporte && payload.export_excel){
-        console.log("entro");
+        //console.log("entro");
           return this.http.get<any>(this.url, {params:payload, responseType: 'blob' as 'json'});
       }else{
         return this.http.get<any>(this.url, {params: payload}).pipe(

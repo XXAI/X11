@@ -392,6 +392,19 @@ class TrabajadorController extends Controller
             if(isset($parametros['e4']) && $parametros['e4'] == 1){
                 $main_query = $main_query->join("rel_trabajador_e4", "rel_trabajador_e4.trabajador_id", "=", "trabajador.id");
             }
+            if(isset($parametros['fiscales'])){
+                if($parametros['fiscales'] == 1)
+                {
+                    $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_fiscales where documento_digital=1 and deleted_at is null)");
+                }else if($parametros['fiscales'] == 2)
+                {
+                    $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_fiscales where documento_digital=0 and deleted_at is null)");
+                }else if($parametros['fiscales'] == 3)
+                {
+                    $main_query = $main_query->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_fiscales where deleted_at is null)");
+                }
+                
+            }
 
             if($access->is_admin){
                 if(isset($parametros['grupos']) && $parametros['grupos']){

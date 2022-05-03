@@ -199,6 +199,15 @@
                                 <mat-option [value]="1">SI</mat-option>
                             </mat-select>
                         </mat-form-field>
+                        <mat-form-field fxFlex="10">
+                            <mat-label>Datos Fiscales</mat-label>
+                            <mat-select formControlName="fiscales">
+                                <mat-option>TODOS</mat-option>
+                                <mat-option [value]="1">COMPLETO</mat-option>
+                                <mat-option [value]="2">SOLO DATOS SIN CSF</mat-option>
+                                <mat-option [value]="3">NO</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                         <div fxFlex></div>
                         <div fxFlex="none">
                             <button mat-flat-button (click)="filterForm.reset()">

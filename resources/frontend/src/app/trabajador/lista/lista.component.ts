@@ -99,6 +99,7 @@ export class ListaComponent implements OnInit {
     'estatus': [undefined],
     'comisionado': [undefined],
     'e4': [undefined],
+    'fiscales': [undefined],
     'rama': [undefined],
     'grupos': [undefined],
     'adscripcion': [undefined],
@@ -759,6 +760,8 @@ export class ListaComponent implements OnInit {
           params[i] = filterFormValues[i];
         }else if(i == 'e4'){
           params[i] = filterFormValues[i];
+        }else if(i == 'fiscales'){
+          params[i] = filterFormValues[i];
         }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
         }
@@ -857,6 +860,8 @@ export class ListaComponent implements OnInit {
           item.tag = data[i].comisionado;
         }else if(i == 'e4'){
           item.tag = data[i].e4;
+        }else if(i == 'fiscales'){
+          item.tag = data[i].fiscales;
         }else{
           if(data[i].descripcion.length > 30){
             item.tag = data[i].descripcion.slice(0,20) + '...';

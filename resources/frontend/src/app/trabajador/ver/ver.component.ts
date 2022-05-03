@@ -73,6 +73,8 @@ export class VerComponent implements OnInit {
   dataAsistencia:any = [];
 
   verInfoExpediente:boolean = true;
+  datosFiscales:any;
+  descargarConstancia:boolean = false;
 
   //Para el listado de las asistencias
   isLoadingAsistencia:boolean = false;
@@ -206,6 +208,8 @@ export class VerComponent implements OnInit {
           }
         }*/
 
+        this.datosFiscales = this.dataTrabajador.rel_datos_fiscales;
+
         if(this.dataTrabajador.rel_trabajador_documentos != null)
         {
           this.estatusChip = this.dataTrabajador.rel_trabajador_documentos.estatus;
@@ -258,6 +262,24 @@ export class VerComponent implements OnInit {
 
   goToLink(url: string){
     window.open(url, "_blank");
+  }
+
+  verConstancia()
+  {
+    this.descargarConstancia =true;
+    this.trabajadorService.getConstancia(this.dataTrabajador.id).subscribe(
+      response => {
+        //saveAs(response, "download.pdf");
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+        this.descargarConstancia = false;
+      },
+      responsError =>{
+        this.descargarConstancia = false;
+        this.sharedService.showSnackBar('Error al intentar descargar el expediente', null, 4000);
+      }
+    );
   }
 
   verificarAsistencia(obj:any)
