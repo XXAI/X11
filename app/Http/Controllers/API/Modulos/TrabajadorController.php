@@ -779,7 +779,7 @@ class TrabajadorController extends Controller
                 'nombre_vialidad'       => 'required',
                 'no_exterior'           => 'required',
                 //'no_interior'           => 'required',
-                'colonia'               => 'required',
+                //'colonia'               => 'required',
                 //'localidad'             => 'required',
                 'municipio'             => 'required',
                 'entidad'               => 'required',
