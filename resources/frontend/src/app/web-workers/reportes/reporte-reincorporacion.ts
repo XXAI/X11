@@ -200,7 +200,7 @@ export class ReporteTrabajadorReincorporacion {
           }
 
           //console.log(element.rel_trabajador_reincorporacion.cr_destino.cr +"-- "+element.rel_trabajador_reincorporacion.cr_origen.cr_dependencia);
-          dato_desde = element.rel_trabajador_reincorporacion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_reincorporacion.cr_origen.clues.clues+") "+jurisdiccion+" "+cabecera+",";
+          dato_desde = " ("+element.rel_trabajador_reincorporacion.cr_origen.clues.clasificacion+") "+element.rel_trabajador_reincorporacion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_reincorporacion.cr_origen.clues.clues+") "+jurisdiccion+" "+cabecera+",";
           //dato_desde = element.rel_trabajador_reincorporacion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_reincorporacion.cr_origen.clues.clues+") "+jurisdiccion+", "+cabecera;
           //dato_hacia = element.rel_trabajador_reincorporacion.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_reincorporacion.cr_destino.clues.clues+") "+dato_hacia;
           
@@ -235,6 +235,9 @@ export class ReporteTrabajadorReincorporacion {
             denominacion = "REGULARIZADO";
           }*/
           let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
+
+         
+
           if(element.rel_trabajador_reincorporacion.fecha_oficio != null)
           {
             fecha_hoy = this.convertirFechaTexto(element.rel_trabajador_reincorporacion.fecha_oficio).toLowerCase();

@@ -196,8 +196,8 @@ export class ReporteComision {
         }
       }
 
-      dato_desde = element.rel_trabajador_comision_interna.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_comision_interna.cr_origen.clues.clues+") "+dato_desde;
-      dato_hacia = element.rel_trabajador_comision_interna.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_comision_interna.cr_destino.clues.clues+") "+dato_hacia;
+      dato_desde =  " ("+element.rel_trabajador_comision_interna.cr_origen.clues.clasificacion+") "+element.rel_trabajador_comision_interna.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_comision_interna.cr_origen.clues.clues+") "+dato_desde;
+      dato_hacia = " ("+element.rel_trabajador_comision_interna.cr_destino.clues.clasificacion+") "+element.rel_trabajador_comision_interna.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_comision_interna.cr_destino.clues.clues+") "+dato_hacia;
       
       let nombre_responsable = "";
       let nombre_responsable_copia = "";

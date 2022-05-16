@@ -192,9 +192,9 @@ export class ReporteTrabajadorCambioAdscripcion {
                 copia_dependencia = datos_origen.responsable.nombre+" "+datos_origen.responsable.apellido_paterno+" "+datos_origen.responsable.apellido_materno+" - "+datos_origen.cargo;
               }
             }*/
-            console.log(element.cr_destino.descripcion_actualizada);
+            
             dato_desde = element.adscripcion;
-            dato_hacia = element.cr_destino.descripcion_actualizada+" ("+element.cr_destino.clues.clues+") "+dato_hacia;
+            dato_hacia = " ("+element.cr_destino.clues.clasificacion+") "+element.cr_destino.descripcion_actualizada+" ("+element.cr_destino.clues.clues+") "+dato_hacia;
             
             let nombre_responsable = "";
             let nombre_responsable_copia = "";
@@ -213,6 +213,8 @@ export class ReporteTrabajadorCambioAdscripcion {
             let jurisdiccion_origen = "";
             let jurisdiccion_destino = "";
             
+           
+
             contenido = "\n\nPor necesidades del servicio, tengo a bien comunicarle que a partir del "+this.convertirLetraCapital(this.convertirFechaTexto(element.fecha_cambio).toLowerCase())+
                         ", cambiará de adscripción de "+dato_desde+jurisdiccion_origen+" a "+dato_hacia+jurisdiccion_destino+
                         ", "+jurisdiccion_igual+" con código funcional: "+element.codigo+
@@ -320,8 +322,8 @@ export class ReporteTrabajadorCambioAdscripcion {
               }
             }
 
-            dato_desde = element.rel_trabajador_adscripcion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_origen.clues.clues+") "+dato_desde;
-            dato_hacia = element.rel_trabajador_adscripcion.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_destino.clues.clues+") "+dato_hacia;
+            dato_desde = " ("+element.rel_trabajador_adscripcion.cr_origen.clues.clasificacion+") "+element.rel_trabajador_adscripcion.cr_origen.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_origen.clues.clues+") "+dato_desde;
+            dato_hacia = " ("+element.rel_trabajador_adscripcion.cr_destino.clues.clasificacion+") "+element.rel_trabajador_adscripcion.cr_destino.descripcion_actualizada+" ("+element.rel_trabajador_adscripcion.cr_destino.clues.clues+") "+dato_hacia;
             let nombre_responsable = "";
             let nombre_responsable_copia = "";
             if(element.rel_trabajador_adscripcion.cr_destino.dependencia.clues == "CSSSA017213")
