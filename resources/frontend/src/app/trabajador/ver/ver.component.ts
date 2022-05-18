@@ -463,7 +463,7 @@ export class VerComponent implements OnInit {
 
   dataTabChange(event){
     
-    if(event.index == 2 && this.puedeVerAsistencias && this.cargadoFechas == false){
+    if(event.index == 3 && this.puedeVerAsistencias && this.cargadoFechas == false){
       //console.log('corriendo listado de asistencia');
       this.cargadoFechas = true;
       this.cargarAssistencias(this.dataTrabajador.clave_credencial, this.fechaInicioAsist, this.fechaFinAsist);
