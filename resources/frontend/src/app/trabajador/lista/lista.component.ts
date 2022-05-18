@@ -912,7 +912,7 @@ export class ListaComponent implements OnInit {
   {
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
-      data:{dialogTitle:'Resetear Contraseña',dialogMessage:'¿Realmente desea resetear la contraseña de acceso al trabajador, la contraseña que se registrara será su RFC con homoclave? Escriba ACEPTAR a continuación para realizar el proceso.',validationString:'ACEPTAR',btnColor:'primary',btnText:'RESETEAR'}
+      data:{dialogTitle:'Resetear Contraseña',dialogMessage:'¿Realmente desea resetear la contraseña de acceso al trabajador?, Escriba ACEPTAR a continuación para realizar el proceso, una vez aceptado el proceso el usuario y contraseña sera su RFC con homoclave.',validationString:'ACEPTAR',btnColor:'primary',btnText:'RESETEAR'}
     });
     this.isLoading = true;
     dialogRef.afterClosed().subscribe(valid => {
