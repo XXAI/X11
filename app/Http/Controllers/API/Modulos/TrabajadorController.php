@@ -136,74 +136,6 @@ class TrabajadorController extends Controller
             //Filtros, busquedas, ordenamiento
             $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);
 
-            /*if(isset($parametros['query']) && $parametros['query']){
-                $trabajador = $trabajador->where(function($query)use($parametros){
-                    return $query//->where('nombre','LIKE','%'.$parametros['query'].'%')
-                                ->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
-                                ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
-                                ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
-                });
-            }
-            //$trabajador = $trabajador->where("cr_fisico_id", "!=","cr_nomina_id");
-
-            if(isset($parametros['active_filter']) && $parametros['active_filter']){
-                if(isset($parametros['clues']) && $parametros['clues']){
-                    if(isset($parametros['adscripcion']) && $parametros['adscripcion'] && $parametros['adscripcion'] == 'EOU'){
-                        $trabajador = $trabajador->where('datos_nominales.clues_adscripcion_nomina',$parametros['clues']);
-                    }else{
-                        $trabajador = $trabajador->where('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$parametros['clues']);
-                    }
-                }
-
-                if(isset($parametros['cr']) && $parametros['cr']){
-                    $trabajador = $trabajador->where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
-                }
-
-                if(isset($parametros['rama']) && $parametros['rama']){
-                    $trabajador = $trabajador->where('rama_id',$parametros['rama']);
-                }
-
-                if(isset($parametros['estatus']) && $parametros['estatus']){
-                    $estatus = explode('-',$parametros['estatus']);
-                    $trabajador = $trabajador->where('trabajador.estatus',$estatus[0]);
-                    if(isset($estatus[1])){
-                        $trabajador = $trabajador->where('trabajador.validado',$estatus[1]);
-                    }
-                }
-
-                if(isset($parametros['adscripcion']) && $parametros['adscripcion']){
-                    $adscripcion = $parametros['adscripcion'];
-                    if($adscripcion == 'MU'){
-                        $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica = datos_nominales.clues_adscripcion_nomina');
-                    }else if($adscripcion == 'OU'){
-                        $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
-                    }else if($adscripcion == 'EOU'){
-                        $trabajador = $trabajador->whereRaw('rel_trabajador_datos_laborales.clues_adscripcion_fisica != datos_nominales.clues_adscripcion_nomina');
-                    }
-                }
-                if(isset($parametros['comisionado']) && $parametros['comisionado'] == 1){
-                    $trabajador = $trabajador->whereRaw("trabajador.id in (select rl.trabajador_id from rel_trabajador_datos_laborales rl, rel_trabajador_datos_laborales_nomina rln where rl.trabajador_id=rln.trabajador_id and rl.cr_fisico_id!=rln.cr_nomina_id)");
-                }
-                if(isset($parametros['e4']) && $parametros['e4'] == 1){
-                    $trabajador = $trabajador->join("rel_trabajador_e4", "rel_trabajador_e4.trabajador_id", "=", "trabajador.id");
-                }
-
-                if($access->is_admin){
-                    if(isset($parametros['grupos']) && $parametros['grupos']){
-                        $grupo = GrupoUnidades::with('listaCR')->find($parametros['grupos']);
-                        $lista_cr = $grupo->listaCR->pluck('cr')->toArray();
-
-                        $trabajador = $trabajador->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$lista_cr);
-                        //->where(function($query)use($lista_cr){
-                        //    $query->whereIn('trabajador.cr_fisico_id',$lista_cr)
-                        //        ->orWhere(function($query2)use($lista_cr){
-                        //            $query2->whereIn('permuta_adscripcion.cr_destino_id',$lista_cr);
-                        //        });
-                        //});
-                    }
-                }
-            }*/
-
             if(isset($parametros['page'])){
                 $trabajador = $trabajador->orderBy('nombre');
 
@@ -234,8 +166,7 @@ class TrabajadorController extends Controller
                                         $join->on('datos_comision.trabajador_id', '=', 'trabajador.id')
                                              ->where('datos_comision.estatus', '=', 'A');
                                     })
-                                    //->leftJoin("rel_trabajador_comision as datos_comision", "datos_comision.trabajador_id", "trabajador.id")
-                                    //->leftJoin("sindicato", "sindicato.id", "datos_comision.sindicato_id")
+                                  
                                     ->where("trabajador.estatus", "=", 1)
                                     ->select(
                                         "trabajador.rfc",
@@ -286,7 +217,9 @@ class TrabajadorController extends Controller
                     if(isset($parametros['export_excel']) && $parametros['export_excel']){
                         try{
                             ini_set('memory_limit', '-1');
+                            
                             $trabajador = $trabajador->get();
+                           
                             $columnas = array_keys(collect($trabajador[0])->toArray());
 
                             if(isset($parametros['nombre_archivo']) && $parametros['nombre_archivo']){
@@ -294,7 +227,8 @@ class TrabajadorController extends Controller
                             }else{
                                 $filename = 'reporte-personal-activo';
                             }
-                            
+                            //echo "hola";
+                            //exit;
                             return (new DevReportExport($trabajador,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
                         }catch(\Exception $e){
                             return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);

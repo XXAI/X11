@@ -255,7 +255,13 @@ export class ListaComponent implements OnInit {
           params[i] = appStoredData['filter'][i].clues;
         }else if(i == 'cr'){
           params[i] = appStoredData['filter'][i].cr;
-        }else{ //profesion y rama
+        }else if(i == 'comisionado'){
+          params[i] = appStoredData['filter'][i];
+        }else if(i == 'e4'){
+          params[i] = appStoredData['filter'][i];
+        }else if(i == 'fiscales'){
+          params[i] = appStoredData['filter'][i];
+        }else{ //profesion y rama (grupos)
           params[i] = appStoredData['filter'][i].id;
         }
         countFilter++;
@@ -410,7 +416,13 @@ export class ListaComponent implements OnInit {
           params[i] = appStoredData['filter'][i].clues;
         }else if(i == 'cr'){
           params[i] = appStoredData['filter'][i].cr;
-        }else{ //profesion y rama
+        }else if(i == 'comisionado'){
+          params[i] = appStoredData['filter'][i];
+        }else if(i == 'e4'){
+          params[i] = appStoredData['filter'][i];
+        }else if(i == 'fiscales'){
+          params[i] = appStoredData['filter'][i];
+        }else{ //profesion y rama (grupos)
           params[i] = appStoredData['filter'][i].id;
         }
         countFilter++;
@@ -425,7 +437,7 @@ export class ListaComponent implements OnInit {
     this.trabajadorService.getTrabajadorList(params).subscribe(
       response => {
         console.log(response);
-        FileSaver.saveAs(response);
+        //FileSaver.saveAs(response);
         FileSaver.saveAs(response,'reportePersonalActivo');
         this.isLoadingExcel = false;
       },
