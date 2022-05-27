@@ -162,6 +162,7 @@ class TrabajadorController extends Controller
                                     
                                     ->leftJoin("catalogo_sexo", "catalogo_sexo.id", "trabajador.sexo_id")
                                     ->leftJoin("catalogo_estado_conyugal", "catalogo_estado_conyugal.id", "trabajador.estado_conyugal_id")
+                                    ->leftJoin("rel_trabajador_datos_fiscales", "trabajador.id", "rel_trabajador_datos_fiscales.trabajador_id")
                                     ->leftjoin('rel_trabajador_comision  as datos_comision', function ($join) {
                                         $join->on('datos_comision.trabajador_id', '=', 'trabajador.id')
                                              ->where('datos_comision.estatus', '=', 'A');
@@ -211,7 +212,26 @@ class TrabajadorController extends Controller
                                         db::raw("(select concat(entrada,' - ', salida) from rel_trabajador_horario where rel_trabajador_horario.trabajador_id=trabajador.id limit 1) as horario"),
                                         "trabajador.observacion",
                                         "rel_trabajador_datos_laborales.actividades",
-                                        "area_trabajo.descripcion as area_trabajo")
+                                        "area_trabajo.descripcion as area_trabajo",
+                                        "rel_trabajador_datos_fiscales.razon_social",
+                                        "rel_trabajador_datos_fiscales.cp as cp_df",
+                                        "rel_trabajador_datos_fiscales.tipo_vialidad",
+                                        "rel_trabajador_datos_fiscales.nombre_vialidad",
+                                        "rel_trabajador_datos_fiscales.no_interior",
+                                        "rel_trabajador_datos_fiscales.no_exterior",
+                                        "rel_trabajador_datos_fiscales.colonia",
+                                        "rel_trabajador_datos_fiscales.localidad",
+                                        "rel_trabajador_datos_fiscales.municipio",
+                                        "rel_trabajador_datos_fiscales.entidad",
+                                        "rel_trabajador_datos_fiscales.calle1 as entre",
+                                        "rel_trabajador_datos_fiscales.calle2 as y_entre",
+                                        "rel_trabajador_datos_fiscales.lada",
+                                        "rel_trabajador_datos_fiscales.telefono as tel_df",
+                                        "rel_trabajador_datos_fiscales.correo",
+                                        "rel_trabajador_datos_fiscales.regimen",
+                                        "rel_trabajador_datos_fiscales.fecha_regimen as fecha_actividad",
+                                        "rel_trabajador_datos_fiscales.documento_digital",
+                                        )
                                         ->orderby("rel_trabajador_datos_laborales.clues_adscripcion_fisica");
                                     //->get();
                     if(isset($parametros['export_excel']) && $parametros['export_excel']){
