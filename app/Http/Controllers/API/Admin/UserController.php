@@ -88,6 +88,7 @@ class UserController extends Controller
                 $usuario->username = $parametros['username'];
                 $usuario->password = Hash::make($parametros['password']);
                 $usuario->is_superuser = $parametros['is_superuser'];
+                $usuario->suspension = $parametros['suspension'];
                 $usuario->avatar = $parametros['avatar'];
                 
                 $usuario->save();
@@ -189,6 +190,7 @@ class UserController extends Controller
                 $usuario->email = $parametros['email'];
                 $usuario->username = $parametros['username'];
                 $usuario->is_superuser = $parametros['is_superuser'];
+                $usuario->suspension = $parametros['suspension'];
                 $usuario->avatar = $parametros['avatar'];
                 
                 if($parametros['password']){

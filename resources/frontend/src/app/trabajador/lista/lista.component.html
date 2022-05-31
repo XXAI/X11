@@ -308,7 +308,7 @@
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="BajaTrabajador(row)"><mat-icon color="warn">person_remove</mat-icon>Dar de Baja</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="TransferirTrabajador(row)"><mat-icon color="primary">360</mat-icon>Transferir</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="ComisionSindical(row)"><mat-icon color="primary">group</mat-icon>Comisión Sindical</button>
-                                        <button mat-menu-item *ngIf="row.estatus == 1 && row.usuario != 0" (click)="ResetContrasena(row)"><mat-icon color="primary">vpn_key</mat-icon>Resetear Contraseña</button>
+                                        <button mat-menu-item *ngIf="row.estatus == 1 && row.usuario != 0"  [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'"  (click)="ResetContrasena(row)"><mat-icon color="primary">vpn_key</mat-icon>Resetear Contraseña</button>
                                         <!--<button mat-menu-item *ngIf="row.cr_fisico_id != row.cr_nomina_id" fxHide.xs="true" (click)="solicitar(1, row.id)"><mat-icon color="primary">article</mat-icon>Comisión</button>-->
                                     </mat-menu>
 

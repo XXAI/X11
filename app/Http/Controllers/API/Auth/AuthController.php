@@ -82,32 +82,38 @@ class AuthController extends Controller{
         ];
 
         if($credentials){
-            $usuario = User::where('username',$credentials['username'])->first();
+            $usuario = User::where('username',$credentials['username'])->where("suspension",0)->first();
             $permisos = [];
+            
+            if($usuario)
+            {
 
-            if($usuario->is_superuser){
-                $permisos_raw = Permission::get();
-                foreach ($permisos_raw as $permiso) {
-                    $permisos[$permiso->id] = true;
-                }
-            }else{
-                $roles_permisos = User::with('roles.permissions','permissions')->find($usuario->id);
+                if($usuario->is_superuser){
+                    $permisos_raw = Permission::get();
+                    foreach ($permisos_raw as $permiso) {
+                        $permisos[$permiso->id] = true;
+                    }
+                }else{
+                    $roles_permisos = User::with('roles.permissions','permissions')->find($usuario->id);
 
-                foreach ($roles_permisos->roles as $rol) {
-                    foreach ($rol->permissions as $permiso) {
+                    foreach ($roles_permisos->roles as $rol) {
+                        foreach ($rol->permissions as $permiso) {
+                            if(!isset($permisos[$permiso->id])){
+                                $permisos[$permiso->id] = true;
+                            }
+                        }
+                    }
+
+                    foreach ($roles_permisos->permissions as $permiso) {
                         if(!isset($permisos[$permiso->id])){
                             $permisos[$permiso->id] = true;
+                        }elseif(!$permiso->pivot->status){
+                            unset($permisos[$permiso->id]);
                         }
                     }
                 }
-
-                foreach ($roles_permisos->permissions as $permiso) {
-                    if(!isset($permisos[$permiso->id])){
-                        $permisos[$permiso->id] = true;
-                    }elseif(!$permiso->pivot->status){
-                        unset($permisos[$permiso->id]);
-                    }
-                }
+            }else{
+                return response()->json(['message' => 'Cuenta Suspendida'],500);
             }
 
             $response['user_data'] = $usuario;

@@ -41,6 +41,7 @@ export class FormComponent implements OnInit {
     'username': ['',[Validators.required, Validators.minLength(4)]],
     'password': ['',[Validators.minLength(6)]],
     'is_superuser': [false],
+    'suspension': [false],
     'avatar': [''],
     'roles': [[]],
     'permissions': [[]],
@@ -85,7 +86,7 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.authUser = this.authService.getUserData();
-
+    
     this.avatarList = AVATARS;
 
     let callRolesCatalog = this.usersService.getAllRoles();
@@ -100,7 +101,7 @@ export class FormComponent implements OnInit {
         let id = params.get('id');
 
         let callUserData = this.usersService.getUser(id);
-
+        
         httpCalls.push(callUserData);
       }else{
         this.usuarioForm.get('password').setValidators([Validators.minLength(6), Validators.required]);
@@ -151,6 +152,7 @@ export class FormComponent implements OnInit {
           //Starts: User
           if(results[total_resultados]){
             this.usuario = results[total_resultados];
+           
             this.usuarioForm.patchValue(this.usuario);
 
             this.selectedAvatar = this.usuario.avatar;

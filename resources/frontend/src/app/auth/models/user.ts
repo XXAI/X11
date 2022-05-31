@@ -9,4 +9,5 @@ export class User {
     apellido_materno?: string;
     avatar?: string;
     is_superuser?: boolean;
+    suspension?: boolean;
   }

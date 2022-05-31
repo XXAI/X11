@@ -54,6 +54,9 @@
                             <section fxFlex fxFlex.xs="100" class="checkbox-section" *ngIf="authUser.is_superuser">
                                 <mat-checkbox #isSuperUser formControlName="is_superuser" (change)="(isSuperUser.checked)?(metaData.selectedIndex = 2):(metaData.selectedIndex = 0)">Es super-usuario</mat-checkbox>
                             </section>
+                            <section fxFlex fxFlex.xs="100" class="checkbox-section">
+                                <mat-checkbox formControlName="suspension">Suspendido</mat-checkbox>
+                            </section>
                         </div>
                         
                         <br>
