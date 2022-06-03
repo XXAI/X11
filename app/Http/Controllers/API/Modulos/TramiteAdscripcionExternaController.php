@@ -167,6 +167,9 @@ class TramiteAdscripcionExternaController extends Controller
                 $main_query = $main_query->whereRaw("cr_destino in (select cr from catalogo_cr where clues in (select clues from catalogo_clues where cve_jurisdiccion='".$parametros['distrito']."'))");
             }
 
+            if(isset($parametros['fechaCreacion']) && $parametros['fechaCreacion'] ){
+                $main_query = $main_query->whereRaw("created_at between '".$parametros['fechaCreacion']." 00:00:01' AND '".$parametros['fechaCreacion']." 23:59:59'");
+            }
             /*if(isset($parametros['imprimible']) && $parametros['imprimible']){
                 if($parametros['imprimible'] == 1)
                 {

@@ -76,11 +76,12 @@ export class ListaComponent implements OnInit {
     'clues': [undefined],
     'cr': [undefined],
     'imprimible': [undefined],
+    'fechaCreacion': [undefined],
     //'fecha_cambio': [undefined],
     
   });
 
-  displayedColumns: string[] = ['estatus','RFC','Nombre','imprimible', 'actions']; //'Agente',
+  displayedColumns: string[] = ['estatus','RFC','Nombre','imprimible','creacion', 'actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, public dialog: MatDialog, private reincorporacionService: ReincorporacionService, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
@@ -215,12 +216,17 @@ export class ListaComponent implements OnInit {
 
     for(let i in filterFormValues){
       if(filterFormValues[i]){
-        if(i == 'clues'){
+        if(i == 'distrito'){
+          params[i] = filterFormValues[i].id;
+        }else if(i == 'clues'){
           params[i] = filterFormValues[i].clues;
         }else if(i == 'cr'){
           params[i] = filterFormValues[i].cr;
         }else if(i == 'imprimible'){
           params[i] = filterFormValues[i].id;
+        }else if(i == 'fechaCreacion'){
+          let fecha = this.convertDate(filterFormValues[i]);
+          params[i] = fecha;
         }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
         }
@@ -282,6 +288,12 @@ export class ListaComponent implements OnInit {
     return event;
   }
 
+  convertDate(inputFormat) {
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    var d = new Date(inputFormat)
+    return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('-')
+  }
+
   llenarPaginasLote(total)
   {
     let paginacion = Math.ceil(total / 100);
@@ -294,7 +306,7 @@ export class ListaComponent implements OnInit {
   }
 
   loadFilterChips(data){
-    this.filterChips = [];
+    /*this.filterChips = [];
     for(let i in data){
       
       if(data[i]){
@@ -323,7 +335,7 @@ export class ListaComponent implements OnInit {
         }
         this.filterChips.push(item);
       }
-    }
+    }*/
   }
 
   getDisplayFn(label: string){
@@ -396,13 +408,22 @@ export class ListaComponent implements OnInit {
 
       for(let i in appStoredData['filter']){
         if(appStoredData['filter'][i]){
-          if(i == 'clues'){
+          if(i == 'distrito'){
+            params[i] = appStoredData['filter'][i].distrito;
+          }else if(i == 'clues'){
             params[i] = appStoredData['filter'][i].clues;
           }else if(i == 'cr'){
             params[i] = appStoredData['filter'][i].cr;
-          }else{ //profesion y rama
+          }else if(i == 'imprimible'){
             params[i] = appStoredData['filter'][i].id;
-          }
+          }else if(i == 'fecha_cambio'){
+            
+          }else if(i == 'fechaCreacion'){
+            let fecha = this.convertDate(appStoredData['filter'][i]);
+            params[i] = fecha;
+          }else{ //profesion y rama (grupos)
+            params[i] = appStoredData['filter'][i].id;
+          }   
           countFilter++;
         }
       }

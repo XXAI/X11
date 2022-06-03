@@ -95,7 +95,7 @@
 
                     </div>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                        <mat-form-field fxFlex="50">
+                        <mat-form-field fxFlex="33">
                             <mat-label>CLUES</mat-label>
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
                             <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
@@ -105,7 +105,7 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="50">
+                        <mat-form-field fxFlex="33">
                             <mat-label>CR</mat-label>
                             <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
                             <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('cr')" [panelWidth]="'auto'">
@@ -114,6 +114,14 @@
                                 </mat-option>
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('cr').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33">
+                            <mat-label>FECHA DE CREACIÓN</mat-label>
+                            <input matInput [matDatepicker]="fechaPicker" placeholder="Fecha de Creacion" formControlName="fechaCreacion" readonly required>
+                            <mat-datepicker-toggle matSuffix [for]="fechaPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fechaPicker disabled="false"></mat-datepicker>
+                            <mat-hint align="end">seleccionar fecha
+                                <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
                         </mat-form-field>
 
                     </div>
@@ -156,7 +164,7 @@
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="RFC">
+                            <!--<ng-container matColumnDef="RFC">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ORIGEN </th>
                                 <td mat-cell *matCellDef="let row">
                                     <div *ngIf="row.rel_datos_laborales_nomina != null">
@@ -169,7 +177,7 @@
                                         SIN REGISTRO NOMINAL
                                     </div>
                                 </td>
-                            </ng-container>
+                            </ng-container>-->
 
                             <ng-container matColumnDef="Nombre">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> DESTINO </th>
@@ -182,10 +190,16 @@
                                     </div>
                                 </td>
                             </ng-container>
-                            <ng-container matColumnDef="imprimible">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA </th>
+                            <ng-container matColumnDef="periodo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> PERIODO </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <b>{{ row.rel_trabajador_comision_interna.fecha_cambio }}</b>
+                                    {{ row.rel_trabajador_comision_interna.fecha_inicio }}<br> {{ row.rel_trabajador_comision_interna.fecha_fin }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="creacion">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> CREACION </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{ row.rel_trabajador_comision_interna.created_at | date:'yyyy-MM-dd'}}
                                 </td>
                             </ng-container>
 

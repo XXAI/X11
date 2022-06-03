@@ -103,13 +103,18 @@ export class ListaComponent implements OnInit {
     'cr': [undefined],
     'imprimible': [undefined],
     'fecha_cambio': [undefined],
+    'fechaCreacion': [undefined],
     
   });
 
-  displayedColumns: string[] = ['estatus','RFC','Nombre','imprimible', 'actions']; //'Agente',
+  displayedColumns: string[] = ['estatus','Nombre','periodo', 'creacion', 'actions']; //'Agente',
   dataSource: any = [];
 
-  constructor(private sharedService: SharedService, public dialog: MatDialog, private comisionService: ComisionService, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
+  constructor(private sharedService: SharedService, 
+              public dialog: MatDialog, 
+              private comisionService: ComisionService, 
+              private fb: FormBuilder, 
+              public mediaObserver: MediaObserver) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatTable) usersTable: MatTable<any>;
@@ -285,10 +290,9 @@ export class ListaComponent implements OnInit {
           params[i] = filterFormValues[i].cr;
         }else if(i == 'imprimible'){
           params[i] = filterFormValues[i].id;
-        }else if(i == 'fecha_cambio'){
-          //console.log(Date.parse(filterFormValues[i]));
-          //console.log(this.filterForm.controls['fecha_cambio'].value);
-          //params[i] = filterFormValues[i].substring(0,10);
+        }else if(i == 'fechaCreacion'){
+          let fecha = this.convertDate(filterFormValues[i]);
+          params[i] = fecha;
         }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
         }
@@ -423,6 +427,12 @@ export class ListaComponent implements OnInit {
     });*/
   }
 
+  convertDate(inputFormat) {
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    var d = new Date(inputFormat)
+    return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('-')
+  }
+
   getDisplayFn(label: string){
     return (val) => this.displayFn(val,label);
   }
@@ -495,13 +505,22 @@ export class ListaComponent implements OnInit {
 
       for(let i in appStoredData['filter']){
         if(appStoredData['filter'][i]){
-          if(i == 'clues'){
+          if(i == 'distrito'){
+            params[i] = appStoredData['filter'][i].distrito;
+          }else if(i == 'clues'){
             params[i] = appStoredData['filter'][i].clues;
           }else if(i == 'cr'){
             params[i] = appStoredData['filter'][i].cr;
-          }else{ //profesion y rama
+          }else if(i == 'imprimible'){
+            params[i] = appStoredData['filter'][i].id;
+          }else if(i == 'fechaCreacion'){
+            let fecha = this.convertDate(appStoredData['filter'][i]);
+            params[i] = fecha;
+          }else{ //profesion y rama (grupos)
             params[i] = appStoredData['filter'][i].id;
           }
+
+         
           countFilter++;
         }
       }

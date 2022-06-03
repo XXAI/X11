@@ -289,6 +289,10 @@ class TramiteReincorporacionController extends Controller
                 }
             }
 
+            if(isset($parametros['fechaCreacion']) && $parametros['fechaCreacion'] ){
+                $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_reincorporacion where created_at between '".$parametros['fechaCreacion']." 00:00:01' AND '".$parametros['fechaCreacion']." 23:59:59')");
+            }
+
             /*if(isset($parametros['fecha_cambio']) && $parametros['fecha_cambio']!=""){
                 $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_reincorporacion where fecha_cambio ='".$parametros['fecha_cambio']."' and activo=1)");
             }*/

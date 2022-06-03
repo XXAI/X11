@@ -251,6 +251,10 @@ class TramiteComisionInternaController extends Controller
                     $main_query = $main_query->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
                 }
             }
+
+            if(isset($parametros['fechaCreacion']) && $parametros['fechaCreacion'] ){
+                $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_comision_interna where created_at between '".$parametros['fechaCreacion']." 00:00:01' AND '".$parametros['fechaCreacion']." 23:59:59')");
+            }
         }
         return $main_query;
     }

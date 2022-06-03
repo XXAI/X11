@@ -162,7 +162,6 @@ export class ReporteComision {
       }else if(anio_oficio >= 2022){
         datos.header.columns[1].text = "2022, AÑO DE RICARDO FLORES MAGÓN,  PRECURSOR DE LA REVOLUCIÓN MEXICANA";
       }
-
       //console.log(element.rel_trabajador_comision_interna.fecha_oficio.substr(0,4));
       //console.log("--------------------");
       if(element.rel_trabajador_comision_interna.cr_origen.cr_dependencia == element.rel_trabajador_comision_interna.cr_destino.cr_dependencia)
