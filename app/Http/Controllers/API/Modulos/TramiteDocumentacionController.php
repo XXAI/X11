@@ -10,7 +10,7 @@ use Illuminate\Facades\Storage;
 use App\Models\Trabajador;
 use App\Models\RelDocumentacion;
 use App\Models\RelDocumentacionDetalles;
-
+use Carbon\Carbon;
 
 //Relacionales
 use App\Models\User;
@@ -215,11 +215,21 @@ class TramiteDocumentacionController extends Controller
             }
 
             
-            $object->estatus                       = $inputs['estatus'];   
+            $object->estatus                       = $inputs['estatus'];  
+           
+            if($inputs['estatus'] == 5 || $inputs['estatus'] == 4)
+            {
+                $loggedUser = auth()->userOrFail();
+                $object->user_respuesta = $loggedUser->id;
+                $carbon = Carbon::now();
+                $object->fecha_respuesta = $carbon->format('Y-m-d');
+            }
             $object->save();
             $arreglo = Array();
             if($inputs['estatus'] == 4)
             {
+                $eliminar_historial = RelDocumentacionDetalles::whereRaw("(rel_trabajador_documentacion_id in (select id from rel_trabajador_documentacion where trabajador_id=".$id."))");
+                $eliminar_historial->delete();
                foreach ($inputs['requerimientos'] as $key => $value) {
                     //array_push($arreglo, new RelDocumentacionDetalles(['tipo_id' => $value]));
                     $aux = new RelDocumentacionDetalles();
@@ -387,5 +397,44 @@ class TramiteDocumentacionController extends Controller
         }*/
         //return $loggedUser->is_superuser;
         return $accessData;
+    }
+
+    public function reporteDia()
+    {
+        try{
+            $carbon = Carbon::now();
+            /*$documentos = [{description: 'SOLICITUD DE EMPLEO CON FOTOGRAFIA', value: '1'},
+            {description: "FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA (1)", value: '2'},
+            {description: "CURRICULÚM VITAE DEBIDAMENTE FIRMADO", value: '3'},
+            {description: "CONSTANCIA DE NO INHABILITACIÓN (ACTUALIZADA 06 MESES)", value: '4'},
+            {description: "CONSTANCIA DE NO ANTECEDENTES PENALES (ACTUALIZADA 06 MESES)", value: '5'},
+            {description: "CERTIFICADO MÉDICO ACTUALIZADO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)", value: '6'},
+            {description: "*PROTESTA", value: '7'},
+            {description: "ACTA DE NACIMIENTO ACTUALIZADA, VIGENCIA MÍNIMA 2018 ", value: '8'},
+            {description: "CONSTANCIA DE SITUACIÓN FISCAL ACTUALIZADA (R.F.C.)", value: '9'},
+            {description: "*PRE Y LIBERACIÓN DE LA CARTILLA MILITAR", value: '10'},
+            {description: "ÚLTIMO GRADO DE ESTUDIOS", value: '11'},
+            {description: "COMPROBANTE DE DOMICILIO (02 MESES)", value: '12'},
+            {description: "CURP ACTUALIZADA", value: '13'},
+            {description: "CREDENCIAL DE ELECTOR ACTUALIZADO", value: '14'},
+            {description: "CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)", value: '15'}*/
+            $resumen = RelDocumentacion::where("fecha_respuesta", $carbon->format('Y-m-d'))
+                                            ->groupBy('user_respuesta')
+                                            ->select(DB::RAW("(select count(*) from rel_trabajador_documentacion r1 where r1.user_respuesta=user_respuesta and r1.estatus=3) as rechazados"),
+                                                    DB::RAW("(select count(*) from rel_trabajador_documentacion r1 where r1.user_respuesta=user_respuesta and r1.estatus=5) as aceptados"),
+                                                    DB::RAW("(select username from users where id=user_respuesta) as usuario"),
+                                                    "user_respuesta",
+                                                    "id")
+                                            ->get();
+            /*foreach ($resumen as $key => $value) {
+                $detalles = RelDocumentacionDetalles::where("rel_trabajador_documentacion_id", $value->id)
+                            ->groupBy("tipo_id")
+                            ->(DB::RAW(""));
+                
+            } */   
+            return response()->json(['data'=>$resumen],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
     }
 }

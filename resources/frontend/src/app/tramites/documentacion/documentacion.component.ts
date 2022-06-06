@@ -299,6 +299,22 @@ export class DocumentacionComponent implements OnInit {
     });
   }
 
+  public reporteDocumentos()
+  {
+    console.log("hola");
+    this.tramitesService.getReporteDia().subscribe(
+      response =>{
+        console.log(response);
+      },
+      errorResponse =>{
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+      });
+  }
+
   public loadTrabajadorData(event?:PageEvent){
     
     this.isLoading = false;

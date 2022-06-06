@@ -11,6 +11,7 @@ export class TramitesService {
 
   url           = `${environment.base_url}/tramites`;
   url_documentacion = `${environment.base_url}/tramite-documentacion`;
+  url_documentacion_reporte = `${environment.base_url}/tramite-documentacion-reporte`;
   url_documentacion_upload = `${environment.base_url}/tramite-documentacion-upload`;
   url_documentacion_download = `${environment.base_url}/tramite-documentacion-download`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
@@ -38,6 +39,14 @@ export class TramitesService {
   }
   createFileComision(id):Observable<any> {
     return this.http.get<any>(this.url + "/"+id , {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  
+  getReporteDia():Observable<any> {
+    return this.http.get<any>(this.url_documentacion_reporte , {}).pipe(
       map( (response: any) => {        
         return response;
       }
