@@ -11,6 +11,7 @@ import { ReporteComision } from './reporte-comision';
 import { ReporteSolicitudComision } from './reporte-solicitud-comision';
 import { ReporteTrabajadorCambioAdscripcion } from './reporte-cambio-adscripcion';
 import { ReporteTrabajadorReincorporacion } from './reporte-reincorporacion';
+import { ReporteTramiteDocumentacion } from './reporte-documentacion';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -25,7 +26,8 @@ const reportes = {
   'trabajador/comision-interna': new ReporteComision(),
   'participante/constancia': new ReporteConstanciaDengue(),
   
-  'archivo/solicitudComision': new ReporteSolicitudComision()
+  'archivo/solicitudComision': new ReporteSolicitudComision(),
+  'tramites/reporte-documentacion': new ReporteTramiteDocumentacion()
 };
 
 addEventListener('message', ({ data }) => {

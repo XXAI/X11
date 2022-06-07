@@ -403,35 +403,49 @@ class TramiteDocumentacionController extends Controller
     {
         try{
             $carbon = Carbon::now();
-            /*$documentos = [{description: 'SOLICITUD DE EMPLEO CON FOTOGRAFIA', value: '1'},
-            {description: "FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA (1)", value: '2'},
-            {description: "CURRICULÚM VITAE DEBIDAMENTE FIRMADO", value: '3'},
-            {description: "CONSTANCIA DE NO INHABILITACIÓN (ACTUALIZADA 06 MESES)", value: '4'},
-            {description: "CONSTANCIA DE NO ANTECEDENTES PENALES (ACTUALIZADA 06 MESES)", value: '5'},
-            {description: "CERTIFICADO MÉDICO ACTUALIZADO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)", value: '6'},
-            {description: "*PROTESTA", value: '7'},
-            {description: "ACTA DE NACIMIENTO ACTUALIZADA, VIGENCIA MÍNIMA 2018 ", value: '8'},
-            {description: "CONSTANCIA DE SITUACIÓN FISCAL ACTUALIZADA (R.F.C.)", value: '9'},
-            {description: "*PRE Y LIBERACIÓN DE LA CARTILLA MILITAR", value: '10'},
-            {description: "ÚLTIMO GRADO DE ESTUDIOS", value: '11'},
-            {description: "COMPROBANTE DE DOMICILIO (02 MESES)", value: '12'},
-            {description: "CURP ACTUALIZADA", value: '13'},
-            {description: "CREDENCIAL DE ELECTOR ACTUALIZADO", value: '14'},
-            {description: "CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)", value: '15'}*/
+            $catalogo = Array(
+                "1" => "SOLICITUD DE EMPLEO CON FOTOGRAFIA",
+                "2" => "FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA (1)",
+                "3" => "CURRICULÚM VITAE DEBIDAMENTE FIRMADO",
+                "4" => "CONSTANCIA DE NO INHABILITACIÓN (ACTUALIZADA 06 MESES)",
+                "5" => "CONSTANCIA DE NO ANTECEDENTES PENALES (ACTUALIZADA 06 MESES)",
+                "6" => "CERTIFICADO MÉDICO ACTUALIZADO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)",
+                "7" => "PROTESTA",
+                "8" => "ACTA DE NACIMIENTO ACTUALIZADA, VIGENCIA MÍNIMA 2018",
+                "9" => "CONSTANCIA DE SITUACIÓN FISCAL ACTUALIZADA (R.F.C.)",
+                "10" => "PRE Y LIBERACIÓN DE LA CARTILLA MILITAR",
+                "11" => "ÚLTIMO GRADO DE ESTUDIOS",
+                "12" => "COMPROBANTE DE DOMICILIO (02 MESES)",
+                "13" => "CURP ACTUALIZADA",
+                "14" => "CREDENCIAL DE ELECTOR ACTUALIZADO",
+                "15" => "CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)",
+            );
+           
             $resumen = RelDocumentacion::where("fecha_respuesta", $carbon->format('Y-m-d'))
                                             ->groupBy('user_respuesta')
-                                            ->select(DB::RAW("(select count(*) from rel_trabajador_documentacion r1 where r1.user_respuesta=user_respuesta and r1.estatus=3) as rechazados"),
+                                            ->select(DB::RAW("(select count(*) from rel_trabajador_documentacion r1 where r1.user_respuesta=user_respuesta and r1.estatus=4) as rechazados"),
                                                     DB::RAW("(select count(*) from rel_trabajador_documentacion r1 where r1.user_respuesta=user_respuesta and r1.estatus=5) as aceptados"),
-                                                    DB::RAW("(select username from users where id=user_respuesta) as usuario"),
+                                                    DB::RAW("(select name from users where id=user_respuesta) as usuario"),
                                                     "user_respuesta",
                                                     "id")
                                             ->get();
-            /*foreach ($resumen as $key => $value) {
-                $detalles = RelDocumentacionDetalles::where("rel_trabajador_documentacion_id", $value->id)
+            
+            foreach ($resumen as $key => $value) {
+                $detalles = RelDocumentacionDetalles::whereRaw("rel_trabajador_documentacion_id in (select id from rel_trabajador_documentacion where fecha_respuesta='".$carbon->format('Y-m-d')."' and user_respuesta=".$value->user_respuesta.")")
                             ->groupBy("tipo_id")
-                            ->(DB::RAW(""));
-                
-            } */   
+                            ->select("tipo_id",DB::RAW("count(*) as cantidad"))
+                            ->get();
+                $arreglo_detalles = Array();
+                foreach ($detalles as $key2 => $value2) {
+                    //$resumen[$key] = 
+                    $indice = count($arreglo_detalles);
+                    $arreglo_detalles[$indice]['tipo'] = $value2->tipo_id;
+                    $arreglo_detalles[$indice]['descripcion'] = $catalogo[$value2->tipo_id];
+                    $arreglo_detalles[$indice]['cantidad'] = $value2->cantidad;
+
+                }
+                $resumen[$key]['detalles'] = $arreglo_detalles;
+            }
             return response()->json(['data'=>$resumen],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);

@@ -14,7 +14,8 @@ import { VerInformacionDialogComponent } from '../ver-informacion-dialog/ver-inf
 import { CancelarDocumentacionDialogComponent } from '../cancelar-documentacion-dialog/cancelar-documentacion-dialog.component';
 import { VisorPdfDialogComponent } from '../visor-pdf-dialog/visor-pdf-dialog.component';
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
-
+import { ReportWorker } from '../../web-workers/report-worker';
+import * as FileSaver from 'file-saver';
 import { environment } from 'src/environments/environment';
 import { MediaObserver } from '@angular/flex-layout';
 
@@ -301,10 +302,14 @@ export class DocumentacionComponent implements OnInit {
 
   public reporteDocumentos()
   {
-    console.log("hola");
+    //console.log("hola");
+    this.toggleReportPanel();
     this.tramitesService.getReporteDia().subscribe(
       response =>{
         console.log(response);
+        const reportWorker = this.iniciateWorker('Reporte del Día Documentación');
+        reportWorker.postMessage({data:{ items: response.data },reporte:'tramites/reporte-documentacion'});
+        
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
@@ -463,56 +468,6 @@ export class DocumentacionComponent implements OnInit {
         this.sharedService.showSnackBar('Error al intentar descargar el expediente', null, 4000);
       }
     );
-
-    //window.open(this.url+`\\documentacion\\`+obj.rfc+`.pdf`, "_blank");
-    /*this.tramitesService.getFile(obj.id).subscribe(
-      response =>{
-        console.log(response);
-        /*let datos = response;
-        const url = window.URL.createObjectURL(datos);
-
-          console.log(url);
-          let configDialog = {};
-          configDialog = {
-            width: '30%',
-            data:{ data:url}
-          }
-          const dialogRef = this.dialog.open(VisorPdfDialogComponent, configDialog);
-
-        dialogRef.afterClosed().subscribe(valid => {
-          if(valid){
-            this.loadTrabajadorData();
-          }
-          this.loadTrabajadorData();
-        });*/
-          //document.querySelector("iframe").src = url;
-        /*fetch(datos) 
-        .then(obj => {
-          const byteArray = new Uint8Array(atob(response.data).split('').map(char => char.charCodeAt(0)));
-          return new Blob([byteArray], {type: 'application/pdf'});
-        })
-        .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-
-          
-          document.querySelector("iframe").src = url;
-        });
-        let blob = new Blob([response], {type: 'application/pdf'});
-
-        var downloadURL = window.URL.createObjectURL(response);
-        var link = document.createElement('a');
-        link.href = downloadURL;
-        link.download = obj.rfc+".pdf";
-        link.click();
-      },
-      errorResponse =>{
-        var errorMessage = "Ocurrió un error.";
-        if(errorResponse.status == 409){
-          errorMessage = errorResponse.error.error.message;
-        }
-        this.sharedService.showSnackBar(errorMessage, null, 3000);
-        this.isLoading = false;
-    });*/
   }
 
   editTrabajador(index){
@@ -585,6 +540,41 @@ export class DocumentacionComponent implements OnInit {
       op.id = value;
   }
 
+  toggleReportPanel(){
+    this.reportIncludeSigns = false;
+    this.reportTitle = 'Listado de Personal Activo';
+
+    this.stepperConfig = {
+      steps:[
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Cargar Datos', active: 'Cargando Datos', done: 'Datos Cargados' },
+          icon: 'settings_remote',
+          errorMessage: '',
+        },
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Generar PDF', active: 'Generando PDF', done: 'PDF Generado' },
+          icon: 'settings_applications',
+          errorMessage: '',
+        },
+        {
+          status: 1, //1:standBy, 2:active, 3:done, 0:error
+          label: { standBy: 'Descargar Archivo', active: 'Descargando Archivo', done: 'Archivo Descargado' },
+          icon: 'save_alt',
+          errorMessage: '',
+        },
+      ],
+      currentIndex: 0
+    }
+
+    this.showReportForm = !this.showReportForm;
+    if(this.showReportForm){
+      this.showMyStepper = false;
+    }
+    //this.showMyStepper = !this.showMyStepper;
+  }
+
   solicitar(valor:number, trabajador_id:string)
   {
     /*this.trabajadorService.setTramite(valor, trabajador_id).subscribe(
@@ -643,5 +633,38 @@ export class DocumentacionComponent implements OnInit {
         this.isLoading = false;
         
       });*/
+  }
+
+  iniciateWorker(nombre:string)
+  {
+      this.stepperConfig.steps[0].status = 3;
+      this.stepperConfig.steps[1].status = 2;
+      this.stepperConfig.currentIndex = 1;
+
+      const reportWorker = new ReportWorker();
+      reportWorker.onmessage().subscribe(
+        data => {
+          this.stepperConfig.steps[1].status = 3;
+          this.stepperConfig.steps[2].status = 2;
+          this.stepperConfig.currentIndex = 2;
+
+          FileSaver.saveAs(data.data,nombre);
+          reportWorker.terminate();
+
+          this.stepperConfig.steps[2].status = 3;
+          this.isLoadingPDF = false;
+          this.showMyStepper = false;
+      });
+
+      reportWorker.onerror().subscribe(
+        (data) => {
+          this.stepperConfig.steps[this.stepperConfig.currentIndex].status = 0;
+          this.stepperConfig.steps[this.stepperConfig.currentIndex].errorMessage = data.message;
+          this.isLoadingPDF = false;
+          //console.log(data.message);
+          reportWorker.terminate();
+        }
+      );
+      return reportWorker;
   }
 }
