@@ -46,6 +46,8 @@ export class DocumentacionComponent implements OnInit {
   url           = `${environment.base_url_file}`;
 
   permiso_rh:boolean = false;
+  permiso_admin:boolean = false;
+  permiso_oficina:boolean = false;
   permiso_validador:boolean = false;
 
   puedeFinalizar: boolean = false;
@@ -389,6 +391,8 @@ export class DocumentacionComponent implements OnInit {
         } else {
 
           this.permiso_rh = response.rh;
+          this.permiso_admin = response.admin;
+          this.permiso_oficina = response.oficina;
           this.permiso_validador = response.oficina;
           this.dataSource = [];
           this.resultsLength = 0;

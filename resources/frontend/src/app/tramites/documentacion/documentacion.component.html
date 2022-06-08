@@ -39,7 +39,7 @@
                             <button mat-raised-button color="accent" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Buscar
                             </button>
-                            <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
+                            <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;" *ngIf="permiso_oficina == true || permiso_admin == true"><mat-icon>more_horiz</mat-icon></button>
                             <mat-menu #menu="matMenu">
                                 <button mat-menu-item (click)="reporteDocumentos()"><mat-icon>print</mat-icon> REPORTE DEL DÍA</button>
                             </mat-menu>
@@ -126,17 +126,17 @@
                                 Limpiar
                             </button>
                         </div>
-                        
+
                         <div fxFlex="none">
                             <button mat-raised-button color="accent" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Aplicar
                             </button>
-                            
+
                         </div>
                         <div fxFlex="none">
-                            <button mat-raised-button color="primary" (click)="reporteDocumentos()"><mat-icon>print</mat-icon> REPORTE DEL DÍA</button>    
+                            <button mat-raised-button color="primary" (click)="reporteDocumentos()" *ngIf="permiso_oficina == true || permiso_admin == true"><mat-icon>print</mat-icon> REPORTE DEL DÍA</button>
                         </div>
-                        
+
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>

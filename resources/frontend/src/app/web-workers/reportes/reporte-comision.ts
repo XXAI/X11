@@ -142,7 +142,7 @@ export class ReporteComision {
 
     let iteracciones = 1;
     data.forEach(element => {
-
+      console.log(element.rfc);
       let contenido = "";
       let datos_trabajador = element;
       let dato_desde = "";

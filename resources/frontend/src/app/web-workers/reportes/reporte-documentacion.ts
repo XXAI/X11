@@ -81,8 +81,13 @@ export class ReporteTramiteDocumentacion{
               },
               tabla_datos:
               {
-                fontSize: 5
+                fontSize: 6
               
+              },
+              tabla_datos_centro:
+              {
+                fontSize: 6,
+                alignment:"center"
               },
               tabla_datos_sindicato:
               {
@@ -102,13 +107,14 @@ export class ReporteTramiteDocumentacion{
             headerRows:1,
             dontBreakRows: true,
             keepWithHeaderRows: 1,
-            widths: [ 300,'*','*','*' ],
+            widths: [ 300,'*','*','*' ,'*' ],
             margin: [0,0,0,0],
             body: [
               [{text: "USUARIO", style: 'cabecera'},
                {text: "ACEPTADOS", style: 'cabecera'},
                {text: "RECHAZADOS", style: 'cabecera'},
-               {text: "TOTAL", style: 'cabecera'}
+               {text: "TOTAL", style: 'cabecera'},
+               {text: "FIRMA DE CONFORMIDAD", style: 'cabecera'}
               ]
             ]
           }
@@ -117,10 +123,12 @@ export class ReporteTramiteDocumentacion{
         for(let i = 0; i < reportData.items.length; i++){
           let obj = reportData.items[i];
           datos.content[0].table.body.push(
-            [{text: obj.usuario},
-              {text: obj.aceptados},
-              {text: obj.rechazados},
-              {text: obj.aceptados + obj.rechazados}],
+            [{text: obj.usuario, style:"tabla_datos"},
+              {text: obj.aceptados, style:"tabla_datos_centro"},
+              {text: obj.rechazados, style:"tabla_datos_centro"},
+              {text: obj.aceptados + obj.rechazados, style:"tabla_datos_centro"},
+              {text: "\n\n"}
+            ],
           );
           
         }
@@ -143,8 +151,8 @@ export class ReporteTramiteDocumentacion{
           });
           element.detalles.forEach(element2 => {
             datos.content[indice].table.body.push(
-              [{text: element2.descripcion},
-                {text: element2.cantidad}],
+              [{text: element2.descripcion,style: 'tabla_datos'},
+                {text: element2.cantidad, style: 'tabla_datos_centro'}],
             );
           });
           
