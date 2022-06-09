@@ -313,7 +313,7 @@ export class ListaComponent implements OnInit {
     const dialogRef = this.dialog.open(AgregarDialogComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
-      //this.loadRegistroData();
+      this.loadData();
     });
   }
 }

@@ -107,13 +107,15 @@ class TrabajadorController extends Controller
                 }
             }
             
-            
             //filtro de valores por permisos del usuario
             if(!$access->is_admin && $permison_individual == false){
+                
                 $trabajador = $trabajador->where(function($query){
-                    $query->whereIn('trabajador.estatus',[1,4]);
+                    $query->whereIn('trabajador.estatus',[1,4])
+                    ->whereRAW("trabajador.id not in (select trabajador_id from rel_trabajador_comision where comision_sindical_interna='A')");
                 })->where(function($query)use($access){
                     $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr)
+                          
                         /*->orWhere(function($query2)use($access){
                             $query2->whereIn('permuta_adscripcion.clues_destino',$access->lista_clues)->orWhereIn('permuta_adscripcion.cr_destino_id',$access->lista_cr);
                         })*/;
@@ -1264,6 +1266,14 @@ class TrabajadorController extends Controller
                             ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
             });
+
+            if(!$access->is_admin){
+                
+                $trabajador = $trabajador->where(function($query){
+                    $query->whereRAW("trabajador.id not in (select trabajador_id from rel_trabajador_comision where comision_sindical_interna='A')");
+                });
+            }
+            
 
             /*if(!$access->is_admin){
                 $trabajador = $trabajador->select('id','clues','cr_id',DB::raw('concat(apellido_paterno, " ", apellido_materno," ",nombre ) as nombre'),'rfc','curp','estatus','validado',DB::raw('IF(cr_id IN ('.implode(',',$access->lista_cr).'),1,0) as empleado_propio'));

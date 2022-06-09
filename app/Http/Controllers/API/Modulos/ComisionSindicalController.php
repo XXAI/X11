@@ -72,7 +72,13 @@ class ComisionSindicalController extends Controller
         }
 
         try {
-            
+                //Verificacion de usuario activo
+                $trabajador = Trabajador::find($inputs['trabajador_id']);
+                if($trabajador->estatus!=1)
+                {
+                    return Response::json(['error' => "El trabajador no aparece activo"], HttpResponse::HTTP_CONFLICT);
+                }
+
                 $fecha_actual = Carbon::now();
                 $fecha_inicio = Carbon::parse($inputs['fecha_inicio']);
                 $fecha_fin = Carbon::parse($inputs['fecha_fin']);
