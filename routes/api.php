@@ -133,6 +133,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::post('upload-csf',                           'API\Modulos\TrabajadorController@Upload');
     
     Route::post('comision-sindical',                    'API\Modulos\TrabajadorController@comisionSindical');
+    Route::apiResource('comision-interna-sindical',    'API\Modulos\ComisionSindicalController');
     //Rutas de Tramites
     Route::apiResource('tramite-documentacion',         'API\Modulos\TramiteDocumentacionController');
     Route::get('tramite-documentacion-reporte',         'API\Modulos\TramiteDocumentacionController@reporteDia');

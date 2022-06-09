@@ -13,12 +13,12 @@
                             <button matSuffix *ngIf="searchQuery" mat-icon-button (click)="cleanSearch()" [attr.aria-label]="'Clean Query'" [attr.aria-pressed]="'cleanQuery'">
                                 <mat-icon>close</mat-icon>
                             </button>
-                            <mat-hint>
+                            <!--<mat-hint>
                                 <mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)">Filtro Avanzado</mat-slide-toggle>
-                            </mat-hint>
+                            </mat-hint>-->
                         </mat-form-field>
                     </div>
-                    <div fxFlex="none" fxFlex.xs="100" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
+                    <!--<div fxFlex="none" fxFlex.xs="100" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
                         <div fxFlex></div>
                         <section class="search-button">
                             <button mat-raised-button color="accent" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="applyFilter()">
@@ -31,7 +31,7 @@
 
                             </mat-menu>
                         </section>
-                    </div>
+                    </div>-->
                 </div>
             </mat-card>
 
@@ -146,15 +146,11 @@
                             <ng-container matColumnDef="sindicato">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> COMISION SINDICAL </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <b>{{ row.rel_trabajador_adscripcion.cr_destino.clues.nombre_unidad }}</b>
-                                    <b>{{ (row.rel_trabajador_adscripcion.cr_destino.clues.clues == "CSSSA017213")? " ("+row.rel_trabajador_adscripcion.cr_destino.descripcion+") ":""}}</b>
-                                    <br>
-                                    <div style="font-size: 8pt;">
-                                        {{ row.rel_trabajador_adscripcion.cr_destino.clues.clues }}
-                                    </div>
+                                    <b>{{ row.rel_datos_comision.sindicato.descripcion }}</b>
+
                                 </td>
                             </ng-container>
-                            
+
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
@@ -162,9 +158,8 @@
                                             <mat-icon>menu</mat-icon>
                                     </button>
                                     <mat-menu #menu="matMenu">
-                                        <button mat-menu-item (click)="Agregar(row)"><mat-icon color="primary">print</mat-icon>EDITAR</button>
-                                        <button mat-menu-item (click)="imprimirOficio(row)"><mat-icon color="primary">print</mat-icon>GENERAR OFICIO</button>
-                                        <button mat-menu-item style="color: red;" (click)="eliminarAdscripcion(row)"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
+
+                                        <button mat-menu-item style="color: red;" (click)="eliminar(row)"><mat-icon color="warn">delete</mat-icon>ELIMINAR</button>
                                     </mat-menu>
 
                                 </td>
@@ -182,7 +177,7 @@
                             <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
                         </table>
                     </div>
-                    <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadTrabajadorData($event)"></mat-paginator>
+                    <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadData($event)"></mat-paginator>
                 </div>
             </mat-card>
         </section>
