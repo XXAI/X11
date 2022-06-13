@@ -71,6 +71,7 @@ export class VerComponent implements OnInit {
   currentPage: number = 0;
   selectedItemIndex: number = -1;
   dataAsistencia:any = [];
+  superUser:boolean = false;
 
   verInfoExpediente:boolean = true;
   datosFiscales:any;
@@ -110,6 +111,12 @@ export class VerComponent implements OnInit {
 
   ngOnInit() {
     let userPermissions = JSON.parse(localStorage.getItem('permissions'));
+    let user = JSON.parse(localStorage.getItem('user'));
+    console.log(user);
+    if(user.is_superuser == 1)
+    {
+      this.superUser = true;
+    }
     /*if(userPermissions['NZlDkhi8ikVhdgfT8zVVIGroFNtHfIQe']){
       this.puedeVerAsistencias = true;
     }else{

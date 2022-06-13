@@ -141,6 +141,11 @@
                                             <BR>
                                             {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso:'NO REGISTRADO' }}
                                         </div-->
+                                        <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
+                                            <b>FUENTE DE FINANCIAMIENTO:</b>
+                                            <BR>
+                                            {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fuente_financiamiento:'NO REGISTRADO' }}
+                                        </div>
                                         <div fxFlex="50" fxFlex.xs="100">
                                             <b>INGRESO GOBIERNO FEDERAL:</b> <br>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso_federal:'NO REGISTRADO' }}
                                         </div>
