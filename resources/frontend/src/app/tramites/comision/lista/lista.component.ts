@@ -14,6 +14,7 @@ import { ComisionService } from '../comision.service';
 
 import { ReportWorker } from '../../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
+import { FormularioComponent } from '../formulario/formulario.component';
 
 @Component({
   selector: 'app-lista',
@@ -365,67 +366,6 @@ export class ListaComponent implements OnInit {
     }
   }
 
-  public Agregar(obj = null) {
-    let configDialog = {};
-    let row: any = {};
-    if(obj != null)
-    {
-      row ={
-        id: obj.rel_trabajador_adscripcion.id, 
-        trabajador: obj, 
-        fecha_oficio:obj.rel_trabajador_adscripcion.fecha_oficio, 
-        fecha_cambio: obj.rel_trabajador_adscripcion.fecha_cambio, 
-        clues: obj.rel_trabajador_adscripcion.cr_destino,
-        clues_adscripcion: obj.rel_datos_laborales_nomina.cr,
-        catalogo_cr: this.filterCatalogs['cr']
-      };
-
-    }else{
-      row ={
-        catalogo_cr: this.filterCatalogs['cr']
-      };
-    } 
-          
-
-    if (this.mediaSize == 'lg') {
-      configDialog = {
-        maxWidth: '100vw',
-        maxHeight: '91vh',
-        height: '620px',
-        width: '100%',
-        data: row
-      }
-    } else if (this.mediaSize == "md") {
-      configDialog = {
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        height: '100%',
-        width: '100%',
-        data: row
-      }
-    } else if (this.mediaSize == 'xs') {
-      configDialog = {
-        maxWidth: '100vw',
-        maxHeight: '60vh',
-        height: '72%',
-        width: '100%',
-        data: row
-      };
-    } else {
-      configDialog = {
-        width: '60%',
-        maxHeight: '60vh',
-        height: '400px',
-        data: row
-      }
-    }
-    
-    /*const dialogRef = this.dialog.open(FormularioComponent, configDialog);
-
-    dialogRef.afterClosed().subscribe(valid => {
-      //this.loadRegistroData();
-    });*/
-  }
 
   convertDate(inputFormat) {
     function pad(s) { return (s < 10) ? '0' + s : s; }
@@ -618,4 +558,67 @@ export class ListaComponent implements OnInit {
       return reportWorker;
   }
 
+  public Agregar(obj = null) {
+
+    //console.log(obj);
+    let configDialog = {};
+    let row: any = {};
+    if(obj != null)
+    {
+      row ={
+        id: obj.rel_trabajador_adscripcion.id, 
+        trabajador: obj, 
+        fecha_oficio:obj.rel_trabajador_adscripcion.fecha_oficio, 
+        fecha_cambio: obj.rel_trabajador_adscripcion.fecha_cambio, 
+        clues: obj.rel_trabajador_adscripcion.cr_destino,
+        clues_adscripcion: obj.rel_datos_laborales_nomina.cr,
+        catalogo_cr: this.filterCatalogs['cr']
+      };
+
+    }else{
+      row ={
+        catalogo_cr: this.filterCatalogs['cr']
+      };
+    } 
+          
+
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '91vh',
+        height: '8000px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '70vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '70vh',
+        height: '500px',
+        data: row
+      }
+    }
+    
+    const dialogRef = this.dialog.open(FormularioComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      //this.loadRegistroData();
+    });
+  }
 }

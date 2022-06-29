@@ -12,6 +12,7 @@ export class ComisionService {
   url           = `${environment.base_url}/tramite-comision`;
   url_lote      = `${environment.base_url}/tramite-comision-lote`;
   url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
+  url_filter_trabajador =  `${environment.base_url}/busqueda-trabajador-tramite`;
   
   constructor(private http: HttpClient) { }
 
@@ -52,5 +53,14 @@ export class ComisionService {
         return response;
       })
     );
+  }
+
+  getTrabajador( payload:any)
+  {
+    return this.http.get<any>(this.url_filter_trabajador , {params:payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
   }
 }

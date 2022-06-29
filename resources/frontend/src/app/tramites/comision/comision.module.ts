@@ -10,10 +10,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ComisionRoutingModule } from './comision-routing.module';
 import { ListaComponent } from './lista/lista.component';
+import { FormularioComponent } from './formulario/formulario.component';
 
 
 @NgModule({
-  declarations: [ListaComponent],
+  declarations: [ListaComponent, FormularioComponent],
   imports: [
     CommonModule,
     ComisionRoutingModule,
