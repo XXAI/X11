@@ -8,6 +8,8 @@ use \Validator,\Hash, \Response, \DB;
 use Illuminate\Http\Response as HttpResponse;
 use App\Models\Trabajador;
 use App\Models\Directorio;
+use App\Models\RelComisionInterna;
+use App\Models\Cr;
 
 //Relacionales
 use App\Models\User;
@@ -108,6 +110,134 @@ class TramiteComisionInternaController extends Controller
         }
     }
     
+    public function store(Request $request)
+    {
+        $mensajes = [ 
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = $request->all();
+        $inputs = $inputs['params'];
+    
+        $reglas = [
+            'trabajador_id'           => 'required',
+            'clues'                     => 'required',
+            'fecha_oficio'           => 'required',
+            'fecha_inicio_periodo'           => 'required',
+            'fecha_fin_periodo'           => 'required',
+        ];
+        
+    
+        DB::beginTransaction();
+        $v = Validator::make($inputs, $reglas, $mensajes);
+       
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+        try {
+            $update = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])->first();
+            
+            if($update)
+            {
+                //return Response::json(['error' => $update], HttpResponse::HTTP_CONFLICT);
+                $update->activo = 0;
+                $update->save();    
+            }
+            $loggedUser = auth()->userOrFail();
+            $access = $this->getUserAccessData();
+            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
+
+            $permiso_adjudicado = false;
+            if(!$access->is_admin){
+                foreach ($permisos->roles as $key => $value) {
+                    
+                    foreach ($value->permissions as $key2 => $value2) {
+                        if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_adjudicado = true; }                        
+                    }
+                }
+                    
+                foreach ($permisos->permissions as $key2 => $value2) {
+                    if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_adjudicado = true; }
+                }   
+            }
+            $adjudicado = 0;
+            if($permiso_adjudicado)
+            {
+                $adjudicado = 1;
+            }
+
+            $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
+            $object = new RelComisionInterna();
+            $object->cr_origen          = $origen->cr;
+            $object->cr_destino         = $inputs['clues']['cr'];
+            $object->trabajador_id      = $inputs['trabajador_id'];
+            $object->fecha_oficio       = $inputs['fecha_oficio'];
+            $object->fecha_inicio       = $inputs['fecha_inicio_periodo'];
+            $object->fecha_fin          = $inputs['fecha_fin_periodo'];
+            $object->adjudicado         = $adjudicado;
+            $object->activo              = 1;
+            $object->save();
+            
+            
+            DB::commit();
+            
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        $mensajes = [ 
+            'required'      => "required",
+            'email'         => "email",
+            'unique'        => "unique"
+        ];
+        $inputs = $request->all();
+        $inputs = $inputs['params'];
+    
+        $reglas = [
+            'trabajador_id'           => 'required',
+            'clues'                     => 'required',
+            'fecha_oficio'           => 'required',
+            'fecha_inicio_periodo'           => 'required',
+            'fecha_fin_periodo'           => 'required',
+        ];
+        
+    
+        DB::beginTransaction();
+        $v = Validator::make($inputs, $reglas, $mensajes);
+       
+        if ($v->fails()) {
+            return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
+        }
+        try {
+            
+            $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
+            $object = RelComisionInterna::find($id);
+            $object->cr_origen          = $origen->cr;
+            $object->cr_destino         = $inputs['clues']['cr'];
+            $object->trabajador_id      = $inputs['trabajador_id'];
+            $object->fecha_oficio       = $inputs['fecha_oficio'];
+            $object->fecha_inicio       = $inputs['fecha_inicio_periodo'];
+            $object->fecha_fin          = $inputs['fecha_fin_periodo'];
+            $object->save();
+            
+            DB::commit();
+            
+            return response()->json($object,HttpResponse::HTTP_OK);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return Response::json(['error' => $e->getMessage()], HttpResponse::HTTP_CONFLICT);
+        }
+
+    }
     public function ObtenerLote(Request $request)
     {
         try{

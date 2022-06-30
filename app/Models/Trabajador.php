@@ -132,7 +132,7 @@ class Trabajador extends Model
     }
 
     public function rel_trabajador_comision_interna(){
-        return $this->hasOne('App\Models\RelComisionInterna');
+        return $this->hasOne('App\Models\RelComisionInterna')->where("activo",1);
     }
 
 }

@@ -63,4 +63,21 @@ export class ComisionService {
       }
     ));
   }
+
+  guardarComision(payload:any)
+  {
+    return this.http.post<any>(this.url , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  editarComision(id:number, payload:any)
+  {
+    return this.http.put<any>(this.url+"/"+id , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
 }

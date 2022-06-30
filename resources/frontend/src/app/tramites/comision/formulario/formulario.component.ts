@@ -94,13 +94,14 @@ export class FormularioComponent implements OnInit {
       if(this.data.id)
       {
         this.arreglo_trabajador = [{id: this.data.trabajador.id, nombre: this.data.trabajador.nombre, apellido_paterno: this.data.trabajador.apellido_paterno, apellido_materno: this.data.trabajador.apellido_materno }];
-
+      
+        
         this.formularioForm.patchValue({
           trabajador:'',
           clues:this.data.clues, 
-          fecha_oficio:this.data.fecha_oficio, 
-          fecha_inicio_periodo:this.data.fecha_inicio,
-          fecha_fin_periodo:this.data.fecha_fin,
+          fecha_oficio:this.data.fecha_oficio+"T18:51:49.313Z", 
+          fecha_inicio_periodo:this.data.fecha_inicio+"T18:51:49.313Z",
+          fecha_fin_periodo:this.data.fecha_fin+"T18:51:49.313Z",
           trabajador_id: this.data.trabajador.id
         });
         
@@ -157,10 +158,11 @@ export class FormularioComponent implements OnInit {
     this.isLoading = true;
     if(this.data.id)
     {
-      /*this.adscripcionService.editarAdscripcion(this.data.id,this.formularioForm.value).subscribe(
+      this.comisionService.editarComision(this.data.id,this.formularioForm.value).subscribe(
         response => {
           this.isLoading = false;
           this.sharedService.showSnackBar("SE GUARDO CORRECTAMENTE", null, 3000);
+          this.cerrar();
         },
         errorResponse =>{
           this.isLoading = false;
@@ -170,9 +172,9 @@ export class FormularioComponent implements OnInit {
           }
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         }
-      );*/
+      );
     }else{
-      /*this.adscripcionService.guardarAdscripcion(this.formularioForm.value).subscribe(
+      this.comisionService.guardarComision(this.formularioForm.value).subscribe(
         response => {
           //console.log(response);
           this.formularioForm.patchValue({trabajador:'',trabajador_id:'',clues:'', fecha_oficio:'', fecha_cambio:''});
@@ -189,7 +191,7 @@ export class FormularioComponent implements OnInit {
           }
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         }
-      );*/
+      );
     }
     
   }

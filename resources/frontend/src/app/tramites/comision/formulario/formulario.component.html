@@ -53,6 +53,7 @@
                     <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="displaycluesFn('descripcion_actualizada')" [panelWidth]="'auto'">
                         <mat-option *ngFor="let item of filteredCatalogs['cr'] | async" [value]="item">
                             [{{item.cr}}] {{item.descripcion_actualizada}}
+                            <b *ngIf="item.clues== 'CSSSA017213'">({{ item.clues}}) OFICINA CENTRAL</b>
                         </mat-option>
                     </mat-autocomplete>
                     <mat-hint *ngIf="formularioForm.get('clues').value">[ {{formularioForm.get('clues').value.cr}} ]</mat-hint>
@@ -62,8 +63,8 @@
                     </mat-error>
 
                 </mat-form-field>
-            </div>   
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px"> 
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                 <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
                     <input matInput [matDatepicker]="fecha_oficio_picker" autocomplete="off" (click)="fecha_oficio_picker.open()" formControlName="fecha_oficio" placeholder="Fecha Oficio">
                     <mat-datepicker-toggle matPrefix [for]="fecha_oficio_picker"></mat-datepicker-toggle>

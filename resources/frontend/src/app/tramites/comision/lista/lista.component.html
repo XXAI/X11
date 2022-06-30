@@ -210,6 +210,7 @@
                                             <mat-icon>menu</mat-icon>
                                     </button>
                                     <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="Agregar(row)"><mat-icon color="primary">edit</mat-icon>EDITAR</button>
                                         <button mat-menu-item (click)="imprimirOficio(row)"><mat-icon color="primary">print</mat-icon>GENERAR OFICIO</button>
                                         <button mat-menu-item style="color: red;"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
                                     </mat-menu>

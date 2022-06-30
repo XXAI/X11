@@ -597,11 +597,6 @@ export class FormularioComponent implements OnInit {
         }
         this.datosFiscales = this.trabajador.rel_datos_fiscales;
         
-        /*console.log(this.datosFiscales);
-        console.log(this.datosFiscales.fecha_regimen.substr(0,4));
-        console.log(this.datosFiscales.fecha_regimen.substr(5,2));
-        console.log(this.datosFiscales.fecha_regimen.substr(8,2));
-        */
         if(this.datosFiscales != null)
         {
           let fecha_actual = this.datosFiscales.fecha_regimen.substr(0,4)+"-"+this.datosFiscales.fecha_regimen.substr(5,2)+"-"+this.datosFiscales.fecha_regimen.substr(8,2)+"T18:51:49.313Z";

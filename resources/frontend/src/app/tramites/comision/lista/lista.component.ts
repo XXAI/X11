@@ -355,6 +355,11 @@ export class ListaComponent implements OnInit {
     return event;
   }
 
+  editar(obj)
+  {
+    
+  }
+
   llenarPaginasLote(total)
   {
     let paginacion = Math.ceil(total / 100);
@@ -566,11 +571,12 @@ export class ListaComponent implements OnInit {
     if(obj != null)
     {
       row ={
-        id: obj.rel_trabajador_adscripcion.id, 
+        id: obj.rel_trabajador_comision_interna.id, 
         trabajador: obj, 
-        fecha_oficio:obj.rel_trabajador_adscripcion.fecha_oficio, 
-        fecha_cambio: obj.rel_trabajador_adscripcion.fecha_cambio, 
-        clues: obj.rel_trabajador_adscripcion.cr_destino,
+        fecha_oficio:obj.rel_trabajador_comision_interna.fecha_oficio, 
+        fecha_inicio: obj.rel_trabajador_comision_interna.fecha_inicio, 
+        fecha_fin: obj.rel_trabajador_comision_interna.fecha_fin, 
+        clues: obj.rel_trabajador_comision_interna.cr_destino,
         clues_adscripcion: obj.rel_datos_laborales_nomina.cr,
         catalogo_cr: this.filterCatalogs['cr']
       };
