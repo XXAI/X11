@@ -55,11 +55,12 @@
                                 <mat-icon>close</mat-icon>
                             </button>
                             <mat-hint>
-                                <mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)">Filtro Avanzado</mat-slide-toggle>
+                                <mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)" *ngIf="filterCatalogs.grupos">Filtro Avanzado</mat-slide-toggle>
                             </mat-hint>
+
                         </mat-form-field>
                     </div>
-                    <div fxFlex="none" fxFlex.xs="100" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
+                    <div fxFlex="none" fxFlex.xs="100" *ngIf="filtroAvanzado" [@buttonInOut]>
                         <div fxFlex></div>
                         <section class="search-button">
                             <button mat-raised-button color="accent" (click)="applyFilter()" style="padding: 6pt;">

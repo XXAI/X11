@@ -60,6 +60,7 @@ export class ListaComponent implements OnInit {
   countPersonalActualizado:number = 0;
   percentPersonalActualizado:number = 0;
   cluesAsistencia = [];
+  filtroAvanzado:boolean = true;
 
   showMyStepper:boolean = false;
   showReportForm:boolean = false;
@@ -965,8 +966,10 @@ export class ListaComponent implements OnInit {
 
   toggleAdvancedFilter(status){
     if(status){
+      this.filtroAvanzado = !this.filtroAvanzado;
       this.advancedFilter.open();
     }else{
+      this.filtroAvanzado = !this.filtroAvanzado;
       this.advancedFilter.close();
     }
   }
