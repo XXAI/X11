@@ -20,6 +20,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public isAuthenticated:boolean;
   authSubscription: Subscription;
   selectedApp: any;
+  pendientes:number = 0;
+  Listapendientes:any = [{icon:'person_search', descripcion:"PRUEBA", link:'/tramites/adscripcion'}];
   user: User;
   apps: App[];
   breakpoint = 6;
@@ -64,7 +66,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
     this.breakpoint = (window.innerWidth <= 599) ? 3 : 6;
+
+    this.calcularPendientes();
   }
+
+  calcularPendientes()
+  {
+
+  }
+
+  navegarPendientes= function (link) {
+    this.router.navigateByUrl(link);
+  };
 
   getApps():void{
     this.apps = this.appsService.getApps();

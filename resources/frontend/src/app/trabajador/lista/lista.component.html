@@ -62,14 +62,30 @@
                     <div fxFlex="none" fxFlex.xs="100" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
                         <div fxFlex></div>
                         <section class="search-button">
-                            <button mat-raised-button color="accent" (click)="applyFilter()">
-                                <mat-icon>search</mat-icon> Buscar
+                            <button mat-raised-button color="accent" (click)="applyFilter()" style="padding: 6pt;">
+                                <mat-icon>search</mat-icon> 
                             </button>
+
+
                         </section>
+                    </div>
+                    <div fxFlex="none" fxFlex.xs="100" [@buttonInOut] [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
+                        <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
+                        <mat-menu #menu="matMenu">
+                            <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddEmployeDialog()"><mat-icon>person_search</mat-icon> BUSCAR TRABAJADOR</button>
+                            <mat-divider></mat-divider>
+                            <button *ngIf="!capturaFinalizada" mat-menu-item routerLink="/trabajadores/nuevo/"><mat-icon>person_add_alt</mat-icon> AGREGAR TRABAJADOR</button>
+                            <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddSignerDialog()"><mat-icon>create</mat-icon> AGREGAR FIRMANTES</button>
+                            <mat-divider></mat-divider>
+                            <button mat-menu-item (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF">
+                                    <mat-icon fontSet="{{(!showReportForm)?'material-icons-outlined':''}}">{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon> REPORTE
+                                </button>
+
+                        </mat-menu>
                     </div>
                 </div>
             </mat-card>
-            <mat-card fxFlex.xs="100%" fxFlex="90%" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
+            <!--<mat-card fxFlex.xs="100%" fxFlex="90%" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
                 <div fxLayout="row" fxLayout.xs="column" style="padding-bottom:10px;">
                     <div fxFlex>
                     </div>
@@ -86,7 +102,7 @@
                         </button>
                     </mat-menu>
                 </div>
-            </mat-card>
+            </mat-card>-->
             <div *ngIf="showReportForm || showMyStepper">
                 <div *ngIf="showReportForm">
                     <section fxLayout="row">
@@ -125,7 +141,7 @@
                 <mat-expansion-panel #advancedFilter class="advanced-filter" [formGroup]="filterForm">
                     <br>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                        <mat-form-field fxFlex="22">
+                        <mat-form-field fxFlex="34" appearance="fill">
                             <mat-label>CLUES</mat-label>
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
                             <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
@@ -135,7 +151,7 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="23">
+                        <mat-form-field fxFlex="30" appearance="fill">
                             <mat-label>CR</mat-label>
                             <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
                             <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('cr')" [panelWidth]="'auto'">
@@ -145,7 +161,7 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('cr').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="30">
+                        <mat-form-field fxFlex="10" appearance="fill">
                             <mat-label>Rama</mat-label>
                             <mat-select #ramaFilter formControlName="rama" [compareWith]="compareRamaSelect">
                                 <mat-option>Sin Filtro</mat-option>
@@ -154,7 +170,7 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field fxFlex="15">
+                        <mat-form-field fxFlex="15" appearance="fill">
                             <mat-label>Estatus</mat-label>
                             <mat-select #estatusFilter formControlName="estatus" [compareWith]="compareEstatusSelect">
                                 <mat-option>Sin Filtro</mat-option>
@@ -163,7 +179,7 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field fxFlex="5">
+                        <mat-form-field fxFlex="10" appearance="fill">
                             <mat-label>Comisión</mat-label>
                             <mat-select #comisionFilter formControlName="comisionado" [compareWith]="compareComisionSelect">
                                 <mat-option>Sin Filtro</mat-option>
@@ -172,8 +188,8 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div fxLayout="row wrap">
-                        <mat-form-field fxFlex="50" *ngIf="filterCatalogs.grupos">
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
+                        <mat-form-field fxFlex="49" *ngIf="filterCatalogs.grupos" appearance="fill">
                             <mat-label>Grupos</mat-label>
                             <input type="text" aria-label="grupos" matInput formControlName="grupos" [matAutocomplete]="gruposAutocomplete">
                             <mat-autocomplete #gruposAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('descripcion')" [panelWidth]="'auto'">
@@ -183,7 +199,7 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('grupos').value">{{filterForm.get('grupos').value.descripcion}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="15">
+                        <mat-form-field fxFlex="15" appearance="fill">
                             <mat-label>Adscripción</mat-label>
                             <mat-select #adscripcionFilter formControlName="adscripcion" [compareWith]="compareAdscripcionSelect">
                                 <mat-option>Sin Filtro</mat-option>
@@ -192,14 +208,14 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field fxFlex="5">
+                        <mat-form-field fxFlex="5" appearance="fill">
                             <mat-label>E4</mat-label>
                             <mat-select #comisionFilter formControlName="e4" [compareWith]="comparee4Select">
                                 <mat-option [value]="0">Todos</mat-option>
                                 <mat-option [value]="1">SI</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field fxFlex="10">
+                        <mat-form-field fxFlex="10" appearance="fill">
                             <mat-label>Datos Fiscales</mat-label>
                             <mat-select formControlName="fiscales">
                                 <mat-option>TODOS</mat-option>
@@ -208,13 +224,13 @@
                                 <mat-option [value]="3">NO</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <div fxFlex></div>
-                        <div fxFlex="none">
+                        <div fxFlex *ngIf="!filterCatalogs.grupos"></div>
+                        <div fxFlex="10">
                             <button mat-flat-button (click)="filterForm.reset()">
                                 Limpiar
                             </button>
                         </div>
-                        <div fxFlex="none">
+                        <div fxFlex="10">
                             <button mat-raised-button color="accent" (click)="applyFilter()">
                                 <mat-icon>search</mat-icon> Aplicar
                             </button>
@@ -308,7 +324,7 @@
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="BajaTrabajador(row)"><mat-icon color="warn">person_remove</mat-icon>Dar de Baja</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="TransferirTrabajador(row)"><mat-icon color="primary">360</mat-icon>Transferir</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="ComisionSindical(row)"><mat-icon color="primary">group</mat-icon>Comisión Sindical</button>
-                                        <button mat-menu-item *ngIf="row.estatus == 1 && row.usuario != 0"  [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'"  (click)="ResetContrasena(row)"><mat-icon color="primary">vpn_key</mat-icon>Resetear Contraseña</button>
+                                        <button mat-menu-item *ngIf="row.estatus == 1 && row.usuario != 0" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="ResetContrasena(row)"><mat-icon color="primary">vpn_key</mat-icon>Resetear Contraseña</button>
                                         <!--<button mat-menu-item *ngIf="row.cr_fisico_id != row.cr_nomina_id" fxHide.xs="true" (click)="solicitar(1, row.id)"><mat-icon color="primary">article</mat-icon>Comisión</button>-->
                                     </mat-menu>
 

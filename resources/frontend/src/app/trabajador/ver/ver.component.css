@@ -198,3 +198,14 @@ mat-card-title {
 .avisos {
     background-color: red !important;
 }
+
+.fotoTrabajador {
+    width: 100%;
+    border-radius: 5%;
+}
+
+@media (min-width: 600px) and (max-width: 960px) {
+    .fotoTrabajador {
+        width: 50%;
+    }
+}

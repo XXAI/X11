@@ -16,25 +16,16 @@
         <!--mat-icon>menu</mat-icon-->
       </button>
 
+        <button mat-icon-button [matMenuTriggerFor]="menu" style="margin-right: 10pt;" *ngIf="pendientes > 0"><mat-icon matBadge="{{ pendientes }}" matBadgeColor="warn">mode_comment</mat-icon></button>
+        <mat-menu #menu="matMenu">
+
+            <button mat-menu-item *ngFor="let app of Listapendientes" [routerLink]="app.link"><mat-icon>{{app.icon}}</mat-icon> {{ app.descripcion }}</button>
+        </mat-menu>
+
         <button mat-icon-button [matMenuTriggerFor]="menuAccount" fxHide.xs="true">
         <!--mat-icon svgIcon="user-icon" aria-label="Avatar"></mat-icon-->
         <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
       </button>
-
-        <!--mat-menu #menuApps="matMenu">
-        <div class="apps" fxLayout="row" fxLayoutAlign="center center">
-          <ng-container *ngFor="let app of apps; let i = index">
-              <figure [routerLink]="['/'+app.route]" *ngIf="i<12" matTooltip="{{app.name}}">
-                  <img src="{{ app.icon }}" alt="Icon">
-                  <figcaption class="ellipsis">{{ app.name }}</figcaption>
-              </figure>
-          </ng-container>
-        </div>
-        <mat-divider></mat-divider>
-        <button mat-menu-item style="text-align:center" routerLink="/apps">
-          <mat-icon>more_horiz</mat-icon>
-        </button>
-      </mat-menu-->
 
         <mat-menu #menuAccount="matMenu">
             <div style="width:280px;" style="display:flex; justify-content: start center">

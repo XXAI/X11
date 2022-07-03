@@ -1,8 +1,8 @@
 <div mat-dialog-title class="mat-typography">
 
     <div fxLayout="row column" fxLayoutGap="5px" *ngIf="!isLoadingCredential">
-        <div fxFlex.xs="100" fxFlex="15" fxLayoutGap="10px">
-            <div><img src="{{ fotoTrabajador }}" style="width: 100%; border-radius: 5%;" alt="Foto Trabajador"></div>
+        <div fxFlex="100" fxFlex.gt-md="13" fxFlex.md="20" fxLayoutGap="10px">
+            <div style="text-align: center;"><img src="{{ fotoTrabajador }}" class="fotoTrabajador" alt="Foto Trabajador"></div>
             <div style="font-size: 13pt; text-align: center; line-height: 15px;">
                 {{ dataTrabajador.apellido_paterno + ' ' + dataTrabajador.apellido_materno + ' ' + dataTrabajador.nombre }}
             </div>
@@ -60,7 +60,7 @@
 
         </div>
         <mat-divider></mat-divider>
-        <div fxFlex.xs="100" fxFlex="84" *ngIf="dataTrabajador">
+        <div fxFlex="100" fxFlex.gt-md="86" fxFlex.md="78" *ngIf="dataTrabajador">
             <mat-tab-group fxFlex.xs="100" fxFlex="100" dynamicHeight animationDuration="0ms" (selectedTabChange)="dataTabChange($event)" [(selectedIndex)]="navTabSelected" [color]="'accent'" [backgroundColor]="'primary'">
                 <mat-tab label="Datos Generales">
                     <ng-template mat-tab-label>
@@ -143,10 +143,9 @@
                                         </div-->
                                         <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
                                             <b>FUENTE DE FINANCIAMIENTO:</b>
-                                            <BR>
-                                            {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fuente_financiamiento:'NO REGISTRADO' }}
+                                            <BR> {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fuente_financiamiento:'NO REGISTRADO' }}
                                         </div>
-                                        <div fxFlex="50" fxFlex.xs="100"  *ngIf="superUser">
+                                        <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
                                             <b>INGRESO GOBIERNO FEDERAL:</b> <br>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso_federal:'NO REGISTRADO' }}
                                         </div>
                                     </div>
