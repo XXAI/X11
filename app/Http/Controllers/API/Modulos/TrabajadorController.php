@@ -284,7 +284,7 @@ class TrabajadorController extends Controller
             $estatus['estatus_actualizacion'] = $estatus_actualizacion;
             
 
-            return response()->json(['data'=>$trabajador, 'firmantes'=> $firmantes, 'responsables'=>$responsable_clues, 'estatus'=>$estatus],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$trabajador, 'firmantes'=> $firmantes, 'responsables'=>$responsable_clues, 'estatus'=>$estatus, 'permiso_individual'=>$permison_individual],HttpResponse::HTTP_OK);
             //return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);

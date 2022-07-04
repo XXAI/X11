@@ -55,7 +55,7 @@
                                 <mat-icon>close</mat-icon>
                             </button>
                             <mat-hint>
-                                <mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)" *ngIf="filterCatalogs.grupos">Filtro Avanzado</mat-slide-toggle>
+                                <mat-slide-toggle #showAdvancedFilter (change)="toggleAdvancedFilter(showAdvancedFilter.checked)" *ngIf="!permisoGeneral">Filtro Avanzado</mat-slide-toggle>
                             </mat-hint>
 
                         </mat-form-field>

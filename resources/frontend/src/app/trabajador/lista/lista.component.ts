@@ -61,6 +61,7 @@ export class ListaComponent implements OnInit {
   percentPersonalActualizado:number = 0;
   cluesAsistencia = [];
   filtroAvanzado:boolean = true;
+  permisoGeneral:boolean = true;
 
   showMyStepper:boolean = false;
   showReportForm:boolean = false;
@@ -809,6 +810,7 @@ export class ListaComponent implements OnInit {
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
 
+          this.permisoGeneral = response.permiso_individual; 
           if(response.estatus.grupo_usuario){
             this.puedeFinalizar = true;
             this.capturaFinalizada = response.estatus.finalizado;
