@@ -15,6 +15,7 @@ import { ComisionService } from '../comision.service';
 import { ReportWorker } from '../../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
 import { FormularioComponent } from '../formulario/formulario.component';
+import { ImportarComponent } from '../importar/importar.component';
 
 @Component({
   selector: 'app-lista',
@@ -108,7 +109,7 @@ export class ListaComponent implements OnInit {
     
   });
 
-  displayedColumns: string[] = ['estatus','Nombre','periodo', 'creacion', 'actions']; //'Agente',
+  displayedColumns: string[] = ['estatus','Nombre','oficio','periodo', 'creacion', 'actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, 
@@ -362,7 +363,7 @@ export class ListaComponent implements OnInit {
 
   llenarPaginasLote(total)
   {
-    let paginacion = Math.ceil(total / 100);
+    let paginacion = Math.ceil(total / 50);
     this.paginas = [];
     let i:number = 1;
     for(i; i<= paginacion; i++)
@@ -451,7 +452,7 @@ export class ListaComponent implements OnInit {
       for(let i in appStoredData['filter']){
         if(appStoredData['filter'][i]){
           if(i == 'distrito'){
-            params[i] = appStoredData['filter'][i].distrito;
+            params[i] = appStoredData['filter'][i].id;
           }else if(i == 'clues'){
             params[i] = appStoredData['filter'][i].clues;
           }else if(i == 'cr'){
@@ -624,7 +625,53 @@ export class ListaComponent implements OnInit {
     const dialogRef = this.dialog.open(FormularioComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
-      //this.loadRegistroData();
+      
+    });
+  }
+
+  public Importar() {
+    let configDialog = {};
+    let row: any = {};
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '800px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '100vh',
+        height: '580px',
+        data: row
+      }
+    }
+    console.log("hola");
+    
+    const dialogRef = this.dialog.open(ImportarComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.loadTrabajadorData();
+      }
     });
   }
 }

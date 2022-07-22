@@ -14,24 +14,24 @@ export const APPS:App [] = [
         {name:'Configuración',        route:'dashboard/configuracion',  icon:'settings', permission:"JIZVHPLq3b50VmEiwHDoGOViE63rBJpFa"}
       ]
     },
-    { name:"Usuarios",                route: "usuarios",                icon: "assets/icons/users.svg",              permission:"nTSk4Y4SFKMyQmRD4ku0UCiNWIDe8OEt" },
-    { name:'Permisos',                route: "permisos",                icon: "assets/icons/security-shield.svg",    permission:"RGMUpFAiRuv7UFoJroHP6CtvmpoFlQXl" },
-    { name:'Roles',                   route: "roles",                   icon: "assets/icons/users-roles.svg",        permission:"nrPqEhq2TX0mI7qT7glaOCJ7Iqx2QtPs" },
+    { name:"USUARIOS",                route: "usuarios",                icon: "assets/icons/users.png",              permission:"nTSk4Y4SFKMyQmRD4ku0UCiNWIDe8OEt" },
+    { name:'PERMISOS',                route: "permisos",                icon: "assets/icons/permisos.png",    permission:"RGMUpFAiRuv7UFoJroHP6CtvmpoFlQXl" },
+    { name:'ROLES',                   route: "roles",                   icon: "assets/icons/roles.png",        permission:"nrPqEhq2TX0mI7qT7glaOCJ7Iqx2QtPs" },
     { name:'Empleados',               route: "empleados",               icon: "assets/icons/trabajador_salud.svg",   permission:"8QnE1cYkjjNAmM7qHSf1CSlPMJiQeqr5" },
-    { name:'Trabajadores',            route: "trabajadores",            icon: "assets/icons/trabajador.svg",         permission:"VguUicBQPIYqZgocJaOHdhMbfnzVqJ7k" },
-    { name:'Herramientas Dev',        route: "dev-tools",               icon: "assets/icons/toolbox.svg",           isHub:true, hideHome:true, 
+    { name:'TRABAJADORES',            route: "trabajadores",            icon: "assets/icons/trabajadores.png",         permission:"VguUicBQPIYqZgocJaOHdhMbfnzVqJ7k" },
+    { name:'HERRAMIENTAS',        route: "dev-tools",               icon: "assets/icons/herramientas.png",           isHub:true, hideHome:true, 
       children:[
         {name:'Reportes MySQL',       route:'dev-tools/mysql-reportes', icon:'insert_drive_file', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"}
       ],
     },
-    { name:'Catálogos',               route: "catalogos",               icon: "assets/icons/catalogos.svg", isHub:true, hideHome:true, 
+    { name:'CATÁLOGOS',               route: "catalogos",               icon: "assets/icons/catalogos.png", isHub:true, hideHome:true, 
       children:[
         { name:'Clues',               route:'catalogos/clues',          icon:'insert_drive_file', permission:"55sHMIb36J8r9Dgr3uvfxO3wX1ZvudbL" },
         { name:'Grupos',              route:'catalogos/grupos',         icon:'group_work', permission:"v5xfsLRdLaESqktB1HKQwwWXkfVP4jQe" },
         { name:'Profesiones',         route:'catalogos/profesiones',    icon:'school', permission:"NBhsLjYRsIJmDa9igB4sKBxd91thtxWr" },
       ],
     },
-    { name:'Tramites',                route: "tramites",                icon: "assets/icons/documento.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt', isHub:true, hideHome:true, 
+    { name:'TRAMITES',                route: "tramites",                icon: "assets/icons/tramites.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt', isHub:true, hideHome:true, 
       children:[
         { name:'Comisión Interna',            route:'tramites/comision',        icon:'insert_drive_file', permission:"sy4A7MgqfzYNb0yIxVbRSxdSHgCkwUml" },
         { name:'Adscripción',         route:'tramites/adscripcion',     icon:'insert_drive_file', permission:"ToU3QxHxAbC0lC1mw9PVjYVSjUT2yAdL" },
@@ -42,13 +42,13 @@ export const APPS:App [] = [
         { name:'Comisión Sindical',    route:'tramites/comision-sindical',   icon:'insert_drive_file', permission:"FsSuyE47aBCxZ46SrTLb0g85frN1lT4W" }
       ] },
       /*{ name:'Archivo',                route: "archivo",                icon: "assets/icons/archivo.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt'},*/  
-    { name:'Directorio',              route: "directorio",              icon: "assets/icons/directorio.svg",  permission:"RkggFnAkLcXiLUTbZk3A07y0c4WdjjCO" },
-    { name:'Credencialización',       route: "credencializacion",       icon: "assets/icons/credencial.png",  isHub:true, hideHome:true, 
+    { name:'CREDENCIALIZACIÓN',       route: "credencializacion",       icon: "assets/icons/credencial_trabajador.png",  isHub:true, hideHome:true, 
       children:[
         { name:'Salud',               route:'credencializacion/salud',          icon:'contacts', permission:"82UHsnkhEdH5x276N6i5Ollnftcri7Yx" },
         /*{ name:'',              route:'catalogos/grupos',         icon:'group_work', permission:"v5xfsLRdLaESqktB1HKQwwWXkfVP4jQe" },
         { name:'Profesiones',         route:'catalogos/profesiones',    icon:'school', permission:"NBhsLjYRsIJmDa9igB4sKBxd91thtxWr" },*/
       ],
     },
-   
+    { name:'DIRECTORIO',              route: "directorio",              icon: "assets/icons/directorio.png",  permission:"RkggFnAkLcXiLUTbZk3A07y0c4WdjjCO" },
+      
 ]

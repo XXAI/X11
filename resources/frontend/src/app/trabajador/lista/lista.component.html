@@ -314,10 +314,10 @@
                                 <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
                                     <!--<button mat-stroked-button color="primary" matTooltip="Editar Trabajador" (click)="editTrabajador(i)" routerLink="/trabajadores/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>&nbsp;-->
-
-                                    <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu" *ngIf="row.estatus == 1">
-                                            <mat-icon>menu</mat-icon>
+                                    <button mat-button [matMenuTriggerFor]="menu" *ngIf="row.estatus == 1">
+                                        <mat-icon>more_vert</mat-icon>
                                     </button>
+
                                     <mat-menu #menu="matMenu">
                                         <button mat-menu-item *ngIf="row.estatus != 3" (click)="verEmpleado(row.id,i)"><mat-icon color="primary">remove_red_eye</mat-icon>Detalles</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && row.validado == 0  && row.actualizado == 1" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="validateTrabajador(row.id)"><mat-icon  color="primary">check_cirlce</mat-icon>Validar</button>

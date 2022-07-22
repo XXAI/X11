@@ -31,7 +31,7 @@ export class AgregarFirmantesDialogComponent implements OnInit {
   pageSize: number = 20;
 
   firmanteLoading: boolean = false;
-  filteredFirmante: Observable<any[]>;
+  filteredFirmante: any[];
   firmanteIsLoading:boolean = false;
 
   dataSource: any = [];

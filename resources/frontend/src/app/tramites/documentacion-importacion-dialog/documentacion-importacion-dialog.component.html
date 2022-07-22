@@ -2,23 +2,24 @@
 <hr style="border: 1px solid #3f51b5;">
 <div>
     <mat-chip-list>
-        <mat-chip color="primary"  [selected]="nombre"> <mat-icon>person</mat-icon> <b style="font-size: 12pt;">{{nombre}}</b></mat-chip> 
+        <mat-chip color="primary" [selected]="nombre">
+            <mat-icon>person</mat-icon> <b style="font-size: 12pt;">{{nombre}}</b></mat-chip>
     </mat-chip-list>
 </div>
 <div mat-dialog-content>
-    <form  [formGroup]="form">
+    <form [formGroup]="form">
         <b>Documentación Requerida:</b>
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
             <div fxFlex="50" fxFlex.xs="100">
-            <mat-list role="list" class="lista_documentos">
-                <mat-list-item role="listitem">SOLICITUD DE EMPLEO CON FOTOGRAFIA</mat-list-item>
-                <mat-list-item role="listitem">FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA</mat-list-item>
-                <mat-list-item role="listitem">CURRICULÚM VITAE DEBIDAMENTE FIRMADO</mat-list-item>
-                <mat-list-item role="listitem">CONSTANCIA DE NO INHABILITACIÓN (CON LA QUE CUENTE)</mat-list-item>
-                <mat-list-item role="listitem">CONSTANCIA DE NO ANTECEDENTES PENALES (CON LA QUE CUENTE)</mat-list-item>
-                <mat-list-item role="listitem">CERTIFICADO MÉDICO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)</mat-list-item>
-                <mat-list-item role="listitem">FORMATO DE PROTESTA</mat-list-item>
-            </mat-list>
+                <mat-list role="list" class="lista_documentos">
+                    <mat-list-item role="listitem">SOLICITUD DE EMPLEO CON FOTOGRAFIA</mat-list-item>
+                    <mat-list-item role="listitem">FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA</mat-list-item>
+                    <mat-list-item role="listitem">CURRICULÚM VITAE DEBIDAMENTE FIRMADO</mat-list-item>
+                    <mat-list-item role="listitem">CONSTANCIA DE NO INHABILITACIÓN (CON LA QUE CUENTE)</mat-list-item>
+                    <mat-list-item role="listitem">CONSTANCIA DE NO ANTECEDENTES PENALES (CON LA QUE CUENTE)</mat-list-item>
+                    <mat-list-item role="listitem">CERTIFICADO MÉDICO (NO EXPEDIDA POR CRUZ ROJA MEXICANA, ISSSTE, PARTICULARES E IMSS)</mat-list-item>
+                    <mat-list-item role="listitem">FORMATO DE PROTESTA</mat-list-item>
+                </mat-list>
                 <!--<ol>
                 <li value="01">SOLICITUD DE EMPLEO CON FOTOGRAFIA</li>
                 <li>FOTOGRAFÍA TAMAÑO INFANTIL B/N O A COLOR EN PAPEL MATE, NO INSTANTÁNEA (1)</li>
@@ -36,11 +37,11 @@
                     <mat-list-item role="listitem">CONSTANCIA DE SITUACIÓN FISCAL(R.F.C.)</mat-list-item>
                     <mat-list-item role="listitem">PRE Y LIBERACIÓN DE LA CARTILLA MILITAR</mat-list-item>
                     <mat-list-item role="listitem">ÚLTIMO GRADO DE ESTUDIOS</mat-list-item>
-                    <mat-list-item role="listitem">COMPROBANTE DE DOMICILIO (02 MESES)  <b>ACTUALIZADA</b></mat-list-item>
+                    <mat-list-item role="listitem">COMPROBANTE DE DOMICILIO (02 MESES) <b>ACTUALIZADA</b></mat-list-item>
                     <mat-list-item role="listitem">CURP</mat-list-item>
-                    <mat-list-item role="listitem">CREDENCIAL DE ELECTOR  <b>ACTUALIZADA</b></mat-list-item>
+                    <mat-list-item role="listitem">CREDENCIAL DE ELECTOR <b>ACTUALIZADA</b></mat-list-item>
                     <mat-list-item role="listitem">CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)</mat-list-item>
-                </mat-list>    
+                </mat-list>
                 <!--<ol>
                 <li value="08">ACTA DE NACIMIENTO ACTUALIZADA, VIGENCIA MÍNIMA 2018 </li>
                 <li>CONSTANCIA DE SITUACIÓN FISCAL ACTUALIZADA (R.F.C.) </li>
@@ -52,9 +53,9 @@
                 <li>CUENTA Y CLAVE INTERBANCARIA (BANORTE Y/O BANCOMER)</li>
             </ol>-->
             </div>
-        </div>    
+        </div>
         <hr>
-        <b>Nota: Solamente se debe de enviar un documento <span style="color:red">único</span> donde estén todos los documentos antes mencionados</b>        
+        <b>Nota: Solamente se debe de enviar un documento <span style="color:red">único</span> donde estén todos los documentos antes mencionados</b>
         <hr>
         <div class="form-group">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
@@ -66,15 +67,15 @@
                     Maximo de peso del archivo <b style="color: red;">6Mb.</b>
                 </div>
             </div>
-            
+
         </div>
         <hr>
-        
-        
+
+
     </form>
 </div>
 <mat-dialog-actions>
-    <button type="button" mat-raised-button color="primary" (click)="subir();"  [disabled]="!form.valid || isLoading">
+    <button type="button" mat-raised-button color="primary" (click)="subir();" [disabled]="!form.valid || isLoading">
         <span *ngIf="!isLoading">
             SUBIR INFORMACIÓN
         </span>
@@ -86,7 +87,7 @@
             </div>
             
         </span>
-        </button>
+    </button>
 </mat-dialog-actions>
 <!--<section  fxFlex="100" fxFlex.xs="100">
     <mat-card>

@@ -138,6 +138,10 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('tramite-documentacion',         'API\Modulos\TramiteDocumentacionController');
     Route::get('tramite-documentacion-reporte',         'API\Modulos\TramiteDocumentacionController@reporteDia');
     Route::post('tramite-documentacion-upload',         'API\Modulos\TramiteDocumentacionController@Upload');
+    Route::post('tramite-importar-csv',                 'API\Modulos\TramiteComisionInternaController@UploadCsv');
+    Route::post('importar_csv_data',                    'API\Modulos\TramiteComisionInternaController@CargarInformacion');
+    Route::post('validar-importacion',                    'API\Modulos\TramiteComisionInternaController@ValidarImportacion');
+    Route::post('migrar-importacion',                    'API\Modulos\TramiteComisionInternaController@migrarInformacion');
     
     Route::get('tramite-documentacion-download/{id}',   'API\Modulos\TramiteDocumentacionController@Download');
     Route::get('constancia-download/{id}',              'API\Modulos\TrabajadorController@Download');

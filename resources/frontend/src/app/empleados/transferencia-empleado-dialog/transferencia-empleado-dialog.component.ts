@@ -38,7 +38,7 @@ export class TransferenciaEmpleadoDialogComponent implements OnInit {
   });
 
   cluesLoading: boolean = false;
-  filteredClues: Observable<any[]>;
+  filteredClues: any[];
 
   filteredCluesCR: Observable<any[]>;
 

@@ -72,11 +72,11 @@ export class EditarComponent implements OnInit {
   crIsLoading: boolean = false;
   crAdscripcionIsLoading: boolean = false;
   crComisionIsLoading: boolean = false;
-  filteredCodigos: Observable<any[]>;
-  filteredProfesiones: Observable<any[]>;
-  filteredCr: Observable<any[]>;
-  filteredCrAdscripcion: Observable<any[]>;
-  filteredCrComision: Observable<any[]>;
+  filteredCodigos: any[];
+  filteredProfesiones: any[];
+  filteredCr: any[];
+  filteredCrAdscripcion: any[];
+  filteredCrComision: any[];
 
   estudiosLoading: any = {};
   filteredEstudios: any = {};

@@ -23,7 +23,7 @@ import { AuthService } from './auth/auth.service';
 
 import { SharedService } from './shared/shared.service';
 import { TokenInterceptor, ErrorInterceptor } from './token.service';
-import { MAT_STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 
@@ -102,7 +102,7 @@ import { ComisionSindicalModule } from './tramites/comision-sindical/comision-si
       multi: true
     },
     {
-      provide: MAT_STEPPER_GLOBAL_OPTIONS,
+      provide: MatStepperModule,
       useValue: { showError: true }
     },
     SharedService

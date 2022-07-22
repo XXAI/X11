@@ -65,12 +65,12 @@ export class AgregarEmpleadoDialogComponent implements OnInit {
   cluesCatalogo:any[];
   cluesDestino:any;
   cluesSearch:FormControl = new FormControl();
-  filteredClues:Observable<any[]>;
+  filteredClues: Observable<any[]>;
 
   crCatalogo:any[];
   crDestino:any;
   crSearch:FormControl = new FormControl();
-  filteredCr:Observable<any[]>;
+  filteredCr: Observable<any[]>;
 
   statusIcon:any = {
     '1-0':'help', //activo

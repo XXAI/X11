@@ -42,10 +42,10 @@ export class NuevoComponent implements OnInit {
   crIsLoading: boolean = false;
   crAdscripcionIsLoading: boolean = false;
   profesionIsLoading: boolean = false;
-  filteredCodigos: Observable<any[]>;
-  filteredCr: Observable<any[]>;
-  filteredCrAdscripcion: Observable<any[]>;
-  filteredProfesiones: Observable<any[]>;
+  filteredCodigos: any[];
+  filteredCr: any[];
+  filteredCrAdscripcion: any[];
+  filteredProfesiones: any[];
 
   displayedColumns: string[] = ['Grado','Estudios','Fecha','actions'];
   tablaEscolaridad: any = [{id:1,grado:'123',estudios:'12312',fecha:'123'}];

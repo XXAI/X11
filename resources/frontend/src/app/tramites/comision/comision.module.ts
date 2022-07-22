@@ -10,11 +10,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ComisionRoutingModule } from './comision-routing.module';
 import { ListaComponent } from './lista/lista.component';
+import { MatStepperModule } from '@angular/material/stepper';
 import { FormularioComponent } from './formulario/formulario.component';
+import { ImportarComponent } from './importar/importar.component';
 
 
 @NgModule({
-  declarations: [ListaComponent, FormularioComponent],
+  declarations: [ListaComponent, FormularioComponent, ImportarComponent],
   imports: [
     CommonModule,
     ComisionRoutingModule,
@@ -24,7 +26,8 @@ import { FormularioComponent } from './formulario/formulario.component';
     SharedModule,
     FormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatStepperModule
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

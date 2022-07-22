@@ -5,8 +5,43 @@
     <img src="{{(selectedApp)?selectedApp.icon:'assets/app-icon.png'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true">
     <span style="margin-left:10px" *ngIf="!selectedApp"><a routerLink="/">Secretaria de Salud</a></span> <span *ngIf="selectedApp">&nbsp; <a routerLink="{{selectedApp.route}}">{{selectedApp.name}}</a></span>
     <span class="spacer"></span>
+    <button mat-button [matMenuTriggerFor]="menu" *ngIf="isAuthenticated"><mat-icon>contact_support</mat-icon></button>
+    <mat-menu #menu="matMenu">
+        <div class="titulo_soporte">
+            SOPORTE TÉCNICO
+        </div>
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image">
+                    <mat-icon mat-card-sm-image> call</mat-icon>
+                </div>
+                <mat-card-title>DRA. JACQUELINE COELLO</mat-card-title>
+                <mat-card-subtitle>961-658-6425</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image">
+                    <mat-icon mat-card-sm-image> call</mat-icon>
+                </div>
+                <mat-card-title>DRA. ERIKA DOMINGUEZ</mat-card-title>
+                <mat-card-subtitle>961-185-3462</mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
 
-    <ng-template [ngIf]="isAuthenticated">
+        <div class="titulo_soporte">DESARROLLADOR</div>
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image">
+                    <mat-icon mat-card-sm-image> code</mat-icon>
+                </div>
+                <mat-card-title>ING. MARIO ALBERTO VILLATORO DIAZ</mat-card-title>
+                <mat-card-subtitle>INGENIERO EN SISTEMAS COMPUTACIONALES</mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+
+
+    </mat-menu>
+    <ng-template [ngIf]="isAuthenticated" style="max-width: 320px !important;">
+
         <!--button mat-icon-button color="white" [matMenuTriggerFor]="menuApps" fxHide.xs>
         <mat-icon aria-label="Apps">apps</mat-icon>
       </button-->
@@ -23,12 +58,11 @@
         </mat-menu>
 
         <button mat-icon-button [matMenuTriggerFor]="menuAccount" fxHide.xs="true">
-        <!--mat-icon svgIcon="user-icon" aria-label="Avatar"></mat-icon-->
         <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
       </button>
+        <mat-menu #menuAccount="matMenu" style="color: red !important;">
 
-        <mat-menu #menuAccount="matMenu">
-            <div style="width:280px;" style="display:flex; justify-content: start center">
+            <div style="display:flex; justify-content: start center">
                 <img src="{{user.avatar}}" alt="" style="width:80px; margin:10px">
                 <div style="width:160px; margin:10px;  display: flex; flex-direction:column; justify-content: center; font-size:0.8em;">
                     <strong>{{user.name}}</strong>
@@ -45,9 +79,9 @@
             <div>
                 <div class="apps" fxLayout="row" fxLayoutAlign="center center">
                     <ng-container *ngFor="let app of apps; let i = index">
-                        <figure [routerLink]="['/'+app.route]" *ngIf="i<9">
-                            <img src="{{ app.icon }}" alt="Icon">
-                            <figcaption class="ellipsis">{{ app.name }}</figcaption>
+                        <figure [routerLink]="['/'+app.route]" *ngIf="i<9" style="width: 28% !important;">
+                            <img src="{{ app.icon }}" alt="Icon" matTooltip="{{ app.name }}" matTooltipClass="tooltip-primary">
+                            <!--<figcaption class="ellipsis">{{ app.name }}</figcaption>-->
                         </figure>
                     </ng-container>
                 </div>
@@ -55,7 +89,6 @@
             <mat-icon>apps</mat-icon>
           </button>
             </div>
-
             <mat-divider></mat-divider>
             <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>

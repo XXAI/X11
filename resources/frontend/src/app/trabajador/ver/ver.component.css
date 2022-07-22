@@ -209,3 +209,8 @@ mat-card-title {
         width: 50%;
     }
 }
+
+.tabla_escolaridad {
+    color: black !important;
+    background-color: beige !important;
+}
