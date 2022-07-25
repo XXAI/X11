@@ -1,0 +1,79 @@
+<div mat-dialog-content [class.mat-dialog-content-fullscreen]="mediaSize=='xs'">
+    <section>
+
+        <div fxLayout="column" fxLayout.xs="column">
+            <section fxFlex fxLayout="row" fxLayout.xs="column">
+                <mat-form-field fxFlex fxFlex.xs="100" appearance="outline">
+                    <mat-label>Buscar Empleado</mat-label>
+                    <input matInput #busquedaEmpleado cdkFocusInitial [(ngModel)]="search" (keyup.escape)="search = ''" (keyup.enter)="buscarTrabajadores()" [readonly]="isLoading" autofocus>
+                </mat-form-field>
+                <div fxFlex="none" fxFlex.xs="100">
+                    <section class="search-button">
+                        <button mat-raised-button color="accent" (click)="buscarTrabajadores()" [disabled]="isLoading" fxFlex.xs="100">
+                            <mat-icon>search</mat-icon> <span fxHide fxShow.xs="true">&nbsp;Buscar</span>
+                        </button>
+                    </section>
+                </div>
+            </section>
+
+            <div fxFlex>
+                <!--class="mat-elevation-z8" max-height: 300px;  -->
+                <div style="padding-bottom:5px; overflow: auto;">
+                    <table #usersTable mat-table [dataSource]="dataSource" class="employees-table" matSort>
+                        <!-- Username Column -->
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: left;"> Nombre / RFC </th>
+                            <td mat-cell *matCellDef="let row"> {{row.nombre}} {{row.apellido_paterno}} {{row.apellido_materno}}
+                                <div style="font-size: 8pt; color: #5F5F5F;">
+                                    {{row.rfc}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="destino">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="text-align: left;"> DESTINO </th>
+                            <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                {{ row.descripcion_actualizada}}
+                                <div style="font-size: 8pt; color: #5F5F5F;">{{ row.clues }}</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="oficio">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="text-align: left;"> FECHA OFICIO </th>
+                            <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                {{ row.fecha_oficio}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="periodo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="text-align: left;"> PERIODO </th>
+                            <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                {{ row.fecha_inicio}} - {{ row.fecha_fin}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="creador">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="text-align: left;"> CREADOR </th>
+                            <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                {{ row.name}}
+                                <br>
+                                <div style="font-size: 8pt; color: #5F5F5F;">{{ row.username }}</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="noResultsFound">
+                            <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                No se encontraron registros
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+                        <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
+
+                    </table>
+                </div>
+                <mat-hint *ngIf="resultsLength > 10">*Se muestran los primeros 10 resultados de la busqueda</mat-hint>
+
+            </div>
+        </div>
+
+    </section>
+</div>

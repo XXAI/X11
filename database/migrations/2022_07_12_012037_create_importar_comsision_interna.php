@@ -13,6 +13,7 @@ class CreateImportarComsisionInterna extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('importar_tramites');
         Schema::create('importar_tramites', function (Blueprint $table) {
             $table->smallInteger('trabajador_id')->unsigned();
             $table->string("cr_origen",15);
@@ -28,8 +29,7 @@ class CreateImportarComsisionInterna extends Migration
             $table->date('fecha_oficio')->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();
-            $table->date('fecha_aplicacion')->nullable();
-            $table->smallInteger("adjudicado")->default(0);
+            $table->smallInteger("reingenieria")->default(0);
             
             $table->smallInteger("tipo")->default(1)->comment("1->comisión interna, 2-> cambio adscripcion, 3-> reincorporacion, 4-> comisión externa, 5->permuta");
             $table->smallInteger("estatus")->default(1)->comment("1->correcto, 2-> trabajador no encontrado, 3-> destino no encontrado, 4-> nomina no encontrado, 5->fechas incorrectas, 6->destino y origen iguales");
@@ -51,6 +51,9 @@ class CreateImportarComsisionInterna extends Migration
             $table->dropColumn('user_origen_id');
             $table->dropColumn('user_destino_id');
             $table->dropColumn('user_validacion_id');
+            $table->dropColumn('adjudicado');
+            $table->smallInteger('user_id')->after("activo");
+            $table->smallInteger('reingenieria')->after("fecha_fin");
         });
     }
 
@@ -62,7 +65,7 @@ class CreateImportarComsisionInterna extends Migration
     public function down()
     {
         Schema::dropIfExists('importar_tramites');
-        Schema::create('rel_trabajador_comision_interna', function (Blueprint $table) {
+        Schema::table('rel_trabajador_comision_interna', function (Blueprint $table) {
            
             $table->date("fecha_respuesta_origen")->nullable();
             $table->date("fecha_respuesta_destino")->nullable();
@@ -73,6 +76,7 @@ class CreateImportarComsisionInterna extends Migration
             $table->string('user_origen_id',15);
             $table->string('user_destino_id',15);
             $table->string('user_validacion_id',15);
+            $table->dropColumn('user_id');
         });
     }
 }

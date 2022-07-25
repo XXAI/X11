@@ -13,10 +13,11 @@ import { ListaComponent } from './lista/lista.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormularioComponent } from './formulario/formulario.component';
 import { ImportarComponent } from './importar/importar.component';
+import { BuscadorComponent } from './buscador/buscador.component';
 
 
 @NgModule({
-  declarations: [ListaComponent, FormularioComponent, ImportarComponent],
+  declarations: [ListaComponent, FormularioComponent, ImportarComponent, BuscadorComponent],
   imports: [
     CommonModule,
     ComisionRoutingModule,

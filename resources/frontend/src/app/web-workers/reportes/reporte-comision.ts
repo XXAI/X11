@@ -293,7 +293,8 @@ export class ReporteComision {
       }
       
       let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir del día "+fecha_inicio+", fue comisionado a "+destino+", Chiapas; de esa "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
-       contenido_notificacion += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
+      contenido_notificacion += "Por lo que en 5 días hábiles, a partir de la fecha de recepción, el encargado deberá realizar la sanción de jornada y horario con número de control de acuerdo a los controles de asistencia existentes en la unidad.\n\n";
+      contenido_notificacion += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       let notificacion = {
         layout: 'noBorders',
           pageBreak:'',

@@ -13,9 +13,10 @@ export class ComisionService {
   url_lote                  = `${environment.base_url}/tramite-comision-lote`;
   url_filter_catalogs       =  `${environment.base_url}/catalogos-filtro-empleados`;
   url_filter_trabajador     =  `${environment.base_url}/busqueda-trabajador-tramite`;
+  url_busqueda_comision     =  `${environment.base_url}/busqueda-comision`;
   url_importar_informacion  =  `${environment.base_url}/importar_csv_data`;
-  url_validar_informacion  =  `${environment.base_url}/validar-importacion`;
-  url_migrar_informacion  =  `${environment.base_url}/migrar-importacion`;
+  url_validar_informacion   =  `${environment.base_url}/validar-importacion`;
+  url_migrar_informacion    =  `${environment.base_url}/migrar-importacion`;
   
   constructor(private http: HttpClient) { }
 
@@ -24,6 +25,15 @@ export class ComisionService {
           return this.http.get<any>(this.url, {params:payload, responseType: 'blob' as 'json'});
       }*/
       return this.http.get<any>(this.url, {params: payload}).pipe(
+          map( response => {
+            return response;
+          })
+      );
+  }
+  
+  buscarTrabajadorComision(payload):Observable<any> {
+      
+      return this.http.get<any>(this.url_busqueda_comision, {params: payload}).pipe(
           map( response => {
             return response;
           })

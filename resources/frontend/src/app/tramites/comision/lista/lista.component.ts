@@ -15,6 +15,7 @@ import { ComisionService } from '../comision.service';
 import { ReportWorker } from '../../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
 import { FormularioComponent } from '../formulario/formulario.component';
+import { BuscadorComponent } from '../buscador/buscador.component';
 import { ImportarComponent } from '../importar/importar.component';
 
 @Component({
@@ -106,7 +107,7 @@ export class ListaComponent implements OnInit {
     'imprimible': [undefined],
     'fecha_cambio': [undefined],
     'fechaCreacion': [undefined],
-    
+    'reingenieria': [undefined],
   });
 
   displayedColumns: string[] = ['estatus','Nombre','oficio','periodo', 'creacion', 'actions']; //'Agente',
@@ -291,6 +292,8 @@ export class ListaComponent implements OnInit {
         }else if(i == 'cr'){
           params[i] = filterFormValues[i].cr;
         }else if(i == 'imprimible'){
+          params[i] = filterFormValues[i].id;
+        }else if(i == 'reingenieria'){
           params[i] = filterFormValues[i].id;
         }else if(i == 'fechaCreacion'){
           let fecha = this.convertDate(filterFormValues[i]);
@@ -579,6 +582,7 @@ export class ListaComponent implements OnInit {
         fecha_fin: obj.rel_trabajador_comision_interna.fecha_fin, 
         clues: obj.rel_trabajador_comision_interna.cr_destino,
         clues_adscripcion: obj.rel_datos_laborales_nomina.cr,
+        reingenieria: obj.rel_trabajador_comision_interna.reingenieria,
         catalogo_cr: this.filterCatalogs['cr']
       };
 
@@ -623,6 +627,50 @@ export class ListaComponent implements OnInit {
     }
     
     const dialogRef = this.dialog.open(FormularioComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      
+    });
+  }
+  public buscar() {
+
+    //console.log(obj);
+    let configDialog = {};
+    let row: any = {};
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '91vh',
+        height: '8000px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '70vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '70vh',
+        height: '500px',
+        data: row
+      }
+    }
+    
+    const dialogRef = this.dialog.open(BuscadorComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
       

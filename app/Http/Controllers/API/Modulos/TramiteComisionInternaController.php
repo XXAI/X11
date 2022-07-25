@@ -21,44 +21,37 @@ class TramiteComisionInternaController extends Controller
     public function index(Request $request)
     {
         $loggedUser = auth()->userOrFail();
-
+        
         try{
             $access = $this->getUserAccessData();
             $parametros = $request->all();
-            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
+            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id); //En espera que tenga utilidad el permiso
 
-            $permiso_adjudicado = false;
-            $permiso_no_adjudicado = false;
+            $permiso_departamento = false;
             if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
                     
                     foreach ($value->permissions as $key2 => $value2) {
-                        if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_adjudicado = true; }
-                        if($value2->id == 'sAcg0BNbntiAUP79tlopqc1gMYWMuXhc'){ $permiso_no_adjudicado = true; }
+                        if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_departamento = true; }
                         
                     }
                 }
                     
                 foreach ($permisos->permissions as $key2 => $value2) {
-                    if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_adjudicado = true; }
-                    if($value2->id == 'sAcg0BNbntiAUP79tlopqc1gMYWMuXhc'){ $permiso_no_adjudicado = true; }
+                    if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_departamento = true; }
                 }   
             }
 
-            $adjudicado = "";
+            $filtro_user = "";
             if(!$access->is_admin){
-                if($permiso_adjudicado == true)
+                if(!$permiso_departamento == true)
                 {
-                    $adjudicado = " and adjudicado = 1";
-                }else if($permiso_no_adjudicado == true){
-                    $adjudicado = " and adjudicado = 0";
-                }else{
-                    $adjudicado = " and adjudicado = 2";
+                    $filtro_user = "and user_id".$loggedUser->id;
                 }
             }
 
             $trabajador = Trabajador::with("rel_datos_laborales_nomina", "rel_trabajador_comision_interna.cr_origen", "rel_trabajador_comision_interna.cr_destino")
-            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1 ".$adjudicado." and deleted_at is null)");
+            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1 ".$filtro_user." and deleted_at is null)");
 
             $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
             
@@ -113,6 +106,31 @@ class TramiteComisionInternaController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    public function buscarTrabajadorComision(Request $request)
+    {
+        try{
+            $parametros = $request->all();
+            $obj = DB::Table("trabajador")
+                                    ->Join("rel_trabajador_comision_interna", "rel_trabajador_comision_interna.trabajador_id","trabajador.id")
+                                    ->LeftJoin("users", "users.id","rel_trabajador_comision_interna.user_id")
+                                    ->Join("catalogo_cr", "catalogo_cr.cr","rel_trabajador_comision_interna.cr_destino")
+                                    ->where(function($query)use($parametros){
+                                        return $query
+                                                    ->whereRaw('concat(trabajador.nombre," ", trabajador.apellido_paterno, " ", trabajador.apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
+                                                    ->orWhere('trabajador.curp','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                                                    ->orWhere('trabajador.rfc','LIKE','%'.$parametros['busqueda_empleado'].'%');
+                                    })
+                                    ->select("trabajador.nombre","trabajador.apellido_paterno","trabajador.apellido_materno","trabajador.rfc", "rel_trabajador_comision_interna.fecha_oficio",
+                                "rel_trabajador_comision_interna.fecha_inicio", "rel_trabajador_comision_interna.fecha_fin", "users.name", "users.username", "catalogo_cr.clues", "catalogo_cr.descripcion_actualizada")
+                                    ->limit(10)->get();
+  
+
+            return response()->json(['data'=>$obj],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
     
     public function store(Request $request)
     {
@@ -140,38 +158,31 @@ class TramiteComisionInternaController extends Controller
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
         try {
-            $update = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])->first();
-            
+            $update = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])->where("activo",1)->where("fecha_fin",">",date("Y-m-d"))->first();
+            //Validacion del registro
             if($update)
+            {
+                return response()->json(['error'=>['message'=>"COMISIÓN ACTIVA"]], HttpResponse::HTTP_CONFLICT);
+            }else if($inputs['fecha_fin_periodo'] < date("Y-m-d") || $inputs['fecha_fin_periodo'] < $inputs['fecha_fin_periodo'] || $inputs['fecha_fin_periodo'] < $inputs['fecha_fin_periodo'])
+            {
+                return response()->json(['error'=>['message'=>"PERIODO NO VALIDO"]], HttpResponse::HTTP_CONFLICT);
+            }
+            //
+            
+            
+            /*if($update)
             {
                 //return Response::json(['error' => $update], HttpResponse::HTTP_CONFLICT);
                 $update->activo = 0;
                 $update->save();    
-            }
+            }*/
             $loggedUser = auth()->userOrFail();
-            $access = $this->getUserAccessData();
-            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
-
-            $permiso_adjudicado = false;
-            if(!$access->is_admin){
-                foreach ($permisos->roles as $key => $value) {
-                    
-                    foreach ($value->permissions as $key2 => $value2) {
-                        if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_adjudicado = true; }                        
-                    }
-                }
-                    
-                foreach ($permisos->permissions as $key2 => $value2) {
-                    if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_adjudicado = true; }
-                }   
-            }
-            $adjudicado = 0;
-            if($permiso_adjudicado)
-            {
-                $adjudicado = 1;
-            }
 
             $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
+            if(!$origen)
+            {
+                return response()->json(['error'=>['message'=>"TRABAJADOR NO NOMINAL"]], HttpResponse::HTTP_CONFLICT);
+            }
             $object = new RelComisionInterna();
             $object->cr_origen          = $origen->cr;
             $object->cr_destino         = $inputs['clues']['cr'];
@@ -179,8 +190,9 @@ class TramiteComisionInternaController extends Controller
             $object->fecha_oficio       = $inputs['fecha_oficio'];
             $object->fecha_inicio       = $inputs['fecha_inicio_periodo'];
             $object->fecha_fin          = $inputs['fecha_fin_periodo'];
-            $object->adjudicado         = $adjudicado;
-            $object->activo              = 1;
+            $object->reingenieria       = $inputs['reingenieria'];
+            $object->activo             = 1;
+            $object->user_id            = $loggedUser->id;
             $object->save();
             
             
@@ -221,17 +233,33 @@ class TramiteComisionInternaController extends Controller
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
         try {
-            
-            $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
             $object = RelComisionInterna::find($id);
+             if($inputs['fecha_fin_periodo'] < date("Y-m-d") || $inputs['fecha_fin_periodo'] < $inputs['fecha_fin_periodo'] || $inputs['fecha_fin_periodo'] < $inputs['fecha_fin_periodo'])
+            {
+                return response()->json(['error'=>['message'=>"PERIODO NO VALIDO"]], HttpResponse::HTTP_CONFLICT);
+            }
+
+            $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
+            if(!$origen)
+            {
+                return response()->json(['error'=>['message'=>"TRABAJADOR NO NOMINAL"]], HttpResponse::HTTP_CONFLICT);
+            }
+            
             $object->cr_origen          = $origen->cr;
             $object->cr_destino         = $inputs['clues']['cr'];
             $object->trabajador_id      = $inputs['trabajador_id'];
             $object->fecha_oficio       = $inputs['fecha_oficio'];
             $object->fecha_inicio       = $inputs['fecha_inicio_periodo'];
             $object->fecha_fin          = $inputs['fecha_fin_periodo'];
+            $object->reingenieria       = $inputs['reingenieria'];
             $object->save();
             
+            $revision = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])->where("activo",1)->where("fecha_fin",">",date("Y-m-d"))->count();
+            if($revision > 1)
+            {
+                DB::rollback();
+                return response()->json(['error'=>['message'=>"COMISIÓN ACTIVA"]], HttpResponse::HTTP_CONFLICT);
+            }
             DB::commit();
             
             return response()->json($object,HttpResponse::HTTP_OK);
@@ -256,7 +284,8 @@ class TramiteComisionInternaController extends Controller
             {
                 $folder = "comision-interna";
             }
-            importarTramites::where("user_id",$loggedUser->id)->where("tipo",1)->forceDelete();
+            importarTramites::where("user_id",$loggedUser->id)->forceDelete();
+            
             if($request->hasFile('archivo')) {
                 $extension = $request->file('archivo')->getClientOriginalExtension();
                 if($extension == "csv" || $extension == "CSV")
@@ -308,8 +337,7 @@ class TramiteComisionInternaController extends Controller
                 $registros[$indice]['fecha_oficio']     = ($value[6] == null)?'':$value[6];
                 $registros[$indice]['fecha_inicio']     = ($value[7] == null)?'':$value[7];
                 $registros[$indice]['fecha_fin']        = ($value[8] == null)?'':$value[8];
-                $registros[$indice]['fecha_aplicacion'] = ($value[9] == null)?'':$value[9];
-                $registros[$indice]['adjudicado']       = 1;
+                $registros[$indice]['reingenieria']     = ($value[9] == null)?'':$value[9];
                 $registros[$indice]['tipo']             = 1;
                 $registros[$indice]['user_id']          = $loggedUser->id;
                 
@@ -425,7 +453,7 @@ class TramiteComisionInternaController extends Controller
             {
                 //importamos origen encontrado
                 //echo "INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, adjudicado, activo, created_at, updated_at) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, 0, 1, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00' FROM importar_tramites WHERE tipo=1 AND user_id=".$loggedUser->id.";";    
-                DB::statement("INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, adjudicado, activo, created_at, updated_at) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, 0, 1, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00' FROM importar_tramites WHERE tipo=1 and estatus=1 AND user_id=".$loggedUser->id.";");
+                DB::statement("INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, activo, user_id, created_at, updated_at) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00' FROM importar_tramites WHERE tipo=1 and estatus=1 AND user_id=".$loggedUser->id.";");
             
             }
             
@@ -448,33 +476,26 @@ class TramiteComisionInternaController extends Controller
             $loggedUser = auth()->userOrFail();
 
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
-            $permiso_adjudicado = false;
+            $permiso_departamento = false;
             if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
                     
                     foreach ($value->permissions as $key2 => $value2) {
-                        if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC')
-                        {
-                            $permiso_adjudicado = true;
-                        }
+                        if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_departamento = true; }
+                        
                     }
                 }
                     
                 foreach ($permisos->permissions as $key2 => $value2) {
-                    if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC')
-                    {
-                        $permiso_adjudicado = true;
-                    }
+                    if($value2->id == 'FZPI3FHjUi3A3lZPoiXVikHbVaVkL9QC'){ $permiso_departamento = true; }
                 }   
             }
 
-            $adjudicado = "";
+            $filtro_user = "";
             if(!$access->is_admin){
-                if($permiso_adjudicado == true)
+                if(!$permiso_departamento == true)
                 {
-                    $adjudicado = " and adjudicado = 1";
-                }else{
-                    $adjudicado = " and adjudicado = 0";
+                    $filtro_user = "and user_id".$loggedUser->id;
                 }
             }
 
@@ -483,7 +504,7 @@ class TramiteComisionInternaController extends Controller
             "rel_trabajador_comision_interna.cr_destino.directorioResponsable.responsable", 
             "rel_trabajador_comision_interna.cr_destino.dependencia.directorioResponsable.responsable", 
             "rel_datos_laborales_nomina")
-            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1 and deleted_at is null ".$adjudicado.")")
+            ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1 and deleted_at is null ".$filtro_user.")")
             ->whereRaw(" trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)");
 
             $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access); 
@@ -589,6 +610,10 @@ class TramiteComisionInternaController extends Controller
 
             if(isset($parametros['fechaCreacion']) && $parametros['fechaCreacion'] ){
                 $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_comision_interna where created_at between '".$parametros['fechaCreacion']." 00:00:01' AND '".$parametros['fechaCreacion']." 23:59:59')");
+            }
+
+            if(isset($parametros['reingenieria']) && $parametros['reingenieria'] ){
+                $main_query = $main_query->where("trabajador.reingenieria ",$parametros['reingenieria']);
             }
         }
         return $main_query;

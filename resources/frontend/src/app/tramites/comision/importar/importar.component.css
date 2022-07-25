@@ -44,8 +44,8 @@
 
 .cantidad {
     display: inline-block;
-    padding: 10px;
-    font-size: 23pt;
+    padding: 5px;
+    font-size: 15pt;
     color: white;
     border-right: 1px solid #EFEFEF;
     background: #bc955b;
@@ -56,8 +56,8 @@
 
 .descripcion_resumen {
     display: inline-block;
-    padding: 10px;
-    font-size: 23pt;
+    padding: 5px;
+    font-size: 15pt;
     color: WHITE;
     background-color: #7b0726;
     min-width: 54px;

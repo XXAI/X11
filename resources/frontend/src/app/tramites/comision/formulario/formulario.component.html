@@ -65,7 +65,7 @@
                 </mat-form-field>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
                     <input matInput [matDatepicker]="fecha_oficio_picker" autocomplete="off" (click)="fecha_oficio_picker.open()" formControlName="fecha_oficio" placeholder="Fecha Oficio">
                     <mat-datepicker-toggle matPrefix [for]="fecha_oficio_picker"></mat-datepicker-toggle>
                     <mat-datepicker #fecha_oficio_picker [disabled]="false"></mat-datepicker>
@@ -74,7 +74,7 @@
                     </mat-error>
 
                 </mat-form-field>
-                <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
                     <input matInput [matDatepicker]="fecha_inicio_picker" autocomplete="off" (click)="fecha_inicio_picker.open()" formControlName="fecha_inicio_periodo" placeholder="Fecha Inicio Cambio">
                     <mat-datepicker-toggle matPrefix [for]="fecha_inicio_picker"></mat-datepicker-toggle>
                     <mat-datepicker #fecha_inicio_picker [disabled]="false"></mat-datepicker>
@@ -83,12 +83,23 @@
                     </mat-error>
 
                 </mat-form-field>
-                <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
                     <input matInput [matDatepicker]="fecha_fin_picker" autocomplete="off" (click)="fecha_fin_picker.open()" formControlName="fecha_fin_periodo" placeholder="Fecha Fin Cambio">
                     <mat-datepicker-toggle matPrefix [for]="fecha_fin_picker"></mat-datepicker-toggle>
                     <mat-datepicker #fecha_fin_picker [disabled]="false"></mat-datepicker>
                     <mat-error *ngIf="formularioForm.get('fecha_fin_periodo').invalid && (formularioForm.get('fecha_fin_periodo').dirty || formularioForm.get('fecha_fin_periodo').touched)">
                         <span *ngIf="formularioForm.get('fecha_fin_periodo').errors.required">Campo obligatorio</span>
+                    </mat-error>
+
+                </mat-form-field>
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                    <mat-label>REINGENIERIA</mat-label>
+                    <mat-select formControlName="reingenieria" required>
+                        <mat-option [value]="1">SI</mat-option>
+                        <mat-option [value]="0">NO</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formularioForm.get('reingenieria').invalid && (formularioForm.get('reingenieria').dirty || formularioForm.get('reingenieria').touched)">
+                        <span *ngIf="formularioForm.get('reingenieria').errors.required">Campo obligatorio</span>
                     </mat-error>
 
                 </mat-form-field>

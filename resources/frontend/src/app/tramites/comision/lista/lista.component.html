@@ -38,6 +38,7 @@
                             <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
                             <mat-menu #menu="matMenu">
                                 <button mat-menu-item (click)="Agregar()"><mat-icon>add</mat-icon> AGREGAR</button>
+                                <button mat-menu-item (click)="buscar()"><mat-icon>search</mat-icon> BUSCAR</button>
 
                             </mat-menu>
                         </section>
@@ -72,7 +73,7 @@
                 <mat-expansion-panel #advancedFilter class="advanced-filter" [formGroup]="filterForm">
                     <br>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                        <mat-form-field fxFlex="50">
+                        <mat-form-field fxFlex="50" appearance="fill">
                             <mat-label>DISTRITO</mat-label>
                             <mat-select formControlName="distrito">
                                 <mat-option *ngFor="let item of filterCatalogs['distrito']" [value]="item">
@@ -80,7 +81,7 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field fxFlex="50">
+                        <mat-form-field fxFlex="50" appearance="fill">
                             <mat-label>IMPRIMIBLE</mat-label>
                             <mat-select #ramaFilter formControlName="imprimible" [compareWith]="compareImprimibleSelect">
                                 <mat-option *ngFor="let item of filterCatalogs['imprimible']" [value]="item">
@@ -98,7 +99,7 @@
 
                     </div>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                        <mat-form-field fxFlex="33">
+                        <mat-form-field fxFlex="25" appearance="fill">
                             <mat-label>CLUES</mat-label>
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
                             <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
@@ -108,7 +109,7 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="33">
+                        <mat-form-field fxFlex="25" appearance="fill">
                             <mat-label>CR</mat-label>
                             <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
                             <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('cr')" [panelWidth]="'auto'">
@@ -118,7 +119,7 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('cr').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="33">
+                        <mat-form-field fxFlex="25" appearance="fill">
                             <mat-label>FECHA DE CREACIÓN</mat-label>
                             <input matInput [matDatepicker]="fechaPicker" placeholder="Fecha de Creacion" formControlName="fechaCreacion" readonly required>
                             <mat-datepicker-toggle matSuffix [for]="fechaPicker"></mat-datepicker-toggle>
@@ -126,7 +127,14 @@
                             <mat-hint align="end">seleccionar fecha
                                 <mat-icon>keyboard_arrow_up</mat-icon>&nbsp;</mat-hint>
                         </mat-form-field>
-
+                        <mat-form-field fxFlex="25" appearance="fill">
+                            <mat-label>REINGENIERIA</mat-label>
+                            <mat-select formControlName="reingenieria">
+                                <mat-option [value]="">TODOS</mat-option>
+                                <mat-option [value]="0">NO</mat-option>
+                                <mat-option [value]="1">SI</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                     <div fxLayout="row wrap">
                         <div fxFlex="none">

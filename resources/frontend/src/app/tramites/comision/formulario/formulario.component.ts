@@ -3,8 +3,6 @@ import { MediaObserver } from '@angular/flex-layout';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { ComisionService } from '../comision.service';
@@ -21,6 +19,7 @@ export interface RegistroData {
   fecha_fin?:string;
   catalogo_cr:any;
   trabajador:any;
+  reingenieria:any;
 }
 
 @Component({
@@ -61,6 +60,7 @@ export class FormularioComponent implements OnInit {
     'fecha_inicio_periodo': ['',[Validators.required]],
     'fecha_fin_periodo': ['',[Validators.required]],
     'trabajador_id': ['',[Validators.required]],
+    'reingenieria': ['',[Validators.required]],
   });
 
   ngOnInit(): void {
@@ -95,14 +95,15 @@ export class FormularioComponent implements OnInit {
       {
         this.arreglo_trabajador = [{id: this.data.trabajador.id, nombre: this.data.trabajador.nombre, apellido_paterno: this.data.trabajador.apellido_paterno, apellido_materno: this.data.trabajador.apellido_materno }];
       
-        
+        console.log();
         this.formularioForm.patchValue({
           trabajador:'',
           clues:this.data.clues, 
           fecha_oficio:this.data.fecha_oficio+"T18:51:49.313Z", 
           fecha_inicio_periodo:this.data.fecha_inicio+"T18:51:49.313Z",
           fecha_fin_periodo:this.data.fecha_fin+"T18:51:49.313Z",
-          trabajador_id: this.data.trabajador.id
+          trabajador_id: this.data.trabajador.id,
+          reingenieria: this.data.reingenieria
         });
         
         this.clues_nominal = this.data.clues_adscripcion.clues+" "+this.data.clues_adscripcion.descripcion_actualizada;
