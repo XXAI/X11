@@ -4,8 +4,8 @@
         <div fxLayout="column" fxLayout.xs="column">
             <section fxFlex fxLayout="row" fxLayout.xs="column">
                 <mat-form-field fxFlex fxFlex.xs="100" appearance="outline">
-                    <mat-label>Buscar Empleado</mat-label>
-                    <input matInput #busquedaEmpleado cdkFocusInitial [(ngModel)]="search" (keyup.escape)="search = ''" (keyup.enter)="buscarTrabajadores()" [readonly]="isLoading" autofocus>
+                    <mat-label>Buscar Trabajador</mat-label>
+                    <input matInput [(ngModel)]="search" (keyup.escape)="search = ''" (keyup.enter)="buscarTrabajadores()" [readonly]="isLoading" autofocus>
                 </mat-form-field>
                 <div fxFlex="none" fxFlex.xs="100">
                     <section class="search-button">
@@ -64,7 +64,7 @@
                         </ng-container>
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                        <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+                        <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
 
                         <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
 

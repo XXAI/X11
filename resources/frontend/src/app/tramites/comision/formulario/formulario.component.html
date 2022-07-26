@@ -96,7 +96,7 @@
                     <mat-label>REINGENIERIA</mat-label>
                     <mat-select formControlName="reingenieria" required>
                         <mat-option [value]="1">SI</mat-option>
-                        <mat-option [value]="0">NO</mat-option>
+                        <mat-option [value]="2">NO</mat-option>
                     </mat-select>
                     <mat-error *ngIf="formularioForm.get('reingenieria').invalid && (formularioForm.get('reingenieria').dirty || formularioForm.get('reingenieria').touched)">
                         <span *ngIf="formularioForm.get('reingenieria').errors.required">Campo obligatorio</span>

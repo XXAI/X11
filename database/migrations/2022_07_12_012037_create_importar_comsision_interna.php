@@ -73,10 +73,12 @@ class CreateImportarComsisionInterna extends Migration
             $table->smallInteger('estatus_origen')->unsigned();
             $table->smallInteger('estatus_destino')->unsigned();
             $table->smallInteger('estatus_validacion')->unsigned();
+            $table->smallInteger('adjudicado')->unsigned();
             $table->string('user_origen_id',15);
             $table->string('user_destino_id',15);
             $table->string('user_validacion_id',15);
             $table->dropColumn('user_id');
+            $table->dropColumn('reingenieria');
         });
     }
 }

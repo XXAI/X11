@@ -131,7 +131,7 @@
                             <mat-label>REINGENIERIA</mat-label>
                             <mat-select formControlName="reingenieria">
                                 <mat-option [value]="">TODOS</mat-option>
-                                <mat-option [value]="0">NO</mat-option>
+                                <mat-option [value]="2">NO</mat-option>
                                 <mat-option [value]="1">SI</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -230,7 +230,8 @@
                                     <mat-menu #menu="matMenu">
                                         <button mat-menu-item (click)="Agregar(row)"><mat-icon color="primary">edit</mat-icon>EDITAR</button>
                                         <button mat-menu-item (click)="imprimirOficio(row)"><mat-icon color="primary">print</mat-icon>GENERAR OFICIO</button>
-                                        <button mat-menu-item style="color: red;"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
+                                        <button mat-menu-item style="color: red;" (click)="eliminar(row)"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
+                                        <button mat-menu-item style="color: red;" (click)="truncar(row)"><mat-icon color="warn">block</mat-icon>TRUNCAR CAMBIO</button>
                                     </mat-menu>
 
                                 </td>

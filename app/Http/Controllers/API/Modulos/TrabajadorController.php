@@ -1310,7 +1310,12 @@ class TrabajadorController extends Controller
             $trabajador = Trabajador::with("datoslaboralesnomina")
             //->join("rel_trabajador_datos_laborales_nomina", "rel_trabajador_datos_laborales_nomina.trabajador_id","=","trabajador.id")
             ->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina)")
-            ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
+            ->where(function($query)use($parametros){
+                return $query->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
+                            ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                            ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
+            })
+            //->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null)");
 
              $trabajador = $trabajador->get();

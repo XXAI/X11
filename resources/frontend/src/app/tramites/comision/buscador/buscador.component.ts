@@ -26,6 +26,7 @@ export class BuscadorComponent implements OnInit {
   mediaSize:string;
   search:string = "";
   isLoading: boolean = false;
+  selectedItemIndex:number = 1;
 
   searchQuery: string = '';
 
@@ -60,6 +61,7 @@ export class BuscadorComponent implements OnInit {
         this.resultsLength = response.data.length;
         this.dataSource = response.data;
         this.isLoading = false;
+
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";

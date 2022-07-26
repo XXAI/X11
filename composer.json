@@ -15,7 +15,8 @@
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",
         "roave/better-reflection": "^4.12",
-        "tymon/jwt-auth": "~1.0.0-rc.4.1"
+        "tymon/jwt-auth": "~1.0.0-rc.4.1",
+        "doctrine/dbal": "v2.4.2"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

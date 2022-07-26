@@ -11,7 +11,7 @@ use App\Models\Directorio;
 use App\Models\RelComisionInterna;
 use App\Models\Cr;
 use App\Models\importarTramites;
-use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 //Relacionales
 use App\Models\User;
@@ -271,6 +271,65 @@ class TramiteComisionInternaController extends Controller
 
     }
 
+    public function Destroy($id)
+    {
+        try{
+            $loggedUser = auth()->userOrFail();
+            $obj = RelComisionInterna::where("trabajador_id",$id)->where("activo",1)->first();
+            $obj->user_deleted_id = $loggedUser->id;
+            $obj->estatus = "C";
+            $obj->save();
+            $obj->delete();
+
+            return response()->json(['data'=>"Responsable Eliminado"], HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+    
+    public function truncarComision(Request $request)
+    {
+        try{
+            $carbon = Carbon::now();
+            $actual = Carbon::now();
+            $dias_mes = $carbon->daysInMonth;
+            $dia = $carbon->day;
+            $diferencia = 0;
+
+            if($dia < 15)
+            {
+                $diferencia = 15 - $dia;
+            }else{
+                $diferencia = $dias_mes - $dia;
+            }
+
+            $dia_truncar = $carbon->addDays($diferencia);
+            $loggedUser = auth()->userOrFail();
+            $inputs = $request->all();
+            $inputs = $inputs['params'];
+            $obj = RelComisionInterna::where("trabajador_id",$inputs['trabajador_id'])->where("activo",1)->first();
+            if($obj->fecha_inicio > $dia_truncar->format('Y-m-d'))
+            {
+                $obj->estatus = "C"; // Estatus de interrumpido
+                $obj->user_deleted_id = $loggedUser->id;
+                $obj->estatus = "C";
+                $obj->save();
+                $obj->delete();
+            }else{
+                $obj->estatus = "I"; // Estatus de interrumpido
+                $obj->user_updated_id = $loggedUser->id;
+                $obj->fecha_fin = $dia_truncar->format('Y-m-d');
+                $obj->activo = 0;
+                $obj->save();
+
+            }
+            // INTERRUMPIR
+            return response()->json(['data'=>"Responsable Eliminado"], HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     public function UploadCsv(Request $request)
     {
         ini_set('memory_limit', '-1');
@@ -374,6 +433,9 @@ class TramiteComisionInternaController extends Controller
             //Validamos adscripcion nominal
             DB::statement("UPDATE importar_tramites a INNER JOIN rel_trabajador_datos_laborales_nomina b ON a.`trabajador_id`=b.`trabajador_id` SET a.cr_origen=b.cr_nomina_id WHERE a.trabajador_id!=0 and b.`cr_nomina_id` IS NOT NULL and ".$filtro);
             
+            //Validamos adscripcion nominal
+            DB::statement("UPDATE importar_tramites a INNER JOIN rel_trabajador_datos_laborales b ON a.`trabajador_id`=b.`trabajador_id` SET a.cr_before_id=b.cr_fisico_id WHERE a.trabajador_id!=0 and b.`cr_fisico_id` IS NOT NULL and ".$filtro);
+            
             //Validamos cr del destino por cr para sacar los de la oficina
             DB::statement("UPDATE importar_tramites a LEFT JOIN catalogo_cr b ON a.`cr_destino`=b.`cr` AND b.`deleted_at` IS NULL SET cr_destino=b.cr WHERE a.clues='CSSSA017213' and b.cr IS NOT NULL and ".$filtro);
             
@@ -453,7 +515,7 @@ class TramiteComisionInternaController extends Controller
             {
                 //importamos origen encontrado
                 //echo "INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, adjudicado, activo, created_at, updated_at) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, 0, 1, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00' FROM importar_tramites WHERE tipo=1 AND user_id=".$loggedUser->id.";";    
-                DB::statement("INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, activo, user_id, created_at, updated_at) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00' FROM importar_tramites WHERE tipo=1 and estatus=1 AND user_id=".$loggedUser->id.";");
+                DB::statement("INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, activo, user_id, created_at, updated_at, cr_before_id) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00', cr_before_id FROM importar_tramites WHERE tipo=1 and estatus=1 AND user_id=".$loggedUser->id.";");
             
             }
             
@@ -612,8 +674,9 @@ class TramiteComisionInternaController extends Controller
                 $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_comision_interna where created_at between '".$parametros['fechaCreacion']." 00:00:01' AND '".$parametros['fechaCreacion']." 23:59:59')");
             }
 
-            if(isset($parametros['reingenieria']) && $parametros['reingenieria'] ){
-                $main_query = $main_query->where("trabajador.reingenieria ",$parametros['reingenieria']);
+            if(isset($parametros['reingenieria']) && $parametros['reingenieria'] !=""){
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_comision_interna where activo=1 and reingenieria=".$parametros['reingenieria']." and deleted_at is null)");
+                ///->where("trabajador.reingenieria ",$parametros['reingenieria']);
             }
         }
         return $main_query;

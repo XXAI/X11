@@ -17,6 +17,7 @@ export class ComisionService {
   url_importar_informacion  =  `${environment.base_url}/importar_csv_data`;
   url_validar_informacion   =  `${environment.base_url}/validar-importacion`;
   url_migrar_informacion    =  `${environment.base_url}/migrar-importacion`;
+  url_truncar_informacion    =  `${environment.base_url}/truncar-comision`;
   
   constructor(private http: HttpClient) { }
 
@@ -114,6 +115,24 @@ export class ComisionService {
   importarComisiones(payload:any)
   {
     return this.http.post<any>(this.url_migrar_informacion , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  
+  eliminarComision(id, payload:any)
+  {
+    return this.http.delete<any>(this.url+"/"+id , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  truncarComision(payload:any)
+  {
+    return this.http.post<any>(this.url_truncar_informacion , {params: payload}).pipe(
       map( (response: any) => {        
         return response;
       }

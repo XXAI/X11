@@ -17,6 +17,7 @@ import * as FileSaver from 'file-saver';
 import { FormularioComponent } from '../formulario/formulario.component';
 import { BuscadorComponent } from '../buscador/buscador.component';
 import { ImportarComponent } from '../importar/importar.component';
+import { ConfirmActionDialogComponent } from '../../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
 @Component({
   selector: 'app-lista',
@@ -284,6 +285,7 @@ export class ListaComponent implements OnInit {
     //this.loadFilterChips(filterFormValues);
 
     for(let i in filterFormValues){
+      
       if(filterFormValues[i]){
         if(i == 'distrito'){
           params[i] = filterFormValues[i].id;
@@ -294,7 +296,8 @@ export class ListaComponent implements OnInit {
         }else if(i == 'imprimible'){
           params[i] = filterFormValues[i].id;
         }else if(i == 'reingenieria'){
-          params[i] = filterFormValues[i].id;
+          
+          params[i] = filterFormValues[i];
         }else if(i == 'fechaCreacion'){
           let fecha = this.convertDate(filterFormValues[i]);
           params[i] = fecha;
@@ -304,7 +307,7 @@ export class ListaComponent implements OnInit {
         countFilter++;
       }
     }
-
+    console.log(params);
     if(countFilter > 0){
       params.active_filter = true;
     }
@@ -359,9 +362,74 @@ export class ListaComponent implements OnInit {
     return event;
   }
 
-  editar(obj)
+  eliminar(obj)
   {
-    
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Eliminar',dialogMessage:'¿Realmente desea eliminar la comision? Escriba ELIMINAR a continuación para realizar el proceso.',validationString:'ELIMINAR',btnColor:'primary',btnText:'Eliminar'}
+    });
+    this.isLoading = true;
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.comisionService.eliminarComision(obj.id,{}).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {
+              this.loadTrabajadorData();
+            }
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }else
+      {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  truncar(obj)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Eliminar',dialogMessage:'¿Realmente desea interrumpir la comision? Escriba INTERRUMPIR a continuación para realizar el proceso.',validationString:'INTERRUMPIR',btnColor:'primary',btnText:'Interrumpir'}
+    });
+    this.isLoading = true;
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.comisionService.truncarComision({trabajador_id:obj.id}).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {
+              this.loadTrabajadorData();
+            }
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );
+      }else
+      {
+        this.isLoading = false;
+      }
+    });
   }
 
   llenarPaginasLote(total)
@@ -629,7 +697,7 @@ export class ListaComponent implements OnInit {
     const dialogRef = this.dialog.open(FormularioComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
-      
+      this.loadTrabajadorData();
     });
   }
   public buscar() {
