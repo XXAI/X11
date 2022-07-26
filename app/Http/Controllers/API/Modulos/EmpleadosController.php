@@ -1327,6 +1327,7 @@ class EmpleadosController extends Controller
             $loggedUser = auth()->userOrFail();
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
             $permiso_rh_central = false;
+            $permiso_catalogos = false;
             
 
             foreach ($permisos->roles as $key => $value) {
@@ -1336,11 +1337,19 @@ class EmpleadosController extends Controller
                     {
                         $permiso_rh_central = true;
                     }
+                    if($value2->id == 'VRfiIfnk2BLJl6mX0SXMtL08VRah4nxg')
+                    {
+                        $permiso_catalogos = true;
+                    }
                 }
                 foreach ($permisos->permissions as $key2 => $value2) {
                     if($value2->id == 'a1LC0TC1p9OkNd9zaIWKwUuM8qYKpprT')
                     {
                         $permiso_rh_central = true;
+                    }
+                    if($value2->id == 'VRfiIfnk2BLJl6mX0SXMtL08VRah4nxg')
+                    {
+                        $permiso_catalogos = true;
                     }
                 }
             }

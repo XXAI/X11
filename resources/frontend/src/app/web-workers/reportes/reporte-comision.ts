@@ -29,7 +29,7 @@ export class ReporteComision {
     let nombre_elaboracion = "";
     if(elaboracion != null)
     {
-      nombre_elaboracion = "ELABORÓ: "+elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno+" - ADMINISTRATIVO";
+      nombre_elaboracion = elaboracion.nombre+" "+elaboracion.apellido_paterno+" "+elaboracion.apellido_materno+" - ADMINISTRATIVO";
     }
     let fecha_hoy =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date());
 
@@ -84,6 +84,12 @@ export class ReporteComision {
           {
             bold: true,
             alignment:"left",
+            fontSize: 10,
+          },
+          texto_depto_derecha:
+          {
+            bold: true,
+            alignment:"right",
             fontSize: 10,
           },
           texto_oficio_notificacion:
@@ -243,11 +249,13 @@ export class ReporteComision {
           widths: [400,'*'],
           margin: [0,0,0,0],
           body: [
+           
+            
             [
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "TUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\nOFICIO: IS/DAF/SRH/DRL/5003/________________/"+anio_oficio+"\nASUNTO: COMISIÓN", style: "texto_num_oficio", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL/5003/__________________________/"+anio_oficio+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+
@@ -303,7 +311,7 @@ export class ReporteComision {
             margin: [0,0,0,0],
             body: [
             [
-              { text: "\n\n\n\nOFICIO NÚMERO: ___________________________\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
+              { text: "\n\n\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL/5003/________________________/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
             ],
             [
               {text: responsable_notificacion.toUpperCase()+"\n\n\n", style:"contenido_notificacion", colSpan:2},{}
