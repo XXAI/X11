@@ -177,6 +177,7 @@ export class FormularioComponent implements OnInit {
     }else{
       this.comisionService.guardarComision(this.formularioForm.value).subscribe(
         response => {
+          //console.log("BIEN");
           //console.log(response);
           this.formularioForm.patchValue({trabajador:'',trabajador_id:'',clues:'', fecha_oficio:'', fecha_cambio:''});
           this.clues_nominal = "";
@@ -185,12 +186,15 @@ export class FormularioComponent implements OnInit {
           this.sharedService.showSnackBar("SE GUARDO CORRECTAMENTE", null, 3000);
         },
         errorResponse =>{
+          //console.log("mAL");
+          console.log(errorResponse);
+          
           this.isLoading = false;
           var errorMessage = "Ocurrió un error.";
-          if(errorResponse.status == 409){
+          /*if(errorResponse.status == 409){
             errorMessage = errorResponse.error.message;
-          }
-          this.sharedService.showSnackBar(errorMessage, null, 3000);
+          }*/
+          this.sharedService.showSnackBar(errorResponse.error.message, null, 3000);
         }
       );
     }

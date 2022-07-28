@@ -46,7 +46,7 @@ class TramiteComisionInternaController extends Controller
             if(!$access->is_admin){
                 if(!$permiso_departamento == true)
                 {
-                    $filtro_user = "and user_id".$loggedUser->id;
+                    $filtro_user = "and user_id=".$loggedUser->id;
                 }
             }
 
@@ -162,10 +162,10 @@ class TramiteComisionInternaController extends Controller
             //Validacion del registro
             if($update)
             {
-                return response()->json(['error'=>['message'=>"COMISIÓN ACTIVA"]], HttpResponse::HTTP_CONFLICT);
+                return response()->json(['message'=>"COMISIÓN ACTIVA"], HttpResponse::HTTP_CONFLICT);
             }else if($inputs['fecha_fin_periodo'] < date("Y-m-d") || $inputs['fecha_fin_periodo'] < $inputs['fecha_fin_periodo'] || $inputs['fecha_fin_periodo'] < $inputs['fecha_fin_periodo'])
             {
-                return response()->json(['error'=>['message'=>"PERIODO NO VALIDO"]], HttpResponse::HTTP_CONFLICT);
+                return response()->json(['message'=>"PERIODO NO VALIDO"], HttpResponse::HTTP_CONFLICT);
             }
             //
             
