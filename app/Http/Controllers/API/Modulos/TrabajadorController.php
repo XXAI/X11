@@ -1485,7 +1485,7 @@ class TrabajadorController extends Controller
     public function activarTrabajadorSindical($id){
         try{
             
-            $trabajador = RelComision::where("trabajador_id",$id)->first();
+            $trabajador = RelComision::where("trabajador_id",$id)->where("estatus","=","A")->first();
             $trabajador->estatus = "E";
             
             $trabajador->save();

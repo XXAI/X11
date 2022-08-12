@@ -1,9 +1,26 @@
-<mat-toolbar color="primary" class="">
+<mat-toolbar color="primary" class="" style="height: 48px !important;">
     <!--button mat-icon-button aria-label="Ir al inicio" routerLink="/" fxShow.xs fxHide.gt-sm>
       <mat-icon>home</mat-icon>
     </button-->
+
+    <div *ngIf="selectedApp && selectedApp.children.length > 0">
+        <button mat-button [matMenuTriggerFor]="menuModulo" *ngIf="isAuthenticated"><mat-icon>menu</mat-icon></button>
+        <mat-menu #menuModulo="matMenu">
+            <button mat-menu-item *ngFor="let app of selectedApp.children" routerLink="{{ app.route }}"><mat-icon>{{ app.icon }}</mat-icon> {{ app.name }}</button>
+        </mat-menu>
+    </div>
     <img src="{{(selectedApp)?selectedApp.icon:'assets/app-icon.png'}}" alt="" style="height: 60%; width:auto;" fxHide.xs="true">
-    <span style="margin-left:10px" *ngIf="!selectedApp"><a routerLink="/">Secretaria de Salud</a></span> <span *ngIf="selectedApp">&nbsp; <a routerLink="{{selectedApp.route}}">{{selectedApp.name}}</a></span>
+    <span style="margin-left:10px" *ngIf="!selectedApp">
+        <a routerLink="/">Secretaria de Salud</a>
+    </span>
+    <span *ngIf="selectedApp">&nbsp; 
+        <a routerLink="{{selectedApp.route}}" style="font-size: 12pt;" >{{selectedApp.name}}</a>
+        <!--<a *ngFor="let item of modules" routerLink="{{item.link}}" style="font-size: 12pt;" >{{item.nombre}}</a>-->
+    </span>
+
+
+
+
     <span class="spacer"></span>
     <button mat-button [matMenuTriggerFor]="menu" *ngIf="isAuthenticated"><mat-icon>contact_support</mat-icon></button>
     <mat-menu #menu="matMenu">
@@ -58,7 +75,7 @@
         </mat-menu>
 
         <button mat-icon-button [matMenuTriggerFor]="menuAccount" fxHide.xs="true">
-        <img src="{{user.avatar}}" alt="" style="width:auto; margin:auto">
+        <img src="{{user.avatar}}" alt="" style="width:71%; margin:auto">
       </button>
         <mat-menu #menuAccount="matMenu" style="color: red !important;">
 

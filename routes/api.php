@@ -143,6 +143,10 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::post('validar-importacion',                    'API\Modulos\TramiteComisionInternaController@ValidarImportacion');
     Route::post('migrar-importacion',                    'API\Modulos\TramiteComisionInternaController@migrarInformacion');
     
+    //Herramientas
+    Route::post('importar-db',                          'API\Admin\HerramientasController@UploadDB');
+    Route::post('cargar-base',                          'API\Admin\HerramientasController@CargarBase');
+    
     Route::get('tramite-documentacion-download/{id}',   'API\Modulos\TramiteDocumentacionController@Download');
     Route::get('constancia-download/{id}',              'API\Modulos\TrabajadorController@Download');
     Route::apiResource('tramite-adscripcion',           'API\Modulos\TramiteAdscripcionController');

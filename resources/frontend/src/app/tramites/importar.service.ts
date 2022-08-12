@@ -12,6 +12,7 @@ export class ImportarService {
   private http: HttpClient;
   url_documentacion_upload    = `${environment.base_url}/tramite-documentacion-upload`;
   url_importar_csv            = `${environment.base_url}/tramite-importar-csv`;
+  url_importar_db            = `${environment.base_url}/importar-db`;
   url_csf_upload              = `${environment.base_url}/upload-csf`;
 
   constructor( handler: HttpBackend) {
@@ -68,5 +69,18 @@ export class ImportarService {
     headers.append('Content-Type','application/x-www-form-urlencoded;charset=UTF-8');
     headers.append('Access-Control-Allow-Origin','*');
     return this.http.post(this.url_importar_csv, formData, { headers:headers});
+  }
+
+  uploadDB(file:File): Observable<any>{
+    const formData: FormData = new FormData();
+    formData.append('archivo', file, file.name);
+
+    let token = localStorage.getItem('token');
+    let headers = new HttpHeaders().set(
+      "Authorization",'Bearer '+localStorage.getItem("token"),
+    );
+    headers.append('Content-Type','application/x-www-form-urlencoded;charset=UTF-8');
+    headers.append('Access-Control-Allow-Origin','*');
+    return this.http.post(this.url_importar_db, formData, { headers:headers});
   }
 }

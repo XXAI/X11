@@ -23,7 +23,7 @@
         </mat-toolbar-row>
     </mat-toolbar>-->
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0px" style="background-color: #f5f5f5; border-bottom: 1px solid #7f7f7f; margin-bottom: 5pt;">
-        <div fxFlex fxLayout="row wrap" style="padding: 10pt; font-weight: 500;" class="sombra">
+        <div fxFlex fxLayout="row wrap" style="padding: 7pt; font-weight: 500; font-size: 11pt;" class="sombra">
             <div fxFlex="33" fxFlex.xs="100">
                 <span>Estatus: Activos {{countPersonalActivo | number: '2.'}} / Validados {{countPersonalValidado | number: '2.'}}</span>
                 <span class="spacer"></span>
@@ -323,7 +323,7 @@
                                         <button mat-menu-item *ngIf="row.estatus == 1 && row.validado == 0  && row.actualizado == 1" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="validateTrabajador(row.id)"><mat-icon  color="primary">check_cirlce</mat-icon>Validar</button>
                                         <button mat-menu-item #lista *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="liberarTrabajador(row.id)"><mat-icon color="warn">link_off</mat-icon>Desligar</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="BajaTrabajador(row)"><mat-icon color="warn">person_remove</mat-icon>Dar de Baja</button>
-                                        <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="TransferirTrabajador(row)"><mat-icon color="primary">360</mat-icon>Transferir</button>
+                                        <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="TransferirTrabajador(row)"><mat-icon color="primary">transfer_within_a_station</mat-icon>Transferir</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="ComisionSindical(row)"><mat-icon color="primary">group</mat-icon>Comisión Sindical</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && row.usuario != 0" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="ResetContrasena(row)"><mat-icon color="primary">vpn_key</mat-icon>Resetear Contraseña</button>
                                         <!--<button mat-menu-item *ngIf="row.cr_fisico_id != row.cr_nomina_id" fxHide.xs="true" (click)="solicitar(1, row.id)"><mat-icon color="primary">article</mat-icon>Comisión</button>-->

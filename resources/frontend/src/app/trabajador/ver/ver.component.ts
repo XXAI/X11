@@ -513,41 +513,35 @@ export class VerComponent implements OnInit {
       payload.fecha_fin = fecha_actual.toISOString().slice(0,10);
     
     }*/
-    console.log(payload);
+   
 
     this.isLoadingAsistencia = true;
     this.assistSource = [];
-    this.verifData = undefined;
+    this.verifData = 0;
 
     this.trabajadorService.getDatosAsistencia(payload).subscribe(
       response => {
-        //console.log(response);
+          this.dataAsistencia = response.data;
+          this.rellenarAsistencia(0);
+          
+          let startingDate = new Date(response.fecha_inicial+'T00:00:00');
+          console.log(startingDate);
+
+          this.fechaInicioAsist = new Date(response.fecha_inicial.substring(0,4),(response.fecha_inicial.substring(5,7)-1), response.fecha_inicial.substring(8,10),12,0,0,0);
+          this.fechaFinAsist = new Date(response.fecha_final.substring(0,4),(response.fecha_final.substring(5,7)-1), response.fecha_final.substring(8,10),12,0,0,0);
+
+          this.resumenAsistencias = response.resumen[0];
+          this.verifData = { id: response.validacion.Badgenumber, faltas: response.resumen[0].Falta, retardos: response.resumen[0].Retardo_Mayor + response.resumen[0].Retardo_Menor};
+          this.isLoadingAsistencia = false;
+          this.asistenciasCargadas = true;
         
-
-        /*for(let i in response.data){
-          conversionAsistencia.push(response.data[i]);
-        }
-        this.assistSource = conversionAsistencia;*/
-        this.dataAsistencia = response.data;
-        this.rellenarAsistencia(0);
-        
-        let startingDate = new Date(response.fecha_inicial+'T00:00:00');
-        console.log(startingDate);
-
-        this.fechaInicioAsist = new Date(response.fecha_inicial.substring(0,4),(response.fecha_inicial.substring(5,7)-1), response.fecha_inicial.substring(8,10),12,0,0,0);
-        this.fechaFinAsist = new Date(response.fecha_final.substring(0,4),(response.fecha_final.substring(5,7)-1), response.fecha_final.substring(8,10),12,0,0,0);
-
-        this.resumenAsistencias = response.resumen[0];
-        this.verifData = { id: response.validacion.Badgenumber, faltas: response.resumen[0].Falta, retardos: response.resumen[0].Retardo_Mayor + response.resumen[0].Retardo_Menor};
-        this.isLoadingAsistencia = false;
-        this.asistenciasCargadas = true;
       },
       responsError =>{
         console.log(responsError);
         this.fechaInicioAsist = new Date();
         this.fechaFinAsist = new Date();
         this.isLoadingAsistencia = false;
-        this.asistenciasCargadas = true;
+        this.asistenciasCargadas = false;
         this.sharedService.showSnackBar('Error al intentar recuperar datos de asistencia', null, 4000);
       }
     );

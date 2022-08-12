@@ -1,0 +1,146 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+    <div fxFlex="100" fxFlex.xs="100">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+            <div fxFlex="80" fxFlex.xs="100">
+                <h1 mat-dialog-title style="color: grey;">IMPORTACIÓN DE BASE</h1>
+            </div>
+            <div fxFlex="20" fxFlex.xs="100">
+                <button mat-button color="warn" (click)='cancelar()'>Cerrar</button>
+                <button mat-raised-button color="primary" style="margin: 0px 12px;" [disabled]="!Viableimportacion" (click)="importar()">Importar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-content>
+    <mat-tab-group [selectedIndex]="indexTab">
+        <mat-tab label="CARGAR BASE .CSV" [disabled]="status != 1">
+            <ng-template mat-tab-label class="titleSterp">
+                <mat-icon class="example-tab-icon">upload</mat-icon>
+                Importación CSV
+            </ng-template>
+            <div style="text-align: center;" class="bloque-importacion">
+                <form [formGroup]="form">
+                    <div class="bloque-central">
+                        <input type="file" class="form-control" formControlName="file" id="file" accept="text/csv" (change)="fileChange($event)">
+                        <label for="file" class="btn-3">
+                        <span>SELECCIONAR ARCHIVO CSV</span>
+                        </label>
+                        <div style="margin: 10px;">
+                            <div style="background-color: burlywood; padding: 10px; font-weight: bold;">Datos del Archivo Seleccionado</div>
+                            <br> Nombre del Archivo: <b>{{ datosArchivo.nombre }}</b><br><br> Tamaño del Archivo: <b>{{ datosArchivo.tamano }}</b> Kb
+                        </div>
+                        <button type="button" mat-raised-button color="primary" (click)="subir();" [disabled]="!form.valid || isLoading" style="margin: 10px;">
+                            <span *ngIf="!isLoading">
+                                SUBIR INFORMACIÓN
+                            </span>
+                            <span *ngIf="isLoading">
+                                <div class="form-loading-shade">
+                                    Cargando Informaciòn
+                                    <mat-icon><mat-spinner [diameter]="20" color="primary"></mat-spinner></mat-icon>
+                                
+                                </div>
+                                
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="RESUMÉN DE IMPORTACIÓN" [disabled]="status != 2">
+            <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">flare</mat-icon>
+                Resumén de Importación
+            </ng-template>
+            <div>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+                    <div fxFlex="100" fxFlex.xs="100">
+                        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                            <div fxFlex="49" fxFlex.xs="100">
+                                <div class="cantidad total">{{ total }}</div>
+                                <div class="descripcion_resumen total">DATOS IMPORTADOS</div>
+                                <br>
+                                <div class="cantidad correctos">{{ correctos }}</div>
+                                <div class="descripcion_resumen correctos">REGISTROS CORRECTOS</div>
+                                <br>
+                                <div class="cantidad incorrectos">{{ incorrectos}}</div>
+                                <div class="descripcion_resumen incorrectos">REGISTROS INCORRECTOS</div>
+
+                            </div>
+                            <div fxFlex="49" fxFlex.xs="100">
+                                <!--<div class="cantidad trabajador">{{ no_trabajadores }}</div>
+                                <div class="descripcion_resumen trabajador">NO IDENTIFICADOS</div>
+                                <br>-->
+                                <div class="cantidad fecha">{{ fechas }}</div>
+                                <div class="descripcion_resumen fechas">FECHAS INCORRECTAS</div>
+                                <br>
+                                <div class="cantidad origen">{{ no_nomina }}</div>
+                                <div class="descripcion_resumen origen">NO NOMINALES</div>
+                                <br>
+                                <div class="cantidad destino">{{ no_destino }}</div>
+                                <div class="descripcion_resumen destino">SIN DESTINO</div>
+                                <br>
+                                <div class="cantidad destino">{{ igual_origen_destino }}</div>
+                                <div class="descripcion_resumen destino">ORIGEN = DESTINO</div>
+                                <br>
+                                <div class="cantidad destino">{{ duplicados }}</div>
+                                <div class="descripcion_resumen destino">DUPLICADOS</div>
+                                <br>
+                                <div class="cantidad destino">{{ comisionActiva }}</div>
+                                <div class="descripcion_resumen destino">COMISIÓN ACTIVA</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="DATOS INCORRECTOS" [disabled]="status != 2">
+            <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon" style="color: red !important;">cancel</mat-icon>
+                Datos Incorrectos
+            </ng-template>
+            <div class="data-container ">
+                <div class="data-table-container">
+                    <table mat-table [dataSource]="dataSource" class="data-table" matSort>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef> NOMBRE </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div *ngIf="element.nombre_completo!=''"><b>{{element.nombre_completo}}</b></div>
+                                <div *ngIf="element.nombre_completo==''"><b>SIN NOMBRE</b></div>
+                                <div *ngIf="element.nombre_completo!=''" style="font-size: 9pt;">{{element.rfc}}</div>
+                                <div *ngIf="element.nombre_completo==''" style="font-size: 9pt;">SIN RFC</div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="observacion">
+                            <th mat-header-cell *matHeaderCellDef> OBSERVACIONES </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div [innerHTML]='element.observaciones'></div>
+
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="noResultsFound">
+                            <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                No se encontraron registros
+                            </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+</div>

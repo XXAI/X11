@@ -158,6 +158,9 @@ export class ReporteComision {
         case "416": TipoTrabajador = "BASE"; break;
         case "HOM": TipoTrabajador = "HOMOLOGADO"; break;
         case "REG": TipoTrabajador = "REGULARIZADO"; break;
+        case "FO2": 
+        case "FO3": 
+        case "FOR": TipoTrabajador="FORMALIZADO"; break;
         default: TipoTrabajador = "EVENTUAL"; break;
       }
 
@@ -213,13 +216,13 @@ export class ReporteComision {
         case "FO2": 
         case "FO3": 
         case "FOR": 
-          acuse_qr = "Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, 82, 133, 134 y demás relativos aplicables de las Condiciones Generales del Trabajo, por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien hacerle del conocimiento, que a partir del día "+periodo+", queda comisionado a "+destino+"; con su código funcional "+clave+" "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
+          acuse_qr = "Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, 82, 133, 134 y demás relativos aplicables de las Condiciones Generales del Trabajo, por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien hacerle del conocimiento, que a partir del día "+periodo+", queda comisionado a "+destino+"; con su código funcional "+clave+" "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el/la  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
           contenido += acuse_qr+"\n\n";
           contenido += "Con fundamento en el CAPÍTULO IX, DE LA INTENSIDAD, CALIDAD Y PRODUCTIVIDAD EN EL TRABAJO, de las Condiciones Generales del Trabajo de la Secretaría de Salud, se le exhorta que deberá desempeñar los servicios encomendados, con aptitud, intensidad, calidad, eficacia, eficiencia, pulcritud y esmero, que por su propia naturaleza se demande en el desempeño y la realización de las actividades y funciones que debe desarrollar como trabajador en el entendido, que de no presentarse a laborar en los términos señalados en el presente, se aplicara la normatividad que rigen a la Institución para tal efecto.\n\n";
         
         break;
         default:
-          acuse_qr ="Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, así como de la CLÁUSULA QUINTA del Contrato Individual de Trabajo por tiempo determinado de fecha primero de enero del año "+anio_actual+", por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien hacerle del conocimiento, que a partir del día "+periodo+", queda comisionado a "+destino+"; con su código funcional "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
+          acuse_qr ="Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, así como de la CLÁUSULA QUINTA del Contrato Individual de Trabajo por tiempo determinado de fecha primero de enero del año "+anio_actual+", por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien hacerle del conocimiento, que a partir del día "+periodo+", queda comisionado a "+destino+"; con su código funcional "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el/la  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
           contenido += acuse_qr+"\n\n";
           contenido += "Con fundamento en el artículo 52 de la Ley del Servicio Civil del Estado y los Municipios de Chiapas, se le exhorta que deberá desempeñar los servicios encomendados en el contrato que tiene celebrado con la Secretaría de Salud del Estado de Chiapas e Instituto de Salud, con aptitud, intensidad, calidad, eficacia, eficiencia, pulcritud y esmero, que por su propia naturaleza se demande en el desempeño y la realización de las actividades y funciones que debe desarrollar como trabajador con el puesto para lo cual fue contratado; en el entendido, que de no presentarse a laborar en los términos señalados en el presente, se aplicara la normatividad que rige a la Institución para tal efecto.\n\n";
             
@@ -241,7 +244,24 @@ export class ReporteComision {
       contenido += "Cabe hacer mención, que la continuidad de prórroga de comisión, no le da el derecho de antigüedad, para cambio de adscripción, donde actualmente se encuentra comisionado.";
       contenido += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       
-      console.log(iteracciones+" "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+acuse_qr.length);
+      //console.log(iteracciones+" "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+acuse_qr.length);
+      let dato_origen = "";
+      let unidad_origen = "";
+      if(comision.cr_origen)
+      {
+        if(comision.cr_origen.clues.clasificacion == "H. G." || comision.cr_origen.clues.clasificacion == "CLINICA" || comision.cr_origen.clues.clasificacion == "CLINICA DE ESPECIALIDADES" || comision.cr_origen.clues.clues == "CSSSA017213")
+        {
+          //dato_origen= comision.cr_origen;
+          unidad_origen = "C.C.P. ("+comision.cr_origen.clues.clasificacion+") "+comision.cr_origen.clues.nombre_unidad;
+        }else
+        {
+          let directorio = comision.cr_origen.dependencia.directorio_responsable;
+          let responsable = directorio.responsable;
+          dato_origen= "C.C.P. "+responsable.nombre+" "+responsable.apellido_paterno+" "+responsable.apellido_materno+" "+directorio.cargo+"\n";
+          unidad_origen = comision.cr_origen.dependencia.descripcion_actualizada;
+        }
+      }
+
       let informacion_oficio = {
         layout: 'noBorders',
         pageBreak:'',
@@ -266,7 +286,7 @@ export class ReporteComision {
               { text: contenido.toUpperCase(), style: "texto_contenido", colSpan:2},{},
             ],
             [
-              { text: "\n\n\n", style: "texto_num_oficio", colSpan:2},{},
+              { text: "\n", style: "texto_num_oficio", colSpan:2},{},
             ],
             [
               { text: "A T E N T A M E N T E\n\n\n\n\n\n\n"+"L.A. "+nombre_director+"\n\n", style: "texto_depto"},
@@ -275,6 +295,7 @@ export class ReporteComision {
             [
               { text: nombre_secretario.toUpperCase()+"\n"+
                       responsable_copia.toUpperCase()+
+                      dato_origen.toUpperCase()+
                       "C.C.P. GERARDO ESPINOSA CIFUENTES.- CONTRALOR INTERNO\n"+
                       "C.C.P. "+nombre_juridico+"\n"+
                       "C.C.P. "+nombre_sistematizacion+"\n"+
@@ -296,11 +317,11 @@ export class ReporteComision {
         {
           dato_unidad= "UNIDAD";
         }
-      }else{
-        console.log(comision);
       }
+
       
-      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir del día "+fecha_inicio+", fue comisionado a "+destino+", Chiapas; de esa "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
+      
+      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir del día "+fecha_inicio+", fue comisionado a "+destino+", Chiapas; de esa "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
       contenido_notificacion += "Por lo que, en 5 días hábiles a partir de la fecha de este documento, el encargado de recursos humanos deberá realizar la asignación de jornada y horario con numero de identificación de acuerdo a los controles de asistencia con los que cuente la unidad.\n\n";
       contenido_notificacion += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       let notificacion = {
@@ -329,7 +350,8 @@ export class ReporteComision {
             [
               { text:  secretario.toUpperCase()+
                       "C.C.P. GERARDO ESPINOSA CIFUENTES.- CONTRALOR INTERNO\n"+
-                      "C.C.P. "+nombre_juridico+"\n\n"+
+                      "C.C.P. "+nombre_juridico+"\n"+
+                      "C.C.P. "+unidad_origen+"\n\n"+
                       "Vo.Bo.: "+nombre_rh+"\n"+
                       "REVISO.: "+nombre_depto_rh+"\n"+
                       "ELABORO.: "+nombre_elaboracion, style: "texto_copias", colSpan:2},{}

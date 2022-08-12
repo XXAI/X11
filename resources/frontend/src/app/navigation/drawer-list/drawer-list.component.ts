@@ -18,14 +18,14 @@ export class DrawerListComponent implements OnInit {
 
   public isAuthenticated:boolean;
   authSubscription: Subscription;
-  selectedApp: any;
-  selectedChild: any;
-  apps: App[];
-  expandDrawer:boolean = true;
+  //selectedApp: any;
+  //selectedChild: any;
+  //apps: App[];
+  //expandDrawer:boolean = true;
   visualizarButton: boolean = true;
 
   constructor(private authService:AuthService, private appsService: AppsListService, private router: Router) {
-    router.events.pipe(
+    /*router.events.pipe(
       filter(event => event instanceof NavigationEnd)  
     ).subscribe((event: NavigationEnd) => {
       this.getApps();
@@ -51,7 +51,7 @@ export class DrawerListComponent implements OnInit {
           return (element)?element.route == selected_child:false;
         });
       }
-    });
+    });*/
    }
 
    ngOnInit() {
@@ -64,7 +64,7 @@ export class DrawerListComponent implements OnInit {
   }
 
   getApps():void{
-    this.apps = this.appsService.getApps();
+    //this.apps = this.appsService.getApps();
   }
 
   ngOnDestroy(){
@@ -73,8 +73,8 @@ export class DrawerListComponent implements OnInit {
 
   cerrar()
   {
-    this.sidenav.close();
-    this.visualizarButton = true;
+    //this.sidenav.close();
+    //this.visualizarButton = true;
   }
 
 }

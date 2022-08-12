@@ -25,7 +25,7 @@ export class ListaComponent implements OnInit {
   currentPage: number = 0;
   mediaSize: string;
 
-  displayedColumns: string[] = ['id','clues','nombre_unidad','no_trabajadores','actions'];
+  displayedColumns: string[] = ['nombre_unidad','responsable','humanos','administracion','actions'];
   dataSource: any = [];
   
   constructor(private sharedService: SharedService, private directorioService: DirectorioService, public dialog: MatDialog, public mediaObserver: MediaObserver) { }

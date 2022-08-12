@@ -21,7 +21,8 @@ export const APPS:App [] = [
     { name:'TRABAJADORES',            route: "trabajadores",            icon: "assets/icons/trabajadores.png",         permission:"VguUicBQPIYqZgocJaOHdhMbfnzVqJ7k" },
     { name:'HERRAMIENTAS',        route: "dev-tools",               icon: "assets/icons/herramientas.png",           isHub:true, hideHome:true, 
       children:[
-        {name:'Reportes MySQL',       route:'dev-tools/mysql-reportes', icon:'insert_drive_file', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"}
+        {name:'Reportes MySQL',                     route:'dev-tools/mysql-reportes', icon:'settings', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"},
+        {name:'Herramientas Administrativas',       route:'dev-tools/utilerias', icon:'settings', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"}
       ],
     },
     { name:'CATÁLOGOS',               route: "catalogos",               icon: "assets/icons/catalogos.png", isHub:true, hideHome:true, 
@@ -33,13 +34,13 @@ export const APPS:App [] = [
     },
     { name:'TRAMITES',                route: "tramites",                icon: "assets/icons/tramites.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt', isHub:true, hideHome:true, 
       children:[
-        { name:'Comisión Interna',            route:'tramites/comision',        icon:'insert_drive_file', permission:"sy4A7MgqfzYNb0yIxVbRSxdSHgCkwUml" },
-        { name:'Adscripción',         route:'tramites/adscripcion',     icon:'insert_drive_file', permission:"ToU3QxHxAbC0lC1mw9PVjYVSjUT2yAdL" },
-        { name:'Adscripción Ext.',    route:'tramites/adscripcion-externa',icon:'insert_drive_file', permission:"Qv9dwjtlfwl5haI3NysAs2hjmlpyDKcN" },
+        { name:'Comisión Interna',            route:'tramites/comision',        icon:'call_merge', permission:"sy4A7MgqfzYNb0yIxVbRSxdSHgCkwUml" },
+        { name:'Adscripción',         route:'tramites/adscripcion',     icon:'call_made', permission:"ToU3QxHxAbC0lC1mw9PVjYVSjUT2yAdL" },
+        { name:'Adscripción Ext.',    route:'tramites/adscripcion-externa',icon:'call_made', permission:"Qv9dwjtlfwl5haI3NysAs2hjmlpyDKcN" },
         
-        { name:'Reincorporación',     route:'tramites/reincorporacion',  icon:'insert_drive_file', permission:"3T9B0ixmJOwPLZVc69a4EeUPbWl1Dp38" },
+        { name:'Reincorporación',     route:'tramites/reincorporacion',  icon:'call_received', permission:"3T9B0ixmJOwPLZVc69a4EeUPbWl1Dp38" },
         { name:'Documentacion',       route:'tramites/documentacion',   icon:'insert_drive_file', permission:"8HXTiaeI3NvlUWwNyzdKCgTxcepkqvDj" },
-        { name:'Comisión Sindical',    route:'tramites/comision-sindical',   icon:'insert_drive_file', permission:"FsSuyE47aBCxZ46SrTLb0g85frN1lT4W" }
+        { name:'Comisión Sindical',    route:'tramites/comision-sindical',   icon:'supervised_user_circle', permission:"FsSuyE47aBCxZ46SrTLb0g85frN1lT4W" }
       ] },
       /*{ name:'Archivo',                route: "archivo",                icon: "assets/icons/archivo.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt'},*/  
     { name:'CREDENCIALIZACIÓN',       route: "credencializacion",       icon: "assets/icons/credencial_trabajador.png",  isHub:true, hideHome:true, 

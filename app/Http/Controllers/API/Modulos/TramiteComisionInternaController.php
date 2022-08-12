@@ -646,7 +646,7 @@ class TramiteComisionInternaController extends Controller
        
         if(isset($parametros['active_filter']) && $parametros['active_filter']){
             if(isset($parametros['clues']) && $parametros['clues']){
-                $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_comision_interna where  activo=1 and cr_destino = (select cr from catalogo_cr where clues='".$parametros['clues']."'))");
+                $main_query = $main_query->whereRaw("trabajador.id  in (select trabajador_id from rel_trabajador_comision_interna where  activo=1 and cr_destino in (select cr from catalogo_cr where clues='".$parametros['clues']."'))");
             }
 
             if(isset($parametros['cr']) && $parametros['cr']){
