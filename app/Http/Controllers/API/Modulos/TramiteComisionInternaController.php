@@ -431,7 +431,7 @@ class TramiteComisionInternaController extends Controller
             DB::statement("UPDATE importar_tramites a LEFT JOIN trabajador b on a.`nombre_completo`=concat(b.nombre,' ',b.apellido_paterno,' ',b.apellido_materno) or a.`nombre_completo`=concat(b.apellido_paterno,' ',b.apellido_materno,' ', b.nombre) set a.trabajador_id=b.id where ".$filtro." and a.trabajador_id=0");
             
             //Validamos adscripcion nominal
-            DB::statement("UPDATE importar_tramites a INNER JOIN rel_trabajador_datos_laborales_nomina b ON a.`trabajador_id`=b.`trabajador_id` SET a.cr_origen=b.cr_nomina_id WHERE a.trabajador_id!=0 and b.`cr_nomina_id` IS NOT NULL and ".$filtro);
+            DB::statement("UPDATE importar_tramites a INNER JOIN rel_trabajador_datos_laborales_nomina b ON a.`trabajador_id`=b.`trabajador_id` INNER JOIN catalogo_cr c ON b.cr_nomina_id=c.cr AND c.`deleted_at` IS NOT NULL SET a.cr_origen=b.cr_nomina_id WHERE a.trabajador_id!=0 and b.`cr_nomina_id` IS NOT NULL and ".$filtro);
             
             //Validamos adscripcion nominal
             DB::statement("UPDATE importar_tramites a INNER JOIN rel_trabajador_datos_laborales b ON a.`trabajador_id`=b.`trabajador_id` SET a.cr_before_id=b.cr_fisico_id WHERE a.trabajador_id!=0 and b.`cr_fisico_id` IS NOT NULL and ".$filtro);
