@@ -165,6 +165,7 @@ class TrabajadorController extends Controller
                                     ->leftJoin("catalogo_sexo", "catalogo_sexo.id", "trabajador.sexo_id")
                                     ->leftJoin("catalogo_estado_conyugal", "catalogo_estado_conyugal.id", "trabajador.estado_conyugal_id")
                                     ->leftJoin("rel_trabajador_datos_fiscales", "trabajador.id", "rel_trabajador_datos_fiscales.trabajador_id")
+                                    ->leftJoin("rel_trabajador_documentacion", "trabajador.id", "rel_trabajador_documentacion.trabajador_id")
                                     ->leftjoin('rel_trabajador_comision  as datos_comision', function ($join) {
                                         $join->on('datos_comision.trabajador_id', '=', 'trabajador.id')
                                              ->where('datos_comision.estatus', '=', 'A');
@@ -233,6 +234,7 @@ class TrabajadorController extends Controller
                                         "rel_trabajador_datos_fiscales.regimen",
                                         "rel_trabajador_datos_fiscales.fecha_regimen as fecha_actividad",
                                         "rel_trabajador_datos_fiscales.documento_digital",
+                                        DB::RAW("IF(rel_trabajador_documentacion.estatus = 1, 'ENVIADO POR TRABAJADOR ', IF(rel_trabajador_documentacion.estatus = 2, 'RECHAZADO POR CS.',IF(rel_trabajador_documentacion.estatus = 3, 'ACEPTADO POR CS.',IF(rel_trabajador_documentacion.estatus = 4, 'RECHAZADO POR OF. CENTRAL',IF(rel_trabajador_documentacion.estatus = 5,'VALIDADO Y CORRECTO',IF(rel_trabajador_documentacion.estatus IS NULL,'NO ENVIADO','')))))) AS 'ESTATUS EXPEDIENTE'")
                                         )
                                         ->orderby("rel_trabajador_datos_laborales.clues_adscripcion_fisica");
                                     //->get();
