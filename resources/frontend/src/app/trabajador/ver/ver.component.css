@@ -214,3 +214,7 @@ mat-card-title {
     color: black !important;
     background-color: beige !important;
 }
+
+.tabla-asistencia {
+    background-color: blue;
+}
