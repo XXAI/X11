@@ -107,7 +107,7 @@ export class ListaComponent implements OnInit {
     'adscripcion': [undefined],
   });
 
-  displayedColumns: string[] = ['estatus','RFC','Nombre','actions']; //'Agente',
+  displayedColumns: string[] = ['#','estatus','RFC','Nombre','actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, private trabajadorService: TrabajadorService, public dialog: MatDialog, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
