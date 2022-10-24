@@ -175,6 +175,7 @@ class DirectorioController extends Controller
         //$inputs = $inputs['params'];
         $reglas = [
             'cr'                    => 'required',
+            'profesion'         => 'required',
             'trabajador_id'         => 'required',
             'tipo_responsable_id'    => 'required',
             'cargo'                 => 'required',
@@ -198,6 +199,7 @@ class DirectorioController extends Controller
             
             $new = new Directorio();
             $new->cr = $inputs['cr'];
+            $new->profesion = $inputs['profesion'];
             $new->trabajador_id = $inputs['trabajador_id'];
             $new->tipo_responsable_id = $inputs['tipo_responsable_id'];
             $new->cargo = $inputs['cargo'];

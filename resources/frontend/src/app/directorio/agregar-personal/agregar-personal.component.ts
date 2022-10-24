@@ -30,6 +30,7 @@ export class AgregarPersonalComponent implements OnInit {
   tipo_trabajador:any =  [{id:1, nombre:'JEFE, RESPONSABLE O DIRECTOR'},{id:2, nombre:'JEFE RECURSOS HUMANOS'},{id:3, nombre:'JEFE DE ADMINISTRACIÓN'}];
   public responsableForm = this.fb.group({
     'cr': ['',[Validators.required]],
+    'profesion': ['',[Validators.required]],
     'responsable': ['',[Validators.required]],
     'telefono': ['',[Validators.required]],
     'trabajador_id': [''],
@@ -128,7 +129,8 @@ export class AgregarPersonalComponent implements OnInit {
   cargarTelefono()
   {
     //console.log(this.obj_seleccionado);
-    console.log(this.responsableForm.value.responsable);
+    //console.log(this.responsableForm.value.responsable);
+    console.log(this.responsableForm.value);
     this.responsableForm.patchValue({telefono: this.responsableForm.value.responsable.telefono_celular});
   }
   

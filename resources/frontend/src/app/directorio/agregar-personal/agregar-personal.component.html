@@ -1,72 +1,83 @@
-<div mat-dialog-title>AGREGAR PERSONAL RESPONSABLE DE LA UNIDAD <!--span style="color:royalblue">{{ nombre_unidad }}</span><div style="font-size: 10pt;">CLUES: {{ datos_clues}} <br>CR: {{datos_cr}}</div></div>-->
-<div mat-dialog-content>
-    <section fxLayout="column">
-        <section fxFlex="100">
-            <div class="loading-shade" *ngIf="isLoading"><mat-spinner *ngIf="isLoading"></mat-spinner></div>
-            
-            <section >
-                <ng-template mat-tab-label>
-                    <mat-icon class="example-tab-icon">perm_contact_calendar</mat-icon>
-                    <div class="mobile-pc"> Datos Generales</div>
-                </ng-template>
-                <div [formGroup]="responsableForm" fxLayout="row wrap" class="tarjeta-info-empleado">
-                    <div fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"  fxFlex.xl="100" fxFlex.xs="100">
-                        <div fxLayout="row wrap">
-                            <mat-form-field fxFlex="100" fxFlex.xs="100">
-                                <mat-label>Tipo Responsable</mat-label>
-                                <mat-select formControlName="tipo_responsable_id" required>
-                                    <mat-option *ngFor="let item of tipo_trabajador" [value]="item.id">
-                                        {{item.nombre}}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="responsableForm.get('tipo_responsable_id').invalid && (responsableForm.get('tipo_responsable_id').dirty || responsableForm.get('tipo_responsable_id').touched)">
-                                    <span *ngIf="responsableForm.get('tipo_responsable_id').errors.required">Campo obligatorio</span>
-                                </mat-error>
-                            </mat-form-field>
-                            <mat-form-field fxFlex="70" fxFlex.xs="70">
-                                <input matInput placeholder="Responsable" [matAutocomplete]="responsableAutocomplete" formControlName='responsable' (blur)="cargarTelefono()">
-                                <mat-autocomplete #responsableAutocomplete="matAutocomplete" [displayWith]="displayResponsableFn" [panelWidth]="'auto'">
-                                    <mat-option *ngIf="responsableIsLoading" class="is-loading"><mat-spinner diameter="25"></mat-spinner></mat-option>
-                                    <ng-container *ngIf="!responsableIsLoading">
-                                        <mat-option *ngFor="let item of filteredResponsable" [value]="item">
-                                            [{{item.rfc}}] {{ item.nombre }} {{ item.apellido_paterno }} {{ item.apellido_materno }}
+<div mat-dialog-title>AGREGAR PERSONAL RESPONSABLE DE LA UNIDAD
+    <!--span style="color:royalblue">{{ nombre_unidad }}</span><div style="font-size: 10pt;">CLUES: {{ datos_clues}} <br>CR: {{datos_cr}}</div></div>-->
+    <div mat-dialog-content>
+        <section fxLayout="column">
+            <section fxFlex="100">
+                <div class="loading-shade" *ngIf="isLoading">
+                    <mat-spinner *ngIf="isLoading"></mat-spinner>
+                </div>
+
+                <section>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">perm_contact_calendar</mat-icon>
+                        <div class="mobile-pc"> Datos Generales</div>
+                    </ng-template>
+                    <div [formGroup]="responsableForm" fxLayout="row wrap" class="tarjeta-info-empleado">
+                        <div fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" fxFlex.xs="100">
+                            <div fxLayout="row wrap">
+                                <mat-form-field fxFlex="100" fxFlex.xs="100">
+                                    <mat-label>Tipo Responsable</mat-label>
+                                    <mat-select formControlName="tipo_responsable_id" required>
+                                        <mat-option *ngFor="let item of tipo_trabajador" [value]="item.id">
+                                            {{item.nombre}}
                                         </mat-option>
-                                    </ng-container>
-                                </mat-autocomplete>
-                                <input type="hidden" formControlName='trabajador_id'>
-                                <!--<mat-error *ngIf="responsableForm.get('trabajador_id').invalid && (responsableForm.get('trabajador_id').dirty || responsableForm.get('trabajador_id').touched)">
+                                    </mat-select>
+                                    <mat-error *ngIf="responsableForm.get('tipo_responsable_id').invalid && (responsableForm.get('tipo_responsable_id').dirty || responsableForm.get('tipo_responsable_id').touched)">
+                                        <span *ngIf="responsableForm.get('tipo_responsable_id').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="10" fxFlex.xs="10">
+                                    <input matInput formControlName="profesion" placeholder="C." autocomplete="off" required>
+                                    <mat-error *ngIf="responsableForm.get('profesion').invalid && (responsableForm.get('profesion').dirty || responsableForm.get('profesion').touched)">
+                                        <span *ngIf="responsableForm.get('profesion').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="60" fxFlex.xs="60">
+                                    <input matInput placeholder="Responsable" [matAutocomplete]="responsableAutocomplete" formControlName='responsable' (blur)="cargarTelefono()">
+                                    <mat-autocomplete #responsableAutocomplete="matAutocomplete" [displayWith]="displayResponsableFn" [panelWidth]="'auto'">
+                                        <mat-option *ngIf="responsableIsLoading" class="is-loading">
+                                            <mat-spinner diameter="25"></mat-spinner>
+                                        </mat-option>
+                                        <ng-container *ngIf="!responsableIsLoading">
+                                            <mat-option *ngFor="let item of filteredResponsable" [value]="item">
+                                                [{{item.rfc}}] {{ item.nombre }} {{ item.apellido_paterno }} {{ item.apellido_materno }}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                    <input type="hidden" formControlName='trabajador_id'>
+                                    <!--<mat-error *ngIf="responsableForm.get('trabajador_id').invalid && (responsableForm.get('trabajador_id').dirty || responsableForm.get('trabajador_id').touched)">
                                     <span *ngIf="responsableForm.get('trabajador_id').errors.required">Campo obligatorio</span>
                                 </mat-error>-->
 
-                                <!--<input matInput formControlName="trabajador_id" placeholder="Trabajador"  autocomplete="off" required>
+                                    <!--<input matInput formControlName="trabajador_id" placeholder="Trabajador"  autocomplete="off" required>
                                 <mat-error *ngIf="responsableForm.get('trabajador_id').invalid && (responsableForm.get('trabajador_id').dirty || responsableForm.get('trabajador_id').touched)">
                                     <span *ngIf="responsableForm.get('trabajador_id').errors.required">Campo obligatorio</span>
                                 </mat-error>-->
-                            </mat-form-field>
-                            <mat-form-field fxFlex="30" fxFlex.xs="30">
-                                <input matInput formControlName="telefono" placeholder="telefono"  autocomplete="off" required>
-                                <mat-error *ngIf="responsableForm.get('telefono').invalid && (responsableForm.get('telefono').dirty || responsableForm.get('telefono').touched)">
-                                    <span *ngIf="responsableForm.get('telefono').errors.required">Campo obligatorio</span>
-                                </mat-error>
-                            </mat-form-field>
-                            <mat-form-field fxFlex="100" fxFlex.xs="100">
-                                <input matInput formControlName="cargo" placeholder="cargo"  autocomplete="off" required>
-                                <mat-error *ngIf="responsableForm.get('cargo').invalid && (responsableForm.get('cargo').dirty || responsableForm.get('cargo').touched)">
-                                    <span *ngIf="responsableForm.get('cargo').errors.required">Campo obligatorio</span>
-                                </mat-error>
-                            </mat-form-field>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="30" fxFlex.xs="30">
+                                    <input matInput formControlName="telefono" placeholder="telefono" autocomplete="off" required>
+                                    <mat-error *ngIf="responsableForm.get('telefono').invalid && (responsableForm.get('telefono').dirty || responsableForm.get('telefono').touched)">
+                                        <span *ngIf="responsableForm.get('telefono').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="100" fxFlex.xs="100">
+                                    <input matInput formControlName="cargo" placeholder="cargo" autocomplete="off" required>
+                                    <mat-error *ngIf="responsableForm.get('cargo').invalid && (responsableForm.get('cargo').dirty || responsableForm.get('cargo').touched)">
+                                        <span *ngIf="responsableForm.get('cargo').errors.required">Campo obligatorio</span>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </section>
         </section>
-    </section>
-</div>
-<div mat-dialog-actions>
-    <span fxFlex></span>
-    <button  mat-button  (click)='cancelar()'>Cerrar</button>
-    <button  mat-raised-button color="primary" (click)="guardar()" [disabled]="!responsableForm.valid">
+    </div>
+    <div mat-dialog-actions>
+        <span fxFlex></span>
+        <button mat-button (click)='cancelar()'>Cerrar</button>
+        <button mat-raised-button color="primary" (click)="guardar()" [disabled]="!responsableForm.valid">
         <mat-icon>save</mat-icon>
         Guardar
     </button>
-</div> 
+    </div>

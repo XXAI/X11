@@ -203,7 +203,7 @@ export class ReporteComision {
           }else{
             secretario = "";
           }
-          responsable_notificacion = "DR. "+nombre_responsable.nombre+" "+nombre_responsable.apellido_paterno+" "+nombre_responsable.apellido_materno+"\n"+dato_responsable.cargo+"\n"+comision.cr_destino.municipio;
+          responsable_notificacion = "C. "+nombre_responsable.nombre+" "+nombre_responsable.apellido_paterno+" "+nombre_responsable.apellido_materno+"\n"+dato_responsable.cargo+"\n"+comision.cr_destino.municipio;
         }
       }
 
