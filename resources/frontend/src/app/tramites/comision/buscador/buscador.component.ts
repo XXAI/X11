@@ -54,7 +54,7 @@ export class BuscadorComponent implements OnInit {
     this.isLoading = true;
     this.dataSource = [];
     let params:any;
-    params = {busqueda_empleado: this.search }
+    params = {busqueda_empleado: this.search, tipo:1 }
     
     this.comisionService.buscarTrabajadorComision(params).subscribe(
       response => {

@@ -25,6 +25,7 @@ import { AdscripcionModule } from './adscripcion/adscripcion.module';
 import { AdscripcionExternaModule } from './adscripcion-externa/adscripcion-externa.module';
 import { ReincorporacionModule } from './reincorporacion/reincorporacion.module';
 import { ComisionModule } from './comision/comision.module';
+import { ComisionGerencialModule } from './comision-gerencial/comision-gerencial.module';
 import { InicioComponent } from './inicio/inicio.component';
 
 @NgModule({
@@ -41,7 +42,8 @@ import { InicioComponent } from './inicio/inicio.component';
     AdscripcionModule,
     AdscripcionExternaModule,
     ReincorporacionModule,
-    ComisionModule
+    ComisionModule,
+    ComisionGerencialModule
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

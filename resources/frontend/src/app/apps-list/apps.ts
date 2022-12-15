@@ -19,7 +19,7 @@ export const APPS:App [] = [
     { name:'ROLES',                   route: "roles",                   icon: "assets/icons/roles.png",        permission:"nrPqEhq2TX0mI7qT7glaOCJ7Iqx2QtPs" },
     { name:'Empleados',               route: "empleados",               icon: "assets/icons/trabajador_salud.svg",   permission:"8QnE1cYkjjNAmM7qHSf1CSlPMJiQeqr5" },
     { name:'TRABAJADORES',            route: "trabajadores",            icon: "assets/icons/trabajadores.png",         permission:"VguUicBQPIYqZgocJaOHdhMbfnzVqJ7k" },
-    { name:'HERRAMIENTAS',        route: "dev-tools",               icon: "assets/icons/herramientas.png",           isHub:true, hideHome:true, 
+    { name:'HERRAMIENTAS',            route: "dev-tools",               icon: "assets/icons/herramientas.png",           isHub:true, hideHome:true, 
       children:[
         {name:'Reportes MySQL',                     route:'dev-tools/mysql-reportes', icon:'settings', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"},
         {name:'Herramientas Administrativas',       route:'dev-tools/utilerias', icon:'settings', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"}
@@ -34,18 +34,19 @@ export const APPS:App [] = [
     },
     { name:'TRAMITES',                route: "tramites",                icon: "assets/icons/tramites.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt', isHub:true, hideHome:true, 
       children:[
-        { name:'Comisión Interna',            route:'tramites/comision',        icon:'call_merge', permission:"sy4A7MgqfzYNb0yIxVbRSxdSHgCkwUml" },
-        { name:'Adscripción',         route:'tramites/adscripcion',     icon:'call_made', permission:"ToU3QxHxAbC0lC1mw9PVjYVSjUT2yAdL" },
-        { name:'Adscripción Ext.',    route:'tramites/adscripcion-externa',icon:'call_made', permission:"Qv9dwjtlfwl5haI3NysAs2hjmlpyDKcN" },
+        { name:'Comisión Interna',    route:'tramites/comision',                  icon:'call_merge', permission:"sy4A7MgqfzYNb0yIxVbRSxdSHgCkwUml" },
+        { name:'Comisión Gerencial',  route:'tramites/comision-gerencial',        icon:'call_merge', permission:"hola mundo" },
+        { name:'Adscripción',         route:'tramites/adscripcion',               icon:'call_made', permission:"ToU3QxHxAbC0lC1mw9PVjYVSjUT2yAdL" },
+        { name:'Adscripción Ext.',    route:'tramites/adscripcion-externa',       icon:'call_made', permission:"Qv9dwjtlfwl5haI3NysAs2hjmlpyDKcN" },
         
-        { name:'Reincorporación',     route:'tramites/reincorporacion',  icon:'call_received', permission:"3T9B0ixmJOwPLZVc69a4EeUPbWl1Dp38" },
-        { name:'Documentacion',       route:'tramites/documentacion',   icon:'insert_drive_file', permission:"8HXTiaeI3NvlUWwNyzdKCgTxcepkqvDj" },
-        { name:'Comisión Sindical',    route:'tramites/comision-sindical',   icon:'supervised_user_circle', permission:"FsSuyE47aBCxZ46SrTLb0g85frN1lT4W" }
+        { name:'Reincorporación',     route:'tramites/reincorporacion',           icon:'call_received', permission:"3T9B0ixmJOwPLZVc69a4EeUPbWl1Dp38" },
+        { name:'Documentacion',       route:'tramites/documentacion',             icon:'insert_drive_file', permission:"8HXTiaeI3NvlUWwNyzdKCgTxcepkqvDj" },
+        { name:'Comisión Sindical',   route:'tramites/comision-sindical',         icon:'supervised_user_circle', permission:"FsSuyE47aBCxZ46SrTLb0g85frN1lT4W" }
       ] },
       /*{ name:'Archivo',                route: "archivo",                icon: "assets/icons/archivo.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt'},*/  
-    { name:'CREDENCIALIZACIÓN',       route: "credencializacion",       icon: "assets/icons/credencial_trabajador.png",  isHub:true, hideHome:true, 
+    { name:'CREDENCIALIZACIÓN',       route: "credencializacion",                 icon: "assets/icons/credencial_trabajador.png",  isHub:true, hideHome:true, 
       children:[
-        { name:'Salud',               route:'credencializacion/salud',          icon:'contacts', permission:"82UHsnkhEdH5x276N6i5Ollnftcri7Yx" },
+        { name:'Salud',               route:'credencializacion/salud',            icon:'contacts', permission:"82UHsnkhEdH5x276N6i5Ollnftcri7Yx" },
         /*{ name:'',              route:'catalogos/grupos',         icon:'group_work', permission:"v5xfsLRdLaESqktB1HKQwwWXkfVP4jQe" },
         { name:'Profesiones',         route:'catalogos/profesiones',    icon:'school', permission:"NBhsLjYRsIJmDa9igB4sKBxd91thtxWr" },*/
       ],

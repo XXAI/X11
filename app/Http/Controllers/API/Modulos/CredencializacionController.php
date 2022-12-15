@@ -44,11 +44,10 @@ class CredencializacionController extends Controller
             $parametros = $request->all();
             $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )")
-                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja='0000-00-00' and deleted_at is null)")
-                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is not null)");
-                            //->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id");
-                            //->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
-                            //->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id")
+                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja not in ('0000-00-00', null) and deleted_at is null)");
+                            //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is not null)")
+                            //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null )")
+                            
                             
                             
             if(!$access->is_admin){
@@ -101,7 +100,7 @@ class CredencializacionController extends Controller
             
             $trabajador = $this->aplicarFiltrosIndex($trabajador, $parametros, $access);
 
-            $trabajador = $trabajador->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null )")
+            $trabajador = $trabajador
             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where (cr_fisico_id is null or clues_adscripcion_fisica is null))");
             
             if(isset($parametros['export_excel']) && $parametros['export_excel']){

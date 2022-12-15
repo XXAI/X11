@@ -11,9 +11,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdscripcionRoutingModule } from './adscripcion-routing.module';
 import { ListaComponent } from './lista/lista.component';
 import { FormularioComponent } from './formulario/formulario.component';
+import { BuscadorComponent } from './buscador/buscador.component';
+import { ImportarComponent } from './importar/importar.component';
 
 @NgModule({
-  declarations: [ListaComponent, FormularioComponent],
+  declarations: [ListaComponent, FormularioComponent, BuscadorComponent, ImportarComponent],
   imports: [
     CommonModule,
     AdscripcionRoutingModule,

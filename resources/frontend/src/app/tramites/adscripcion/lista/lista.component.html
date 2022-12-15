@@ -25,6 +25,9 @@
                                 <mat-icon>search</mat-icon> Buscar
                             </button>
 
+                            <button color="primary" mat-stroked-button style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="Importar()">
+                                <mat-icon>upload</mat-icon>
+                            </button>
                             <button color="primary" mat-stroked-button style="margin-left: 5px; padding: 10px; font-size: 14pt;" [matMenuTriggerFor]="menuLote">
                                 <mat-icon>print</mat-icon>
                             </button>
@@ -35,7 +38,7 @@
                             <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
                             <mat-menu #menu="matMenu">
                                 <button mat-menu-item (click)="Agregar()"><mat-icon>add</mat-icon> AGREGAR</button>
-
+                                <button mat-menu-item (click)="buscar()"><mat-icon>search</mat-icon> BUSCAR</button>
                             </mat-menu>
                         </section>
                     </div>
@@ -204,24 +207,33 @@
                             <ng-container matColumnDef="imprimible">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA OFICIO </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <b>{{ row.rel_trabajador_adscripcion.fecha_cambio }}</b>
+                                    {{ row.rel_trabajador_adscripcion.fecha_cambio }}
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="creado">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> CREACION </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <b>{{ row.rel_trabajador_adscripcion.created_at | date:'yyyy-MM-dd' }}</b>
+                                    {{ row.rel_trabajador_adscripcion.created_at | date:'yyyy-MM-dd' }}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
-                                    <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu" style="display: block; margin: auto;">
+                                    <!--<button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu" style="display: block; margin: auto;">
                                             <mat-icon>menu</mat-icon>
                                     </button>
                                     <mat-menu #menu="matMenu">
                                         <button mat-menu-item (click)="Agregar(row)"><mat-icon color="primary">print</mat-icon>EDITAR</button>
+                                        <button mat-menu-item (click)="imprimirOficio(row)"><mat-icon color="primary">print</mat-icon>GENERAR OFICIO</button>
+                                        <button mat-menu-item style="color: red;" (click)="eliminarAdscripcion(row)"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
+                                    </mat-menu>-->
+                                    <button mat-button [matMenuTriggerFor]="menu">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="Agregar(row)"><mat-icon color="primary">edit</mat-icon>EDITAR</button>
                                         <button mat-menu-item (click)="imprimirOficio(row)"><mat-icon color="primary">print</mat-icon>GENERAR OFICIO</button>
                                         <button mat-menu-item style="color: red;" (click)="eliminarAdscripcion(row)"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>
                                     </mat-menu>

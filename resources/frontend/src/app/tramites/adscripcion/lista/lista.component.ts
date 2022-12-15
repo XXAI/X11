@@ -17,6 +17,8 @@ import { ReportWorker } from '../../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
 
 import { FormularioComponent } from '../formulario/formulario.component';
+import { BuscadorComponent } from '../buscador/buscador.component';
+import { ImportarComponent } from '../importar/importar.component';
 
 @Component({
   selector: 'app-lista',
@@ -156,6 +158,98 @@ export class ListaComponent implements OnInit {
     this.loadTrabajadorData(event);
     this.loadFilterCatalogs();
   }
+
+  public Importar() {
+    let configDialog = {};
+    let row: any = {};
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '800px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '100vh',
+        height: '580px',
+        data: row
+      }
+    }
+    console.log("hola");
+    
+    const dialogRef = this.dialog.open(ImportarComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.loadTrabajadorData();
+      }
+    });
+  }
+
+  buscar()
+  {
+    let configDialog = {};
+    let row: any = {};
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '91vh',
+        height: '8000px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '70vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '70vh',
+        height: '500px',
+        data: row
+      }
+    }
+    
+    const dialogRef = this.dialog.open(BuscadorComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      
+    });
+  }
+
+
 
   toggleReportPanel(){
     this.reportIncludeSigns = false;

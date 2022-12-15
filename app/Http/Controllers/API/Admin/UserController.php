@@ -226,6 +226,38 @@ class UserController extends Controller
         }
         
     }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function Status(Request $request, $id)
+    {
+        try{
+            $usuario = User::find($id);
+
+            $parametros = $request->all();
+
+            DB::beginTransaction();
+            if($parametros['proceso'] == 1)
+            {
+                $usuario->suspension = 0;
+            }else if($parametros['proceso'] == 2)
+            {
+                $usuario->suspension = 1;
+            }
+            $usuario->save();
+            DB::commit();
+            return response()->json(['guardado'=>true,'usuario'=>$usuario],HttpResponse::HTTP_OK);
+
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+        
+    }
 
     /**
      * Remove the specified resource from storage.

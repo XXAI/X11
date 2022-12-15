@@ -43,6 +43,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('user',          'API\Admin\UserController');
     Route::apiResource('permission',    'API\Admin\PermissionController');
     Route::apiResource('role',          'API\Admin\RoleController');
+    Route::put('user-status/{id}',      'API\Admin\UserController@Status');
     
     //Modulos del Sistema
     /**
@@ -140,7 +141,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::post('tramite-documentacion-upload',         'API\Modulos\TramiteDocumentacionController@Upload');
     Route::post('tramite-importar-csv',                 'API\Modulos\TramiteComisionInternaController@UploadCsv');
     Route::post('importar_csv_data',                    'API\Modulos\TramiteComisionInternaController@CargarInformacion');
-    Route::post('validar-importacion',                    'API\Modulos\TramiteComisionInternaController@ValidarImportacion');
+    Route::post('validar-importacion',                   'API\Modulos\TramiteComisionInternaController@ValidarImportacion');
     Route::post('migrar-importacion',                    'API\Modulos\TramiteComisionInternaController@migrarInformacion');
     
     //Herramientas
@@ -157,7 +158,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('tramite-reincorporacion-lote',          'API\Modulos\TramiteReincorporacionController@ObtenerLote');
     Route::apiResource('tramite-comision',              'API\Modulos\TramiteComisionInternaController');
     Route::get('tramite-comision-lote',                 'API\Modulos\TramiteComisionInternaController@ObtenerLote');
-    Route::get('busqueda-comision',                     'API\Modulos\TramiteComisionInternaController@buscarTrabajadorComision');
+    Route::get('busqueda-trabajador-tramites',          'API\Modulos\TrabajadorController@buscarTrabajadorTramites');
     Route::post('truncar-comision',                     'API\Modulos\TramiteComisionInternaController@truncarComision');
     
     Route::apiResource('profile',                       'API\ProfileController')->only([ 'show', 'update']);

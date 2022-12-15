@@ -23,7 +23,7 @@ export class UsersComponent implements OnInit {
   resultsLength: number = 0;
   currentPage: number = 0;
 
-  displayedColumns: string[] = ['id','username','name','email','actions'];
+  displayedColumns: string[] = ['id','state','username','name','email','actions'];
   dataSource: any = [];
   
   constructor(private sharedService: SharedService, private usersService: UsersService, public dialog: MatDialog) { }
@@ -91,7 +91,39 @@ export class UsersComponent implements OnInit {
       if(valid){
         this.usersService.deleteUser(id).subscribe(
           response =>{
-            console.log(response);
+            this.loadUsersData(this.pageEvent);
+          }
+        );
+      }
+    });
+  }
+
+  activar(id):void{
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Activar Usuario',dialogMessage:'Esta seguro de activar este usuario? Escriba ACTIVAR para confirmar la activación',validationString:'ACTIVAR',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.usersService.status(id,{proceso:1}).subscribe(
+          response =>{
+            this.loadUsersData(this.pageEvent);
+          }
+        );
+      }
+    });
+  }
+  suspender(id):void{
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Suspender Usuario',dialogMessage:'Esta seguro de suspender este usuario? Escriba SUSPENDER para confirmar la suspensión',validationString:'SUSPENDER',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.usersService.status(id,{proceso:2}).subscribe(
+          response =>{
             this.loadUsersData(this.pageEvent);
           }
         );

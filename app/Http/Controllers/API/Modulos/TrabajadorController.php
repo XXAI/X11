@@ -1327,6 +1327,48 @@ class TrabajadorController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+    
+    public function buscarTrabajadorTramites(Request $request)
+    {
+        try{
+            $parametros = $request->all();
+            if($parametros['tipo'] == 1)
+            {
+                $obj = DB::Table("trabajador")
+                ->Join("rel_trabajador_comision_interna", "rel_trabajador_comision_interna.trabajador_id","trabajador.id")
+                ->LeftJoin("users", "users.id","rel_trabajador_comision_interna.user_id")
+                ->Join("catalogo_cr", "catalogo_cr.cr","rel_trabajador_comision_interna.cr_destino")
+                ->where(function($query)use($parametros){
+                    return $query
+                                ->whereRaw('concat(trabajador.nombre," ", trabajador.apellido_paterno, " ", trabajador.apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
+                                ->orWhere('trabajador.curp','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                                ->orWhere('trabajador.rfc','LIKE','%'.$parametros['busqueda_empleado'].'%');
+                })
+                ->select("trabajador.nombre","trabajador.apellido_paterno","trabajador.apellido_materno","trabajador.rfc", "rel_trabajador_comision_interna.fecha_oficio",
+            "rel_trabajador_comision_interna.fecha_inicio", "rel_trabajador_comision_interna.fecha_fin", "users.name", "users.username", "catalogo_cr.clues", "catalogo_cr.descripcion_actualizada")
+                ->limit(10)->get();
+            }else if($parametros['tipo'] == 2){
+                $obj = DB::Table("trabajador")
+                ->Join("rel_trabajador_adscripcion", "rel_trabajador_adscripcion.trabajador_id","trabajador.id")
+                ->LeftJoin("users", "users.id","rel_trabajador_adscripcion.user_id")
+                ->Join("catalogo_cr as origen", "origen.cr","rel_trabajador_adscripcion.cr_origen")
+                ->Join("catalogo_cr as destino", "destino.cr","rel_trabajador_adscripcion.cr_destino")
+                ->where(function($query)use($parametros){
+                    return $query
+                                ->whereRaw('concat(trabajador.nombre," ", trabajador.apellido_paterno, " ", trabajador.apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
+                                ->orWhere('trabajador.curp','LIKE','%'.$parametros['busqueda_empleado'].'%')
+                                ->orWhere('trabajador.rfc','LIKE','%'.$parametros['busqueda_empleado'].'%');
+                })
+                ->select("trabajador.nombre","trabajador.apellido_paterno","trabajador.apellido_materno","trabajador.rfc", "rel_trabajador_adscripcion.fecha_oficio",
+                "rel_trabajador_adscripcion.fecha_cambio", "users.name", "users.username", "destino.clues as clues_destino", "destino.descripcion_actualizada as unidad_destino"
+                , "origen.clues as clues_origen", "origen.descripcion_actualizada as unidad_origen")
+                ->limit(10)->get();
+            }
+            return response()->json(['data'=>$obj],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
     public function getCatalogos()
     {
         try{

@@ -146,7 +146,9 @@
                             <ng-container matColumnDef="sindicato">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> COMISION SINDICAL </th>
                                 <td mat-cell *matCellDef="let row">
-                                    <b>{{ row.rel_datos_comision.sindicato.descripcion }}</b>
+                                    
+                                    <b *ngIf="row.rel_datos_comision != null">{{ row.rel_datos_comision.sindicato.descripcion }}</b>
+                                    <b *ngIf="row.rel_datos_comision == null"> SIN SINDICATO</b>
 
                                 </td>
                             </ng-container>

@@ -1,4 +1,19 @@
-<h3 style="color: grey;">ADSCRIPCIÓN</h3>
+<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+    <div fxFlex="100" fxFlex.xs="100">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+            <div fxFlex="80" fxFlex.xs="100">
+                <h1 mat-dialog-title style="color: grey;">ADSCRIPCIÓN</h1>
+            </div>
+            <div fxFlex="20" fxFlex.xs="100">
+                <button mat-button color="warn" (click)="cerrar()">CERRAR</button>
+                <button mat-flat-button color="primary" (click)="GUARDAR()" style="margin-left: 5px;" [disabled]="!formularioForm.valid || isLoading">GUARDAR</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<h3 style="color: grey;"></h3>-->
 <mat-divider></mat-divider>
 <div [formGroup]="formularioForm">
     <ng-template mat-tab-label>
@@ -63,6 +78,7 @@
 
                 </mat-form-field>
                 <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                    <mat-label>FECHA DE OFICIO</mat-label>
                     <input matInput [matDatepicker]="fecha_oficio_picker" autocomplete="off" (click)="fecha_oficio_picker.open()" formControlName="fecha_oficio" placeholder="Fecha Oficio">
                     <mat-datepicker-toggle matPrefix [for]="fecha_oficio_picker"></mat-datepicker-toggle>
                     <mat-datepicker #fecha_oficio_picker [disabled]="false"></mat-datepicker>
@@ -72,6 +88,7 @@
 
                 </mat-form-field>
                 <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                    <mat-label>FECHA DE CAMBIO</mat-label>
                     <input matInput [matDatepicker]="fecha_cambio_picker" autocomplete="off" (click)="fecha_cambio_picker.open()" formControlName="fecha_cambio" placeholder="Fecha Cambio">
                     <mat-datepicker-toggle matPrefix [for]="fecha_cambio_picker"></mat-datepicker-toggle>
                     <mat-datepicker #fecha_cambio_picker [disabled]="false"></mat-datepicker>
@@ -86,6 +103,5 @@
     </div>
     <mat-divider></mat-divider>
     <br>
-    <button mat-flat-button color="primary" (click)="GUARDAR()" [disabled]="!formularioForm.valid || isLoading">GUARDAR</button>
-    <button mat-flat-button (click)="cerrar()">CERRAR</button>
+    
 </div>

@@ -14,6 +14,7 @@ export class UsersService {
   url_permission = `${environment.base_url}/permission`;
   url_grupos = `${environment.base_url}/grupos_unidades`;
   url_avatars = `${environment.base_url}/avatar-images`;
+  url_status  = `${environment.base_url}/user-status`;
 
   constructor(private http: HttpClient) { }
 
@@ -91,4 +92,13 @@ export class UsersService {
       }
     ));
   }
+  
+  status(id, payload) {
+    return this.http.put<any>(this.url_status+"/"+id,payload).pipe(
+      map( (response) => {
+        return response;
+      }
+    ));
+  }
+
 }
