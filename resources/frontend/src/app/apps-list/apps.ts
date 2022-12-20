@@ -35,7 +35,7 @@ export const APPS:App [] = [
     { name:'TRAMITES',                route: "tramites",                icon: "assets/icons/tramites.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt', isHub:true, hideHome:true, 
       children:[
         { name:'Comisión Interna',    route:'tramites/comision',                  icon:'call_merge', permission:"sy4A7MgqfzYNb0yIxVbRSxdSHgCkwUml" },
-        { name:'Comisión Gerencial',  route:'tramites/comision-gerencial',        icon:'call_merge', permission:"hola mundo" },
+        { name:'Comisión Gerencial',  route:'tramites/comision-gerencial',        icon:'call_merge', permission:"hCb0vGqYlAEnVhMh8Ir45VLTvfXzVewD" },
         { name:'Adscripción',         route:'tramites/adscripcion',               icon:'call_made', permission:"ToU3QxHxAbC0lC1mw9PVjYVSjUT2yAdL" },
         { name:'Adscripción Ext.',    route:'tramites/adscripcion-externa',       icon:'call_made', permission:"Qv9dwjtlfwl5haI3NysAs2hjmlpyDKcN" },
         

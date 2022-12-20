@@ -11,3 +11,9 @@
     text-align: center;
     line-height: 50px;
 }
+
+@media screen and (max-width: 500px) {
+    .element {
+        font-size: 40pt;
+    }
+  }

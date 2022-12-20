@@ -44,10 +44,9 @@ class CredencializacionController extends Controller
             $parametros = $request->all();
             $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )")
-                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja not in ('0000-00-00', null) and deleted_at is null)");
+                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja ='0000-00-00' and deleted_at is null)");
                             //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is not null)")
                             //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null )")
-                            
                             
                             
             if(!$access->is_admin){
@@ -87,8 +86,6 @@ class CredencializacionController extends Controller
                 $trabajador = $trabajador->where(function($query){
                     $query->whereIn('trabajador.estatus',[1,4]);
                 })->where(function($query)use($access){
-                    /*$query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)
-                    ->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);*/
                     $clues_arreglo = join("','",$access->lista_clues);
                     $cr_arreglo = join("','",$access->lista_cr);
 
@@ -99,7 +96,7 @@ class CredencializacionController extends Controller
             }
             
             $trabajador = $this->aplicarFiltrosIndex($trabajador, $parametros, $access);
-
+            
             $trabajador = $trabajador
             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where (cr_fisico_id is null or clues_adscripcion_fisica is null))");
             
@@ -122,11 +119,13 @@ class CredencializacionController extends Controller
                 return (new DevReportExport($trabajadorx,$columnas))->download('hola.xlsx');
                 
             }else if(isset($parametros['page'])){
+                
                 $trabajador = $trabajador->orderBy('nombre');
-
+                            
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
+                
             } 
             
             if(!$loggedUser->gruposUnidades){
