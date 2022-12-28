@@ -12,14 +12,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export interface RegistroData {
   id: number;
   trabajador_id?:number;
-  clues?:any;
-  clues_adscripcion?:any;
+  destino?:any;
   fecha_oficio?:string;
   fecha_inicio?:string;
   fecha_fin?:string;
-  catalogo_cr:any;
   trabajador:any;
-  reingenieria:any;
 }
 
 @Component({
@@ -38,7 +35,11 @@ export class FormularioComponent implements OnInit {
   cr_nominal:string = "";
   isLoading:boolean = false;
   buscador:boolean = false;
-
+  arreglo_presentarse:any =
+  [
+    {id: 27854, nombre:"JOSE DEL CARMEN", apellido_paterno:"TOLEDO", apellido_materno: "ALEJANDRO"},
+    {id: 24598, nombre:"ERNESTO", apellido_paterno:"MALO", apellido_materno: "SOLIS"},
+  ]
   constructor(
     private sharedService: SharedService, 
     private authService: AuthService, 
@@ -55,17 +56,19 @@ export class FormularioComponent implements OnInit {
   public formularioForm = this.fb.group({
    
     'trabajador': [''],
-    'clues': ['',[Validators.required]],
+    'destino': ['',[Validators.required]],
+    'presentarse_id': [27854,[Validators.required]],
     'fecha_oficio': ['',[Validators.required]],
     'fecha_inicio_periodo': ['',[Validators.required]],
     'fecha_fin_periodo': ['',[Validators.required]],
     'trabajador_id': ['',[Validators.required]],
-    'reingenieria': ['',[Validators.required]],
+    //'reingenieria': ['',[Validators.required]],
   });
 
   ngOnInit(): void {
     
     this.loadFilterCatalogs();
+    
   }
 
   displayTrabajadorFn(item: any) {
@@ -85,29 +88,28 @@ export class FormularioComponent implements OnInit {
   }
 
   public loadFilterCatalogs(){
-      this.filterCatalogs = {
+      /*this.filterCatalogs = {
         'cr': this.data.catalogo_cr,
       };
-      this.filteredCatalogs['cr'] = this.formularioForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'cr','descripcion_actualizada')));
+      this.filteredCatalogs['cr'] = this.formularioForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'cr','descripcion_actualizada')));*/
       this.cluesIsLoading = false;
       
       if(this.data.id)
       {
         this.arreglo_trabajador = [{id: this.data.trabajador.id, nombre: this.data.trabajador.nombre, apellido_paterno: this.data.trabajador.apellido_paterno, apellido_materno: this.data.trabajador.apellido_materno }];
       
-        console.log();
         this.formularioForm.patchValue({
           trabajador:'',
-          clues:this.data.clues, 
+          destino:this.data.destino, 
           fecha_oficio:this.data.fecha_oficio+"T18:51:49.313Z", 
           fecha_inicio_periodo:this.data.fecha_inicio+"T18:51:49.313Z",
           fecha_fin_periodo:this.data.fecha_fin+"T18:51:49.313Z",
           trabajador_id: this.data.trabajador.id,
-          reingenieria: this.data.reingenieria
+          //reingenieria: this.data.reingenieria
         });
         
-        this.clues_nominal = this.data.clues_adscripcion.clues+" "+this.data.clues_adscripcion.descripcion_actualizada;
-        this.cr_nominal = this.data.clues_adscripcion.cr+" "+this.data.clues_adscripcion.descripcion_actualizada
+        //this.clues_nominal = this.data.clues_adscripcion.clues+" "+this.data.clues_adscripcion.descripcion_actualizada;
+        //this.cr_nominal = this.data.clues_adscripcion.cr+" "+this.data.clues_adscripcion.descripcion_actualizada
       }
   }
 
@@ -115,7 +117,7 @@ export class FormularioComponent implements OnInit {
   {
     this.arreglo_trabajador = [];
     this.buscador = true;
-    /*this.gerencialService.getTrabajador({busqueda_empleado: this.formularioForm.controls['trabajador'].value}).subscribe(
+    this.gerencialService.getTrabajador({busqueda_empleado: this.formularioForm.controls['trabajador'].value}).subscribe(
       response => {
        this.arreglo_trabajador = response.data;
        this.buscador = false;
@@ -128,7 +130,7 @@ export class FormularioComponent implements OnInit {
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.buscador = false;
       }
-    );*/
+    );
   }
 
   private _filter(value: any, catalog: string, valueField: string): string[] {
@@ -144,22 +146,14 @@ export class FormularioComponent implements OnInit {
     return this.filterCatalogs[catalog].filter(option => option[valueField].toLowerCase().includes(filterValue));
   }
 
-  obtenerDatos(datos){
-    this.arreglo_trabajador.forEach(element => {
-      if(datos == element.id)
-      {
-        this.clues_nominal = element.datoslaboralesnomina.clues.clues+" "+element.datoslaboralesnomina.clues.nombre_unidad;
-        this.cr_nominal = element.datoslaboralesnomina.cr.cr+" "+element.datoslaboralesnomina.cr.descripcion_actualizada
-      }
-    });
-  }
+  
 
   GUARDAR()
   {
     this.isLoading = true;
     if(this.data.id)
     {
-      /*this.gerencialService.editarComision(this.data.id,this.formularioForm.value).subscribe(
+      this.gerencialService.editarComision(this.data.id,this.formularioForm.value).subscribe(
         response => {
           this.isLoading = false;
           this.sharedService.showSnackBar("SE GUARDO CORRECTAMENTE", null, 3000);
@@ -173,27 +167,20 @@ export class FormularioComponent implements OnInit {
           }
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         }
-      );*/
+      );
     }else{
-      /*this.gerencialService.guardarComision(this.formularioForm.value).subscribe(
+      this.gerencialService.guardarComision(this.formularioForm.value).subscribe(
         response => {
-          //console.log("BIEN");
-          //console.log(response);
-          this.formularioForm.patchValue({trabajador:'',trabajador_id:'',clues:'', fecha_oficio:'', fecha_cambio:''});
-          this.clues_nominal = "";
-          this.cr_nominal = "";
+          this.formularioForm.patchValue({trabajador:'',trabajador_id:'',presentarse_id:27854,destino:'', fecha_oficio:''});
           this.isLoading = false;
           this.sharedService.showSnackBar("SE GUARDO CORRECTAMENTE", null, 3000);
         },
         errorResponse =>{
-          //console.log("mAL");
-          console.log(errorResponse);
-          
           this.isLoading = false;
           var errorMessage = "Ocurrió un error.";
           this.sharedService.showSnackBar(errorResponse.error.message, null, 3000);
         }
-      );*/
+      );
     }
     
   }

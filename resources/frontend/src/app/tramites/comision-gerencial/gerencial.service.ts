@@ -10,15 +10,15 @@ import { map } from 'rxjs/operators';
 })
 export class GerencialService {
 
-  url                       = `${environment.base_url}/tramite-comision`;
-  url_lote                  = `${environment.base_url}/tramite-comision-lote`;
+  url                       = `${environment.base_url}/tramite-comision-gerencial`;
+  url_lote                  = `${environment.base_url}/tramite-comision-gerencial-lote`;
   url_filter_catalogs       =  `${environment.base_url}/catalogos-filtro-empleados`;
   url_filter_trabajador     =  `${environment.base_url}/busqueda-trabajador-tramite`;
   url_busqueda_comision     =  `${environment.base_url}/busqueda-trabajador-tramites`;
   url_importar_informacion  =  `${environment.base_url}/importar_csv_data`;
   url_validar_informacion   =  `${environment.base_url}/validar-importacion`;
   url_migrar_informacion    =  `${environment.base_url}/migrar-importacion`;
-  url_truncar_informacion    =  `${environment.base_url}/truncar-comision`;
+  url_truncar_informacion    =  `${environment.base_url}/truncar-comision-gerencial`;
   
   constructor(private http: HttpClient) { }
 

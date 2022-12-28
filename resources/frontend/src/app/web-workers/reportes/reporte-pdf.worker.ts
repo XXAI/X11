@@ -8,6 +8,7 @@ import { ReporteTrabajadorActivo } from './reporte-trabajador-activo';
 import { ReporteTrabajadorCredencialSalud } from './reporte-personal-credencial-salud';
 import { ReporteConstanciaDengue } from './reporte-constancia-dengue';
 import { ReporteComision } from './reporte-comision';
+import { ReporteComisionGerencial } from './reporte-comision-gerencial';
 import { ReporteSolicitudComision } from './reporte-solicitud-comision';
 import { ReporteTrabajadorCambioAdscripcion } from './reporte-cambio-adscripcion';
 import { ReporteTrabajadorReincorporacion } from './reporte-reincorporacion';
@@ -24,6 +25,7 @@ const reportes = {
   'trabajador/cambio-adscripcion': new ReporteTrabajadorCambioAdscripcion(),
   'trabajador/reincorporacion': new ReporteTrabajadorReincorporacion(),
   'trabajador/comision-interna': new ReporteComision(),
+  'trabajador/comision-gerencial': new ReporteComisionGerencial(),
   'participante/constancia': new ReporteConstanciaDengue(),
   
   'archivo/solicitudComision': new ReporteSolicitudComision(),

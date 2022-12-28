@@ -306,7 +306,6 @@ export class ListaComponent implements OnInit {
         countFilter++;
       }
     }
-    console.log(params);
     if(countFilter > 0){
       params.active_filter = true;
     }
@@ -327,7 +326,7 @@ export class ListaComponent implements OnInit {
     this.sharedService.setDataToCurrentApp('filter',filterFormValues);
 
     
-    /*this.comisionService.getListPrincipal(params).subscribe(
+    this.gerencialService.getListPrincipal(params).subscribe(
       response =>{
           this.dataSource = [];
           this.resultsLength = 0;
@@ -357,7 +356,7 @@ export class ListaComponent implements OnInit {
         this.sharedService.showSnackBar(errorMessage, null, 3000);
         this.isLoading = false;
       }
-    );*/
+    );
     return event;
   }
 
@@ -370,7 +369,7 @@ export class ListaComponent implements OnInit {
     this.isLoading = true;
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
-        /*this.comisionService.eliminarComision(obj.id,{}).subscribe(
+        this.gerencialService.eliminarComision(obj.id,{}).subscribe(
           response =>{
             if(response.error) {
               let errorMessage = response.error.message;
@@ -388,7 +387,7 @@ export class ListaComponent implements OnInit {
             this.sharedService.showSnackBar(errorMessage, null, 3000);
             this.isLoading = false;
           }
-        );*/
+        );
       }else
       {
         this.isLoading = false;
@@ -405,7 +404,7 @@ export class ListaComponent implements OnInit {
     this.isLoading = true;
     dialogRef.afterClosed().subscribe(valid => {
       if(valid){
-        /*this.comisionService.truncarComision({trabajador_id:obj.id}).subscribe(
+        this.gerencialService.truncarComision({trabajador_id:obj.id}).subscribe(
           response =>{
             if(response.error) {
               let errorMessage = response.error.message;
@@ -423,7 +422,7 @@ export class ListaComponent implements OnInit {
             this.sharedService.showSnackBar(errorMessage, null, 3000);
             this.isLoading = false;
           }
-        );*/
+        );
       }else
       {
         this.isLoading = false;
@@ -544,25 +543,24 @@ export class ListaComponent implements OnInit {
       if(countFilter > 0){
         params.active_filter = true;
       }
-      /*this.comisionService.imprimirLoteAdscripcion((lote + 1), params).subscribe(
+      this.gerencialService.imprimirLoteAdscripcion((lote + 1), params).subscribe(
         response =>{
           if(response.error) {
             this.error_pdf(response);
           } else {    
-            let jurisdiccion = response.data.data[0].rel_trabajador_comision_interna.cr_destino.clues.cve_jurisdiccion; 
-            const reportWorker = this.iniciateWorker('COMISOIN-INTERNA-J'+jurisdiccion+"-L"+(lote + 1));
+            const reportWorker = this.iniciateWorker('COMISION-INTERNA-G-L'+(lote + 1));
               let config = {  title: this.reportTitle, lote:true };
               //console.log(response.data.data);
               
-              reportWorker.postMessage({data:{items: response.data.data, responsable:response.nombres, config:config},reporte:'trabajador/comision-interna'});
+              reportWorker.postMessage({data:{items: response.data.data, responsable:response.nombres, config:config},reporte:'trabajador/comision-gerencial'});
           }
           this.isLoading = false;
         },
         errorResponse =>{
           this.error_api(errorResponse);
-        });*/
+        });
     }else{
-      /*this.comisionService.buscarTrabajador(obj.id,{}).subscribe(
+      this.gerencialService.buscarTrabajador(obj.id,{}).subscribe(
         response =>{
           if(response.error) {
             this.error_pdf(response);
@@ -571,14 +569,14 @@ export class ListaComponent implements OnInit {
             const reportWorker = this.iniciateWorker('COMISOIN-INTERNA-'+rfc);
               let config = {  title: this.reportTitle, lote:false };
               console.log(response);
-              reportWorker.postMessage({data:{items: [response.data], responsable:response.nombres, config:config},reporte:'trabajador/comision-interna'});
+              reportWorker.postMessage({data:{items: [response.data], responsable:response.nombres, config:config},reporte:'trabajador/comision-gerencial'});
           }
           this.isLoading = false;
         },
         errorResponse =>{
           this.error_api(errorResponse);
         }
-      );*/
+      );
     }
   }
 
@@ -642,20 +640,19 @@ export class ListaComponent implements OnInit {
     if(obj != null)
     {
       row ={
-        id: obj.rel_trabajador_comision_interna.id, 
+        id: obj.rel_trabajador_comision_gerencial.id, 
         trabajador: obj, 
-        fecha_oficio:obj.rel_trabajador_comision_interna.fecha_oficio, 
-        fecha_inicio: obj.rel_trabajador_comision_interna.fecha_inicio, 
-        fecha_fin: obj.rel_trabajador_comision_interna.fecha_fin, 
-        clues: obj.rel_trabajador_comision_interna.cr_destino,
-        clues_adscripcion: obj.rel_datos_laborales_nomina.cr,
-        reingenieria: obj.rel_trabajador_comision_interna.reingenieria,
-        catalogo_cr: this.filterCatalogs['cr']
+        fecha_oficio:obj.rel_trabajador_comision_gerencial.fecha_oficio, 
+        fecha_inicio: obj.rel_trabajador_comision_gerencial.fecha_inicio, 
+        fecha_fin: obj.rel_trabajador_comision_gerencial.fecha_fin, 
+        destino: obj.rel_trabajador_comision_gerencial.destino,
+        //reingenieria: obj.rel_trabajador_comision_gerencial.reingenieria,
+        //catalogo_cr: this.filterCatalogs['cr']
       };
 
     }else{
       row ={
-        catalogo_cr: this.filterCatalogs['cr']
+        //catalogo_cr: this.filterCatalogs['cr']
       };
     } 
           
@@ -666,7 +663,8 @@ export class ListaComponent implements OnInit {
         maxHeight: '91vh',
         height: '8000px',
         width: '100%',
-        data: row
+        data: row,
+        panelClass: 'my-dialog-container-class'
       }
     } else if (this.mediaSize == "md") {
       configDialog = {
@@ -674,7 +672,8 @@ export class ListaComponent implements OnInit {
         maxHeight: '100vh',
         height: '100%',
         width: '100%',
-        data: row
+        data: row,
+        panelClass: 'my-dialog-container-class'
       }
     } else if (this.mediaSize == 'xs') {
       configDialog = {
@@ -682,14 +681,16 @@ export class ListaComponent implements OnInit {
         maxHeight: '70vh',
         height: '72%',
         width: '100%',
-        data: row
+        data: row,
+        panelClass: 'my-dialog-container-class'
       };
     } else {
       configDialog = {
         width: '60%',
         maxHeight: '70vh',
         height: '500px',
-        data: row
+        data: row,
+        panelClass: 'my-dialog-container-class'
       }
     }
     

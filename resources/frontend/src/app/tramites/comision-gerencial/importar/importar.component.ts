@@ -38,7 +38,7 @@ export class ImportarComponent implements OnInit {
   duplicados:Number = 0;
   comisionActiva:Number = 0;
   Viableimportacion:boolean = false;
-  tipoformato:number  = 1;
+  tipoformato:number  = 3;
   
   constructor(
     private sharedService: SharedService,
@@ -125,7 +125,7 @@ export class ImportarComponent implements OnInit {
   cargarArchivo()
   {
     this.status_fase_2 = 1;
-    /*this.gerencialService.cargaArchivo({ tipo:this.tipoformato }).subscribe(
+    this.gerencialService.cargaArchivo({ tipo:this.tipoformato }).subscribe(
       response => {
         this.isLoading = false;
         this.status_fase_2 = 2;
@@ -141,13 +141,13 @@ export class ImportarComponent implements OnInit {
           this.sharedService.showSnackBar(ErrorString, null, 3000);
         }
         console.log(errorResponse);
-      });*/
+      });
   }
 
   validarInformacion()
   {
     this.status_fase_3 = 1;
-    /*this.gerencialService.validarComisiones({ tipo: 1 }).subscribe(
+    this.gerencialService.validarComisiones({ tipo: this.tipoformato }).subscribe(
       response => {
         this.isLoading = false;
         this.status_fase_3 = 2;
@@ -183,7 +183,7 @@ export class ImportarComponent implements OnInit {
           this.sharedService.showSnackBar(ErrorString, null, 3000);
         }
         console.log(errorResponse);
-      });*/
+      });
   }
   cancelar(): void {
     this.dialogRef.close();
@@ -191,7 +191,7 @@ export class ImportarComponent implements OnInit {
 
   importar()
   {
-    /*this.gerencialService.importarComisiones({ tipo: 1 }).subscribe(
+    this.gerencialService.importarComisiones({ tipo: this.tipoformato }).subscribe(
       response => {
         this.sharedService.showSnackBar("SE HA IMPORTADO CORRECTAMENTE LOS REGISTROS", null, 3000);
         this.dialogRef.close(true);
@@ -200,7 +200,7 @@ export class ImportarComponent implements OnInit {
         let ErrorString = errorResponse.error.error.message;
         this.isLoading = false;
         this.sharedService.showSnackBar("ERROR AL IMPORTAR LOS DATOS", null, 3000);
-      });*/
+      });
   }
 
 }
