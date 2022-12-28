@@ -172,7 +172,7 @@ class TramiteComisionInternaController extends Controller
                                         })
                                         ->count();
 
-                                        //"fecha_fin",">",$inputs['fecha_fin_periodo'])->count();
+                                  
             //Validacion del registro
             if($update > 0)
             {
@@ -197,6 +197,14 @@ class TramiteComisionInternaController extends Controller
             {
                 return response()->json(['error'=>['message'=>"TRABAJADOR NO NOMINAL"]], HttpResponse::HTTP_CONFLICT);
             }
+
+            $object_desactivar = RelComisionInterna::where("trabajador_id",$inputs['trabajador_id'])->first();
+            if($object_desactivar)
+            {
+                $object_desactivar->activo = 0;
+                $object_desactivar->save();
+            }
+
             $object = new RelComisionInterna();
             $object->cr_origen          = $origen->cr;
             $object->cr_destino         = $inputs['clues']['cr'];
