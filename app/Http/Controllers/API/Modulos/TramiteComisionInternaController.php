@@ -508,7 +508,7 @@ class TramiteComisionInternaController extends Controller
                 DB::statement("UPDATE importar_tramites a SET observaciones=CONCAT(observaciones,'-<b>PERIODO NO VIGENTE</b>'), estatus=5 WHERE  ".$filtro." and a.fecha_fin<'".date("Y-m-d")."' AND a.`estatus`=1");           
             }
             //Validamos fechas
-            DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>FECHA DE OFICIO MAYOR A FECHA DE INICIO DE PERIODO</b><br>'), estatus=5 where ".$filtro." and fecha_oficio>=fecha_inicio");
+            DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>FECHA DE OFICIO MAYOR A FECHA DE INICIO DE PERIODO</b><br>'), estatus=5 where ".$filtro." and fecha_oficio>=fecha_inicio and fecha_oficio>'EXTRACT(YEAR FROM a.`fecha_oficio`)-01-04'");
             
             if (!in_array($parametros['tipo'], ['3'])) 
             {
