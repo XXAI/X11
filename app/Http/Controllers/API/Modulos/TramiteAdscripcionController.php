@@ -165,12 +165,14 @@ class TramiteAdscripcionController extends Controller
             $relaciones_laborales = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700250009")->first();
             //secretario
             $secretario = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700200001")->first();
-
+            //juridico
+            $juridico = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700200008")->first();
+            
             //Elaboracion
             $loggedUser = auth()->userOrFail();
             $elaboracion = Trabajador::where("rfc", $loggedUser->username)->first();
             $nombres = ["control"=>$control, "sistematizacion" => $sistematizacion, "subdireccion_rh" => $subdireccion_rh, 
-            "direccion_admon"=> $direccion_admon_finanzas, "relaciones_laborales"=>$relaciones_laborales, "elaboracion"=>$elaboracion, "secretario"=>$secretario];
+            "direccion_admon"=> $direccion_admon_finanzas, "relaciones_laborales"=>$relaciones_laborales, "elaboracion"=>$elaboracion, "secretario"=>$secretario,"juridico"=> $juridico];
 
             return response()->json(['data'=>$trabajador, "nombres"=>$nombres],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
@@ -352,12 +354,14 @@ class TramiteAdscripcionController extends Controller
             $relaciones_laborales = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700250009")->first();
             //secretario
             $secretario = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700200001")->first();
+            //juridico
+            $juridico = Directorio::with("responsable")->where("tipo_responsable_id",1)->where("cr", "0700200008")->first();
 
             //Elaboracion
             $loggedUser = auth()->userOrFail();
             $elaboracion = Trabajador::where("rfc", $loggedUser->username)->first();
             $nombres = ["control"=>$control, "sistematizacion" => $sistematizacion, "subdireccion_rh" => $subdireccion_rh, 
-            "direccion_admon"=> $direccion_admon_finanzas, "relaciones_laborales"=>$relaciones_laborales, "elaboracion"=>$elaboracion, "secretario"=>$secretario];
+            "direccion_admon"=> $direccion_admon_finanzas, "relaciones_laborales"=>$relaciones_laborales, "elaboracion"=>$elaboracion, "secretario"=>$secretario,"juridico"=> $juridico];
 
             return response()->json(['data'=>$trabajador, "nombres"=>$nombres],HttpResponse::HTTP_OK);
         }catch(\Exception $e){

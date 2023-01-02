@@ -267,7 +267,7 @@ export class ReporteComisionGerencial {
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "OFICIO: IS/DAF/SRH/DRL/5003/__________________________/"+anio_periodo+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL-COM/__________________________/"+anio_periodo+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+
