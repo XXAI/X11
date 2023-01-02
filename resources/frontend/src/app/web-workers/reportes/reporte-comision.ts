@@ -141,10 +141,12 @@ export class ReporteComision {
       if(anio_oficio == 2021)
       {
         datos.header.columns[1].text = "\n\n2021, Año de la Independencia";
-      }else if(anio_oficio >= 2022){
+      }else if(anio_oficio == 2022){
         datos.header.columns[1].text = "\n\n2022, AÑO DE RICARDO FLORES MAGÓN,  PRECURSOR DE LA REVOLUCIÓN MEXICANA";
-      }else if(anio_oficio >= 2023){
-        datos.header.columns[1].text = "\n\n2023, AÑO DE FRANCISCO VILLA";
+      }else if(anio_oficio == 2023){
+        datos.header.columns[1].text = "\n\n2023, AÑO DE FRANCISCO VILLA, EL REVOLUCIONARIO DEL PUEBLO";
+      }else{
+        datos.header.columns[1].text = "\n\n";
       }
       
       

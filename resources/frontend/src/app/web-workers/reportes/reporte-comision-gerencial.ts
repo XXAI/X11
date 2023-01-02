@@ -142,12 +142,13 @@ export class ReporteComisionGerencial {
       if(anio_oficio == 2021)
       {
         datos.header.columns[1].text = "\n\n2021, Año de la Independencia";
-      }else if(anio_oficio >= 2022){
+      }else if(anio_oficio == 2022){
         datos.header.columns[1].text = "\n\n2022, AÑO DE RICARDO FLORES MAGÓN,  PRECURSOR DE LA REVOLUCIÓN MEXICANA";
-      }else if(anio_oficio >= 2023){
-        datos.header.columns[1].text = "\n\n2023, AÑO DE FRANCISCO VILLA";
+      }else if(anio_oficio == 2023){
+        datos.header.columns[1].text = "\n\n2023, AÑO DE FRANCISCO VILLA, EL REVOLUCIONARIO DEL PUEBLO";
+      }else{
+        datos.header.columns[1].text = "\n\n";
       }
-      
       
       let comision_inicio = element.rel_trabajador_comision_gerencial;
       let mes_inicio = (parseInt(comision_inicio.fecha_inicio.substr(5,2)) - 1);
