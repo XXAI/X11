@@ -24,10 +24,7 @@
                             <button mat-raised-button color="accent" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="applyFilter()" *ngIf="!showAdvancedFilter.checked">
                                 <mat-icon>search</mat-icon> Buscar
                             </button>
-
-                            <button color="primary" mat-stroked-button style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="Importar()">
-                                <mat-icon>upload</mat-icon>
-                            </button>
+                            <button mat-raised-button color="primary" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="Agregar()"><mat-icon>add</mat-icon></button> 
                             <button color="primary" mat-stroked-button style="margin-left: 5px; padding: 10px; font-size: 14pt;" [matMenuTriggerFor]="menuLote">
                                 <mat-icon>print</mat-icon>
                             </button>
@@ -37,7 +34,9 @@
 
                             <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="Agregar()"><mat-icon>add</mat-icon> AGREGAR</button>
+                                <button color="primary" mat-menu-item (click)="Importar()">
+                                    <mat-icon>upload</mat-icon> CARGAR
+                                </button>
                                 <button mat-menu-item (click)="buscar()"><mat-icon>search</mat-icon> BUSCAR</button>
 
                             </mat-menu>
@@ -165,6 +164,13 @@
                 <div class="data-container ">
                     <div class="data-table-container">
                         <table #dataTable mat-table [dataSource]="dataSource" class="data-table" matSort>
+                            <ng-container matColumnDef="folio">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> FOLIO</th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                    <b>{{row.rel_trabajador_comision_interna.folio}}</b>
+                                    
+                                </td>
+                            </ng-container>
                             <ng-container matColumnDef="estatus">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> TRABAJADOR </th>
                                 <td mat-cell *matCellDef="let row" fxHide.xs="true">
@@ -174,21 +180,6 @@
                                     </div>
                                 </td>
                             </ng-container>
-
-                            <!--<ng-container matColumnDef="RFC">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ORIGEN </th>
-                                <td mat-cell *matCellDef="let row">
-                                    <div *ngIf="row.rel_datos_laborales_nomina != null">
-                                        <b>{{ row.rel_datos_laborales_nomina.clues.nombre_unidad }}</b><br>
-                                        <div style="font-size: 8pt;">
-                                            {{ row.rel_datos_laborales_nomina.clues_adscripcion_nomina }}
-                                        </div>
-                                    </div>
-                                    <div *ngIf="row.rel_datos_laborales_nomina == null" style="color: red; font-weight: bold;">
-                                        SIN REGISTRO NOMINAL
-                                    </div>
-                                </td>
-                            </ng-container>-->
 
                             <ng-container matColumnDef="Nombre">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> DESTINO </th>

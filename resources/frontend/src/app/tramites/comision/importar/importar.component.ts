@@ -67,7 +67,8 @@ export class ImportarComponent implements OnInit {
         if(this.fileChangedEvent.target.files[0])
         {
           let registro = this.fileChangedEvent.target.files[0];
-          if(registro.type == "text/csv")
+          console.log(registro.type);
+          if(registro.type == "text/csv" || registro.type=="application/vnd.ms-excel")
           {
             this.datosArchivo.nombre = registro.name;
             this.datosArchivo.tamano = registro.size / 1000;

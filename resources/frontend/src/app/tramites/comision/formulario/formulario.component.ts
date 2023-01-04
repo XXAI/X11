@@ -12,6 +12,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export interface RegistroData {
   id: number;
   trabajador_id?:number;
+  folio?:string;
   clues?:any;
   clues_adscripcion?:any;
   fecha_oficio?:string;
@@ -54,6 +55,7 @@ export class FormularioComponent implements OnInit {
 
   public formularioForm = this.fb.group({
    
+    'folio': ['',[Validators.required]],
     'trabajador': [''],
     'clues': ['',[Validators.required]],
     'fecha_oficio': ['',[Validators.required]],
@@ -95,9 +97,9 @@ export class FormularioComponent implements OnInit {
       {
         this.arreglo_trabajador = [{id: this.data.trabajador.id, nombre: this.data.trabajador.nombre, apellido_paterno: this.data.trabajador.apellido_paterno, apellido_materno: this.data.trabajador.apellido_materno }];
       
-        console.log();
         this.formularioForm.patchValue({
           trabajador:'',
+          folio:this.data.folio, 
           clues:this.data.clues, 
           fecha_oficio:this.data.fecha_oficio+"T18:51:49.313Z", 
           fecha_inicio_periodo:this.data.fecha_inicio+"T18:51:49.313Z",
@@ -177,8 +179,6 @@ export class FormularioComponent implements OnInit {
     }else{
       this.comisionService.guardarComision(this.formularioForm.value).subscribe(
         response => {
-          //console.log("BIEN");
-          //console.log(response);
           this.formularioForm.patchValue({trabajador:'',trabajador_id:'',clues:'', fecha_oficio:'', fecha_cambio:''});
           this.clues_nominal = "";
           this.cr_nominal = "";
@@ -186,14 +186,10 @@ export class FormularioComponent implements OnInit {
           this.sharedService.showSnackBar("SE GUARDO CORRECTAMENTE", null, 3000);
         },
         errorResponse =>{
-          //console.log("mAL");
           console.log(errorResponse);
           
           this.isLoading = false;
           var errorMessage = "Ocurrió un error.";
-          /*if(errorResponse.status == 409){
-            errorMessage = errorResponse.error.message;
-          }*/
           this.sharedService.showSnackBar(errorResponse.error.message, null, 3000);
         }
       );

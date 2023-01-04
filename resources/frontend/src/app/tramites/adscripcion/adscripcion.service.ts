@@ -98,7 +98,7 @@ export class AdscripcionService {
   
   cargaArchivo(payload:any)
   {
-    return this.http.post<any>(this.url_importar_informacion ,  payload).pipe(
+    return this.http.post<any>(this.url_importar_informacion ,   {params: payload}).pipe(
       map( (response: any) => {        
         return response;
       }

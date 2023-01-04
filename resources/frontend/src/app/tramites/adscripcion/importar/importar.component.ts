@@ -68,7 +68,7 @@ export class ImportarComponent implements OnInit {
         if(this.fileChangedEvent.target.files[0])
         {
           let registro = this.fileChangedEvent.target.files[0];
-          if(registro.type == "text/csv")
+          if(registro.type == "text/csv" || registro.type=="application/vnd.ms-excel")
           {
             this.datosArchivo.nombre = registro.name;
             this.datosArchivo.tamano = registro.size / 1000;
@@ -147,7 +147,7 @@ export class ImportarComponent implements OnInit {
   validarInformacion()
   {
     this.status_fase_3 = 1;
-    this.adscripcionService.validarImportacion({ tipo: 2 }).subscribe(
+    this.adscripcionService.validarImportacion({ tipo:this.tipoformato }).subscribe(
       response => {
         this.isLoading = false;
         this.status_fase_3 = 2;
@@ -191,7 +191,7 @@ export class ImportarComponent implements OnInit {
 
   importar()
   {
-    this.adscripcionService.importar({ tipo: 2 }).subscribe(
+    this.adscripcionService.importar({ tipo:this.tipoformato }).subscribe(
       response => {
         this.sharedService.showSnackBar("SE HA IMPORTADO CORRECTAMENTE LOS REGISTROS", null, 3000);
         this.dialogRef.close(true);

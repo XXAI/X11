@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ReincorporacionRoutingModule } from './reincorporacion-routing.module';
 import { ListaComponent } from './lista/lista.component';
 
@@ -11,8 +10,13 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getEspPaginatorIntl } from '../../esp-paginator-intl';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { FormularioComponent } from './formulario/formulario.component';
+import { ImportarComponent } from './importar/importar.component';
+import { BuscadorComponent } from './buscador/buscador.component';
+import { MatStepperModule } from '@angular/material/stepper';
+
 @NgModule({
-  declarations: [ListaComponent],
+  declarations: [ListaComponent, FormularioComponent, ImportarComponent, BuscadorComponent],
   imports: [
     CommonModule,
     ReincorporacionRoutingModule,
@@ -22,7 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     FormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatStepperModule
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

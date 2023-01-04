@@ -18,8 +18,9 @@ export interface RegistroData {
   trabajador_id?:number;
   clues?:any;
   clues_adscripcion?:any;
+  folio?:string;
   fecha_oficio?:string;
-  fecha_cambio?:string;
+  //fecha_cambio?:string;
   catalogo_cr:any;
   trabajador:any;
 }
@@ -57,9 +58,10 @@ export class FormularioComponent implements OnInit {
   public formularioForm = this.fb.group({
    
     'trabajador': [''],
+    'folio': ['',[Validators.required]],
     'clues': ['',[Validators.required]],
     'fecha_oficio': ['',[Validators.required]],
-    'fecha_cambio': ['',[Validators.required]],
+    //'fecha_cambio': ['',[Validators.required]],
     'trabajador_id': ['',[Validators.required]],
   });
 
@@ -98,8 +100,9 @@ export class FormularioComponent implements OnInit {
         this.formularioForm.patchValue({
           trabajador:'',
           clues:this.data.clues, 
-          fecha_oficio:this.data.fecha_oficio, 
-          fecha_cambio:this.data.fecha_cambio,
+          folio:this.data.folio, 
+          fecha_oficio:this.data.fecha_oficio+"T18:51:49.313Z", 
+          //fecha_cambio:this.data.fecha_cambio,
           trabajador_id: this.data.trabajador.id
         });
         
@@ -177,12 +180,10 @@ export class FormularioComponent implements OnInit {
     {
       this.adscripcionService.editarAdscripcion(this.data.id,this.formularioForm.value).subscribe(
         response => {
-          //console.log(response);
-          /*this.formularioForm.patchValue({trabajador:'',trabajador_id:'',clues:'', fecha_oficio:'', fecha_cambio:''});
-          this.clues_nominal = "";
-          this.cr_nominal = "";*/
+         
           this.isLoading = false;
           this.sharedService.showSnackBar("SE GUARDO CORRECTAMENTE", null, 3000);
+          this.cerrar();
         },
         errorResponse =>{
           this.isLoading = false;
@@ -197,7 +198,7 @@ export class FormularioComponent implements OnInit {
       this.adscripcionService.guardarAdscripcion(this.formularioForm.value).subscribe(
         response => {
           //console.log(response);
-          this.formularioForm.patchValue({trabajador:'',trabajador_id:'',clues:'', fecha_oficio:'', fecha_cambio:''});
+          this.formularioForm.patchValue({trabajador:'',trabajador_id:'',clues:'', fecha_oficio:'', folio:''});
           this.clues_nominal = "";
           this.cr_nominal = "";
           this.isLoading = false;

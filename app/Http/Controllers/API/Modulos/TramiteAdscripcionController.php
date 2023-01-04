@@ -191,10 +191,11 @@ class TramiteAdscripcionController extends Controller
         $inputs = $inputs['params'];
     
         $reglas = [
-            'trabajador_id'           => 'required',
-            'clues'                     => 'required',
-            'fecha_oficio'           => 'required',
-            'fecha_cambio'           => 'required',
+            'trabajador_id'            => 'required',
+            'folio'                    => 'required',
+            'clues'                    => 'required',
+            'fecha_oficio'             => 'required',
+            //'fecha_cambio'           => 'required',
         ];
         
     
@@ -220,7 +221,7 @@ class TramiteAdscripcionController extends Controller
             $object->cr_destino         = $inputs['clues']['cr'];
             $object->trabajador_id      = $inputs['trabajador_id'];
             $object->fecha_oficio       = $inputs['fecha_oficio'];
-            $object->fecha_cambio       = $inputs['fecha_cambio'];
+            $object->folio              = $inputs['folio'];
             $object->save();
             
             
@@ -246,10 +247,11 @@ class TramiteAdscripcionController extends Controller
         $inputs = $inputs['params'];
     
         $reglas = [
-            'trabajador_id'           => 'required',
+            'trabajador_id'             => 'required',
+            'folio'                     => 'required',
             'clues'                     => 'required',
-            'fecha_oficio'           => 'required',
-            'fecha_cambio'           => 'required',
+            'fecha_oficio'              => 'required',
+            //'fecha_cambio'              => 'required',
         ];
         
     
@@ -268,7 +270,7 @@ class TramiteAdscripcionController extends Controller
             $object->cr_destino         = $inputs['clues']['cr'];
             $object->trabajador_id      = $inputs['trabajador_id'];
             $object->fecha_oficio       = $inputs['fecha_oficio'];
-            $object->fecha_cambio       = $inputs['fecha_cambio'];
+            $object->folio              = $inputs['folio'];
             $object->save();
             
             

@@ -111,7 +111,7 @@ export class ListaComponent implements OnInit {
     
   });
 
-  displayedColumns: string[] = ['estatus','RFC','Nombre','imprimible','creado', 'actions']; //'Agente',
+  displayedColumns: string[] = ['folio', 'estatus','RFC','Nombre','imprimible','creado', 'actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, public dialog: MatDialog, private adscripcionService: AdscripcionService, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
@@ -194,7 +194,6 @@ export class ListaComponent implements OnInit {
         data: row
       }
     }
-    console.log("hola");
     
     const dialogRef = this.dialog.open(ImportarComponent, configDialog);
 
@@ -666,6 +665,7 @@ export class ListaComponent implements OnInit {
     {
       row ={
         id: obj.rel_trabajador_adscripcion.id, 
+        folio: obj.rel_trabajador_adscripcion.folio, 
         trabajador: obj, 
         fecha_oficio:obj.rel_trabajador_adscripcion.fecha_oficio, 
         fecha_cambio: obj.rel_trabajador_adscripcion.fecha_cambio, 
@@ -717,7 +717,8 @@ export class ListaComponent implements OnInit {
     const dialogRef = this.dialog.open(FormularioComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
-      //this.loadRegistroData();
+      this.loadTrabajadorData();
+   
     });
   }
 

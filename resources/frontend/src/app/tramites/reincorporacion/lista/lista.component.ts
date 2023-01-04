@@ -14,6 +14,12 @@ import { ReincorporacionService } from '../reincorporacion.service';
 import { ReportWorker } from '../../../web-workers/report-worker';
 import * as FileSaver from 'file-saver';
 
+import { FormularioComponent } from '../formulario/formulario.component';
+import { ConfirmActionDialogComponent } from '../../../utils/confirm-action-dialog/confirm-action-dialog.component';
+import { BuscadorComponent } from '../buscador/buscador.component';
+import { ImportarComponent } from '../importar/importar.component';
+
+
 @Component({
   selector: 'app-lista',
   templateUrl: './lista.component.html',
@@ -81,7 +87,7 @@ export class ListaComponent implements OnInit {
     
   });
 
-  displayedColumns: string[] = ['estatus','RFC','Nombre','imprimible','creacion', 'actions']; //'Agente',
+  displayedColumns: string[] = ['folio','estatus','RFC','Nombre','imprimible','creacion', 'actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, public dialog: MatDialog, private reincorporacionService: ReincorporacionService, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
@@ -188,6 +194,111 @@ export class ListaComponent implements OnInit {
         this.sharedService.showSnackBar(errorMessage, null, 3000);
       }
     );
+  }
+
+  public Agregar(obj = null) {
+
+    //console.log(obj);
+    let configDialog = {};
+    let row: any = {};
+    console.log(obj);
+    if(obj != null)
+    {
+      row ={
+        id: obj.rel_trabajador_reincorporacion.id, 
+        trabajador: obj, 
+        fecha_oficio:obj.rel_trabajador_reincorporacion.fecha_oficio, 
+        fecha_cambio: obj.rel_trabajador_reincorporacion.fecha_cambio, 
+        destino: obj.rel_trabajador_reincorporacion.cr_destino,
+        //reingenieria: obj.rel_trabajador_comision_gerencial.reingenieria,
+        catalogo_cr: this.filterCatalogs['cr'],
+        clues: obj.rel_trabajador_reincorporacion.cr_destino,
+      };
+
+    }else{
+      row ={
+        catalogo_cr: this.filterCatalogs['cr']
+      };
+    } 
+          
+
+    /*if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '91vh',
+        height: '8000px',
+        width: '100%',
+        data: row,
+        panelClass: 'my-dialog-container-class'
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row,
+        panelClass: 'my-dialog-container-class'
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '70vh',
+        height: '72%',
+        width: '100%',
+        data: row,
+        panelClass: 'my-dialog-container-class'
+      };
+    } else {*/
+      configDialog = {
+        width: '80%',
+        maxHeight: '80vh',
+        height: '400px',
+        data: row,
+        panelClass: 'my-dialog-container-class'
+      }
+    //}
+    console.log(configDialog);
+    const dialogRef = this.dialog.open(FormularioComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      this.loadTrabajadorData();
+    });
+  }
+
+  eliminar(obj)
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'Eliminar',dialogMessage:'¿Realmente desea eliminar la comision? Escriba ELIMINAR a continuación para realizar el proceso.',validationString:'ELIMINAR',btnColor:'primary',btnText:'Eliminar'}
+    });
+    this.isLoading = true;
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        /*this.reincorporacionService.eliminarComision(obj.id,{}).subscribe(
+          response =>{
+            if(response.error) {
+              let errorMessage = response.error.message;
+              this.sharedService.showSnackBar(errorMessage, null, 3000);
+            } else {
+              this.loadTrabajadorData();
+            }
+            this.isLoading = false;
+          },
+          errorResponse =>{
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.isLoading = false;
+          }
+        );*/
+      }else
+      {
+        this.isLoading = false;
+      }
+    });
   }
 
   public loadTrabajadorData(event?:PageEvent){
@@ -517,5 +628,95 @@ export class ListaComponent implements OnInit {
         }
       );
       return reportWorker;
+  }
+
+  public buscar() {
+
+    //console.log(obj);
+    let configDialog = {};
+    let row: any = {};
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '91vh',
+        height: '8000px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '70vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '70vh',
+        height: '500px',
+        data: row
+      }
+    }
+    
+    const dialogRef = this.dialog.open(BuscadorComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      
+    });
+  }
+
+  public Importar() {
+    let configDialog = {};
+    let row: any = {};
+    if (this.mediaSize == 'lg') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '800px',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == "md") {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        data: row
+      }
+    } else if (this.mediaSize == 'xs') {
+      configDialog = {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '72%',
+        width: '100%',
+        data: row
+      };
+    } else {
+      configDialog = {
+        width: '60%',
+        maxHeight: '100vh',
+        height: '580px',
+        data: row
+      }
+    }
+    
+    const dialogRef = this.dialog.open(ImportarComponent, configDialog);
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.loadTrabajadorData();
+      }
+    });
   }
 }

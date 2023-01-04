@@ -23,16 +23,23 @@
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
         <div fxFlex="100" fxFlex.xs="100">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                <mat-form-field fxFlex="40" fxFlex.xs="100" appearance="fill">
+                <mat-form-field fxFlex="20" fxFlex.xs="100" appearance="fill">
+                    <mat-label>Folio</mat-label>
+                    <input matInput placeholder="Folio" formControlName='folio'  autocomplete="off">
+                    <mat-error *ngIf="formularioForm.get('folio').invalid && (formularioForm.get('folio').dirty || formularioForm.get('folio').touched)">
+                        <span *ngIf="formularioForm.get('folio').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="30" fxFlex.xs="100" appearance="fill">
                     <mat-label>Trabajador</mat-label>
                     <input matInput placeholder="Trabajador" formControlName='trabajador' (keyup.escape)="buscarTrabajador()" (keyup.enter)="buscarTrabajador()">
                 </mat-form-field>
                 <div fxFlex="10" fxFlex.xs="100" appearance="fill">
                     <button mat-raised-button color="accent" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="buscarTrabajador()" [disabled]="buscador">
-                        <mat-icon>search</mat-icon> Buscar
+                        <mat-icon>search</mat-icon>
                     </button>
                 </div>
-                <mat-form-field fxFlex="50" fxFlex.xs="100" appearance="fill">
+                <mat-form-field fxFlex="40" fxFlex.xs="100" appearance="fill">
                     <mat-label>TRABAJADORES</mat-label>
                     <mat-select formControlName="trabajador_id" required #datatrabajador (valueChange)="obtenerDatos(datatrabajador.value)">
                         <mat-option *ngFor="let item of arreglo_trabajador" [value]="item.id">
@@ -62,7 +69,7 @@
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
         <div fxFlex="100" fxFlex.xs="100">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
-                <mat-form-field fxFlex="50" fxFlex.xs="100" appearance="fill">
+                <mat-form-field fxFlex="75" fxFlex.xs="100" appearance="fill">
                     <mat-label>CLUES DESTINO</mat-label>
                     <input matInput placeholder="UNIDAD MEDICA DESTINO" [matAutocomplete]="cluesAutocomplete" formControlName='clues'>
                     <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="displaycluesFn('descripcion_actualizada')" [panelWidth]="'auto'">
@@ -87,7 +94,7 @@
                     </mat-error>
 
                 </mat-form-field>
-                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                <!--<mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
                     <mat-label>FECHA DE CAMBIO</mat-label>
                     <input matInput [matDatepicker]="fecha_cambio_picker" autocomplete="off" (click)="fecha_cambio_picker.open()" formControlName="fecha_cambio" placeholder="Fecha Cambio">
                     <mat-datepicker-toggle matPrefix [for]="fecha_cambio_picker"></mat-datepicker-toggle>
@@ -96,7 +103,7 @@
                         <span *ngIf="formularioForm.get('fecha_cambio').errors.required">Campo obligatorio</span>
                     </mat-error>
 
-                </mat-form-field>
+                </mat-form-field>-->
             </div>
         </div>
 

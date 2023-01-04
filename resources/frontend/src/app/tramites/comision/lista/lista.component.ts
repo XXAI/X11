@@ -111,7 +111,7 @@ export class ListaComponent implements OnInit {
     'reingenieria': [undefined],
   });
 
-  displayedColumns: string[] = ['estatus','Nombre','oficio','periodo', 'creacion', 'actions']; //'Agente',
+  displayedColumns: string[] = ['folio','estatus','Nombre','oficio','periodo', 'creacion', 'actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, 
@@ -307,7 +307,6 @@ export class ListaComponent implements OnInit {
         countFilter++;
       }
     }
-    console.log(params);
     if(countFilter > 0){
       params.active_filter = true;
     }
@@ -644,6 +643,7 @@ export class ListaComponent implements OnInit {
     {
       row ={
         id: obj.rel_trabajador_comision_interna.id, 
+        folio: obj.rel_trabajador_comision_interna.folio, 
         trabajador: obj, 
         fecha_oficio:obj.rel_trabajador_comision_interna.fecha_oficio, 
         fecha_inicio: obj.rel_trabajador_comision_interna.fecha_inicio, 

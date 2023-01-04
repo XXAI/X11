@@ -144,7 +144,7 @@ export class ReporteComision {
       }else if(anio_oficio == 2022){
         datos.header.columns[1].text = "\n\n2022, AÑO DE RICARDO FLORES MAGÓN,  PRECURSOR DE LA REVOLUCIÓN MEXICANA";
       }else if(anio_oficio == 2023){
-        datos.header.columns[1].text = "\n\n2023, AÑO DE FRANCISCO VILLA, EL REVOLUCIONARIO DEL PUEBLO";
+        datos.header.columns[1].text = "\n\n\"2023, Año de Francisco Villa, el Revolucionario del Pueblo\"";
       }else{
         datos.header.columns[1].text = "\n\n";
       }
@@ -279,7 +279,7 @@ export class ReporteComision {
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "OFICIO: IS/DAF/SRH/DRL-COM/__________________________/"+anio_oficio+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+comision.folio.padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+
@@ -336,7 +336,7 @@ export class ReporteComision {
             margin: [0,0,0,0],
             body: [
             [
-              { text: "\n\n\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL/5003/________________________/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
+              { text: "\n\n\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL-COM/"+comision.folio.padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
             ],
             [
               {text: responsable_notificacion.toUpperCase()+"\n\n\n", style:"contenido_notificacion", colSpan:2},{}

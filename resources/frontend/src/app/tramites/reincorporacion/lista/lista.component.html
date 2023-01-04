@@ -18,18 +18,29 @@
                             </mat-hint>
                         </mat-form-field>
                     </div>
-                    <div fxFlex="none" fxFlex.xs="100" *ngIf="!showAdvancedFilter.checked" [@buttonInOut]>
+                    <div fxFlex="none" fxFlex.xs="100" [@buttonInOut]>
                         <div fxFlex></div>
                         <section class="search-button">
-                            <button mat-raised-button color="accent" (click)="applyFilter()">
+                            <!--<button mat-raised-button color="accent" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="applyFilter()" *ngIf="!showAdvancedFilter.checked">
                                 <mat-icon>search</mat-icon> Buscar
-                            </button>
+                            </button>-->
 
-                            <button color="primary" mat-stroked-button [matMenuTriggerFor]="menuLote">
-                                <mat-icon>print</mat-icon> Imprimir Lote
+                            <button mat-raised-button color="primary" style="margin-left: 5px; padding: 10px; font-size: 14pt;" (click)="Agregar()">
+                                <mat-icon>add</mat-icon>
+                                
+                            </button>
+                            <button color="primary" mat-stroked-button style="margin-left: 5px; padding: 10px; font-size: 14pt;"  *ngIf="paginas.length > 0" [matMenuTriggerFor]="menuLote">
+                                <mat-icon>print</mat-icon>
                             </button>
                             <mat-menu #menuLote="matMenu">
-                                <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirOficio(null, i)">{{ (i + 1) }}</button>
+                                <button mat-menu-item *ngFor="let pagina of paginas; let i = index" (click)="imprimirOficio(null, i)">LOTE {{ (i + 1) }}</button>
+                            </mat-menu>
+
+                            <button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="Importar()"><mat-icon>upload</mat-icon> CARGAR</button>
+                                <button mat-menu-item (click)="buscar()"><mat-icon>search</mat-icon> BUSCAR</button>
+
                             </mat-menu>
                         </section>
                     </div>
@@ -153,13 +164,17 @@
             </mat-accordion>
 
             <mat-card fxFlex.xs="100%" fxFlex="90%">
-
-
                 <mat-divider [inset]="true"></mat-divider>
-
                 <div class="data-container ">
                     <div class="data-table-container">
                         <table #dataTable mat-table [dataSource]="dataSource" class="data-table" matSort>
+                            <ng-container matColumnDef="folio">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> FOLIO</th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                    <b>{{row.rel_trabajador_reincorporacion.folio}}</b>
+                                    
+                                </td>
+                            </ng-container>
                             <ng-container matColumnDef="estatus">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> TRABAJADOR </th>
                                 <td mat-cell *matCellDef="let row" fxHide.xs="true">
@@ -206,14 +221,16 @@
                             </ng-container>
 
                             <ng-container matColumnDef="actions">
-                                <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
+                                <th mat-header-cell *matHeaderCellDef><mat-icon>more_vert</mat-icon></th>
                                 <td mat-cell *matCellDef="let row; let i = index">
-                                    <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu" style="display: block; margin: auto;">
-                                            <mat-icon>menu</mat-icon>
+                                    <button mat-button [matMenuTriggerFor]="menu">
+                                        <mat-icon>more_vert</mat-icon>
                                     </button>
+
                                     <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="Agregar(row)"><mat-icon color="primary">edit</mat-icon>EDITAR</button>
                                         <button mat-menu-item (click)="imprimirOficio(row)"><mat-icon color="primary">print</mat-icon>GENERAR OFICIO</button>
-                                        <!--<button mat-menu-item (click)="detalles(row)" style="color: red;"><mat-icon color="warn">delete</mat-icon>CANCELAR CAMBIO</button>-->
+                                        <button mat-menu-item style="color: red;" (click)="eliminar(row)"><mat-icon color="warn">delete</mat-icon>CANCELAR REINCORPORACIÒN</button>
                                     </mat-menu>
 
                                 </td>

@@ -13,6 +13,7 @@ export interface RegistroData {
   id: number;
   trabajador_id?:number;
   destino?:any;
+  folio?:string;
   fecha_oficio?:string;
   fecha_inicio?:string;
   fecha_fin?:string;
@@ -56,6 +57,7 @@ export class FormularioComponent implements OnInit {
   public formularioForm = this.fb.group({
    
     'trabajador': [''],
+    'folio': ['',[Validators.required]],
     'destino': ['',[Validators.required]],
     'presentarse_id': [27854,[Validators.required]],
     'fecha_oficio': ['',[Validators.required]],
@@ -101,6 +103,7 @@ export class FormularioComponent implements OnInit {
         this.formularioForm.patchValue({
           trabajador:'',
           destino:this.data.destino, 
+          folio:this.data.folio, 
           fecha_oficio:this.data.fecha_oficio+"T18:51:49.313Z", 
           fecha_inicio_periodo:this.data.fecha_inicio+"T18:51:49.313Z",
           fecha_fin_periodo:this.data.fecha_fin+"T18:51:49.313Z",

@@ -144,6 +144,7 @@ class TramiteComisionGerencialController extends Controller
     
         $reglas = [
             'trabajador_id'           => 'required',
+            'folio'                   => 'required',
             'destino'                 => 'required',
             'fecha_oficio'            => 'required',
             'fecha_inicio_periodo'    => 'required',
@@ -194,6 +195,7 @@ class TramiteComisionGerencialController extends Controller
             $object->cr_origen                  = $origen->cr;
             $object->destino                    = strtoupper($inputs['destino']);
             $object->trabajador_id              = $inputs['trabajador_id'];
+            $object->folio                      = $inputs['folio'];
             $object->fecha_oficio               = $inputs['fecha_oficio'];
             $object->fecha_inicio               = $inputs['fecha_inicio_periodo'];
             $object->fecha_fin                  = $inputs['fecha_fin_periodo'];
@@ -227,11 +229,12 @@ class TramiteComisionGerencialController extends Controller
         $inputs = $inputs['params'];
     
         $reglas = [
-            'trabajador_id'           => 'required',
-            'destino'                     => 'required',
-            'fecha_oficio'           => 'required',
-            'fecha_inicio_periodo'           => 'required',
-            'fecha_fin_periodo'           => 'required',
+            'trabajador_id'             => 'required',
+            'folio'                     => 'required',
+            'destino'                   => 'required',
+            'fecha_oficio'              => 'required',
+            'fecha_inicio_periodo'      => 'required',
+            'fecha_fin_periodo'         => 'required',
         ];
         
     
@@ -257,6 +260,7 @@ class TramiteComisionGerencialController extends Controller
             
             $object->cr_origen          = $origen->cr;
             $object->destino            = strtoupper($inputs['destino']);
+            $object->folio              = $inputs['folio'];
             $object->trabajador_id      = $inputs['trabajador_id'];
             $object->fecha_oficio       = $inputs['fecha_oficio'];
             $object->fecha_inicio       = $inputs['fecha_inicio_periodo'];

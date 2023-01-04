@@ -110,7 +110,7 @@ export class ListaComponent implements OnInit {
     'reingenieria': [undefined],
   });
 
-  displayedColumns: string[] = ['estatus','Nombre','oficio','periodo', 'creacion', 'actions']; //'Agente',
+  displayedColumns: string[] = ['folio', 'estatus','Nombre','oficio','periodo', 'creacion', 'actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, 
@@ -641,6 +641,7 @@ export class ListaComponent implements OnInit {
     {
       row ={
         id: obj.rel_trabajador_comision_gerencial.id, 
+        folio: obj.rel_trabajador_comision_gerencial.folio, 
         trabajador: obj, 
         fecha_oficio:obj.rel_trabajador_comision_gerencial.fecha_oficio, 
         fecha_inicio: obj.rel_trabajador_comision_gerencial.fecha_inicio, 
@@ -780,7 +781,6 @@ export class ListaComponent implements OnInit {
         data: row
       }
     }
-    console.log("hola");
     
     const dialogRef = this.dialog.open(ImportarComponent, configDialog);
 

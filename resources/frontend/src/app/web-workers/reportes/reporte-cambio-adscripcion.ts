@@ -172,7 +172,7 @@ export class ReporteTrabajadorCambioAdscripcion {
       }else if(anio_oficio == 2022){
         datos.header.columns[1].text = "\n\n2022, AÑO DE RICARDO FLORES MAGÓN,  PRECURSOR DE LA REVOLUCIÓN MEXICANA";
       }else if(anio_oficio == 2023){
-        datos.header.columns[1].text = "\n\n2023, AÑO DE FRANCISCO VILLA, EL REVOLUCIONARIO DEL PUEBLO";
+        datos.header.columns[1].text = "\n\n\"2023, Año de Francisco Villa, el Revolucionario del Pueblo\"";
       }else{
         datos.header.columns[1].text = "\n\n";
       }
@@ -249,14 +249,14 @@ export class ReporteTrabajadorCambioAdscripcion {
         case "FO3": 
         case "FOR": 
           //HAy que cambiarlo
-          acuse_qr ="Con el objeto de dar cabal cumplimiento a lo expuesto en el párrafo que antecede, por necesidades del servicio y efecto de garantizar la demanda de atención médica de la población usuaria de los servicios de salud de conformidad con el artículo 179 Fracción VI de las Condiciones Generales de Trabajo de la Secretaría de Salud; se le hace del conocimiento <b>QUE A PARTIR DE RECIBIDO EL PRESENTE DOCUMENTO</b>, queda adscrito al "+destino+"; por lo que se deberá presentar en un horario de atención de 08:00 horas a las 16:00 horas de lunes a viernes con el/la "+responsable+", quien le indicará las actividades, jornada, horario y funciones a ejecutar de acuerdo con su categoría y a las necesidades de la Institución";
+          acuse_qr ="Con el objeto de dar cabal cumplimiento a lo expuesto en el párrafo que antecede, por necesidades del servicio y efecto de garantizar la demanda de atención médica de la población usuaria de los servicios de salud de conformidad con el artículo 179 Fracción VI de las Condiciones Generales de Trabajo de la Secretaría de Salud; se le hace del conocimiento QUE A PARTIR DE RECIBIDO EL PRESENTE DOCUMENTO, queda adscrito al "+destino+"; por lo que se deberá presentar en un horario de atención de 08:00 horas a las 16:00 horas de lunes a viernes con el/la "+responsable+", quien le indicará las actividades, jornada, horario y funciones a ejecutar de acuerdo con su categoría y a las necesidades de la Institución";
           contenido += acuse_qr+"\n\n";
           contenido += "Atento lo anterior, deberá desempeñar sus servicios con intensidad, esmero y de acuerdo a lo dispuesto por los artículos 52 de la Ley del Servicio Civil del Estado y los Municipios de Chiapas, 134 de la Ley Federal del Trabajo y 133 de las Condiciones Generales de Trabajo de la Secretaría de Salud.\n\nEn el entendido que, de no presentarse a laborar en los términos señalados en el presente, se aplicarán las normatividades que rigen a la Institución para tal efecto.\n\nLo que comunico a Usted, para su debido cumplimiento.";
           
         break;
         default:
           //acuse_qr ="Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, así como de la CLÁUSULA QUINTA del Contrato Individual de Trabajo por tiempo determinado de fecha primero de enero del año "+anio_actual+", por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien hacerle del conocimiento, que a partir del día "+periodo+", queda comisionado a "+destino+"; con su código funcional "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el/la  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
-          acuse_qr ="Con el objeto de dar cabal cumplimiento a lo expuesto en el párrafo que antecede, por necesidades del servicio y efecto de garantizar la demanda de atención médica de la población usuaria de los servicios de salud de conformidad con el artículo 179 Fracción VI de las Condiciones Generales de Trabajo de la Secretaría de Salud; se le hace del conocimiento <b>QUE A PARTIR DE RECIBIDO EL PRESENTE DOCUMENTO</b>, queda adscrito al "+destino+"; por lo que se deberá presentar en un horario de atención de 08:00 horas a las 16:00 horas de lunes a viernes con el/la "+responsable+", quien le indicará las actividades, jornada, horario y funciones a ejecutar de acuerdo con su categoría y a las necesidades de la Institución";
+          acuse_qr ="Con el objeto de dar cabal cumplimiento a lo expuesto en el párrafo que antecede, por necesidades del servicio y efecto de garantizar la demanda de atención médica de la población usuaria de los servicios de salud de conformidad con el artículo 179 Fracción VI de las Condiciones Generales de Trabajo de la Secretaría de Salud; se le hace del conocimiento QUE A PARTIR DE RECIBIDO EL PRESENTE DOCUMENTO, queda adscrito al "+destino+"; por lo que se deberá presentar en un horario de atención de 08:00 horas a las 16:00 horas de lunes a viernes con el/la "+responsable+", quien le indicará las actividades, jornada, horario y funciones a ejecutar de acuerdo con su categoría y a las necesidades de la Institución";
           contenido += acuse_qr+"\n\n";
           contenido += "Atento lo anterior, deberá desempeñar sus servicios con intensidad, esmero y de acuerdo a lo dispuesto por los artículos 52 de la Ley del Servicio Civil del Estado y los Municipios de Chiapas, 134 de la Ley Federal del Trabajo y 133 de las Condiciones Generales de Trabajo de la Secretaría de Salud.\n\nEn el entendido que, de no presentarse a laborar en los términos señalados en el presente, se aplicarán las normatividades que rigen a la Institución para tal efecto.\n\nLo que comunico a Usted, para su debido cumplimiento.";
             
@@ -298,7 +298,7 @@ export class ReporteTrabajadorCambioAdscripcion {
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "OFICIO: IS/DAF/SRH/DRL-CAM/__________________________/"+anio_oficio+"\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\nASUNTO: CAMBIO DE ADSCRIPCIÓN", style: "texto_depto_derecha", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL-CAM/"+comision.folio.padStart(6, "0")+"/"+anio_oficio+"\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\nASUNTO: CAMBIO DE ADSCRIPCIÓN", style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+
