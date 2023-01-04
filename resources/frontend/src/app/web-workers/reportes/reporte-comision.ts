@@ -266,6 +266,8 @@ export class ReporteComision {
         }
       }
 
+      let num_oficio        = comision.folio;
+      let num_notificacion  = parseInt(comision.folio) + 1; 
       let informacion_oficio = {
         layout: 'noBorders',
         pageBreak:'',
@@ -279,7 +281,7 @@ export class ReporteComision {
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+comision.folio.padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+num_oficio.padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+
@@ -336,7 +338,7 @@ export class ReporteComision {
             margin: [0,0,0,0],
             body: [
             [
-              { text: "\n\n\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL-COM/"+comision.folio.padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
+              { text: "\n\n\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL-COM/"+num_notificacion.toString().padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
             ],
             [
               {text: responsable_notificacion.toUpperCase()+"\n\n\n", style:"contenido_notificacion", colSpan:2},{}
