@@ -171,9 +171,7 @@ class TramiteComisionInternaController extends Controller
                                                     ['fecha_fin',       '>=', $inputs['fecha_fin_periodo']]
                                                 ]);
                                         })
-                                        ->count();
-
-                                  
+                                        ->count();              
             //Validacion del registro
             if($update > 0)
             {
@@ -503,6 +501,7 @@ class TramiteComisionInternaController extends Controller
                 //Validamos comision activa
                 DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_interna where activo=1)");
                 DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_gerencial where activo=1)");
+                DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>SIN COMISIÓN HISTORICA</b>'), estatus=99 where ".$filtro." and (trabajador_id not in (select trabajador_id from rel_trabajador_comision_gerencial where deleted_at is null) and trabajador_id not in (select trabajador_id from rel_trabajador_comision_interna where deleted_at is null))");
                 /*if (in_array($parametros['tipo'], ['2'])) {
                     
                 }else if (in_array($parametros['tipo'], ['3'])) {
@@ -528,6 +527,7 @@ class TramiteComisionInternaController extends Controller
             $respuesta['totalNoTrabajadores'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("trabajador_id",0)->count();
             $respuesta['totalOrigenDestino'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","=",6)->count();
             $respuesta['totalComisionActiva'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","=",7)->count();
+            $respuesta['totalAdvertencia'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","=",99)->count();
             $respuesta['data'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","!=",1)->orderBy("estatus","asc")->orderBy("trabajador_id","asc")->get();
 
             
@@ -537,6 +537,7 @@ class TramiteComisionInternaController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }   
     }
+
     public function migrarInformacion(Request $request)
     {
         ini_set('memory_limit', '-1');
@@ -549,11 +550,12 @@ class TramiteComisionInternaController extends Controller
             if($parametros['tipo'] == 1)
             {
                 //importamos origen encontrado
-                DB::statement("INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, activo, user_id, created_at, updated_at, cr_before_id, folio) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00', cr_before_id, folio FROM importar_tramites WHERE tipo=1 and estatus=1 AND user_id=".$loggedUser->id.";");
+                DB::statement("INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, activo, user_id, created_at, updated_at, cr_before_id, folio) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00', cr_before_id, folio FROM importar_tramites WHERE tipo=1 and estatus in (1,99) AND user_id=".$loggedUser->id.";");
+                
             }else if($parametros['tipo'] == 2){
                 DB::statement("INSERT INTO rel_trabajador_adscripcion (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_cambio, reingenieria, activo, user_id, created_at, updated_at, cr_before_id, folio) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00', cr_before_id, folio FROM importar_tramites WHERE tipo=2 and estatus=1 AND user_id=".$loggedUser->id.";");
             }else if($parametros['tipo'] == 3){
-                DB::statement("INSERT INTO rel_trabajador_comision_gerencial (trabajador_id, cr_origen, destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, activo, user_id, created_at, updated_at, codigo_id, trabajador_responsable_id, folio) SELECT trabajador_id, cr_origen, destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00', codigo_id,trabajador_responsable_id, folio FROM importar_tramites WHERE tipo=3 and estatus=1 AND user_id=".$loggedUser->id.";");
+                DB::statement("INSERT INTO rel_trabajador_comision_gerencial (trabajador_id, cr_origen, destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, activo, user_id, created_at, updated_at, codigo_id, trabajador_responsable_id, folio) SELECT trabajador_id, cr_origen, destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00', codigo_id,trabajador_responsable_id, folio FROM importar_tramites WHERE tipo=3 and estatus in (1,99) AND user_id=".$loggedUser->id.";");
             }
             
             $respuesta['total'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->count();
@@ -566,6 +568,29 @@ class TramiteComisionInternaController extends Controller
         }   
     }
 
+    public function verificarComision(Request $request, $id)
+    {
+        ini_set('memory_limit', '-1');
+        $inputs = $request->all();
+        try{  
+            $primero = DB::table('rel_trabajador_comision_interna')
+            ->where('trabajador_id',$id)
+            ->select('id')
+            ->whereNull('deleted_at');
+ 
+            $segundo = DB::table('rel_trabajador_comision_gerencial')
+            ->whereNull('deleted_at')
+            ->where('trabajador_id',$id)
+            ->select('id')
+            ->unionAll($primero)
+            ->count();
+            
+            return response()->json(['data'=>$segundo],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }   
+    }
     public function ObtenerLote(Request $request)
     {
         try{

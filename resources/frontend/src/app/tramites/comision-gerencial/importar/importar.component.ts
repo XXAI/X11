@@ -30,6 +30,7 @@ export class ImportarComponent implements OnInit {
   total:Number = 0;
   correctos:Number = 0;
   incorrectos:Number = 0;
+  advertencia:Number = 0;
   no_trabajadores:Number = 0;
   fechas:Number = 0;
   no_nomina:Number = 0;
@@ -160,6 +161,7 @@ export class ImportarComponent implements OnInit {
         this.total = datos.total;
         this.correctos = datos.totalCorrectos;
         this.incorrectos = datos.totalIncorrectos;
+        this.advertencia = datos.totalAdvertencia;
         this.no_trabajadores = datos.totalNoTrabajadores;
         this.fechas = datos.totalFechas;
         this.no_nomina = datos.totalOrigen;

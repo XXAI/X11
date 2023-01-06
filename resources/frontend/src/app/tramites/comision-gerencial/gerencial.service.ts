@@ -19,6 +19,7 @@ export class GerencialService {
   url_validar_informacion   =  `${environment.base_url}/validar-importacion`;
   url_migrar_informacion    =  `${environment.base_url}/migrar-importacion`;
   url_truncar_informacion    =  `${environment.base_url}/truncar-comision-gerencial`;
+  url_validacion_comision   =  `${environment.base_url}/verificar-comision`;
   
   constructor(private http: HttpClient) { }
 
@@ -134,6 +135,15 @@ export class GerencialService {
   truncarComision(payload:any)
   {
     return this.http.post<any>(this.url_truncar_informacion , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  verificarRegistroComision(id:any)
+  {
+    return this.http.get<any>(this.url_validacion_comision+"/"+id , {}).pipe(
       map( (response: any) => {        
         return response;
       }

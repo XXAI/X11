@@ -31,12 +31,12 @@
                         <mat-label>Trabajador</mat-label>
                         <input matInput placeholder="Trabajador" formControlName='trabajador' (keyup.escape)="buscarTrabajador()" (keyup.enter)="buscarTrabajador()"  autocomplete="off">
                     </mat-form-field>
-                    <div fxFlex="5" fxFlex.xs="100" appearance="fill">
+                    <div fxFlex="10" fxFlex.xs="100" appearance="fill">
                         <button mat-raised-button color="accent" style="margin-left: 5px; padding: 10px; font-size: 14pt; margin-top: 17px;" (click)="buscarTrabajador()" [disabled]="buscador">
                             <mat-icon>search</mat-icon>
                         </button>
                     </div>
-                    <mat-form-field fxFlex="45" fxFlex.xs="100" appearance="fill">
+                    <mat-form-field fxFlex="40" fxFlex.xs="100" appearance="fill">
                         <mat-label>TRABAJADORES</mat-label>
                         <mat-select formControlName="trabajador_id" required #datatrabajador (valueChange)="obtenerDatos(datatrabajador.value)">
                             <mat-option *ngFor="let item of arreglo_trabajador" [value]="item.id">

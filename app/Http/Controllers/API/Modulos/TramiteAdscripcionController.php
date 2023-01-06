@@ -214,7 +214,7 @@ class TramiteAdscripcionController extends Controller
                 $update->activo = 0;
                 $update->save();    
             }
-            
+
             $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
             $object = new RelAdscripcion();
             $object->cr_origen          = $origen->cr;

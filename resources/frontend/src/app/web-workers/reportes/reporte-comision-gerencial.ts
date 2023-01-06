@@ -258,6 +258,9 @@ export class ReporteComisionGerencial {
         }
       }
 
+      let num_oficio        = parseInt(comision.folio);
+      let num_notificacion  = parseInt(comision.folio)+1;
+
       let informacion_oficio = {
         layout: 'noBorders',
         pageBreak:'',
@@ -269,7 +272,7 @@ export class ReporteComisionGerencial {
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+comision.folio.padStart(6, "0")+"/"+anio_periodo+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+num_oficio.toString().padStart(6, "0")+"/"+anio_periodo+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+
@@ -303,18 +306,20 @@ export class ReporteComisionGerencial {
           ]
         }
       };
-      /*informacion_oficio.pageBreak = 'after';
+      informacion_oficio.pageBreak = 'after';
 
       let dato_unidad = "Jurisdicción";
-      /*if(comision.cr_destino)
+      if(comision.cr_destino)
       {
         if(comision.cr_destino.clues.clasificacion == "H. G." || comision.cr_destino.clues.clasificacion == "CLINICA" || comision.cr_destino.clues.clasificacion == "CLINICA DE ESPECIALIDADES")
         {
           dato_unidad= "UNIDAD";
         }
-      }*/
+      }
 
-      /*let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir del día "+fecha_inicio+", fue comisionado a "+destino+", Chiapas; de esa "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
+      
+      
+      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir del día "+fecha_inicio+", fue comisionado a "+destino+", Chiapas; de esa "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
       contenido_notificacion += "Por lo que, en 5 días hábiles a partir de la fecha de este documento, el encargado de recursos humanos deberá realizar la asignación de jornada y horario con numero de identificación de acuerdo a los controles de asistencia con los que cuente la unidad.\n\n";
       contenido_notificacion += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       let notificacion = {
@@ -325,7 +330,7 @@ export class ReporteComisionGerencial {
             margin: [0,0,0,0],
             body: [
             [
-              { text: "\n\n\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL/5003/________________________/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
+              { text: "\n\n\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL-COM/"+num_notificacion.toString().padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
             ],
             [
               {text: responsable_notificacion.toUpperCase()+"\n\n\n", style:"contenido_notificacion", colSpan:2},{}
@@ -351,15 +356,15 @@ export class ReporteComisionGerencial {
             ]
           ]
         }
-      };*/
+      };
       
       if(iteracciones != data.length)
       {
-        informacion_oficio.pageBreak = 'after';
+        notificacion.pageBreak = 'after';
       }
       
       datos.content.push(informacion_oficio);
-      //datos.content.push(notificacion);
+      datos.content.push(notificacion);
 
       iteracciones++;
     });

@@ -163,6 +163,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('busqueda-trabajador-tramites',          'API\Modulos\TrabajadorController@buscarTrabajadorTramites');
     Route::post('truncar-comision',                     'API\Modulos\TramiteComisionInternaController@truncarComision');
     Route::post('truncar-comision-gerencial',           'API\Modulos\TramiteComisionGerencialController@truncarComision');
+    Route::get('verificar-comision/{id}',               'API\Modulos\TramiteComisionInternaController@verificarComision');
     
     Route::apiResource('profile',                       'API\ProfileController')->only([ 'show', 'update']);
     Route::get('reset-contrasena/{id}',                 'API\Admin\UserController@resetPassword');

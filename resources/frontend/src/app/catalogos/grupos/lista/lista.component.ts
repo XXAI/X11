@@ -2,14 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { GruposService } from '../grupos.service';
 import { SharedService } from '../../../shared/shared.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
-import { MatExpansionPanel } from '@angular/material/expansion';
-import { MatTable } from '@angular/material/table';
-import { ConfirmActionDialogComponent } from '../../../utils/confirm-action-dialog/confirm-action-dialog.component';
 import { FormularioComponent } from '../formulario/formulario.component';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
 import { MediaObserver } from '@angular/flex-layout';
 
 @Component({

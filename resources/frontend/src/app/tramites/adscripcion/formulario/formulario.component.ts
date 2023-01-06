@@ -58,7 +58,7 @@ export class FormularioComponent implements OnInit {
   public formularioForm = this.fb.group({
    
     'trabajador': [''],
-    'folio': ['',[Validators.required]],
+    'folio': [''],
     'clues': ['',[Validators.required]],
     'fecha_oficio': ['',[Validators.required]],
     //'fecha_cambio': ['',[Validators.required]],

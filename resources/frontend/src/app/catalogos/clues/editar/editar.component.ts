@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, combineLatest, of, forkJoin } from 'rxjs';
 import { startWith, map, throwIfEmpty, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
-import { ConfirmActionDialogComponent } from '../../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
 @Component({
   selector: 'app-editar',

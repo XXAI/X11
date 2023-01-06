@@ -211,6 +211,11 @@ export class ReporteComision {
         }
       }
 
+      if(comision.cr_destino.dependencia.cr ==responsables.control.cr || comision.cr_destino.dependencia.cr ==responsables.juridico.cr || comision.cr_destino.dependencia.cr ==responsables.sistematizacion.cr || comision.cr_destino.dependencia.cr ==responsables.subdireccion_rh.cr)
+      {
+        responsable_copia = "";
+      }
+
       contenido = "En consideración que la protección a la salud, es un derecho humano, elevado a rango constitucional como lo establece el artículo 4º de la Ley Suprema; en relación con los dispositivos 1º, 2º  y 77 bis 1, de la Ley General de Salud, establecen que los servicios de salud y de asistencia social deben de satisfacer eficaz y oportunamente las necesidades de la población que carezcan de la seguridad social y estos conceptos, tienen el derecho de recibir de manera gratuita los servicios públicos de salud, que incluye medicamentos y demás insumos asociados sin importar la condición social de las personas.\n\n";
       let acuse_qr = "";
       switch (datos_nominales.ur) {
@@ -267,7 +272,7 @@ export class ReporteComision {
       }
 
       let num_oficio        = comision.folio;
-      let num_notificacion  = parseInt(comision.folio) + 1; 
+      let num_notificacion  = comision.folio + 1; 
       let informacion_oficio = {
         layout: 'noBorders',
         pageBreak:'',
@@ -281,7 +286,7 @@ export class ReporteComision {
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+num_oficio.padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+num_oficio.toString().padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+

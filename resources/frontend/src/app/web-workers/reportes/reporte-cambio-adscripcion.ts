@@ -239,6 +239,11 @@ export class ReporteTrabajadorCambioAdscripcion {
         }
       }
 
+      if(comision.cr_destino.dependencia.cr ==responsables.control.cr || comision.cr_destino.dependencia.cr ==responsables.juridico.cr || comision.cr_destino.dependencia.cr ==responsables.sistematizacion.cr || comision.cr_destino.dependencia.cr ==responsables.subdireccion_rh.cr)
+      {
+        responsable_copia = "";
+      }
+
       contenido = "En consideración que la protección a la salud, es un derecho humano, elevado a rango constitucional como lo establece el artículo 4º de la Ley Suprema; así mismo los dispositivos 2º  y 77 bis 1, de la Ley General de la materia, establecen que los servicios de salud y de asistencia social deben de satisfacer eficaz y oportunamente las necesidades de la población que carezca de estos conceptos, por tal razón tienen derecho a recibir de manera gratuita los servicios públicos de salud, incluyendo medicamentos y demás insumos asociados sin importar la condición social de las personas.\n\n";
       let acuse_qr = "";
       switch (datos_nominales.ur) {

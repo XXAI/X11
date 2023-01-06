@@ -8,6 +8,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { GerencialService } from '../gerencial.service';
 import { map, startWith } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ConfirmActionDialogComponent } from '../../../utils/confirm-action-dialog/confirm-action-dialog.component';
 
 export interface RegistroData {
   id: number;
@@ -154,6 +155,31 @@ export class FormularioComponent implements OnInit {
   GUARDAR()
   {
     this.isLoading = true;
+
+    let numero_folio = parseInt(this.formularioForm.controls['folio'].value);
+    
+    if(numero_folio%2==0)
+    {
+      const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+        width: '500px',
+        data:{dialogTitle:'VALIDACIÓN',dialogMessage:'¿Esta registrando un número par, esta seguro/a de usar este numero de folio?',btnColor:'primary',btnText:'Aceptar'}
+      });
+  
+      dialogRef.afterClosed().subscribe(valid => {
+        if(valid){
+          this.guardarInformacion();
+        }else{
+          this.isLoading = false;
+        }
+      });
+    }else
+    {
+      this.guardarInformacion();
+    }
+    
+  }
+
+  guardarInformacion(){
     if(this.data.id)
     {
       this.gerencialService.editarComision(this.data.id,this.formularioForm.value).subscribe(
@@ -172,20 +198,59 @@ export class FormularioComponent implements OnInit {
         }
       );
     }else{
-      this.gerencialService.guardarComision(this.formularioForm.value).subscribe(
+      let trabajador = this.formularioForm.controls['trabajador_id'].value; 
+      this.gerencialService.verificarRegistroComision(trabajador).subscribe(
         response => {
-          this.formularioForm.patchValue({trabajador:'',trabajador_id:'',presentarse_id:27854,destino:'', fecha_oficio:''});
-          this.isLoading = false;
-          this.sharedService.showSnackBar("SE GUARDO CORRECTAMENTE", null, 3000);
+          if(parseInt(response.data)>0)
+          {
+            this.guardarFormulario();
+          }else{
+            this.confirmacionGuardar();
+          }
         },
         errorResponse =>{
+          console.log(errorResponse);
+          
           this.isLoading = false;
           var errorMessage = "Ocurrió un error.";
           this.sharedService.showSnackBar(errorResponse.error.message, null, 3000);
         }
       );
-    }
-    
+
+      
+    } 
+  }
+
+  confirmacionGuardar()
+  {
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'VERIFICACIÓN',dialogMessage:'¿No tiene comisión registrada en el sistema, desea registrar la comision?',btnColor:'primary',btnText:'Aceptar'}
+    });
+
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.guardarFormulario();
+      }else{
+        this.isLoading = false;
+      }
+    });
+  }
+
+  guardarFormulario()
+  {
+    this.gerencialService.guardarComision(this.formularioForm.value).subscribe(
+      response => {
+        this.formularioForm.patchValue({trabajador:'',trabajador_id:'',presentarse_id:27854,destino:'', fecha_oficio:''});
+        this.isLoading = false;
+        this.sharedService.showSnackBar("SE GUARDO CORRECTAMENTE", null, 3000);
+      },
+      errorResponse =>{
+        this.isLoading = false;
+        var errorMessage = "Ocurrió un error.";
+        this.sharedService.showSnackBar(errorResponse.error.message, null, 3000);
+      }
+    );
   }
 
   cerrar()
