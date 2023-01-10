@@ -206,6 +206,20 @@ class TramiteAdscripcionController extends Controller
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
         try {
+            $trabajador = Trabajador::with("datoslaboralesnomina")->find($inputs['trabajador_id']);
+            $ze_origen = $trabajador['datoslaboralesnomina']['cr']['ze'];
+            $cr_destino = Cr::find($inputs['clues']['cr']);
+            $ze_destino = $cr_destino['ze'];
+            $pos = strpos($trabajador['datoslaboralesnomina']['fuente_financiamiento'], "INSABI");
+
+            if($trabajador['datoslaboralesnomina']['ur']!="CON" && $ze_origen!=$ze_destino)
+            {
+                return Response::json(['error' => "ZE DISTINTO"], HttpResponse::HTTP_CONFLICT);
+            }else if($trabajador['datoslaboralesnomina']['ur']=="CON" && $pos!==false)
+            {
+                return Response::json(['error' => "TRABAJADOR DEL PROGRAMA INSABI"], HttpResponse::HTTP_CONFLICT);
+            }
+
             $update = RelAdscripcion::where("trabajador_id", $inputs['trabajador_id'])->first();
             
             if($update)
@@ -262,7 +276,19 @@ class TramiteAdscripcionController extends Controller
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
         try {
-            
+            $trabajador = Trabajador::with("datoslaboralesnomina")->find($inputs['trabajador_id']);
+            $ze_origen = $trabajador['datoslaboralesnomina']['cr']['ze'];
+            $cr_destino = Cr::find($inputs['clues']['cr']);
+            $ze_destino = $cr_destino['ze'];
+            $pos = strpos($trabajador['datoslaboralesnomina']['fuente_financiamiento'], "INSABI");
+
+            if($trabajador['datoslaboralesnomina']['ur']!="CON" && $ze_origen!=$ze_destino)
+            {
+                return Response::json(['error' => "ZE DISTINTO"], HttpResponse::HTTP_CONFLICT);
+            }else if($trabajador['datoslaboralesnomina']['ur']=="CON" && $pos!==false)
+            {
+                return Response::json(['error' => "TRABAJADOR DEL PROGRAMA INSABI"], HttpResponse::HTTP_CONFLICT);
+            }
             
             $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
             $object = RelAdscripcion::find($id);

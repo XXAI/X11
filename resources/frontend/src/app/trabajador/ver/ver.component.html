@@ -436,6 +436,9 @@
                             </p>
                         </div>-->
                     </div>
+                    <div fxLayout="row column" fxLayoutGap="3px" style="margin-top: -15px;font-size: 10pt;background-color: rgba(200,0,0,0.1);" *ngIf="!isLoadingAsistencia && Asitencia && validadorEstudios">
+                    * Si no puede observar sus asistencias aun cuando ha checado correctamente, favor de pasar al área de control de asistencias de su unidad
+                    </div>    
                     <!--<section fxLayout="row wrap" fxLayoutGap="10px" style="margin-top: -10px;" *ngIf="!isLoadingAsistencia && Asitencia && validadorEstudios">
                         <div fxFlex="40" fxFlex.xs="45" class="tarjeta-info-empleado">
                             <button fxFlex fxFlex.xs="45" mat-raised-button color="accent" (click)="buscarFechasAssitencia()"><mat-icon>search</mat-icon></button>

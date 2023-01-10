@@ -159,7 +159,7 @@ export class ReporteTrabajadorCambioAdscripcion {
       let trabajador = element;
       let datos_nominales  = trabajador.rel_datos_laborales_nomina;
       let secretario = nombre_secretario+"\n";//Esto es por si a donde va a llegar es a la direccion general
-      let anio_oficio = 2022;//element.rel_trabajador_adscripcion.fecha_oficio.substr(0,4);
+      let anio_oficio = element.rel_trabajador_adscripcion.fecha_oficio.substr(0,4);
 
       if(element.rel_trabajador_adscripcion.fecha_oficio != null)
       {
@@ -290,6 +290,7 @@ export class ReporteTrabajadorCambioAdscripcion {
         dato_origen = "";
       //}
 
+      let numero_oficio = parseInt(comision.folio).toString();
       let informacion_oficio = {
         layout: 'noBorders',
         pageBreak:'',
@@ -297,13 +298,11 @@ export class ReporteTrabajadorCambioAdscripcion {
           widths: [400,'*'],
           margin: [0,0,0,0],
           body: [
-           
-            
-            [
+             [
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "OFICIO: IS/DAF/SRH/DRL-CAM/"+comision.folio.padStart(6, "0")+"/"+anio_oficio+"\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\nASUNTO: CAMBIO DE ADSCRIPCIÓN", style: "texto_depto_derecha", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL-CAM/"+numero_oficio.padStart(6, "0")+"/"+anio_oficio+"\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\nASUNTO: CAMBIO DE ADSCRIPCIÓN", style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+

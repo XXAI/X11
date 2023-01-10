@@ -492,6 +492,14 @@ class TramiteComisionInternaController extends Controller
                 DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>ORIGEN Y DESTINO IGUALES</b><br>'), estatus=6 where ".$filtro." and cr_origen=cr_destino");
             }
 
+            if (in_array($parametros['tipo'], ['2'])) {//Esto es solo para cambio de adscripción
+                //validamos que no sea de contrato y de fuente insabi
+                DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>FUENTE INSABI</b><br>'), estatus=8 where ".$filtro." AND a.trabajador_id in (select trabajador_id from rel_trabajador_datos_laborales_nomina where fuente_financiamiento like '%INSABI%')");
+
+                //validamos que sea de la misma zona economica si no son de contrato
+                DB::statement("UPDATE importar_tramites a INNER JOIN catalogo_cr b ON a.`cr_origen`=b.`cr` INNER JOIN catalogo_cr c ON a.`cr_destino`=c.`cr` INNER JOIN rel_trabajador_datos_laborales_nomina d ON a.`trabajador_id`=d.`trabajador_id` AND d.`ur`!='CON' SET a.observaciones=concat(observaciones, '-<b>DIFERENTE ZONA ECONOMICA (NO ES DE CONTRATO)</b><br>'), a.estatus=8 WHERE b.`ze`!=c.`ze`");
+            }
+
             //Validamos origen encontrado
             DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>CR ADSCRIPCION NO ENCONTRADO</b><br>'), estatus=4 where ".$filtro." and cr_origen is null or cr_origen=0 or cr_origen = ''");
             
@@ -528,6 +536,7 @@ class TramiteComisionInternaController extends Controller
             $respuesta['totalOrigenDestino'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","=",6)->count();
             $respuesta['totalComisionActiva'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","=",7)->count();
             $respuesta['totalAdvertencia'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","=",99)->count();
+            $respuesta['totalAdscripcion'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","=",8)->count();
             $respuesta['data'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->where("estatus","!=",1)->orderBy("estatus","asc")->orderBy("trabajador_id","asc")->get();
 
             

@@ -36,6 +36,7 @@ export class ImportarComponent implements OnInit {
   no_destino:Number = 0;
   igual_origen_destino:Number = 0;
   duplicados:Number = 0;
+  adscripcion:Number = 0;
   comisionActiva:Number = 0;
   Viableimportacion:boolean = false;
   tipoformato:number  = 2;
@@ -166,6 +167,7 @@ export class ImportarComponent implements OnInit {
         this.no_destino = datos.totalDestino;
         this.igual_origen_destino = datos.totalOrigenDestino;
         this.duplicados = datos.totalDuplicado;
+        this.adscripcion = datos.totalAdscripcion;
         this.comisionActiva = datos.totalComisionActiva;
         this.dataSource = datos.data;
         if(datos.totalCorrectos > 0)

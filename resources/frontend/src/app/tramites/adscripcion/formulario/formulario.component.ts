@@ -189,7 +189,7 @@ export class FormularioComponent implements OnInit {
           this.isLoading = false;
           var errorMessage = "Ocurrió un error.";
           if(errorResponse.status == 409){
-            errorMessage = errorResponse.error.message;
+            errorMessage = errorResponse.error.error;
           }
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         }
@@ -207,8 +207,9 @@ export class FormularioComponent implements OnInit {
         errorResponse =>{
           this.isLoading = false;
           var errorMessage = "Ocurrió un error.";
+          //console.log(errorResponse);
           if(errorResponse.status == 409){
-            errorMessage = errorResponse.error.message;
+            errorMessage = errorResponse.error.error;
           }
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         }

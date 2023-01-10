@@ -191,6 +191,17 @@ export class ReporteComisionGerencial {
       let responsable_notificacion = "";
       let responsable_copia = "";
 
+      let datos_responsable = element.rel_trabajador_comision_gerencial.responsable;
+
+      responsable_notificacion = "DR. "+datos_responsable.nombre+" "+datos_responsable.apellido_paterno+" "+datos_responsable.apellido_materno+"\n";
+      if(datos_responsable.id ==27854)
+      {
+        responsable_notificacion+= "OFICINAS DEL INSABI\n";
+      }else if(datos_responsable.id ==24598)
+      {
+        responsable_notificacion+= "JEFE DE MESA DE ANÁLISIS Y PAGO DE PROVEEDORES\n";
+      }
+      responsable_notificacion += "TUXTLA GUTIÉRREZ CHIAPAS."
       /*if(comision.cr_destino)
       {
         destino = "( "+comision.cr_destino.clues.clasificacion+") "+comision.cr_destino.descripcion_actualizada+" "+comision.cr_destino.clues.clues;
