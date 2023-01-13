@@ -14,4 +14,8 @@ class Credencializacion extends Model
     public function cargo(){
         return $this->hasOne('App\Models\Cargo','id','cargo_id');
     }
+    
+    public function usuario(){
+        return $this->belongsTo('App\Models\User','user_impresion_id','id');
+    }
 }

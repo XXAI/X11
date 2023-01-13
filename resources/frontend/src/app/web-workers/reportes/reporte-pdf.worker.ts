@@ -16,6 +16,7 @@ import { ReporteTramiteDocumentacion } from './reporte-documentacion';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+
 const reportes = {
   'empleados/personal-activo': new ReportePersonalActivo(),
   'empleados/personal-activo-area': new ReportePersonalActivoArea(),

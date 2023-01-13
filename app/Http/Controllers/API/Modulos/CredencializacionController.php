@@ -42,7 +42,7 @@ class CredencializacionController extends Controller
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
 
             $parametros = $request->all();
-            $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial")
+            $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial.usuario")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja ='0000-00-00' and deleted_at is null)");
                             //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is not null)")
@@ -167,7 +167,7 @@ class CredencializacionController extends Controller
                 $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
             }*/
 
-            $image = base64_encode(\Storage::get('public\\FromatoCredencial\\default.jpg'));
+            $image = base64_encode(\Storage::get('public\\FromatoCredencial\\Gafete2023.jpg'));
             if($trabajador->credencial != null)
             {
                 
@@ -348,6 +348,7 @@ class CredencializacionController extends Controller
         $loggedUser = auth()->userOrFail();
         try{
             $access = $this->getUserAccessData();
+            
             $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
             $carbon = Carbon::now();
             $parametros = $request->all();
@@ -366,30 +367,8 @@ class CredencializacionController extends Controller
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
             } 
             $permison_individual = false;                
-            /*if(!$access->is_admin){
-                foreach ($permisos->roles as $key => $value) {
-                    foreach ($value->permissions as $key2 => $value2) {
-                        if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
-                        {
-                            $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
-                            $permison_individual = true;
-                        }
-                    }
-                }
-            }
-            
-            //filtro de valores por permisos del usuario
-            if(!$access->is_admin && $permison_individual == false){
-                $trabajador = $trabajador->where(function($query){
-                    $query->whereIn('trabajador.estatus',[1,4]);
-                })->where(function($query)use($access){
-                    $query->whereIn('rel_trabajador_datos_laborales.clues_adscripcion_fisica',$access->lista_clues)->whereIn('rel_trabajador_datos_laborales.cr_fisico_id',$access->lista_cr);
-                });
-            }*/
-            
-            //$trabajador = $trabajador->get();
 
-            $formato = base64_encode(\Storage::get('public\\FromatoCredencial\\default.jpg'));
+            $formato = base64_encode(\Storage::get('public\\FromatoCredencial\\Gafete2023.jpg'));
             
             $encriptacion = "ubp((%kU0";
             foreach ($trabajador as $key => $value) {
@@ -397,9 +376,31 @@ class CredencializacionController extends Controller
                 //$trabajador[$key]->credencial->foto_trabajador = base64_encode(\Storage::get('public\\FotoTrabajador\\1.jpg'));
                 
                 $trabajador[$key]->encriptar = encrypt($trabajador[$key]->rfc, $encriptacion);
+                //Actualizacion de credencial
+                $obj = Credencializacion::where("trabajador_id",$value->id)->first();
+                $obj->impreso = 1;
+                $obj->fecha_impresion = $carbon;
+                $obj->user_impresion_id = $loggedUser->id;
+                $obj->save();
             }
-            
+
         return response()->json(['data'=>$trabajador, 'formato'=>$formato],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
+    public function RegistroImpreso(Request $request, $id)
+    {
+        $loggedUser = auth()->userOrFail();
+        try{
+            $carbon = Carbon::now();
+            $obj = Credencializacion::where("trabajador_id",$id)->first();
+            $obj->impreso = 1;
+            $obj->fecha_impresion = $carbon;
+            $obj->user_impresion_id = $loggedUser->id;
+            $obj->save();
+            return response()->json(['data'=>$obj],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }

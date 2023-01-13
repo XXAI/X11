@@ -170,6 +170,7 @@ Route::group(['middleware'=>'auth'],function($router){
     //Credencializacion
     Route::apiResource('credencializacion',         'API\Modulos\CredencializacionController');
     Route::get('credencializacion-lote',            'API\Modulos\CredencializacionController@ImprimirLote');
+    Route::put('registro_impreso/{id}',             'API\Modulos\CredencializacionController@RegistroImpreso');
     Route::get('public//FromatoCredencial//default.jpg', function($filename) {
         $file = \Illuminate\Support\Facades\Storage::get($filename);
         return response($file, 200) -> header('Content-Type', 'image/jpeg');

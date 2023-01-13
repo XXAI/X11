@@ -16,6 +16,7 @@ export class SaludService {
   url_imprimir_lote =  `${environment.base_url}/credencializacion-lote`;
   url_catalogos = `${environment.base_url}/catalogos`;
   url_cargos    = `${environment.base_url}/catalogo_cargos`;
+  url_impreso    = `${environment.base_url}/registro_impreso`;
 
   constructor( handler: HttpBackend, private http: HttpClient) {
     //To ignore interceptor
@@ -74,6 +75,14 @@ export class SaludService {
 
   saveCredencial(id:any, payload:any):Observable<any> {
     return this.http.put<any>(this.url + "/" + id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  
+  RegistroImpresion(id:any, payload:any):Observable<any> {
+    return this.http.put<any>(this.url_impreso + "/" + id, payload).pipe(
       map( (response: any) => {        
         return response;
       }

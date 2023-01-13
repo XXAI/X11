@@ -93,7 +93,7 @@ export class ListaComponent implements OnInit {
     
   });
 
-  displayedColumns: string[] = ['estatus','RFC','Nombre','imprimible', 'actions']; //'Agente',
+  displayedColumns: string[] = ['estatus','RFC','Nombre','imprimible', 'impreso', 'actions']; //'Agente',
   dataSource: any = [];
 
   constructor(private sharedService: SharedService, public dialog: MatDialog, private saludService:SaludService, private fb: FormBuilder, public mediaObserver: MediaObserver) { }
@@ -556,7 +556,8 @@ export class ListaComponent implements OnInit {
           if(response.error) {
             this.error_pdf(response);
           } else {    
-            console.log(response);
+            //console.log(response);
+            this.loadTrabajadorData();
              const reportWorker = this.iniciateWorker('CredencialSalud');
               let config = {  title: this.reportTitle, lote:true };
               reportWorker.postMessage({data:{items: response.data, config:config, formato: response.formato},reporte:'trabajador/credencial-salud'});
@@ -572,6 +573,7 @@ export class ListaComponent implements OnInit {
           if(response.error) {
             this.error_pdf(response);
           } else {    
+              this.GuardarRegistroImpresion(obj.id);
               const reportWorker = this.iniciateWorker('CredencialSalud');
               let config = {  title: this.reportTitle, lote:false };
               console.log(response.data.rel_datos_laborales.clues_fisico);
@@ -584,6 +586,23 @@ export class ListaComponent implements OnInit {
         }
       );
     }
+  }
+
+  GuardarRegistroImpresion(id)
+  {
+    this.saludService.RegistroImpresion(id,{}).subscribe(
+      response =>{
+        if(response.error) {
+          this.error_pdf(response);
+        } else {    
+          this.loadTrabajadorData();
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        this.error_api(errorResponse);
+      }
+    );
   }
 
   imprimirListado()
