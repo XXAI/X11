@@ -110,7 +110,7 @@ export class ReporteTrabajadorCredencialSalud{
               
               //heights: [1,8,30/*, 34, 10*/],
               body: [
-                [ { image: formato, width: 447, absolutePosition: {x: 50, y: margen_imagen} }, {},{},{},{}
+                [ { image: formato, width: 444, absolutePosition: {x: 50, y: margen_imagen} }, {},{},{},{}
                 ],
                 
                 [ {},{image: foto, width: 69, height: 83, rowSpan:5, margin:[0.5,4,0,0]},{text:"", margin:[0,3,0,0] },{},{}],
