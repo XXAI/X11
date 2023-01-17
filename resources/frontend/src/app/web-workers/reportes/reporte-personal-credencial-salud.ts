@@ -110,10 +110,10 @@ export class ReporteTrabajadorCredencialSalud{
               
               //heights: [1,8,30/*, 34, 10*/],
               body: [
-                [ { image: formato, width: 455, absolutePosition: {x: 50, y: margen_imagen} }, {},{},{},{}
+                [ { image: formato, width: 447, absolutePosition: {x: 50, y: margen_imagen} }, {},{},{},{}
                 ],
                 
-                [ {},{image: foto, width: 70, height: 85, rowSpan:5, margin:[0.5,5,0,0]},{text:"", margin:[0,3,0,0] },{},{}],
+                [ {},{image: foto, width: 69, height: 83, rowSpan:5, margin:[0.5,4,0,0]},{text:"", margin:[0,3,0,0] },{},{}],
                 [{},{},{text:"ID: "+id, style:"principal", margin:[0,0,0,1] },{},{}],
                 [{},{},{text:"VIGENCIA: 31/12/23", style:"vigencia"},{},{}],
                 [{},{},{text:clasificacion.toUpperCase(), style:"vigencia", margin:[0,2,0,1]},
