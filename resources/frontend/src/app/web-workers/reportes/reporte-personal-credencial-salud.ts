@@ -44,6 +44,13 @@ export class ReporteTrabajadorCredencialSalud{
                 alignment:"center",
                 //bold:true,
                 color: "#424142"
+              },
+              contacto:
+              {
+                fontSize: 11,
+                alignment:"center",
+                //bold:true,
+                color: "#424142"
               }
              
             }
@@ -126,9 +133,9 @@ export class ReporteTrabajadorCredencialSalud{
                 [{ text: element.nombre+"\n"+element.apellido_paterno+" "+element.apellido_materno, style: "datos_trabajador", colSpan:3 }, {}, {}, {}, {} ],
                 [{ text: element.credencial.cargo.descripcion, style: "subtitulo", colSpan:3, margin: [ 2,4,2,0 ] }, {}, {}, {}, {} ],
                 [{ text: area.toUpperCase(), style: "subtitulo", colSpan:3, margin: [ 2,4,2,0 ] }, {}, {}, {}, {} ],
-                [{ text: "CONTACTO DE EMERGENCIA:", style: "subtitulo", colSpan:3, margin: [ 2,4,2,0 ] }, {}, {}, {}, {} ],
-                [{ text: element.credencial.contacto.toUpperCase(), style: "subtitulo", colSpan:3 }, {}, {}, {}, {} ],
-                [{ text: element.credencial.contacto_telefono, style: "subtitulo", colSpan:3 }, {}, {}, {}, {} ]
+                [{ text: "CONTACTO DE EMERGENCIA:", style: "contacto", colSpan:3, margin: [ 0,0,0,0 ]}, {}, {}, {}, {} ],
+                [{ text: element.credencial.contacto.toUpperCase(), style: "contacto", colSpan:3 }, {}, {}, {}, {} ],
+                [{ text: element.credencial.contacto_telefono, style: "contacto", colSpan:3 }, {}, {}, {}, {} ]
               ]
             }
             
