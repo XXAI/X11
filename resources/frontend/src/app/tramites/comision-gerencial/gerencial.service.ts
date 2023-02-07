@@ -24,9 +24,9 @@ export class GerencialService {
   constructor(private http: HttpClient) { }
 
   getListPrincipal(payload):Observable<any> {
-      /*if(payload.reporte && payload.export_excel){
+      if(payload.export_excel){
           return this.http.get<any>(this.url, {params:payload, responseType: 'blob' as 'json'});
-      }*/
+      }
       return this.http.get<any>(this.url, {params: payload}).pipe(
           map( response => {
             return response;

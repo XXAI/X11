@@ -11,7 +11,7 @@ use App\Models\RelAdscripcion;
 use App\Models\Directorio;
 use App\Models\Cr;
 //use App\Models\RelDocumentacionDetalles;
-
+use Carbon\Carbon;
 //Relacionales
 use App\Models\User;
 
@@ -127,6 +127,32 @@ class TramiteAdscripcionController extends Controller
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
+            }else{
+                if(isset($parametros['export_excel'])){
+                    ini_set('memory_limit', '-1');
+                    $fecha_actual = Carbon::now();
+                    $trabajador = RelAdscripcion::where("fecha_oficio",">=", $fecha_actual->format("Y")."-01-01")
+                                                        ->join("trabajador", "trabajador.id", "rel_trabajador_adscripcion.trabajador_id")
+                                                        ->orderBy("fecha_oficio", "asc")
+                                                        ->orderBy("rel_trabajador_adscripcion.id","asc")
+                                                        ->select(DB::RAW("EXTRACT(YEAR FROM fecha_oficio) AS ANIO"),
+                                                                "rel_trabajador_adscripcion.deleted_at AS QUINCENA",
+                                                                "rel_trabajador_adscripcion.deleted_at AS NUMERO_CONSECUTIVO",
+                                                                "trabajador.rfc",
+                                                                DB::RAW("CONCAT(trabajador.apellido_paterno,' ',trabajador.apellido_materno,' ',trabajador.nombre) as NOMBRE"),
+                                                                DB::RAW("(select clues from catalogo_cr where cr=rel_trabajador_adscripcion.cr_destino) as CLUES_DESTINO"),
+                                                                "cr_destino as CR_DESTINO",
+                                                                "fecha_oficio as FECHA_OFICIO",
+                                                                "fecha_cambio as FECHA_INICIO",
+                                                                DB::RAW("'ADSCRIPCION' AS TIPO_MOVIMIENTO")
+                                                                )->get();
+                                                                
+                    return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);        
+                    $columnas = array_keys(collect($trabajador[0])->toArray());
+
+                    $filename = 'adscripcion';
+                    return (new DevReportExport($trabajador,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']        
+                }
             }
             
             

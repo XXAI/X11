@@ -14,6 +14,7 @@ use App\Models\Codigo;
 use App\Models\importarTramites;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Exports\DevReportExport;
 
 class TramiteComisionGerencialController extends Controller
 {
@@ -60,6 +61,33 @@ class TramiteComisionGerencialController extends Controller
                 $resultadosPorPagina = isset($parametros["per_page"])? $parametros["per_page"] : 20;
     
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
+            }else{
+                if(isset($parametros['export_excel'])){
+                    ini_set('memory_limit', '-1');
+                    $fecha_actual = Carbon::now();
+                    $trabajador = RelComisionGerencial::where("fecha_oficio",">=", $fecha_actual->format("Y")."-01-01")
+                                                        ->join("trabajador", "trabajador.id", "rel_trabajador_comision_gerencial.trabajador_id")
+                                                        ->orderBy("fecha_oficio", "asc")
+                                                        ->orderBy("rel_trabajador_comision_gerencial.id","asc")
+                                                        ->select(DB::RAW("EXTRACT(YEAR FROM fecha_oficio) AS ANIO"),
+                                                        DB::RAW("'' as QUINCENA"),
+                                                        DB::RAW("'' as CONSECUTIVO"),        
+                                                                "trabajador.rfc",
+                                                                DB::RAW("CONCAT(trabajador.apellido_paterno,' ',trabajador.apellido_materno,' ',trabajador.nombre) as NOMBRE"),
+                                                                DB::RAW("'' as CLUES_DESTINO"),
+                                                                DB::RAW("'' as CR_DESTINO"),
+                                                                "destino as DESTINO",
+                                                                "fecha_oficio as FECHA_OFICIO",
+                                                                "fecha_inicio as FECHA_INICIO",
+                                                                "fecha_fin as FECHA_FIN",
+                                                                DB::RAW("'COMISIÓN' as TIPO"))->get();
+                                                                
+                            
+                    $columnas = array_keys(collect($trabajador[0])->toArray());
+
+                    $filename = 'comision';
+                    return (new DevReportExport($trabajador,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']        
+                }
             }
                
             return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);

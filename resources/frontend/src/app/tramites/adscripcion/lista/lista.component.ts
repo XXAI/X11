@@ -445,6 +445,30 @@ export class ListaComponent implements OnInit {
     return event;
   }
 
+  generarExcel()
+  {
+    let params:any = {};
+    params.export_excel = true;
+    this.adscripcionService.getListPrincipal(params).subscribe(
+      response => {
+        console.log(response);
+        //FileSaver.saveAs(response);
+        FileSaver.saveAs(response,'reportePersonalActivo');
+        this.isLoadingExcel = false;
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoadingExcel = false;
+      }
+    );
+  }
+
   llenarPaginasLote(total)
   {
     let paginacion = Math.ceil(total / 100);

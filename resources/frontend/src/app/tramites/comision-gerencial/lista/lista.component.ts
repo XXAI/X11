@@ -360,6 +360,28 @@ export class ListaComponent implements OnInit {
     return event;
   }
 
+  generarExcel()
+  {
+    let params:any = {};
+    params.export_excel = true;
+    this.gerencialService.getListPrincipal(params).subscribe(
+      response => {
+        FileSaver.saveAs(response,'reporteComisionGerencial');
+        this.isLoadingExcel = false;
+      },
+      errorResponse =>{
+        console.log(errorResponse);
+
+        var errorMessage = "Ocurrió un error.";
+        if(errorResponse.status == 409){
+          errorMessage = errorResponse.error.error.message;
+        }
+        this.sharedService.showSnackBar(errorMessage, null, 3000);
+        this.isLoadingExcel = false;
+      }
+    );
+  }
+
   eliminar(obj)
   {
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
