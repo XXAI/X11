@@ -247,7 +247,7 @@ export class ReporteComisionGerencial {
         break;
       }
 
-      contenido += "Asimismo se le informa que al término de la presente comisión, deberá reincorporarse a la unidad de su adscripción como lo establece el artículo 151 de las Condiciones Generales de Trabajo;sin que sea necesario se le notifique de nueva cuenta su reincorporación  a su centro de adscripción\n\n";
+      contenido += "Asimismo se le informa que al término de la presente comisión, deberá reincorporarse a la unidad de su adscripción como lo establece el artículo 151 de las Condiciones Generales de Trabajo; sin que sea necesario se le notifique de nueva cuenta su reincorporación  a su centro de adscripción\n\n";
       contenido += "Cabe hacer mención, que la continuidad de prórroga de comisión, no le da el derecho de antigüedad, para cambio de adscripción, donde actualmente se encuentra comisionado.";
       contenido += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       
@@ -283,7 +283,7 @@ export class ReporteComisionGerencial {
               { text: "SECRETARÍA DE SALUD\n INSTITUTO DE SALUD\n DIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\n SUBDIRECCIÓN DE RECURSOS HUMANOS\n DEPTO. DE RELACIONES LABORALES", style: "texto_depto", colSpan:2},{},
             ],
             [
-              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+num_oficio.toString().padStart(6, "0")+"/"+anio_periodo+"\nASUNTO: COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
+              { text: "OFICIO: IS/DAF/SRH/DRL-COM/"+num_oficio.toString().padStart(6, "0")+"/"+anio_periodo+"\nASUNTO: SE COMUNICA COMISIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase(), style: "texto_depto_derecha", colSpan:2},{},
             ],
             [
               { text: "\nC. "+nombre_trabajador+"\n"+
