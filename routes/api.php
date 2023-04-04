@@ -164,6 +164,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::post('truncar-comision',                     'API\Modulos\TramiteComisionInternaController@truncarComision');
     Route::post('truncar-comision-gerencial',           'API\Modulos\TramiteComisionGerencialController@truncarComision');
     Route::get('verificar-comision/{id}',               'API\Modulos\TramiteComisionInternaController@verificarComision');
+
     
     Route::apiResource('profile',                       'API\ProfileController')->only([ 'show', 'update']);
     Route::get('reset-contrasena/{id}',                 'API\Admin\UserController@resetPassword');
@@ -171,6 +172,10 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::apiResource('credencializacion',         'API\Modulos\CredencializacionController');
     Route::get('credencializacion-lote',            'API\Modulos\CredencializacionController@ImprimirLote');
     Route::put('registro_impreso/{id}',             'API\Modulos\CredencializacionController@RegistroImpreso');
+    
+    Route::apiResource('expediente',                    'API\Modulos\ExpedienteController');
+    Route::put('devolver-expediente/{id}',                   'API\Modulos\ExpedienteController@devolver');
+    
     Route::get('public//FromatoCredencial//default.jpg', function($filename) {
         $file = \Illuminate\Support\Facades\Storage::get($filename);
         return response($file, 200) -> header('Content-Type', 'image/jpeg');

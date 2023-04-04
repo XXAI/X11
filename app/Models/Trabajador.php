@@ -139,4 +139,8 @@ class Trabajador extends Model
         return $this->hasOne('App\Models\RelComisionGerencial')->where("activo",1);
     }
 
+    public function rel_trabajador_expediente(){
+        return $this->hasOne('App\Models\Expediente\Prestamos','trabajador_id','id');
+    }
+
 }

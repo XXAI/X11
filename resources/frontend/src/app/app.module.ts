@@ -48,6 +48,7 @@ import { RegistroModule } from './registro/registro.module';
 import { DirectorioModule } from './directorio/directorio.module';
 import { CredencializacionModule } from './credencializacion/credencializacion.module';
 import { ComisionSindicalModule } from './tramites/comision-sindical/comision-sindical.module';
+import { ExpedienteModule } from './expediente/expediente.module';
 
 
 @NgModule({
@@ -80,7 +81,7 @@ import { ComisionSindicalModule } from './tramites/comision-sindical/comision-si
     CatalogosModule,
     ProfileModule,
     AppRoutingModule,
-    //CuestionarioDengueModule,
+    ExpedienteModule,
     CredencializacionModule,
     ComisionSindicalModule,
     WildcardRoutingModule,

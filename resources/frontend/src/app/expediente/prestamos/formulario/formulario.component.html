@@ -1,0 +1,63 @@
+<section  fxFlex="100" fxFlex.xs="100" [formGroup]="PrestamoForm">
+    <mat-card>
+        <mat-card-title>{{ nombre_trabajador}}</mat-card-title>
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <mat-label>No Expediente </mat-label>
+                    <input matInput formControlName="no_expediente" placeholder="No Expediente" >
+                    <mat-error *ngIf="PrestamoForm.get('no_expediente').invalid && (PrestamoForm.get('no_expediente').dirty || PrestamoForm.get('no_expediente').touched)">
+                        <span *ngIf="PrestamoForm.get('no_expediente').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <mat-label>No Vale </mat-label>
+                    <input matInput formControlName="no_vale" placeholder="No Vale" >
+                    <mat-error *ngIf="PrestamoForm.get('no_vale').invalid && (PrestamoForm.get('no_vale').dirty || PrestamoForm.get('no_vale').touched)">
+                        <span *ngIf="PrestamoForm.get('no_vale').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="33" fxFlex.xs="100">
+                    <input matInput [matDatepicker]="fecha_prestamo_picker"  autocomplete="off" (click)="fecha_prestamo_picker.open()" formControlName="fecha_prestamo" placeholder="Fecha Prestamo" >
+                    <mat-datepicker-toggle matPrefix [for]="fecha_prestamo_picker"></mat-datepicker-toggle>
+                    <mat-datepicker #fecha_prestamo_picker [disabled]="false"></mat-datepicker>
+                    <mat-error *ngIf="PrestamoForm.get('fecha_prestamo').invalid && (PrestamoForm.get('fecha_prestamo').dirty || PrestamoForm.get('fecha_prestamo').touched)">
+                        <span *ngIf="PrestamoForm.get('fecha_prestamo').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                    <mat-label>Unidad o Área </mat-label>
+                    <input matInput formControlName="area_prestamista" placeholder="Área del Prestador" >
+                    <mat-error *ngIf="PrestamoForm.get('area_prestamista').invalid && (PrestamoForm.get('area_prestamista').dirty || PrestamoForm.get('area_prestamista').touched)">
+                        <span *ngIf="PrestamoForm.get('area_prestamista').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" fxFlex.xs="100">
+                    <mat-label>Prestamista </mat-label>
+                    <input matInput formControlName="prestamista" placeholder="Prestamista" >
+                    <mat-error *ngIf="PrestamoForm.get('prestamista').invalid && (PrestamoForm.get('prestamista').dirty || PrestamoForm.get('prestamista').touched)">
+                        <span *ngIf="PrestamoForm.get('prestamista').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>    
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">    
+                <mat-form-field fxFlex="100" fxFlex.xs="100">
+                    <mat-label>Observación </mat-label>
+                    <input matInput formControlName="observacion" placeholder="Observacion" >
+                    <mat-error *ngIf="PrestamoForm.get('observacion').invalid && (PrestamoForm.get('observacion').dirty || PrestamoForm.get('observacion').touched)">
+                        <span *ngIf="PrestamoForm.get('observacion').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            
+                    
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="cancelar()">CANCELAR</button>
+            <button mat-raised-button color="primary" [disabled]="!PrestamoForm.valid" (click)="guardar()">GUARDAR</button>
+            <button mat-raised-button color="primary" [disabled]="!PrestamoForm.valid" (click)="devolver()">DEVOLVER</button>
+        </mat-card-actions>
+    </mat-card>
+</section>     
