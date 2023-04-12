@@ -140,7 +140,7 @@ class Trabajador extends Model
     }
 
     public function rel_trabajador_expediente(){
-        return $this->hasOne('App\Models\Expediente\Prestamos','trabajador_id','id');
+        return $this->hasOne('App\Models\Expediente\Prestamos','trabajador_id','id')->where("estatus", 1);
     }
 
 }

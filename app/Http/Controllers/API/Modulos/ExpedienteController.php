@@ -32,16 +32,9 @@ class ExpedienteController extends Controller
             $trabajador = Trabajador::with("rel_trabajador_expediente.prestador");
                             
             //Filtros, busquedas, ordenamiento
-            //$trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);
+            $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);
 
-            if(isset($parametros['query']) && $parametros['query']){
-                $trabajador = $trabajador->where(function($query)use($parametros){
-                    return $query
-                                ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
-                                ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
-                                ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
-                });
-            }
+            /**/
 
             if(isset($parametros['page'])){
                 $trabajador = $trabajador->orderBy('nombre');
@@ -316,8 +309,8 @@ class ExpedienteController extends Controller
             
             $loggedUser = auth()->userOrFail();
             $fecha_actual = Carbon::now();
-            $obj = Prestamos::where("trabajador_id", $inputs['trabajador_id'])->where("estatus", "!=", 4)->first();
-            $obj->estatus                       = 4;
+            $obj = Prestamos::where("trabajador_id", $inputs['trabajador_id'])->where("estatus", "=", 1)->first();
+            $obj->estatus                       = 3;
             $obj->fecha_elimino                 = $fecha_actual->format("Y-m-d");
             $obj->trabajador_elimino_id        = $loggedUser->id;
                 
@@ -363,7 +356,7 @@ class ExpedienteController extends Controller
             $loggedUser = auth()->userOrFail();
             $fecha_actual = Carbon::now();
             $obj = Prestamos::find($id);
-            $obj->estatus                       = 4;
+            $obj->estatus                       = 2;
             $obj->fecha_devolucion              = $fecha_actual->format("Y-m-d");
             $obj->trabajador_devolvio_id        = $loggedUser->id;
                 
@@ -407,5 +400,36 @@ class ExpedienteController extends Controller
         }
 
         return $accessData;
+    }
+
+    private function aplicarFiltros($main_query, $parametros, $access){
+        //Filtros, busquedas, ordenamiento
+        if(isset($parametros['query']) && $parametros['query']){
+            $main_query = $main_query->where(function($query)use($parametros){
+                return $query
+                            ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
+                            ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
+                            ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
+            });
+        }
+        
+        if(isset($parametros['active_filter']) && $parametros['active_filter']){
+            if(isset($parametros['clues']) && $parametros['clues']){
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where clues_adscripcion_fisica ='".$parametros['clues']."')");
+            }
+
+            if(isset($parametros['cr']) && $parametros['cr']){
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id ='".$parametros['cr']."')");//where('rel_trabajador_datos_laborales.cr_fisico_id',$parametros['cr']);
+            }
+
+            if(isset($parametros['estatus']) && $parametros['estatus'] == 1){
+                $main_query = $main_query->whereRaw('trabajador.id in (select trabajador_id from rel_trabajador_expediente where estatus =1 and deleted_at is null)');
+            }
+            
+            if(isset($parametros['estatus']) && $parametros['estatus'] == 2){
+                $main_query = $main_query->whereRaw('trabajador.id not in (select trabajador_id from rel_trabajador_expediente where estatus = 1 and deleted_at is null)');
+            }
+        }
+        return $main_query;
     }
 }

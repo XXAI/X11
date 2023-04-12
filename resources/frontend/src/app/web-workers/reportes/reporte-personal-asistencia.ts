@@ -251,6 +251,7 @@ export class ReportePersonalAsistencia{
         for (let i in reportData.items) {
           let item = reportData.items[i];
 
+          let validacion_interna = 0;
           if(item.checado_entrada != 'SIN REGISTRO'){
             item.checado_entrada_fuera = '';
           }
@@ -259,8 +260,9 @@ export class ReportePersonalAsistencia{
             item.checado_salida_fuera = '';
           }
 
+    
           let icono = '';
-          if(item.validacion){
+          if(item.validacion && validacion_interna == 0){
             icono = ICONS.BLUE_CHECK;
           }else{
             icono = ICONS.RED_X;

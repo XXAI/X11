@@ -1345,7 +1345,7 @@ class TrabajadorController extends Controller
                                 ->orWhere('trabajador.rfc','LIKE','%'.$parametros['busqueda_empleado'].'%');
                 })
                 ->select("trabajador.nombre","trabajador.apellido_paterno","trabajador.apellido_materno","trabajador.rfc", "rel_trabajador_comision_interna.fecha_oficio",
-            "rel_trabajador_comision_interna.fecha_inicio", "rel_trabajador_comision_interna.fecha_fin", "users.name", "users.username", "catalogo_cr.clues", "catalogo_cr.descripcion_actualizada")
+            "rel_trabajador_comision_interna.fecha_inicio", "rel_trabajador_comision_interna.fecha_fin", "users.name", "users.username", "catalogo_cr.clues", "catalogo_cr.descripcion_actualizada", "rel_trabajador_comision_interna.deleted_at")
                 ->limit(10)->get();
             }else if($parametros['tipo'] == 2){
                 $obj = DB::Table("trabajador")

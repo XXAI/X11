@@ -13,6 +13,7 @@ export class ServicioService {
   private http_upload: HttpClient;
   url           = `${environment.base_url}/expediente`;
   url_devolver  = `${environment.base_url}/devolver-expediente`;
+  url_filter_catalogs =  `${environment.base_url}/catalogos-filtro-empleados`;
   
   constructor( handler: HttpBackend, private http: HttpClient) {
     //To ignore interceptor
@@ -32,6 +33,14 @@ export class ServicioService {
           })
       );
     }
+  }
+
+  getFilterCatalogs():Observable<any>{
+    return this.http.get<any>(this.url_filter_catalogs).pipe(
+      map(response => {
+        return response;
+      })
+    );
   }
 
 

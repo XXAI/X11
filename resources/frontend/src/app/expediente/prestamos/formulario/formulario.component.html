@@ -57,7 +57,7 @@
         <mat-card-actions>
             <button mat-raised-button (click)="cancelar()">CANCELAR</button>
             <button mat-raised-button color="primary" [disabled]="!PrestamoForm.valid" (click)="guardar()">GUARDAR</button>
-            <button mat-raised-button color="primary" [disabled]="!PrestamoForm.valid" (click)="devolver()">DEVOLVER</button>
+            <button mat-raised-button color="primary" [disabled]="!PrestamoForm.valid" *ngIf="data.prestamo == 1" (click)="devolver()">DEVOLVER</button>
         </mat-card-actions>
     </mat-card>
 </section>     

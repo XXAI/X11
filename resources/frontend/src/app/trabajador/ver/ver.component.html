@@ -377,7 +377,7 @@
                             <li>Fecha de vigencia de la FIEL (Firma electrónica avanzada)</li>
                         </ul>
                         Por default el municipio de nacimiento aparece "sin especificar", se debe de modificar, seleccionando de la lista desplegable que aparecerá cuando este escribiendo el nombre del municipio.
-                        <br> Para continual debe de dar clic sobre el boton <b style="color:red">Editar</b>
+                        <br> Para continuar debe de dar clic sobre el boton <b style="color:red">Editar</b>
                         <br><br> Puede ver el video tutorial de registro basico de la información en el siguiente link dar clic <a href="https://n9.cl/pyx9" target="_blank">Aquí</a>
                     </div>
 
@@ -437,7 +437,7 @@
                         </div>-->
                     </div>
                     <div fxLayout="row column" fxLayoutGap="3px" style="margin-top: -15px;font-size: 10pt;background-color: rgba(200,0,0,0.1);" *ngIf="!isLoadingAsistencia && Asitencia && validadorEstudios">
-                    * Si no puede observar sus asistencias aun cuando ha checado correctamente, favor de pasar al área de control de asistencias de su unidad
+                    <!--* Si no puede observar sus asistencias aun cuando ha checado correctamente, favor de pasar al área de control de asistencias de su unidad-->
                     </div>    
                     <!--<section fxLayout="row wrap" fxLayoutGap="10px" style="margin-top: -10px;" *ngIf="!isLoadingAsistencia && Asitencia && validadorEstudios">
                         <div fxFlex="40" fxFlex.xs="45" class="tarjeta-info-empleado">
@@ -460,7 +460,14 @@
 
                             <ng-container matColumnDef="hora_entrada">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="color: brown !important;background-color: burlywood;"> Hora Entrada </th>
-                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.checado_entrada}} <span matTooltip="Entrada Fuera de Horario" *ngIf="row.checado_entrada == 'SIN REGISTRO'" style="display:block; color:red;">[ {{(row.checado_entrada_fuera)?row.checado_entrada_fuera:'--:--'}} ]</span></td>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.checado_entrada}} 
+                                    <i *ngIf="row.retardo == 1"><mat-icon style="color:red; vertical-align: middle; cursor: pointer;" title="RETARDO">assignment_late</mat-icon></i>
+                                    <span matTooltip="Entrada Fuera de Horario" *ngIf="row.checado_entrada == 'SIN REGISTRO'" style="display:block; color:red;">
+                                        [ {{(row.checado_entrada_fuera)?row.checado_entrada_fuera:'--:--'}} ]
+
+                                       
+                                    </span>
+                                </td>
                             </ng-container>
 
                             <ng-container matColumnDef="hora_salida">

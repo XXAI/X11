@@ -7,6 +7,7 @@ import { MatTable } from '@angular/material/table';
 
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { trigger, transition, animate, style } from '@angular/animations';
+import { map, startWith } from 'rxjs/operators';
 
 import { MediaObserver } from '@angular/flex-layout';
 import { ServicioService } from '../servicio.service';
@@ -87,7 +88,7 @@ export class ListaComponent implements OnInit {
   filterForm = this.fb.group({
     'clues': [undefined],
     'cr': [undefined],
-    'imprimible': [undefined],
+    'estatus': [undefined],
     
   });
 
@@ -212,13 +213,13 @@ export class ListaComponent implements OnInit {
   }
 
   public loadFilterCatalogs(){
-    /*this.saludService.getFilterCatalogs().subscribe(
+    this.servicioService.getFilterCatalogs().subscribe(
       response => {
         //console.log(response);
         this.filterCatalogs = {
           'clues': response.data.clues,
           'cr': response.data.cr,
-          'imprimible': [{id:'0',descripcion:'TODOS'},{id:'1',descripcion:'SI'},{id:'2',descripcion:'NO'}],
+          'estatus': [{id:'0',descripcion:'TODOS'},{id:'1',descripcion:'EN PRESTAMO'},{id:'2',descripcion:'SIN PRESTAMO'}],
         };
 
         this.filteredCatalogs['clues'] = this.filterForm.controls['clues'].valueChanges.pipe(startWith(''),map(value => this._filter(value,'clues','nombre_unidad')));
@@ -233,7 +234,7 @@ export class ListaComponent implements OnInit {
         }
         this.sharedService.showSnackBar(errorMessage, null, 3000);
       }
-    );*/
+    );
   }
 
   public loadTrabajadorData(event?:PageEvent){
@@ -266,7 +267,7 @@ export class ListaComponent implements OnInit {
           params[i] = filterFormValues[i].clues;
         }else if(i == 'cr'){
           params[i] = filterFormValues[i].cr;
-        }else if(i == 'imprimible'){
+        }else if(i == 'estatus'){
           params[i] = filterFormValues[i].id;
         }else{ //profesion y rama (grupos)
           params[i] = filterFormValues[i].id;
@@ -355,7 +356,7 @@ export class ListaComponent implements OnInit {
         }else if(i == 'cr'){
           item.tag = data[i].cr;
           item.tooltip += data[i].descripcion;
-        }else if(i == 'imprimible'){
+        }else if(i == 'estatus'){
           item.tag = data[i].descripcion;
         }else{
           if(data[i].descripcion.length > 30){
@@ -448,6 +449,7 @@ export class ListaComponent implements OnInit {
     const dialogRef = this.dialog.open(FormularioComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
+      console.log(valid);
       if(valid){
         this.loadTrabajadorData();
       }
@@ -482,8 +484,9 @@ export class ListaComponent implements OnInit {
     const dialogRef = this.dialog.open(FormularioComponent, configDialog);
 
     dialogRef.afterClosed().subscribe(valid => {
+      console.log(valid);
       if(valid){
-        //console.log(valid);
+        this.loadTrabajadorData();
       }
     });
   }

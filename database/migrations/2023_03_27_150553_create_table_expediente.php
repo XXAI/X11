@@ -25,7 +25,7 @@ class CreateTableExpediente extends Migration
             $table->date("fecha_elimino")->nullable();
             $table->mediumInteger("trabajador_id")->unsigned();
             $table->string("area_prestamista",250);
-            $table->string("observaciones", 255);
+            $table->string("observaciones", 255)->nullable();
             $table->smallInteger("estatus")->unsigned()->default(1)->comments("1=> activo, 2=>devuelto");
             $table->timestamps();
             $table->softDeletes();

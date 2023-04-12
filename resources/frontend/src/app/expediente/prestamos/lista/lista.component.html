@@ -88,9 +88,9 @@
                             <mat-hint *ngIf="filterForm.get('cr').value">{{filterForm.get('cr').value.descripcion}}</mat-hint>
                         </mat-form-field>
                         <mat-form-field fxFlex="33">
-                            <mat-label>IMPRIMIBLE</mat-label>
-                            <mat-select #ramaFilter formControlName="imprimible" [compareWith]="compareImprimibleSelect">
-                                <mat-option *ngFor="let item of filterCatalogs['imprimible']" [value]="item">
+                            <mat-label>ESTATUS</mat-label>
+                            <mat-select #ramaFilter formControlName="estatus" [compareWith]="compareImprimibleSelect">
+                                <mat-option *ngFor="let item of filterCatalogs['estatus']" [value]="item">
                                     {{item.descripcion}}
                                 </mat-option>
                             </mat-select>
