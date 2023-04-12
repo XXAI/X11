@@ -43,7 +43,7 @@ export const APPS:App [] = [
         { name:'Documentacion',       route:'tramites/documentacion',             icon:'insert_drive_file', permission:"8HXTiaeI3NvlUWwNyzdKCgTxcepkqvDj" },
         { name:'Comisión Sindical',   route:'tramites/comision-sindical',         icon:'supervised_user_circle', permission:"FsSuyE47aBCxZ46SrTLb0g85frN1lT4W" }
       ] },
-      { name:'EXPEDIENTES',            route: "expedientes",            icon: "assets/icons/expedientes.png",         permission:"hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt" }, 
+      { name:'EXPEDIENTES',            route: "expedientes",            icon: "assets/icons/expedientes.png",         permission:"IBEdRdfjYzSFaKt19silqzJCVFjsaFtK" }, 
       /*{ name:'Archivo',                route: "archivo",                icon: "assets/icons/archivo.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt'},*/  
     { name:'CREDENCIALIZACIÓN',       route: "credencializacion",                 icon: "assets/icons/credencial_trabajador.png",  isHub:true, hideHome:true, 
       children:[
