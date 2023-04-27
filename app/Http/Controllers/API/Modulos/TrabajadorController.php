@@ -88,7 +88,7 @@ class TrabajadorController extends Controller
 
             $parametros = $request->all();
             $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "rel_trabajador_baja.baja")
-                            ->join("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
+                            ->leftjoin("rel_trabajador_datos_laborales", "rel_trabajador_datos_laborales.trabajador_id", "=", "trabajador.id")
                             ->leftjoin("rel_trabajador_datos_laborales_nomina as datos_nominales", "datos_nominales.trabajador_id", "=", "trabajador.id")
                             ->select("trabajador.*", "rel_trabajador_datos_laborales.cr_fisico_id", "datos_nominales.cr_nomina_id", DB::RAW("(select count(*) from users where username=trabajador.rfc) as usuario"))
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and deleted_at is null and fecha_fin_baja is null)");
@@ -608,7 +608,7 @@ class TrabajadorController extends Controller
                 $fecha_inicio = Carbon::parse($inputs['fecha_inicio']);
                 $fecha_fin = Carbon::parse($inputs['fecha_fin']);
                 //Actualizamos el estatus de comision
-                $actualizacion = RelComision::where("fecha_fin", "<",$fecha_fin->toDateString())->where("estatus", "A");
+                $actualizacion = RelComision::where("fecha_fin", "<=",$fecha_fin->toDateString())->where("estatus", "A");
                 $actualizacion->update(['estatus'=> 'E']);
                 //
                 

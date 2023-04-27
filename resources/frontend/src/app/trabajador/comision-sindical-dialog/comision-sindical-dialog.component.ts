@@ -117,7 +117,7 @@ export class ComisionSindicalDialogComponent implements OnInit {
     //console.log(this.ComisionForm.value);
     this.trabajadorService.guardarComisionSindical(this.ComisionForm.value).subscribe(
       response =>{
-        //this.dialogRef.close(true);
+        this.dialogRef.close(true);
       },
       errorResponse =>{
         var errorMessage = "Ocurrió un error.";
