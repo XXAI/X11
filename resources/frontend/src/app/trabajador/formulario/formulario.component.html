@@ -32,6 +32,9 @@
 
             <div style="font-size: 9pt; text-align: center; line-height: 19px;" *ngIf="datos_laborales_nomina != null">
                 {{ datos_laborales_nomina.clues.clues }} {{ datos_laborales_nomina.clues.nombre_unidad }}
+                <div *ngIf="datos_laborales_nomina.clues.deleted_at != null" style="color:red">
+                    UNIDAD DE DE BAJA
+                </div>
             </div>
             <mat-divider></mat-divider>
             <mat-card-content>

@@ -14,11 +14,11 @@ class RelDatosLaboralesNomina extends Model
 
 
     public function clues(){
-        return $this->belongsTo('App\Models\Clues', 'clues_adscripcion_nomina', 'clues');
+        return $this->belongsTo('App\Models\Clues', 'clues_adscripcion_nomina', 'clues')->withTrashed();
     }
 
     public function cr(){
-        return $this->belongsTo('App\Models\Cr', 'cr_nomina_id', 'cr');
+        return $this->belongsTo('App\Models\Cr', 'cr_nomina_id', 'cr')->withTrashed();
     }
 
    
