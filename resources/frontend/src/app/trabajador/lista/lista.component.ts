@@ -62,6 +62,7 @@ export class ListaComponent implements OnInit {
   cluesAsistencia = [];
   filtroAvanzado:boolean = true;
   permisoGeneral:boolean = true;
+  permisoVisor:boolean = false;
 
   showMyStepper:boolean = false;
   showReportForm:boolean = false;
@@ -156,6 +157,21 @@ export class ListaComponent implements OnInit {
 
     this.loadTrabajadorData(event);
     this.loadFilterCatalogs();
+    this.loadPermisos();
+  }
+
+  loadPermisos()
+  {
+    this.trabajadorService.cargaPermisos().subscribe(
+      response =>{
+        let permisos = response.data;
+        permisos.forEach(element => {
+          if(element == "visor_trabajadores")
+          {
+            this.permisoVisor = true;
+          }
+        });
+      });
   }
 
   cargarCluesAsistencia()

@@ -293,6 +293,34 @@ class TrabajadorController extends Controller
         }
     }
 
+    private function permisos()
+    {
+        $loggedUser = auth()->userOrFail();
+        $permisos = [];
+        try{
+            $access = $this->getUserAccessData();
+            if(!$access->is_admin){
+                foreach ($permisos->roles as $key => $value) {
+                    foreach ($value->permissions as $key2 => $value2) {
+                        if($value2->id == 'H8KX5lbKb3aUXrHdTJxxhcPE9cQXhW5c')
+                        {
+                            array_push($permisos, "visor_trabajadores");
+                        }
+                    }
+                }
+                foreach ($permisos->permissions as $key2 => $value2) {
+                    if($value2->id == 'H8KX5lbKb3aUXrHdTJxxhcPE9cQXhW5c')
+                    {
+                        array_push($permisos, "visor_trabajadores");
+                    }
+                }
+            }
+            return response()->json(['data'=>$permisos],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
     private function aplicarFiltros($main_query, $parametros, $access){
         //Filtros, busquedas, ordenamiento
         if(isset($parametros['query']) && $parametros['query']){

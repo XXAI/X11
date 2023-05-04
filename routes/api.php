@@ -75,6 +75,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('buscador-datos-trabajador',         'API\Modulos\TrabajadorController@getBuscador');
     Route::get('valida-rfc/{id}',                   'API\Modulos\TrabajadorController@getBuscadorRfc');
     Route::put('trabajador_finalizar/{id}',         'API\Modulos\TrabajadorController@FinalizarCaptura');
+    Route::get('permisos_trabajador',               'API\Modulos\TrabajadorController@Permisos');
 
     Route::get('ver-info-trabajador/{id}',          'API\Servicios\TrabajadorServiceController@detalleTrabajador');
     Route::put('liberar-trabajador/{id}',           'API\Modulos\TrabajadorController@unlinkTrabajador');

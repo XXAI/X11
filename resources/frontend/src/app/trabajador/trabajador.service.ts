@@ -23,6 +23,7 @@ export class TrabajadorService {
   url_expediente = `${environment.base_url}/tramite-documentacion-download`;
   url_constancia = `${environment.base_url}/constancia-download`;
   url_activar_comision = `${environment.base_url}/activar-trabajador-sindical`;
+  url_permisos_trabajador = `${environment.base_url}/permisos_trabajador`;
 
   url_asistencia = 'https://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
@@ -61,6 +62,14 @@ export class TrabajadorService {
 
   getFirmantesList():Observable<any> {
     return this.http.get<any>(this.url_firmantes,{}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
+
+  cargaPermisos():Observable<any> {
+    return this.http.get<any>(this.url_permisos_trabajador,{}).pipe(
       map( response => {
         return response;
       })
