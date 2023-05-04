@@ -293,29 +293,28 @@ class TrabajadorController extends Controller
         }
     }
 
-    private function permisos()
+    public function Permisos()
     {
         $loggedUser = auth()->userOrFail();
-        $permisos = [];
+        $permisosModulos = [];
+        $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id);
         try{
             $access = $this->getUserAccessData();
-            if(!$access->is_admin){
-                foreach ($permisos->roles as $key => $value) {
+               foreach ($permisos->roles as $key => $value) {
                     foreach ($value->permissions as $key2 => $value2) {
                         if($value2->id == 'H8KX5lbKb3aUXrHdTJxxhcPE9cQXhW5c')
                         {
-                            array_push($permisos, "visor_trabajadores");
+                            array_push($permisosModulos, "visor_trabajadores");
                         }
                     }
                 }
                 foreach ($permisos->permissions as $key2 => $value2) {
                     if($value2->id == 'H8KX5lbKb3aUXrHdTJxxhcPE9cQXhW5c')
                     {
-                        array_push($permisos, "visor_trabajadores");
+                        array_push($permisosModulos, "visor_trabajadores");
                     }
                 }
-            }
-            return response()->json(['data'=>$permisos],HttpResponse::HTTP_OK);
+            return response()->json(['data'=>$permisosModulos],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
