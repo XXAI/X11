@@ -191,13 +191,17 @@ export class VerComponent implements OnInit {
           this.verInfoExpediente = false;
         }
 
-        if(this.verificarAsistencia(this.dataTrabajador.rel_datos_laborales.cr_fisico.clues))
+        if(this.dataTrabajador.rel_datos_laborales.cr_fisico != null)
         {
-          if(this.dataTrabajador.rel_datos_comision == null)
+          if(this.verificarAsistencia(this.dataTrabajador.rel_datos_laborales.cr_fisico.clues))
           {
-            this.puedeVerAsistencias = true;
+            if(this.dataTrabajador.rel_datos_comision == null)
+            {
+              this.puedeVerAsistencias = true;
+            }
           }
         }
+        
         if(this.dataTrabajador.escolaridad.length >= this.verificarEstudios(this.dataTrabajador.nivel_maximo_id))
         {
           this.validadorEstudios = true;

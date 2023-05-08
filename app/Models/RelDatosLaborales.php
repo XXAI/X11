@@ -29,7 +29,7 @@ class RelDatosLaborales extends Model
         return $this->belongsTo('App\Models\AreaTrabajo');
     }
     public function cr_fisico(){
-        return $this->belongsTo('App\Models\Cr', 'cr_fisico_id', 'cr')->with("directorio");
+        return $this->belongsTo('App\Models\Cr', 'cr_fisico_id', 'cr')->withTrashed()->with("directorio");
     }
 
     public function jornada(){

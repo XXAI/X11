@@ -320,7 +320,7 @@
                                 <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
                                     <!--<button mat-stroked-button color="primary" matTooltip="Editar Trabajador" (click)="editTrabajador(i)" routerLink="/trabajadores/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>&nbsp;-->
-                                    <button mat-button [matMenuTriggerFor]="menu" *ngIf="row.estatus == 1 && permisoVisor== false">
+                                    <button mat-button [matMenuTriggerFor]="menu" *ngIf="row.estatus == 1 && permisoVisor== false && row.rel_datos_laborales!= null">
                                         <mat-icon>more_vert</mat-icon>
                                     </button>
 
