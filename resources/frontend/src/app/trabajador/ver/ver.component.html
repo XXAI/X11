@@ -135,61 +135,71 @@
                             <mat-card>
                                 <mat-card-title>Datos Laborales</mat-card-title>
                                 <mat-card-content>
-                                    <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
-                                        <!--div fxFlex="50" fxFlex.xs="100">
-                                            <b>INGRESO SSA:</b>
-                                            <BR>
-                                            {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso:'NO REGISTRADO' }}
-                                        </div-->
-                                        <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
-                                            <b>FUENTE DE FINANCIAMIENTO:</b>
-                                            <BR> {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fuente_financiamiento:'NO REGISTRADO' }}
-                                        </div>
-                                        <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
-                                            <b>INGRESO GOBIERNO FEDERAL:</b> <br>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso_federal:'NO REGISTRADO' }}
-                                        </div>
-                                    </div>
-                                    <div fxLayout="row" fxLayout.xs="column">
-                                        <div fxFlex="50" fxFlex.xs="100">
-                                            <b>UR:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.ur)?dataTrabajador.rel_datos_laborales_nomina.ur:'NO REGISTRADO':'NO REGISTRADO' }}
-                                        </div>
-                                        <div fxFlex="50" fxFlex.xs="100">
-                                            <b>RAMA:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.rama)?dataTrabajador.rel_datos_laborales.rama.descripcion:'NO REGISTRADO':'NO REGISTRADO'}}
-                                        </div>
-                                    </div>
-                                    <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
-                                        <div fxFlex="100" fxFlex.xs="100">
-                                            <b>CODIGO:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.codigo)?dataTrabajador.rel_datos_laborales_nomina.codigo.codigo:'NO REGISTRADO':'NO REGISTRADO'}} {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.codigo)?dataTrabajador.rel_datos_laborales_nomina.codigo.descripcion:'':''
-                                            }}
-                                        </div>
-
-                                    </div>
-                                    <div fxLayout="row" fxLayout.xs="column">
-                                        <div fxFlex="50" fxFlex.xs="100">
-                                            <b>SEGURO RETIRO:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.seguro_retiro == 1)?'SI':'NO':'NO REGISTRADO' }}
-                                        </div>
-                                        <div fxFlex="50" fxFlex.xs="100">
-                                            <b>SEGURO DE SALUD:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.seguro_salud == 1)?'SI':'NO':'NO REGISTRADO' }}
-                                        </div>
-                                    </div>
-                                    <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
-                                        <div fxFlex="50" fxFlex.xs="100">
-                                            <b>FIRMA ELECTRÓNICA:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.tiene_fiel == 1)?'SI':'NO':'NO REGISTADO' }}
-                                        </div>
-                                        <div fxFlex="50" fxFlex.xs="100">
-                                            <b>LICENCIA MATERNIDAD:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.licencia_maternidad == 1)?'SI':'NO':'NO REGISTRADO' }}
-                                        </div>
-                                    </div>
-                                    <div fxLayout="row" fxLayout.xs="column">
-                                        <div fxFlex="100" fxFlex.xs="100">
-                                            <b>CENTRO DE RESPONSABILIDAD (ADSCRIPCIÓN NOMINAL):</b><br> {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.clues:'NO REGISTRADO':'NO REGISTRADO' }} {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.descripcion_actualizada:'':''
-                                            }}
-                                            <div *ngIf="datosNominales.cr.deleted_at != null" style="color:red">
-                                                UNIDAD DE DE BAJA
+                                    <div *ngIf="datosNominales != null">
+                                        <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+                                        
+                                            <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
+                                                <b>FUENTE DE FINANCIAMIENTO:</b>
+                                                <BR> {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fuente_financiamiento:'NO REGISTRADO' }}
+                                            </div>
+                                            <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
+                                                <b>INGRESO GOBIERNO FEDERAL:</b> <br>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso_federal:'NO REGISTRADO' }}
                                             </div>
                                         </div>
+                                        <div fxLayout="row" fxLayout.xs="column">
+                                            <div fxFlex="50" fxFlex.xs="100">
+                                                <b>UR:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.ur)?dataTrabajador.rel_datos_laborales_nomina.ur:'NO REGISTRADO':'NO REGISTRADO' }}
+                                            </div>
+                                            <div fxFlex="50" fxFlex.xs="100">
+                                                <b>RAMA:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.rama)?dataTrabajador.rel_datos_laborales.rama.descripcion:'NO REGISTRADO':'NO REGISTRADO'}}
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+                                            <div fxFlex="100" fxFlex.xs="100">
+                                                <b>CODIGO:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.codigo)?dataTrabajador.rel_datos_laborales_nomina.codigo.codigo:'NO REGISTRADO':'NO REGISTRADO'}} {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.codigo)?dataTrabajador.rel_datos_laborales_nomina.codigo.descripcion:'':''
+                                                }}
+                                            </div>
 
+                                        </div>
+                                        <div fxLayout="row" fxLayout.xs="column">
+                                            <div fxFlex="50" fxFlex.xs="100">
+                                                <b>SEGURO RETIRO:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.seguro_retiro == 1)?'SI':'NO':'NO REGISTRADO' }}
+                                            </div>
+                                            <div fxFlex="50" fxFlex.xs="100">
+                                                <b>SEGURO DE SALUD:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.seguro_salud == 1)?'SI':'NO':'NO REGISTRADO' }}
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+                                            <div fxFlex="50" fxFlex.xs="100">
+                                                <b>FIRMA ELECTRÓNICA:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.tiene_fiel == 1)?'SI':'NO':'NO REGISTADO' }}
+                                            </div>
+                                            <div fxFlex="50" fxFlex.xs="100">
+                                                <b>LICENCIA MATERNIDAD:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.licencia_maternidad == 1)?'SI':'NO':'NO REGISTRADO' }}
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row" fxLayout.xs="column">
+                                            <div fxFlex="100" fxFlex.xs="100">
+                                                <b>CENTRO DE RESPONSABILIDAD (ADSCRIPCIÓN NOMINAL):</b><br> {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.clues:'NO REGISTRADO':'NO REGISTRADO' }} {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.descripcion_actualizada:'':''
+                                                }}
+                                                <div *ngIf="datosNominales.cr.deleted_at != null" style="color:red">
+                                                    UNIDAD DE DE BAJA
+                                                </div>
+                                            
+                                            </div>
+
+                                        </div>
                                     </div>
+                                    <div *ngIf="datosNominales == null">
+                                        SIN DATOS
+                                        <DIV>
+                                            * No se muestra información por alguno de estos motivos:
+                                            <ul>
+                                                <li>Pertenece a un programa federal</li>
+                                                <li>Es trabajador de nuevo ingreso, por lo tanto este proceso tarde un poco en actualizarse</li>
+                                                <li>No este ingresado correctamente su rfc o curp, en el sistema o en nomina</li>
+                                            </ul>
+                                        </DIV>
+                                    </div>    
 
                                 </mat-card-content>
                             </mat-card>
