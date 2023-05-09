@@ -1328,6 +1328,36 @@ class TrabajadorController extends Controller
         }
     }
     
+    public function PermisoTrabajador(Request $request)
+    {
+        $loggedUser = auth()->userOrFail();
+        
+        try{
+            $access = $this->getUserAccessData();
+            $parametros = $request->all();
+            $permisos = User::with('roles.permissions','permissions')->find($loggedUser->id); //En espera que tenga utilidad el permiso
+
+            $getPermisos = [];
+            if(!$access->is_admin){
+                foreach ($permisos->roles as $key => $value) {
+                    
+                    foreach ($value->permissions as $key2 => $value2) {
+                        if($value2->id == 'V4WxBui8V53qNc6IzoQyrGtRtnzgmIo9'){ $getPermisos[] = 'PermisoTrabajadorFecha'; }
+                        
+                    }
+                }
+                    
+                foreach ($permisos->permissions as $key2 => $value2) {
+                    if($value2->id == 'V4WxBui8V53qNc6IzoQyrGtRtnzgmIo9'){ $getPermisos[] = 'PermisoTrabajadorFecha'; }
+                }   
+            }
+ 
+            return response()->json(['data'=>$getPermisos],HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+    
     public function buscarTrabajadorTramites(Request $request)
     {
         try{

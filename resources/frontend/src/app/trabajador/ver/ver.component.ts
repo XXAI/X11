@@ -17,6 +17,7 @@ import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/
 export interface VerEmpleadoData {
   id: number;
   puedeEditar?:boolean;
+  puedeVerFecha?:boolean;
   cluesAsistencia?:any;
 }
 
@@ -112,8 +113,12 @@ export class VerComponent implements OnInit {
   ngOnInit() {
     let userPermissions = JSON.parse(localStorage.getItem('permissions'));
     let user = JSON.parse(localStorage.getItem('user'));
-    console.log(user);
+    
     if(user.is_superuser == 1)
+    {
+      this.superUser = true;
+    }
+    if(this.data.puedeVerFecha)
     {
       this.superUser = true;
     }

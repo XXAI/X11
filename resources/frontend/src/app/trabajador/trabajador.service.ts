@@ -28,20 +28,21 @@ export class TrabajadorService {
 
   url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
 
-  url_unlink = `${environment.base_url}/liberar-trabajador/`;
+  url_unlink                  = `${environment.base_url}/liberar-trabajador/`;
 
-  url_cr              = `${environment.base_url}/busqueda-cr`;
-  url_activacion      = `${environment.base_url}/activar-trabajador/`;
-  url_validacion      = `${environment.base_url}/validar-trabajador/`;
-  url_baja            = `${environment.base_url}/baja-trabajador`;
+  url_cr                      = `${environment.base_url}/busqueda-cr`;
+  url_activacion              = `${environment.base_url}/activar-trabajador/`;
+  url_validacion              = `${environment.base_url}/validar-trabajador/`;
+  url_baja                    = `${environment.base_url}/baja-trabajador`;
   /* Tranferencia */
-  url_transfer        = `${environment.base_url}/transferir-trabajador/`;
-  url_clues_catalogo  = `${environment.base_url}/busqueda-clues`;
-  url_tramite = `${environment.base_url}/tramites`;
-  url_tramite_trabajador = `${environment.base_url}/tramites-trabajador`;
-  url_valida_rfc = `${environment.base_url}/valida-rfc`;
-  url_comision_sindical = `${environment.base_url}/comision-sindical`;
-  url_reset             = `${environment.base_url}/reset-contrasena`;
+  url_transfer                = `${environment.base_url}/transferir-trabajador/`;
+  url_clues_catalogo          = `${environment.base_url}/busqueda-clues`;
+  url_tramite                 = `${environment.base_url}/tramites`;
+  url_tramite_trabajador      = `${environment.base_url}/tramites-trabajador`;
+  url_valida_rfc              = `${environment.base_url}/valida-rfc`;
+  url_comision_sindical       = `${environment.base_url}/comision-sindical`;
+  url_reset                   = `${environment.base_url}/reset-contrasena`;
+  url_permiso_trabajador      = `${environment.base_url}/permiso-trabajador`;
   
 
   constructor(private http: HttpClient) { }
@@ -57,10 +58,16 @@ export class TrabajadorService {
       );
   }
   
-  
-
   getFirmantesList():Observable<any> {
     return this.http.get<any>(this.url_firmantes,{}).pipe(
+      map( response => {
+        return response;
+      })
+    );
+  }
+
+  getPermisos():Observable<any> {
+    return this.http.get<any>(this.url_permiso_trabajador,{}).pipe(
       map( response => {
         return response;
       })

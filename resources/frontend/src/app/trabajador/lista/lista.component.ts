@@ -62,6 +62,7 @@ export class ListaComponent implements OnInit {
   cluesAsistencia = [];
   filtroAvanzado:boolean = true;
   permisoGeneral:boolean = true;
+  permisoFecha:boolean = false;
 
   showMyStepper:boolean = false;
   showReportForm:boolean = false;
@@ -156,6 +157,22 @@ export class ListaComponent implements OnInit {
 
     this.loadTrabajadorData(event);
     this.loadFilterCatalogs();
+    this.loadPermisos();
+  }
+
+  loadPermisos()
+  {
+    this.trabajadorService.getPermisos().subscribe(
+      response =>{
+        
+        response.data.forEach(element => {
+          if(element == 'PermisoTrabajadorFecha')
+          {
+            this.permisoFecha = true;
+          }
+        });
+        
+      });
   }
 
   cargarCluesAsistencia()
@@ -622,14 +639,13 @@ export class ListaComponent implements OnInit {
     this.sharedService.setDataToCurrentApp('paginator',paginator);
 
     let configDialog = {};
-    console.log(this.mediaSize);
     if(this.mediaSize == 'lg'){
       configDialog = {
         maxWidth: '100vw',
         maxHeight: '91vh',
         height: '620px',
         width: '100%',
-        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
+        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia, puedeVerFecha: this.permisoFecha}
       }
     }else if(this.mediaSize == "md"){
       configDialog = {
@@ -637,7 +653,7 @@ export class ListaComponent implements OnInit {
         maxHeight: '100vh',
         height: '100%',
         width: '100%',
-        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
+        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia, puedeVerFecha: this.permisoFecha}
       }
     }else if(this.mediaSize == 'xs'){
       configDialog = {
@@ -645,18 +661,16 @@ export class ListaComponent implements OnInit {
         maxHeight: '100vh',
         height: '72%',
         width: '100%',
-        data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize, cluesAsistencia: this.cluesAsistencia}
+        data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize, cluesAsistencia: this.cluesAsistencia, puedeVerFecha: this.permisoFecha}
       };
     }else{
       configDialog = {
         width: '99%',
         maxHeight: '91vh',
         height: '620px',
-        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia}
+        data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia, puedeVerFecha: this.permisoFecha}
       }
     }
-
-    //console.log(configDialog);
 
     const dialogRef = this.dialog.open(VerComponent, configDialog);
 
