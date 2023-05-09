@@ -306,12 +306,20 @@ class TrabajadorController extends Controller
                         {
                             array_push($permisosModulos, "visor_trabajadores");
                         }
+                        if($value2->id == 'V4WxBui8V53qNc6IzoQyrGtRtnzgmIo9')
+                        {
+                            array_push($permisosModulos, "PermisoTrabajadorFecha");
+                        }
                     }
                 }
                 foreach ($permisos->permissions as $key2 => $value2) {
                     if($value2->id == 'H8KX5lbKb3aUXrHdTJxxhcPE9cQXhW5c')
                     {
                         array_push($permisosModulos, "visor_trabajadores");
+                    }
+                    if($value2->id == 'V4WxBui8V53qNc6IzoQyrGtRtnzgmIo9')
+                    {
+                        array_push($permisosModulos, "PermisoTrabajadorFecha");
                     }
                 }
             return response()->json(['data'=>$permisosModulos],HttpResponse::HTTP_OK);
@@ -1355,6 +1363,7 @@ class TrabajadorController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+    
     
     public function buscarTrabajadorTramites(Request $request)
     {
