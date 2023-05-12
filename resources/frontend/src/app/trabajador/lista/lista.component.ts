@@ -64,6 +64,7 @@ export class ListaComponent implements OnInit {
   permisoGeneral:boolean = true;
   permisoVisor:boolean = false;
   permisoFecha:boolean = false;
+  rfc:string = "";
 
   showMyStepper:boolean = false;
   showReportForm:boolean = false;
@@ -170,6 +171,9 @@ export class ListaComponent implements OnInit {
           if(element == "visor_trabajadores")
           {
             this.permisoVisor = true;
+            let appStoredData =  JSON.parse(localStorage.getItem('user'));
+            this.rfc = appStoredData.username;
+            
           }
           if(element == 'PermisoTrabajadorFecha')
           {
