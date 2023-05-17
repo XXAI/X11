@@ -224,7 +224,7 @@ class TramiteComisionInternaController extends Controller
                 return response()->json(['error'=>['message'=>"TRABAJADOR NO NOMINAL"]], HttpResponse::HTTP_CONFLICT);
             }
 
-            $object_desactivar = RelComisionInterna::where("trabajador_id",$inputs['trabajador_id'])->first();
+            $object_desactivar = RelComisionInterna::where("trabajador_id",$inputs['trabajador_id'])->where("activo", 1)->first();
             if($object_desactivar)
             {
                 $object_desactivar->activo = 0;
