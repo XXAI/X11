@@ -1299,16 +1299,16 @@ class TrabajadorController extends Controller
 
             $access = $this->getUserAccessData();
             
+            
             $trabajador = Trabajador::with("rel_datos_laborales", "rel_datos_laborales_nomina", "rel_trabajador_baja.baja", "rel_datos_comision", "rel_datos_fiscales")->where(function($query)use($parametros){
                 return $query->whereRaw(' concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['busqueda_empleado'].'%"' )
                             ->orWhere('rfc','LIKE','%'.$parametros['busqueda_empleado'].'%')
                             ->orWhere('curp','LIKE','%'.$parametros['busqueda_empleado'].'%');
             });
 
-            if(!$access->is_admin){
-                
+            if(!$access->is_admin){ 
                 $trabajador = $trabajador->where(function($query){
-                    $query->whereRAW("trabajador.id not in (select trabajador_id from rel_trabajador_comision where comision_sindical_interna='A')");
+                    $query->whereRAW("trabajador.id not in (select trabajador_id from rel_trabajador_comision where estatus='A')");
                 });
             }
             
