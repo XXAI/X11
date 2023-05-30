@@ -476,6 +476,8 @@ class TramiteComisionInternaController extends Controller
             
             $filtro = " a.user_id=".$loggedUser->id." and a.tipo=".$parametros['tipo'];
             
+            DB::statement("UPDATE rel_trabajador_comision_interna a SET activo=0 where a.fecha_fin<'".date("Y-m-d")."'");
+
             //Validamos id del trabajador por rfc
             DB::statement("UPDATE importar_tramites a left join trabajador b on a.`rfc`=b.`rfc` set trabajador_id=b.id where ".$filtro);
             
@@ -534,9 +536,13 @@ class TramiteComisionInternaController extends Controller
                 //Validamos fechas
                 DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>FECHA DE OFICIO MAYOR A FECHA DE INICIO DE PERIODO</b><br>'), estatus=5 where ".$filtro."  and fecha_inicio>concat(EXTRACT(YEAR FROM a.`fecha_inicio`),'-01-04') AND fecha_oficio>fecha_inicio");
                 //Validamos comision activa
-                DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_interna where activo=1)");
-                DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_gerencial where activo=1)");
-                DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>SIN COMISIÓN HISTORICA</b>'), estatus=99 where ".$filtro." and (trabajador_id not in (select trabajador_id from rel_trabajador_comision_gerencial where deleted_at is null) and trabajador_id not in (select trabajador_id from rel_trabajador_comision_interna where deleted_at is null))");
+                DB::statement("update importar_tramites a inner join rel_trabajador_comision_interna b on a.trabajador_id=b.trabajador_id and b.activo=1 set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), a.estatus=7 where ".$filtro." and a.fecha_inicio<b.fecha_fin");
+                DB::statement("update importar_tramites a inner join rel_trabajador_comision_gerencial b on a.trabajador_id=b.trabajador_id and b.activo=1 set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), a.estatus=7 where ".$filtro." and a.fecha_inicio<b.fecha_fin");
+                
+                //DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_interna where activo=1)");
+                //DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_gerencial where activo=1)");
+                
+                //DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>SIN COMISIÓN HISTORICA</b>'), estatus=99 where ".$filtro." and (trabajador_id not in (select trabajador_id from rel_trabajador_comision_gerencial where deleted_at is null) and trabajador_id not in (select trabajador_id from rel_trabajador_comision_interna where deleted_at is null))");
                 /*if (in_array($parametros['tipo'], ['2'])) {
                     
                 }else if (in_array($parametros['tipo'], ['3'])) {
@@ -580,12 +586,14 @@ class TramiteComisionInternaController extends Controller
         $inputs = $request->all();
         $parametros = $inputs['params'];
         try{  
+            DB::beginTransaction();
             $loggedUser = auth()->userOrFail();
             
             //$filtro = " a.user_id=".$loggedUser->id." and a.tipo=".$parametros['tipo'];
             if($parametros['tipo'] == 1)
             {
                 //importamos origen encontrado
+                DB::statement("UPDATE importar_tramites a INNER JOIN rel_trabajador_comision_interna b ON a.`trabajador_id`=b.`trabajador_id` SET b.`activo`=0 WHERE b.`activo`=1 AND a.`fecha_inicio`>b.`fecha_fin` and a.user_id=".$loggedUser->id.";");
                 DB::statement("INSERT INTO rel_trabajador_comision_interna (trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, activo, user_id, created_at, updated_at, cr_before_id, folio) SELECT trabajador_id, cr_origen, cr_destino, fecha_oficio, fecha_inicio, fecha_fin, reingenieria, 1, user_id, '".date("Y-m-d")." 16:00:00', '".date("Y-m-d")." 16:00:00', cr_before_id, folio FROM importar_tramites WHERE tipo=1 and estatus in (1,99) AND user_id=".$loggedUser->id.";");
                 
             }else if($parametros['tipo'] == 2){
@@ -596,7 +604,7 @@ class TramiteComisionInternaController extends Controller
             
             $respuesta['total'] = importarTramites::where("user_id", $loggedUser->id)->where("tipo", $parametros['tipo'])->count();
             
-            
+            DB::commit();
             return response()->json(['data'=>$respuesta],HttpResponse::HTTP_OK);
         }catch(\Exception $e){
             DB::rollback();
