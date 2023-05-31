@@ -663,7 +663,7 @@ class TramiteComisionInternaController extends Controller
             if(!$access->is_admin){
                 if(!$permiso_departamento == true)
                 {
-                    $filtro_user = "and user_id".$loggedUser->id;
+                    $filtro_user = " and user_id=".$loggedUser->id;
                 }
             }
 
