@@ -308,7 +308,8 @@ export class ReporteComisionGerencial {
                       "C.C.P. LIC. "+nombre_juridico+"\n"+
                       "C.C.P. ING. "+nombre_sistematizacion+"\n"+
                       "C.C.P. LIC. "+nombre_control+"\n"+
-                      "C.C.P. "+responsable+"\n\n"+
+                      "C.C.P. "+responsable+"\n"+
+                      "C.C.P. SINDICATO NACIONAL DE LOS TRABAJADORES DE LA SECRETARIA DE SALUD - - -+\n\n"+
                       "Vo.Bo.: "+nombre_rh+"\n"+
                       "REVISO.: "+nombre_depto_rh+"\n"+
                       "ELABORO.: "+nombre_elaboracion

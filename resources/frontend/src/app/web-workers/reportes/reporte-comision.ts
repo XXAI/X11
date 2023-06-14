@@ -301,7 +301,8 @@ export class ReporteComision {
                       "C.C.P. GERARDO ESPINOSA CIFUENTES.- CONTRALOR INTERNO\n"+
                       "C.C.P. "+nombre_juridico+"\n"+
                       "C.C.P. "+nombre_sistematizacion+"\n"+
-                      "C.C.P. "+nombre_control+"\n\n"+
+                      "C.C.P. "+nombre_control+"\n"+
+                      "C.C.P. SINDICATO NACIONAL DE LOS TRABAJADORES DE LA SECRETARIA DE SALUD - - -\n\n"+
                       "Vo.Bo.: "+nombre_rh+"\n"+
                       "REVISO.: "+nombre_depto_rh+"\n"+
                       "ELABORO.: "+nombre_elaboracion
