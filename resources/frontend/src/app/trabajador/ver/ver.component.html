@@ -13,7 +13,7 @@
             <div style="font-size: 9pt; text-align: center; line-height: 19px;" *ngIf="dataTrabajador.rel_datos_laborales != null">
                 {{ (dataTrabajador.rel_datos_laborales.cr_fisico)?(dataTrabajador.rel_datos_laborales.cr_fisico.clues == 'CSSSA017213')?dataTrabajador.rel_datos_laborales.clues_fisico.nombre_unidad:'':'' }}
             </div>
-            <div style="font-size: 9pt; text-align: center; line-height: 19px;" *ngIf="dataTrabajador.rel_datos_laborales != null">
+            <div style="font-size: 9pt; text-align: center; line-height: 19px;" *ngIf="dataTrabajador.rel_datos_laborales.clues_fisico != null">
                 {{ dataTrabajador.rel_datos_laborales.clues_fisico.clues }}
             </div>
             <mat-divider></mat-divider>
@@ -51,7 +51,7 @@
                     </button>
                 </div>
                 <div fxFlex.xs="48" fxFlex="48" *ngIf="dataTrabajador" style="text-align: center;">
-                    <button mat-raised-button matTooltip="EDITAR" (click)="editarEmpleado()" color="warn" style="margin: 5px;">
+                    <button mat-raised-button matTooltip="EDITAR" (click)="editarEmpleado()" color="warn" style="margin: 5px;"  *ngIf="dataTrabajador.rel_datos_laborales.clues_fisico != null">
                         <mat-icon>edit</mat-icon>
                     </button>
                 </div>

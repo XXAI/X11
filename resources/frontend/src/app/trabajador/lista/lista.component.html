@@ -320,12 +320,17 @@
                                 <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
                                     <!--<button mat-stroked-button color="primary" matTooltip="Editar Trabajador" (click)="editTrabajador(i)" routerLink="/trabajadores/editar/{{row.id}}"><mat-icon>edit</mat-icon></button>&nbsp;-->
-                                    <button mat-button [matMenuTriggerFor]="menu" *ngIf="(row.estatus == 1 && permisoVisor== false && row.rel_datos_laborales!= null) || rfc == row.rfc">
-                                        <mat-icon>more_vert</mat-icon>
+                                    <button mat-button [matMenuTriggerFor]="menu" >
+                                        <mat-icon *ngIf="row.estatus == 1">more_vert</mat-icon>
+                                        <mat-icon *ngIf="row.estatus == 3" color="warn">more_vert</mat-icon>
                                     </button>
 
                                     <mat-menu #menu="matMenu">
-                                        <button mat-menu-item *ngIf="row.estatus != 3" (click)="verEmpleado(row.id,i)"><mat-icon color="primary">remove_red_eye</mat-icon>Detalles</button>
+                                        <button mat-menu-item (click)="verEmpleado(row.id,i)">
+                                            <mat-icon color="primary" *ngIf="row.estatus == 1">remove_red_eye</mat-icon>
+                                            <mat-icon color="primary" *ngIf="row.estatus == 3">error</mat-icon>
+                                            Detalles
+                                        </button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && row.validado == 0  && row.actualizado == 1" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="validateTrabajador(row.id)"><mat-icon  color="primary">check_cirlce</mat-icon>Validar</button>
                                         <button mat-menu-item #lista *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="liberarTrabajador(row.id)"><mat-icon color="warn">link_off</mat-icon>Desligar</button>
                                         <button mat-menu-item *ngIf="row.estatus == 1 && !row.rel_datos_comision" [ifHasPermission]="'6Jf8zRlZbdY3jTDVJNLKXkKL8NjuGOyo'" (click)="BajaTrabajador(row)"><mat-icon color="warn">person_remove</mat-icon>Dar de Baja</button>
