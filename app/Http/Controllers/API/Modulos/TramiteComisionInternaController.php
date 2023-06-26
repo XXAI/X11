@@ -186,6 +186,11 @@ class TramiteComisionInternaController extends Controller
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
         try {
+            $quitar_comision = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
+                                                    ->where("activo", 1)
+                                                    ->where("fecha_fin", "<", $inputs['fecha_inicio_periodo'])
+                                                    ->update(["activo", 0]);
+
             $update = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
                                         ->where("activo",1)
                                         ->where(function($query) use ($inputs) {
@@ -193,10 +198,12 @@ class TramiteComisionInternaController extends Controller
                                                 ['fecha_inicio',        '<=', $inputs['fecha_inicio_periodo']],
                                                 ['fecha_fin',           '>=', $inputs['fecha_inicio_periodo']]
                                             ])
-                                                ->orWhere([
-                                                    ['fecha_inicio',  '<=', $inputs['fecha_fin_periodo']],
-                                                    ['fecha_fin',       '>=', $inputs['fecha_fin_periodo']]
-                                                ]);
+                                            ->orWhere([
+                                                ['fecha_fin',       '<=', $inputs['fecha_fin_periodo']]
+                                            ])
+                                            ->orWhere([
+                                                ['fecha_fin',       '>=', $inputs['fecha_fin_periodo']]
+                                            ]);
                                         })
                                         ->count();              
             //Validacion del registro
