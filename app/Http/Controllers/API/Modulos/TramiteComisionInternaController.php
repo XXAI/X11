@@ -189,7 +189,8 @@ class TramiteComisionInternaController extends Controller
             $quitar_comision = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
                                                     ->where("activo", 1)
                                                     ->where("fecha_fin", "<", $inputs['fecha_inicio_periodo'])
-                                                    ->update(["activo", 0]);
+                                                    ->update(["activo" => 0]);
+                                     //               ->update(["activo", 0]);
 
             $update = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
                                         ->where("activo",1)
