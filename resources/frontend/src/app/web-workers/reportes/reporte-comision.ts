@@ -108,7 +108,7 @@ export class ReporteComision {
           {
             bold: false,
             alignment:"justify",
-            fontSize: 8
+            fontSize: 7.5
           },
           contenido_notificacion:
           {

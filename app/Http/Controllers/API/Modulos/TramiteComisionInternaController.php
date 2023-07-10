@@ -545,18 +545,7 @@ class TramiteComisionInternaController extends Controller
                 DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>FECHA DE OFICIO MAYOR A FECHA DE INICIO DE PERIODO</b><br>'), estatus=5 where ".$filtro."  and fecha_inicio>concat(EXTRACT(YEAR FROM a.`fecha_inicio`),'-01-04') AND fecha_oficio>fecha_inicio");
                 //Validamos comision activa
                 DB::statement("update importar_tramites a inner join rel_trabajador_comision_interna b on a.trabajador_id=b.trabajador_id and b.activo=1 set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), a.estatus=7 where ".$filtro." and a.fecha_inicio<b.fecha_fin");
-                DB::statement("update importar_tramites a inner join rel_trabajador_comision_gerencial b on a.trabajador_id=b.trabajador_id and b.activo=1 set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), a.estatus=7 where ".$filtro." and a.fecha_inicio<b.fecha_fin");
-                
-                //DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_interna where activo=1)");
-                //DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_gerencial where activo=1)");
-                
-                //DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>SIN COMISIÓN HISTORICA</b>'), estatus=99 where ".$filtro." and (trabajador_id not in (select trabajador_id from rel_trabajador_comision_gerencial where deleted_at is null) and trabajador_id not in (select trabajador_id from rel_trabajador_comision_interna where deleted_at is null))");
-                /*if (in_array($parametros['tipo'], ['2'])) {
-                    
-                }else if (in_array($parametros['tipo'], ['3'])) {
-                    //Validamos comision activa
-                    DB::statement("update importar_tramites a  set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), estatus=7 where ".$filtro." and trabajador_id in (select trabajador_id from rel_trabajador_comision_gerencial where activo=1)");
-                }*/
+                //DB::statement("update importar_tramites a inner join rel_trabajador_comision_gerencial b on a.trabajador_id=b.trabajador_id and b.activo=1 set observaciones=concat(observaciones, '-<b>COMISIÓN ACTIVA</b>'), a.estatus=7 where ".$filtro." and a.fecha_inicio<b.fecha_fin");
 
                 //Validamos fechas de eventual
                 DB::statement("UPDATE importar_tramites a INNER JOIN rel_trabajador_datos_laborales_nomina b ON a.`trabajador_id`=b.`trabajador_id` SET observaciones=CONCAT(observaciones,'-<b>FECHA DE CONTRATO EVENTUAL</b>'), estatus=5 WHERE  ".$filtro." and b.`ur` NOT IN ('416','HOM','REG','FO2','FO3','FOR') AND a.`estatus`=1  AND EXTRACT(YEAR FROM a.`fecha_inicio`) != EXTRACT(YEAR FROM a.`fecha_fin`)");//(a.`fecha_inicio`<'".date("Y")."-01-01' OR a.`fecha_fin`>'".date("Y")."-12-31')
