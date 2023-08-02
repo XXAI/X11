@@ -16,10 +16,10 @@ class RelComisionInterna extends Model
     }
 
     public function cr_origen(){
-        return $this->belongsTo('App\Models\Cr', 'cr_origen', 'cr')->with("clues");
+        return $this->belongsTo('App\Models\Cr', 'cr_origen', 'cr')->withTrashed()->with("clues");
     }
 
     public function cr_destino(){
-        return $this->belongsTo('App\Models\Cr', 'cr_destino', 'cr')->with("clues");
+        return $this->belongsTo('App\Models\Cr', 'cr_destino', 'cr')->withTrashed()->with("clues");
     }
 }

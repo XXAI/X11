@@ -14,7 +14,7 @@ class Cr extends Model
     public $incrementing = false;
 
     public function clues(){
-        return $this->hasOne('App\Models\Clues', 'clues', "clues");
+        return $this->hasOne('App\Models\Clues', 'clues', "clues")->withTrashed();
     }
 
     public function directorio(){
