@@ -14,7 +14,7 @@ class AlterTablesCluesAdministracion extends Migration
     public function up()
     {
         //Quitamos Foreign keys
-        Schema::table('permission_user', function (Blueprint $table) {
+        /*Schema::table('permission_user', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
         Schema::table('rel_usuario_clues_cr', function (Blueprint $table) {
@@ -25,7 +25,7 @@ class AlterTablesCluesAdministracion extends Migration
         });
         Schema::table('role_user', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
-        });
+        });*/
         
         //cambiamos el tipo en user id
         Schema::table('users', function (Blueprint $table) {
