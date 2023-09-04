@@ -94,6 +94,17 @@ class CatalogosController extends Controller
             return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
         }
     }
+    public function obtenerCatalogoClasificacion(Request $request)
+    {
+        try{
+            $params = $request->all();
+            $obj = Clues::groupBy("clasificacion_descripcion")->select("clasificacion_descripcion")->get();
+            
+            return response()->json($obj,HttpResponse::HTTP_OK);
+        }catch(\Exception $e){
+            return response()->json(['error'=>['message'=>$e->getMessage(),'line'=>$e->getLine()]], HttpResponse::HTTP_CONFLICT);
+        }
+    }
 
     public function catalogoTipoBaja(){
         try{

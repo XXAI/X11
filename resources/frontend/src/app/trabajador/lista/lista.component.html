@@ -1,27 +1,5 @@
 <section class="profile">
-    <!--<mat-toolbar class="employee-advance-bar" [class.mat-elevation-z2]="true" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
-        <mat-toolbar-row class="porcentaje">
-            <div fxLayout="row wrap"  fxLayoutGap="5px" fxLayoutAlign="space-evenly start">
-                <div  fxFlex="40" fxFlex.xs="100">
-                    <mat-icon aria-hidden="false" aria-label="Estatus Trabajador">speed</mat-icon>
-                    <span>Estatus: Activos {{countPersonalActivo | number: '2.'}} / Validados {{countPersonalValidado | number: '2.'}}</span>
-                    <span class="spacer"></span>
-                    
-                </div>
-                <div  fxFlex="30" fxFlex.xs="100">
-                    <span>{{ countPersonalActualizado }} ({{percentPersonalActualizado | number : '1.2-2' }}%) Actualizados</span>
-                    <span class="spacer"></span>
-                    
-                </div>
-                <div  fxFlex="30" fxFlex.xs="100">
-                    <span>{{ percentPersonalValidado }}% Validado</span>
-                    <span class="spacer"></span>
-                </div>
-                
-            </div>
 
-        </mat-toolbar-row>
-    </mat-toolbar>-->
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="0px" style="background-color: #f5f5f5; border-bottom: 1px solid #7f7f7f; margin-bottom: 5pt;">
         <div fxFlex fxLayout="row wrap" style="padding: 7pt; font-weight: 500; font-size: 11pt;" class="sombra">
             <div fxFlex="33" fxFlex.xs="100">
@@ -86,24 +64,7 @@
                     </div>
                 </div>
             </mat-card>
-            <!--<mat-card fxFlex.xs="100%" fxFlex="90%" [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
-                <div fxLayout="row" fxLayout.xs="column" style="padding-bottom:10px;">
-                    <div fxFlex>
-                    </div>
-                    &nbsp;
-                    <button mat-raised-button color="primary" [matMenuTriggerFor]="menuAction"><mat-icon>handyman</mat-icon> Acciones</button>
-                    <mat-menu #menuAction="matMenu">
-                        <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddEmployeDialog()"><mat-icon>person_search</mat-icon> Buscar Trabajador</button>
-                        <mat-divider></mat-divider>
-                        <button *ngIf="!capturaFinalizada" mat-menu-item routerLink="/trabajadores/nuevo/"><mat-icon>person_add_alt</mat-icon> Agregar Trabajador</button>
-                        <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddSignerDialog()"><mat-icon>create</mat-icon> Agregar Firmantes</button>
-                        <mat-divider></mat-divider>
-                        <button mat-menu-item (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF">
-                            <mat-icon fontSet="{{(!showReportForm)?'material-icons-outlined':''}}">{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon> Reporte
-                        </button>
-                    </mat-menu>
-                </div>
-            </mat-card>-->
+           
             <div *ngIf="showReportForm || showMyStepper">
                 <div *ngIf="showReportForm">
                     <section fxLayout="row">

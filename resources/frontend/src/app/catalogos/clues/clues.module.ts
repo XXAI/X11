@@ -10,16 +10,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getEspPaginatorIntl } from '../../esp-paginator-intl';
 import { EditarComponent } from './editar/editar.component';
+import { NuevoComponent } from './nuevo/nuevo.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
-  declarations: [ListaComponent, EditarComponent],
+  declarations: [ListaComponent, EditarComponent, NuevoComponent],
   imports: [
     CommonModule,
     SharedModule,
     CluesRoutingModule,
     MatDatepickerModule,
-    MatNativeDateModule 
+    MatNativeDateModule ,
+    BrowserAnimationsModule
   ],
   providers:[
     { provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

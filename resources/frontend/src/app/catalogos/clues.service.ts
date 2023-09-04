@@ -29,6 +29,22 @@ export class CluesService {
       }
     ));
   }
+  
+  creatUnidad(form:any):Observable<any> {
+    return this.http.post<any>(this.url, form).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+  
+  delUnidad(id):Observable<any> {
+    return this.http.delete<any>(this.url+"/"+id, {}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
 
   obtenerDatosClues(id:any, payload:any):Observable<any> {
     return this.http.get<any>(this.url +"/"+ id, {params:payload}).pipe(

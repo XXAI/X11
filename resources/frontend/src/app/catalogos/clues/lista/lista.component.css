@@ -1,13 +1,12 @@
 .data-container {
     position: relative;
-    /*min-height: 200px;*/
+    min-height: 200px;
 }
 
 .data-table-container {
     position: relative;
-    /*max-height: 400px;*/
-    max-height: calc(100px-30px) !important;
-    /*min-height: 200px;*/
+    max-height: 400px;
+    min-height: 200px;
     overflow: auto;
 }
 
@@ -39,6 +38,16 @@ table {
 .mat-column-actions {
     max-width: 75px;
     min-width: 60px;
+}
+
+.porcentaje {
+    font-size: 13pt;
+}
+
+@media only screen and (max-width: 600px) {
+    .porcentaje {
+        font-size: 9.5pt;
+    }
 }
 
 .selected-item {
@@ -165,4 +174,85 @@ table {
 .my-stepper .my-step-error .my-step-label,
 .my-stepper .my-step-error mat-icon {
     color: #f44336 !important;
+}
+
+.employee-advance-bar {
+    height: auto;
+    max-height: 46px;
+    margin-bottom: 5px;
+}
+
+.employee-advance-bar mat-toolbar-row {
+    /*max-height: 46px;*/
+}
+
+.mat-toolbar-multiple-rows {
+    /*min-height: 46px !important;*/
+}
+
+.employee-advance-bar .advance-icon {
+    padding: 0 14px;
+}
+
+.employee-advance-bar .spacer {
+    flex: 1 1 auto;
+}
+
+.actualizacion_completa {
+    color: green;
+}
+
+.hide {
+    display: none;
+}
+
+.mat-header-row {
+    background-color: #3f51b5 !important;
+    color: white !important;
+}
+
+.mat-header-row th {
+    color: white !important;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2 !important;
+}
+
+tbody tr:nth-child(even) {
+    background: #CCC
+}
+
+.sombra {
+    -webkit-box-shadow: 0px 1px 9px 1px rgba(0, 0, 0, 0.69);
+    box-shadow: 0px 1px 9px 1px rgba(0, 0, 0, 0.69);
+}
+
+@media only screen and (min-width: 1000px) {
+    .modal .mat-grid-tile {
+        width: 100% !important;
+        position: relative!important;
+        left: 0 !important;
+    }
+    .modal .mat-form-field {
+        width: 100%
+    }
+    .modal .mat-radio-button {
+        padding: 10px;
+    }
+    .modal .mat-raised-button.mat-warn {
+        margin: 5px
+    }
+}
+
+.mat-menu-item {
+    color: #3f51b5 !important;
+}
+
+.mat-menu-item mat-icon {
+    color: #3f51b5 !important;
+}
+
+tr.mat-header-row {
+    height: 38px;
 }

@@ -1,19 +1,16 @@
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SharedService } from '../../shared/shared.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTable } from '@angular/material/table';
 
 import { ConfirmActionDialogComponent } from '../../utils/confirm-action-dialog/confirm-action-dialog.component';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { trigger, transition, animate, style } from '@angular/animations';
 
 import { AgregarFirmantesDialogComponent } from '../agregar-firmantes-dialog/agregar-firmantes-dialog.component';
-import { PermissionsList } from '../../auth/models/permissions-list';
-import { IfHasPermissionDirective } from 'src/app/shared/if-has-permission.directive';
 import { MediaObserver } from '@angular/flex-layout';
 import { TrabajadorService } from '../trabajador.service';
 

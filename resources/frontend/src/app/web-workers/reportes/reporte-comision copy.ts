@@ -218,7 +218,7 @@ export class ReporteComision {
       
       let ur = datos_trabajador.rel_datos_laborales_nomina.ur;
       let denominacion = "";
-      if(ur == "416")
+      if(ur == "416" || ur == "420")
       {
         denominacion = "BASE";
       }else if(ur == "FO2" || ur == "FO3" || ur == "FOR" )

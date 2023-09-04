@@ -187,6 +187,7 @@ export class ReporteTrabajadorCambioAdscripcion {
 
       let TipoTrabajador = "";
       switch (datos_nominales.ur) {
+        case "420": 
         case "416": TipoTrabajador = "BASE"; break;
         case "HOM": TipoTrabajador = "HOMOLOGADO"; break;
         case "REG": TipoTrabajador = "REGULARIZADO"; break;
@@ -198,6 +199,7 @@ export class ReporteTrabajadorCambioAdscripcion {
 
       let clave = "";
       switch (datos_nominales.ur) {
+        case "420": 
         case "416": clave=" con clave presupuestal de base: "+datos_nominales.clave_presupuestal; break;
         case "HOM": clave=" con clave presupuestal de HOMOLOGADO: "+datos_nominales.clave_presupuestal; break;
         case "REG": clave=" con clave presupuestal de REGULARIZADO: "+datos_nominales.clave_presupuestal; break;
@@ -247,6 +249,7 @@ export class ReporteTrabajadorCambioAdscripcion {
       contenido = "En consideración que la protección a la salud, es un derecho humano, elevado a rango constitucional como lo establece el artículo 4º de la Ley Suprema; así mismo los dispositivos 2º  y 77 bis 1, de la Ley General de la materia, establecen que los servicios de salud y de asistencia social deben de satisfacer eficaz y oportunamente las necesidades de la población que carezca de estos conceptos, por tal razón tienen derecho a recibir de manera gratuita los servicios públicos de salud, incluyendo medicamentos y demás insumos asociados sin importar la condición social de las personas.\n\n";
       let acuse_qr = "";
       switch (datos_nominales.ur) {
+        case "420": 
         case "416": 
         case "HOM": 
         case "REG": 
