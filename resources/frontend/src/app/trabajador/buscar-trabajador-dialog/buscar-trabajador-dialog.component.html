@@ -47,9 +47,15 @@
 
                                             <div *ngIf="row.rel_trabajador_baja == null">
                                                 <div *ngIf="row.estatus == 2 || row.estatus == 1 ">
-
-                                                    {{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.clues:'Sin CLUES asignado'}}
-                                                    <br> <small>{{ (row.rel_datos_laborales)?row.rel_datos_laborales.cr_fisico.descripcion:'Sin CR asignado'}}</small>
+                                                    <div *ngIf="row.rel_datos_laborales">
+                                                        <div *ngIf="row.rel_datos_laborales.cr_fisico">
+                                                            {{ row.rel_datos_laborales.cr_fisico.clues }}
+                                                            <br> <small>{{ row.rel_datos_laborales.cr_fisico.descripcion}}</small>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="!row.rel_datos_laborales">SIN UNIDAD ASIGNADA</div>
+                                                    <div *ngIf="!row.rel_datos_laborales.cr_fisico"><small>SIN UNIDAD ASIGNADA</small></div>
+                                                    
                                                 </div>
 
                                                 <div *ngIf="row.estatus == 3">
@@ -80,6 +86,9 @@
                                         <td mat-cell *matCellDef="let row; let i = index">
 
                                             <button *ngIf="row.rel_datos_laborales == null" mat-raised-button color="primary" (click)="activarEmpleado(row)" matTooltip="Activar Trabajador" [matTooltipPosition]="'before'">
+                                                <mat-icon>link</mat-icon>
+                                            </button>
+                                            <button *ngIf="row.rel_datos_laborales != null && !row.rel_datos_laborales.cr_fisico" mat-raised-button color="primary" (click)="activarEmpleado(row)" matTooltip="Activar Trabajador" [matTooltipPosition]="'before'">
                                                 <mat-icon>link</mat-icon>
                                             </button>
                                             <button *ngIf="row.estatus == 3 || row.estatus == 2" mat-raised-button color="primary" (click)="activarEmpleado(row)" matTooltip="Activar Trabajador" [matTooltipPosition]="'before'">
