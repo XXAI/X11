@@ -211,10 +211,10 @@ class TramiteComisionInternaController extends Controller
             if($update > 0)
             {
                 return response()->json(['message'=>"COMISIÓN ACTIVA"], HttpResponse::HTTP_CONFLICT);
-            }else if($inputs['fecha_fin_periodo'] < date("Y-m-d"))
+            }/*else if($inputs['fecha_fin_periodo'] < date("Y-m-d"))
             {
                 return response()->json(['message'=>"PERIODO NO VALIDO"], HttpResponse::HTTP_CONFLICT);
-            }
+            }*/
             //
             
             
