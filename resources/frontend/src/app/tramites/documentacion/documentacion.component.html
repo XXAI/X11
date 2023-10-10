@@ -108,6 +108,7 @@
                             <mat-label>ESTATUS VALIDACIÓN</mat-label>
                             <mat-select formControlName="estatus" required>
                                 <mat-option [value]="0">TODOS</mat-option>
+                                <mat-option [value]="6">PENDIENTE DE ENVIAR</mat-option>
                                 <mat-option [value]="1">PENDIENTE A APROBAR</mat-option>
                                 <mat-option [value]="2">RECHAZADO POR RH</mat-option>
                                 <mat-option [value]="3">PENDIENTE A APROBAR POR RH CENTRAL</mat-option>
@@ -160,11 +161,12 @@
                                         <mat-icon color="warn" *ngIf="row.estatus == 4">error</mat-icon>
                                         <mat-icon style="color:green" *ngIf="row.estatus == 5">check_circle_outline</mat-icon>
                                     </div>
+                                    
                                     <div *ngIf="row.estatus == null">
                                         <mat-icon>pending</mat-icon>
 
                                     </div>
-
+                                    
                                 </td>
                             </ng-container>
                             <!-- Name Column -->
@@ -191,6 +193,12 @@
                                 <td mat-cell *matCellDef="let row">
                                     <span style="font-size: 9pt;" *ngIf="row.descripcion != null">{{row.descripcion}}</span><br>
                                     <span style="font-size: 8pt;" *ngIf="row.cr != null">{{row.cr}}</span>
+                                    
+                                    <div *ngIf="row.estatus != null">
+                                        <div *ngIf="row.estatus == 2">
+                                            <span style="font-weight: bold; color:brown;">Rechazado por Rh de la Unidad</span>
+                                        </div>
+                                    </div>
                                     <!--<div *ngIf="row.rel_trabajador_documentos">
                                         <div *ngIf="row.estatus == 2" style="color: red;">
                                             <b>{{ row.rel_trabajador_documentos.observacion }} </b>
@@ -202,9 +210,31 @@
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
                                 <td mat-cell *matCellDef="let row; let i = index">
-
-
-                                    <div *ngIf="row.estatus == null">
+                                    {{ row.estatus }}
+                                    <button mat-button color="primary" [matMenuTriggerFor]="menu">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="CargarDocumento(row)" *ngIf="row.estatus == null || row.estatus == 2 || row.estatus == 4"><mat-icon color="primary">cloud_upload</mat-icon>Cargar PDF</button>
+                                        <mat-divider></mat-divider>
+                                        <div  *ngIf="row.estatus != null && row.estatus == 1">
+                                            <button mat-menu-item  style="font-weight: bold; color: darkslategrey;"><mat-icon color="primary">drag_indicator</mat-icon>RH UNIDAD</button>
+                                            <button mat-menu-item (click)="VerificacionDenegar(row.id, 2);"><mat-icon color="warn">cancel_presentation</mat-icon>DENEGAR</button>
+                                            <button mat-menu-item (click)="VerificacionAprobar(row.id, 3);"><mat-icon style="color: green;">check_box</mat-icon>APROBAR</button>
+                                            <mat-divider></mat-divider>    
+                                        </div>
+                                        <div  *ngIf="row.estatus != null && row.estatus == 3 && permiso_validador == true">
+                                            <button mat-menu-item  style="font-weight: bold; color: darkslategrey;"><mat-icon color="primary">drag_indicator</mat-icon>RH OFICINA CENTRAL</button>
+                                            <button mat-menu-item (click)="ObservacionCancelar(row, row.id, 4);"><mat-icon color="warn">cancel_presentation</mat-icon>DENEGAR</button>
+                                            <button mat-menu-item (click)="VerificacionAprobar(row.id, 5);"><mat-icon style="color: green;">check_box</mat-icon>APROBAR</button>
+                                            <mat-divider></mat-divider>    
+                                        </div>
+                                        
+                                        <button mat-menu-item color="primary" (click)="descargar(row)"  *ngIf="row.estatus != null">
+                                            <mat-icon style="color: darkslategray;">visibility</mat-icon> Ver Documento
+                                        </button>
+                                    </mat-menu>
+                                    <!--div *ngIf="row.estatus == null">
 
                                         <button mat-mini-fab color="primary" mat-stroked-button [matMenuTriggerFor]="menu">
                                             <mat-icon>menu</mat-icon>
@@ -298,9 +328,13 @@
                                             </mat-menu>
                                         </div>
 
-                                    </div>
+                                    </div-->
 
-
+                                    <button  mat-button *ngIf="row.estatus != null && row.estatus == 4" (click)="verInformacion(row)">
+                                        <mat-icon  color="warn">
+                                            error
+                                        </mat-icon>
+                                    </button>
                                 </td>
                             </ng-container>
 

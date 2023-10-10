@@ -135,9 +135,15 @@ class TramiteDocumentacionController extends Controller
                 }
             }
 
-            if(isset($parametros['estatus']))
+            if(isset($parametros['estatus']) && $parametros['estatus'] != 6)
             {
                 $trabajador = $trabajador->whereRaw("(select trabajador.id in (select trabajador_id from rel_trabajador_documentacion where estatus=".$parametros['estatus']."))");
+                
+            }
+            
+            if(isset($parametros['estatus']) && $parametros['estatus'] == 6)
+            {
+                $trabajador = $trabajador->whereRaw("(select trabajador.id not in (select trabajador_id from rel_trabajador_documentacion))");
                 
             }
             

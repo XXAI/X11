@@ -390,10 +390,21 @@ export class DocumentacionComponent implements OnInit {
           this.sharedService.showSnackBar(errorMessage, null, 3000);
         } else {
 
-          this.permiso_rh = response.rh;
-          this.permiso_admin = response.admin;
-          this.permiso_oficina = response.oficina;
-          this.permiso_validador = response.oficina;
+          if(response.admin == true)
+          {
+            this.permiso_validador = true;
+            this.permiso_rh = true;
+            this.permiso_admin = true;
+            this.permiso_oficina = true;
+          
+          }else
+          {
+            this.permiso_validador = response.oficina;
+            this.permiso_rh = response.rh;
+            this.permiso_admin = response.admin;
+            this.permiso_oficina = response.oficina;
+          
+          }
           this.dataSource = [];
           this.resultsLength = 0;
           if(response.data.total > 0){
