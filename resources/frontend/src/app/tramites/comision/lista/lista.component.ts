@@ -675,6 +675,7 @@ export class ListaComponent implements OnInit {
         clues: obj.rel_trabajador_comision_interna.cr_destino,
         clues_adscripcion: obj.rel_datos_laborales_nomina.cr,
         reingenieria: obj.rel_trabajador_comision_interna.reingenieria,
+        fecha_recepcion: obj.rel_trabajador_comision_interna.fecha_recepcion,
         catalogo_cr: this.filterCatalogs['cr']
       };
 

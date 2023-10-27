@@ -177,53 +177,55 @@ class TramiteComisionInternaController extends Controller
             'fecha_inicio_periodo'           => 'required',
             'fecha_fin_periodo'           => 'required',
         ];
-        
+        if($inputs['fecha_recepcion'] == 1)
+        {
+            unset($reglas['fecha_inicio_periodo']);
+            unset($reglas['fecha_fin_periodo']);
+        }
     
         DB::beginTransaction();
         $v = Validator::make($inputs, $reglas, $mensajes);
-       
+        
         if ($v->fails()) {
             return response()->json(['error' => "Hace falta campos obligatorios. ".$v->errors() ], HttpResponse::HTTP_CONFLICT);
         }
         try {
-            $quitar_comision = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
+            
+                                     //               ->update(["activo", 0]);
+            if($inputs['fecha_recepcion'] == 0)
+            {
+                RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
                                                     ->where("activo", 1)
                                                     ->where("fecha_fin", "<", $inputs['fecha_inicio_periodo'])
                                                     ->update(["activo" => 0]);
-                                     //               ->update(["activo", 0]);
-
-            $update = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
-                                        ->where("activo",1)
-                                        ->where(function($query) use ($inputs) {
-                                            $query->where([
-                                                ['fecha_inicio',        '<=', $inputs['fecha_inicio_periodo']],
-                                                ['fecha_fin',           '>=', $inputs['fecha_inicio_periodo']]
-                                            ])
-                                            ->orWhere([
-                                                ['fecha_fin',       '<=', $inputs['fecha_fin_periodo']]
-                                            ])
-                                            ->orWhere([
-                                                ['fecha_fin',       '>=', $inputs['fecha_fin_periodo']]
-                                            ]);
-                                        })
-                                        ->count();              
-            //Validacion del registro
-            if($update > 0)
-            {
+            
+                $update = RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
+                ->where("activo",1)
+                ->where(function($query) use ($inputs) {
+                    $query->where([
+                        ['fecha_inicio',        '<=', $inputs['fecha_inicio_periodo']],
+                        ['fecha_fin',           '>=', $inputs['fecha_inicio_periodo']]
+                    ])
+                    ->orWhere([
+                        ['fecha_fin',       '<=', $inputs['fecha_fin_periodo']]
+                    ])
+                    ->orWhere([
+                        ['fecha_fin',       '>=', $inputs['fecha_fin_periodo']]
+                    ]);
+                })
+                ->count();    
+                        
+                //Validacion del registro
+                if($update > 0)
+                {
                 return response()->json(['message'=>"COMISIÓN ACTIVA"], HttpResponse::HTTP_CONFLICT);
-            }/*else if($inputs['fecha_fin_periodo'] < date("Y-m-d"))
-            {
-                return response()->json(['message'=>"PERIODO NO VALIDO"], HttpResponse::HTTP_CONFLICT);
-            }*/
-            //
+                }
+            }else{
+                RelComisionInterna::where("trabajador_id", $inputs['trabajador_id'])
+                ->where("activo", 1)
+                ->update(["activo" => 0]);
+            }
             
-            
-            /*if($update)
-            {
-                //return Response::json(['error' => $update], HttpResponse::HTTP_CONFLICT);
-                $update->activo = 0;
-                $update->save();    
-            }*/
             $loggedUser = auth()->userOrFail();
 
             $origen = Cr::whereRaw("cr = (select cr_nomina_id from rel_trabajador_datos_laborales_nomina where trabajador_id=".$inputs['trabajador_id'].")")->first();
@@ -248,6 +250,7 @@ class TramiteComisionInternaController extends Controller
             $object->fecha_inicio       = $inputs['fecha_inicio_periodo'];
             $object->fecha_fin          = $inputs['fecha_fin_periodo'];
             $object->reingenieria       = $inputs['reingenieria'];
+            $object->fecha_recepcion       = $inputs['fecha_recepcion'];
             $object->activo             = 1;
             $object->user_id            = $loggedUser->id;
             $object->save();
@@ -281,7 +284,11 @@ class TramiteComisionInternaController extends Controller
             'fecha_inicio_periodo'           => 'required',
             'fecha_fin_periodo'           => 'required',
         ];
-        
+        if($inputs['fecha_recepcion'] == 1)
+        {
+            unset($reglas['fecha_inicio_periodo']);
+            unset($reglas['fecha_fin_periodo']);
+        }
     
         DB::beginTransaction();
         $v = Validator::make($inputs, $reglas, $mensajes);

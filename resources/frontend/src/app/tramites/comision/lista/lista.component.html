@@ -202,7 +202,13 @@
                             <ng-container matColumnDef="periodo">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> PERIODO </th>
                                 <td mat-cell *matCellDef="let row">
-                                    {{ row.rel_trabajador_comision_interna.fecha_inicio }}<br> {{ row.rel_trabajador_comision_interna.fecha_fin }}
+                                    <div *ngIf="row.rel_trabajador_comision_interna.fecha_recepcion == 0">
+                                        {{ row.rel_trabajador_comision_interna.fecha_inicio }}<br> {{ row.rel_trabajador_comision_interna.fecha_fin }}
+                                    </div>
+                                    <div *ngIf="row.rel_trabajador_comision_interna.fecha_recepcion == 1">
+                                        FECHA DE RECEPCIÓN
+                                    </div>
+                                    
                                 </td>
                             </ng-container>
                             <ng-container matColumnDef="creacion">

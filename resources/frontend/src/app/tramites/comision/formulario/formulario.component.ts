@@ -22,6 +22,7 @@ export interface RegistroData {
   catalogo_cr:any;
   trabajador:any;
   reingenieria:any;
+  fecha_recepcion:any;
 }
 
 @Component({
@@ -40,6 +41,7 @@ export class FormularioComponent implements OnInit {
   cr_nominal:string = "";
   isLoading:boolean = false;
   buscador:boolean = false;
+  validaFechaRecepcion: boolean = false;
 
   constructor(
     private sharedService: SharedService, 
@@ -60,10 +62,11 @@ export class FormularioComponent implements OnInit {
     'trabajador': [''],
     'clues': ['',[Validators.required]],
     'fecha_oficio': ['',[Validators.required]],
-    'fecha_inicio_periodo': ['',[Validators.required]],
-    'fecha_fin_periodo': ['',[Validators.required]],
+    'fecha_inicio_periodo': [''],
+    'fecha_fin_periodo': [''],
     'trabajador_id': ['',[Validators.required]],
     'reingenieria': ['',[Validators.required]],
+    'fecha_recepcion': ['',[Validators.required]],
   });
 
   ngOnInit(): void {
@@ -87,6 +90,16 @@ export class FormularioComponent implements OnInit {
     return value ? value[valueLabel] : value;
   }
 
+  public verificar(fecha_recepcion)
+  {
+    if(fecha_recepcion == 0)
+    {
+      this.validaFechaRecepcion = false;
+    }else{
+      this.validaFechaRecepcion = true;
+    }
+  }
+
   public loadFilterCatalogs(){
       this.filterCatalogs = {
         'cr': this.data.catalogo_cr,
@@ -106,11 +119,18 @@ export class FormularioComponent implements OnInit {
           fecha_inicio_periodo:this.data.fecha_inicio+"T18:51:49.313Z",
           fecha_fin_periodo:this.data.fecha_fin+"T18:51:49.313Z",
           trabajador_id: this.data.trabajador.id,
-          reingenieria: this.data.reingenieria
+          reingenieria: this.data.reingenieria,
+          fecha_recepcion: this.data.fecha_recepcion
         });
+
+        this.verificar(this.data.fecha_recepcion);
         
         this.clues_nominal = this.data.clues_adscripcion.clues+" "+this.data.clues_adscripcion.descripcion_actualizada;
         this.cr_nominal = this.data.clues_adscripcion.cr+" "+this.data.clues_adscripcion.descripcion_actualizada
+      }else{
+        this.formularioForm.patchValue({
+          fecha_recepcion:0
+        });
       }
   }
 

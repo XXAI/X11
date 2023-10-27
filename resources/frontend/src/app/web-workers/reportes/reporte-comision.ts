@@ -151,12 +151,16 @@ export class ReporteComision {
       
       
       let comision_inicio = element.rel_trabajador_comision_interna;
-      let mes_inicio = (parseInt(comision_inicio.fecha_inicio.substr(5,2)) - 1);
-      let mes_fin = (parseInt(comision_inicio.fecha_fin.substr(5,2)) - 1);
-
-      let fecha_inicio =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision_inicio.fecha_inicio.substr(0,4), mes_inicio,comision_inicio.fecha_inicio.substr(8,2)));
-      let fecha_fin =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision_inicio.fecha_fin.substr(0,4), mes_fin,comision_inicio.fecha_fin.substr(8,2)));
-
+      let mes_inicio = 0;
+      let mes_fin = 0;
+      if(comision_inicio.fecha_recepcion == 0)
+      {
+        mes_inicio = (parseInt(comision_inicio.fecha_inicio.substr(5,2)) - 1);
+        mes_fin = (parseInt(comision_inicio.fecha_fin.substr(5,2)) - 1);
+  
+      }
+      
+      
       let TipoTrabajador = "";
       switch (datos_nominales.ur) {
         case "420": 
@@ -182,14 +186,23 @@ export class ReporteComision {
 
       
       let currentYear = new Date();
+      let comision = element.rel_trabajador_comision_interna;
+      
+      let fecha_inicio = "";
+      let fecha_fin = "";
+      if(comision.fecha_recepcion == 0)
+      {
+        fecha_inicio =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision_inicio.fecha_inicio.substr(0,4), mes_inicio,comision_inicio.fecha_inicio.substr(8,2)));
+        fecha_fin =  new Intl.DateTimeFormat('es-ES', {year: 'numeric', month: 'long', day: '2-digit'}).format(new Date(comision_inicio.fecha_fin.substr(0,4), mes_fin,comision_inicio.fecha_fin.substr(8,2)));  
+      }
+      
 
       let anio_actual = this.NumeroALetras(currentYear.getFullYear());
       let contenido = "";
       let nombre_trabajador = trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno;
       let codigo_trabajador = datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id;
-      let comision = element.rel_trabajador_comision_interna;
       let destino = "SIN DESTINO";
-      let periodo = fecha_inicio+" al "+fecha_fin;
+      let periodo = "del día "+fecha_inicio+" al "+fecha_fin;
       let responsable = "";
       let responsable_notificacion = "";
       let responsable_copia = "";
@@ -218,6 +231,11 @@ export class ReporteComision {
         responsable_copia = "";
       }
 
+      if(comision.fecha_recepcion == 1)
+      {
+        periodo = " de recibido el presente documento al 31 de diciembre del "+anio_oficio;
+      }
+
       contenido = "En consideración que la protección a la salud, es un derecho humano, elevado a rango constitucional como lo establece el artículo 4º de la Ley Suprema; en relación con los dispositivos 1º, 2º  y 77 bis 1, de la Ley General de Salud, establecen que los servicios de salud y de asistencia social deben de satisfacer eficaz y oportunamente las necesidades de la población que carezcan de la seguridad social y estos conceptos, tienen el derecho de recibir de manera gratuita los servicios públicos de salud, que incluye medicamentos y demás insumos asociados sin importar la condición social de las personas.\n\n";
       let acuse_qr = "";
       switch (datos_nominales.ur) {
@@ -228,13 +246,13 @@ export class ReporteComision {
         case "FO2": 
         case "FO3": 
         case "FOR": 
-          acuse_qr = "Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, 82, 133, 134 y demás relativos aplicables de las Condiciones Generales del Trabajo, por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien comunicarle a usted, que a partir del día "+periodo+", queda comisionado a "+destino+"; con su código funcional "+clave+" "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el/la  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
+          acuse_qr = "Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, 82, 133, 134 y demás relativos aplicables de las Condiciones Generales del Trabajo, por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien comunicarle a usted, que a partir "+periodo+", queda comisionado a "+destino+"; con su código funcional "+clave+" "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el/la  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
           contenido += acuse_qr+"\n\n";
           contenido += "Con fundamento en el CAPÍTULO IX, DE LA INTENSIDAD, CALIDAD Y PRODUCTIVIDAD EN EL TRABAJO, de las Condiciones Generales del Trabajo de la Secretaría de Salud, se le exhorta que deberá desempeñar los servicios encomendados, con aptitud, intensidad, calidad, eficacia, eficiencia, pulcritud y esmero, que por su propia naturaleza se demande en el desempeño y la realización de las actividades y funciones que debe desarrollar como trabajador en el entendido, que de no presentarse a laborar en los términos señalados en el presente, se aplicara la normatividad que rigen a la Institución para tal efecto.\n\n";
         
         break;
         default:
-          acuse_qr ="Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, así como de la CLÁUSULA QUINTA del Contrato Individual de Trabajo por tiempo determinado de fecha primero de enero del año "+anio_actual+", por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien comunicarle a usted, que a partir del día "+periodo+", queda comisionado a "+destino+"; con su código funcional "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el/la  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
+          acuse_qr ="Atento a lo anterior, con fundamento en el artículo 134 de la Ley Federal del Trabajo, 52 fracciones I, III, VI y XI y 53 de la Ley del Servicios Civil del Estado y los Municipios de Chiapas, así como de la CLÁUSULA QUINTA del Contrato Individual de Trabajo por tiempo determinado de fecha primero de enero del año "+anio_actual+", por las necesidades del servicio y para los efectos de garantizar la demanda de atención médica que la población requiere de los servicios de salud; tengo a bien comunicarle a usted, que a partir "+periodo+", queda comisionado a "+destino+"; con su código funcional "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+", por lo que deberá presentarse con el/la  "+responsable+", en un horario de 08:00 a las 15:00 horas, quien le indicará las actividades, horario y funciones a ejecutar.";
           contenido += acuse_qr+"\n\n";
           contenido += "Con fundamento en el artículo 52 de la Ley del Servicio Civil del Estado y los Municipios de Chiapas, se le exhorta que deberá desempeñar los servicios encomendados en el contrato que tiene celebrado con la Secretaría de Salud del Estado de Chiapas e Instituto de Salud, con aptitud, intensidad, calidad, eficacia, eficiencia, pulcritud y esmero, que por su propia naturaleza se demande en el desempeño y la realización de las actividades y funciones que debe desarrollar como trabajador con el puesto para lo cual fue contratado; en el entendido, que de no presentarse a laborar en los términos señalados en el presente, se aplicara la normatividad que rige a la Institución para tal efecto.\n\n";
             
