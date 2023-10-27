@@ -166,6 +166,7 @@ class TrabajadorController extends Controller
                                     ->leftJoin("catalogo_estado_conyugal", "catalogo_estado_conyugal.id", "trabajador.estado_conyugal_id")
                                     ->leftJoin("rel_trabajador_datos_fiscales", "trabajador.id", "rel_trabajador_datos_fiscales.trabajador_id")
                                     ->leftJoin("rel_trabajador_documentacion", "trabajador.id", "rel_trabajador_documentacion.trabajador_id")
+                                    ->leftJoin("rel_trabajador_credencial as rtc", "trabajador.id", "rtc.trabajador_id")
                                     ->leftjoin('rel_trabajador_comision  as datos_comision', function ($join) {
                                         $join->on('datos_comision.trabajador_id', '=', 'trabajador.id')
                                              ->where('datos_comision.estatus', '=', 'A');
@@ -177,12 +178,19 @@ class TrabajadorController extends Controller
                                         "trabajador.curp",
                                         db::raw("concat(trabajador.apellido_paterno,' ',trabajador.apellido_materno,' ', trabajador.nombre) as nombre"),
                                         "catalogo_sexo.descripcion as sexo",
+                                        db::raw("if(rtc.tipo_sanguineo = 1, 'A', if(rtc.tipo_sanguineo = 2, 'B', if(rtc.tipo_sanguineo = 3, 'AB', if(rtc.tipo_sanguineo = 4, 'O', if(rtc.tipo_sanguineo = 5, 'A1', if(rtc.tipo_sanguineo = 6, 'A2', 'SIN REGISTRO')))))) AS TIPO_SANGUINEO"),
+                                        db::raw("if(rtc.rh = 1, '-', if(rtc.rh = 2, '+', 'N/A')) AS RH"),
+                                        //db::raw("if(rtc.rh = 1, '-', '+') AS RH"),
                                         "catalogo_estado_conyugal.descripcion as estado_conyugal",
                                         "trabajador.telefono_celular",
                                         "trabajador.correo_electronico",
-                                        db::raw("concat(trabajador.calle,' ', trabajador.no_exterior,' Col.',trabajador.colonia,' C.P. ', trabajador.cp) as calle"),
-                                        "rel_trabajador_datos_laborales.fecha_ingreso",
-                                        "rel_trabajador_datos_laborales.fecha_ingreso_federal",
+                                        "trabajador.calle",
+                                        "trabajador.no_exterior",
+                                        "trabajador.colonia",
+                                        "trabajador.cp",
+                                        //db::raw("concat(trabajador.calle,' ', trabajador.no_exterior,' Col.',trabajador.colonia,' C.P. ', trabajador.cp) as calle"),
+                                        "datos_nominales.fecha_ingreso",
+                                        "datos_nominales.fecha_ingreso_federal",
                                         "codigo.codigo",
                                         "codigo.descripcion as descripcion_codigo",
                                         "ur.descripcion as ur",

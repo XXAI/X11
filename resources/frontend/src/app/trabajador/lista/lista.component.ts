@@ -467,7 +467,7 @@ export class ListaComponent implements OnInit {
       },
       errorResponse =>{
         console.log(errorResponse);
-
+        this.isLoadingExcel = false;
         var errorMessage = "Ocurrió un error.";
         if(errorResponse.status == 409){
           errorMessage = errorResponse.error.error.message;
