@@ -345,7 +345,7 @@ export class ReporteComision {
 
       
       
-      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir del día "+fecha_inicio+", fue comisionado a "+destino+", Chiapas; de esa "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
+      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir  "+periodo+", fue comisionado a "+destino+", Chiapas; de esa "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
       contenido_notificacion += "Por lo que, en 5 días hábiles a partir de la fecha de este documento, el encargado de recursos humanos deberá realizar la asignación de jornada y horario con numero de identificación de acuerdo a los controles de asistencia con los que cuente la unidad.\n\n";
       contenido_notificacion += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       let notificacion = {
@@ -356,7 +356,7 @@ export class ReporteComision {
             margin: [0,0,0,0],
             body: [
             [
-              { text: "\n\n\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL-COM/"+num_notificacion.toString().padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
+              { text: "\n\nOFICIO NÚMERO: IS/DAF/SRH/DRL-COM/"+num_notificacion.toString().padStart(6, "0")+"/"+anio_oficio+"\nASUNTO: NOTIFICACIÓN\nTUXTLA GUTIÉRREZ, CHIAPAS; A "+fecha_hoy.toUpperCase()+"\n\n\n\n", style: "texto_oficio_notificacion", colSpan:2},{},
             ],
             [
               {text: responsable_notificacion.toUpperCase()+"\n\n\n", style:"contenido_notificacion", colSpan:2},{}
