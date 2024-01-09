@@ -177,6 +177,9 @@ Route::group(['middleware'=>'auth'],function($router){
     
     Route::apiResource('expediente',                    'API\Modulos\ExpedienteController');
     Route::put('devolver-expediente/{id}',                   'API\Modulos\ExpedienteController@devolver');
+
+    Route::apiResource('brigadista',                    'API\Modulos\Brigadistas\BrigadistaController');
+    Route::apiResource('sub_proceso_brigadista',        'API\Modulos\Brigadistas\SubProcesoBrigadistaController');
     
     Route::get('public//FromatoCredencial//default.jpg', function($filename) {
         $file = \Illuminate\Support\Facades\Storage::get($filename);

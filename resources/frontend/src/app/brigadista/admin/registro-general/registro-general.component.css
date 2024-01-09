@@ -1,0 +1,13 @@
+.titulo_mes
+{
+    padding: 5px 2px;
+    background: cadetblue;
+    color: white;
+    font-weight: bold;
+    font-family: system-ui;
+    font-size: 9pt;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+  }

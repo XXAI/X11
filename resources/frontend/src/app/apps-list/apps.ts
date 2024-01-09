@@ -53,5 +53,11 @@ export const APPS:App [] = [
       ],
     },
     { name:'DIRECTORIO',              route: "directorio",              icon: "assets/icons/directorio.png",  permission:"RkggFnAkLcXiLUTbZk3A07y0c4WdjjCO" },
-      
+    
+    /*{ name:'BRIGADISTAS',                route: "brigadista",                icon: "assets/icons/tramites.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt', isHub:true, hideHome:true, 
+      children:[
+        { name:'SALUD PÚBLICA',    route:'brigadista/registro',                  icon:'call_merge', permission:"sy4A7MgqfzYNb0yIxVbRSxdSHgCkwUml" },
+        { name:'CAPTURISTA',  route:'brigadista/capturista',        icon:'call_merge', permission:"DMuRcYkvysn5eUT4sjgMpeeWRUQlnRpt" },
+
+      ] }*/  
 ]

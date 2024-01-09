@@ -1,0 +1,416 @@
+<mat-toolbar  color="primary">
+    <span style="line-height: 9pt;">SUBPROCESO
+        <BR>
+            <span style="font-size: 9pt;">{{ nombre_proceso }}</span>
+    </span>
+    
+    <span class="example-spacer"></span>
+    
+</mat-toolbar>
+<br>
+<mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">menu</mat-icon>
+        
+      </ng-template>
+      <section class="profile">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center">
+            <section fxFlex="95" fxLayout="column" fxLayoutAlign="center">
+                <!--div class="data-loading-shade" *ngIf="isLoading">
+                    <mat-spinner></mat-spinner>
+                </div-->
+                <mat-card fxFlex.xs="100%" fxFlex="90%">
+                    <div fxLayout="row" fxLayout.xs="column">
+                    </div>
+                </mat-card>
+    
+                <mat-card fxFlex.xs="100%" fxFlex="90%">
+                    <mat-divider [inset]="true"></mat-divider>
+    
+                    <div class="data-container ">
+                        <div class="data-table-container">
+                            <table #dataTable mat-table [dataSource]="dataSource" class="data-table" matSort>
+                                <ng-container matColumnDef="descripcion">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> DESCRIPCIÓN</th>
+                                    <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                        <b>{{row.descripcion}}</b>
+                                        
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="mes">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true">MES </th>
+                                    <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                        {{ meses[row.mes[0].mes] }} 
+                                       
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="brigadista">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> BRIGADISTA </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{ row.mes[0].brigadista }}   
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="vacunador">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> VACUNADOR </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{ row.mes[0].vacunador }}    
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="dengue">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> DENGUE </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{ row.mes[0].dengue }} 
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="creacion">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> CREACION </th>
+                                    <td mat-cell *matCellDef="let row">
+                                        {{ row.created_at | date:'yyyy-MM-dd' }} 
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="actions">
+                                    <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
+                                    <td mat-cell *matCellDef="let row; let i = index">
+                                        <button mat-button [matMenuTriggerFor]="menu">
+                                            <mat-icon>more_vert</mat-icon>
+                                        </button>
+    
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item style="color: blue;" (click)="editar(row)"><mat-icon color="primary">edit</mat-icon>EDITAR</button>
+                                            <button mat-menu-item style="color: red;"><mat-icon color="warn">delete</mat-icon>ELIMINAR</button>
+                                            
+                                        </mat-menu>
+    
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="noResultsFound">
+                                    <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                        No se encontraron registros
+                                    </td>
+                                </ng-container>
+    
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+    
+                                <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
+                            </table>
+                        </div>
+                        <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = CargarLista($event)"></mat-paginator>
+                    </div>
+                </mat-card>
+            </section>
+        </div>
+    </section>
+    </mat-tab>
+  
+    <mat-tab>
+        <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">edit</mat-icon>
+            Formulario
+        </ng-template>
+        <div fxFlex="100" fxFlex.xs="100" [formGroup]="RegistroForm">
+    
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="100" fxFlex.xs="100">
+                    <mat-label>Descripción: </mat-label>
+                    <input matInput formControlName="descripcion" autocomplete="off" placeholder="Descripcion">
+                    <mat-error *ngIf="RegistroForm.get('descripcion').invalid && (RegistroForm.get('descripcion').dirty || RegistroForm.get('descripcion').touched)">
+                        <span *ngIf="RegistroForm.get('descripcion').errors.required">Campo obligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        
+            <div class="titulo_mes">
+                GENERALIZAR MES
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                    <mat-label>Brigadista: </mat-label>
+                    <input matInput type="number" formControlName="brigadista_generalizar" autocomplete="off" placeholder="Brigadista">
+                </mat-form-field>
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                    <mat-label>Brigadista Vacunación: </mat-label>
+                    <input matInput type="number" formControlName="vacunacion_generalizar" autocomplete="off" placeholder="Vacunacion">
+                </mat-form-field>
+                <mat-form-field fxFlex="25" fxFlex.xs="100" appearance="fill">
+                    <mat-label>Brigadista Dengue: </mat-label>
+                    <input matInput type="number" formControlName="dengue_generalizar" autocomplete="off" placeholder="Dengue">
+                </mat-form-field>
+                <div fxFlex="25" fxFlex.xs="100">
+                    <button mat-raised-button color="primary" style="padding: 10px;" (click)="generalizar()">
+                        <mat-icon>label_important</mat-icon>
+                        GENERALIZAR
+                    </button>
+                    
+                    <button mat-flat-button (click)="guardar()" style="margin-left: 30px; background-color:lightgoldenrodyellow; color:black; padding: 10px;" ><mat-icon>save</mat-icon> GUARDAR</button>
+                    <button mat-raised-button color="warn" style="padding: 10px; margin-left: 5px;" (click)="cancelar()"><mat-icon>close</mat-icon></button>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        ENERO
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_1" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_1" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_1" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        FEBRERO
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_2" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_2" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_2" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        MARZO
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_3" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_3" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_3" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="24" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        ABRIL
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_4" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_4" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_4" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+            </div>    
+            
+            
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        MAYO
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_5" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_5" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_5" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        JUNIO
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_6" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_6" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_6" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        JULIO
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_7" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_7" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_7" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="24" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        AGOSTO
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_8" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_8" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_8" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+            </div>    
+            
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        SEPTIEMBRE
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_9" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_9" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_9" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        OCTUBRE
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_10" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_10" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_10" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="25" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        NOVIEMBRE
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_11" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_11" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_11" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+
+                <div fxFlex="24" fxFlex.xs="100">
+                    <div class="titulo_mes">
+                        DICIEMBRE
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Brig.: </mat-label>
+                            <input matInput type="number" formControlName="brigadista_12" autocomplete="off" placeholder="Brig.">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Vac.: </mat-label>
+                            <input matInput type="number" formControlName="vacunacion_12" autocomplete="off" placeholder="Vac">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="33" fxFlex.xs="100" appearance="fill">
+                            <mat-label>Dengue: </mat-label>
+                            <input matInput type="number" formControlName="dengue_12" autocomplete="off" placeholder="Dengue">
+                        </mat-form-field>
+                        
+                    </div>
+                </div>
+            </div>    
+    
+        </div>
+    </mat-tab>
+</mat-tab-group>

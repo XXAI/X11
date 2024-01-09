@@ -49,6 +49,7 @@ import { DirectorioModule } from './directorio/directorio.module';
 import { CredencializacionModule } from './credencializacion/credencializacion.module';
 import { ComisionSindicalModule } from './tramites/comision-sindical/comision-sindical.module';
 import { ExpedienteModule } from './expediente/expediente.module';
+import { BrigadistaModule } from './brigadista/brigadista.module';
 
 
 @NgModule({
@@ -83,6 +84,7 @@ import { ExpedienteModule } from './expediente/expediente.module';
     AppRoutingModule,
     ExpedienteModule,
     CredencializacionModule,
+    BrigadistaModule,
     ComisionSindicalModule,
     WildcardRoutingModule,
   ],
