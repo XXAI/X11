@@ -20,13 +20,13 @@ export class ReporteTrabajadorCredencialSalud{
                 bold:true,
                 color:"#424142",
                 fontSize: 13,
-                lineHeight:1
+                lineHeight:0.8
 
               },
               subprincipal: {
                 bold:true,
                 color:"#424142",
-                fontSize: 9
+                fontSize: 9.5
               },
               vigencia: {
                 bold:true,
@@ -127,11 +127,13 @@ export class ReporteTrabajadorCredencialSalud{
                 [ { image: formato, width: 444, absolutePosition: {x: 50, y: margen_imagen} }, {},{},{},{}
                 ],
                 
-                [ {},{image: foto, width: 69, height: 83, rowSpan:5, margin:[0.5,4,0,0]},{text:"", margin:[0,3,0,0] },{},{}],
+                [ {},{image: foto, width: 69, height: 83, rowSpan:5, margin:[0.5,4,0,0]},{text:"", margin:[0,3,0,0] },
+                {qr: "https://rhid.saludchiapas.gob.mx/#/ssa/"+element.encriptar, fit: "70", rowSpan:5, margin: [ 20,40,0,0 ]},
+                {image: donador, width: 75, height: 75, alignment: 'center', margin: [ 0,30,10,0 ], rowSpan:5}],
                 [{},{},{text: element.nombre+" "+element.apellido_paterno+" "+element.apellido_materno, style:"principal", margin:[0,0,0,1] },{},{}],
                 [{},{},{text:"ID: "+id, style:"subprincipal", margin:[0,0,0,1] },
-                {qr: "https://rhid.saludchiapas.gob.mx/#/ssa/"+element.encriptar, fit: "70", rowSpan:4, margin: [ 20,8,0,0 ]},
-                {image: donador, width: 75, height: 75, alignment: 'center', margin: [ 0,0,0,0 ], rowSpan:4}],
+                {},
+                {}],
                 [{},{},{text:element.credencial.cargo.descripcion, style:"subprincipal", margin:[0,0,0,1] },{},{}],
                 //[{},{},{text:"VIGENCIA: 31/12/23", style:"vigencia"},{},{}],
                 //[{},{},{text:clasificacion.toUpperCase(), style:"vigencia", margin:[0,2,0,1]},
