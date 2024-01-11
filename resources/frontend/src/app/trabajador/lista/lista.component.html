@@ -103,7 +103,7 @@
                 <mat-expansion-panel #advancedFilter class="advanced-filter" [formGroup]="filterForm">
                     <br>
                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-evenly center">
-                        <mat-form-field fxFlex="34" appearance="fill">
+                        <mat-form-field fxFlex="29" appearance="fill">
                             <mat-label>CLUES</mat-label>
                             <input type="text" aria-label="clues" matInput formControlName="clues" [matAutocomplete]="cluesAutocomplete">
                             <mat-autocomplete #cluesAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('clues')" [panelWidth]="'auto'">
@@ -113,7 +113,7 @@
                             </mat-autocomplete>
                             <mat-hint *ngIf="filterForm.get('clues').value">{{filterForm.get('clues').value.nombre_unidad}}</mat-hint>
                         </mat-form-field>
-                        <mat-form-field fxFlex="30" appearance="fill">
+                        <mat-form-field fxFlex="25" appearance="fill">
                             <mat-label>CR</mat-label>
                             <input type="text" aria-label="cr" matInput formControlName="cr" [matAutocomplete]="crAutocomplete">
                             <mat-autocomplete #crAutocomplete="matAutocomplete" [displayWith]="getDisplayFn('cr')" [panelWidth]="'auto'">
@@ -144,6 +144,14 @@
                         <mat-form-field fxFlex="10" appearance="fill">
                             <mat-label>Comisión</mat-label>
                             <mat-select #comisionFilter formControlName="comisionado" [compareWith]="compareComisionSelect">
+                                <mat-option>Sin Filtro</mat-option>
+                                <mat-option [value]="1">SI</mat-option>
+                                <mat-option [value]="2">NO</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="10" appearance="fill">
+                            <mat-label>OPD</mat-label>
+                            <mat-select #opdFilter formControlName="opd">
                                 <mat-option>Sin Filtro</mat-option>
                                 <mat-option [value]="1">SI</mat-option>
                                 <mat-option [value]="2">NO</mat-option>

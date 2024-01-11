@@ -100,6 +100,7 @@ export class ListaComponent implements OnInit {
     'cr': [undefined],
     'estatus': [undefined],
     'comisionado': [undefined],
+    'opd': [undefined],
     'e4': [undefined],
     'fiscales': [undefined],
     'rama': [undefined],
@@ -281,6 +282,8 @@ export class ListaComponent implements OnInit {
           params[i] = appStoredData['filter'][i].cr;
         }else if(i == 'comisionado'){
           params[i] = appStoredData['filter'][i];
+        }else if(i == 'opd'){
+          params[i] = appStoredData['filter'][i];
         }else if(i == 'e4'){
           params[i] = appStoredData['filter'][i];
         }else if(i == 'fiscales'){
@@ -441,6 +444,8 @@ export class ListaComponent implements OnInit {
         }else if(i == 'cr'){
           params[i] = appStoredData['filter'][i].cr;
         }else if(i == 'comisionado'){
+          params[i] = appStoredData['filter'][i];
+        }else if(i == 'opd'){
           params[i] = appStoredData['filter'][i];
         }else if(i == 'e4'){
           params[i] = appStoredData['filter'][i];
@@ -791,6 +796,8 @@ export class ListaComponent implements OnInit {
           params[i] = filterFormValues[i].cr;
         }else if(i == 'comisionado'){
           params[i] = filterFormValues[i];
+        }else if(i == 'opd'){
+          params[i] = filterFormValues[i];
         }else if(i == 'e4'){
           params[i] = filterFormValues[i];
         }else if(i == 'fiscales'){
@@ -892,6 +899,8 @@ export class ListaComponent implements OnInit {
           item.tooltip += data[i].descripcion;
         }else if(i == 'comisionado'){
           item.tag = data[i].comisionado;
+        }else if(i == 'opd'){
+          item.tag = data[i].opd;
         }else if(i == 'e4'){
           item.tag = data[i].e4;
         }else if(i == 'fiscales'){

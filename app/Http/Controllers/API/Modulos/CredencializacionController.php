@@ -45,10 +45,11 @@ class CredencializacionController extends Controller
             $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial.usuario")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja ='0000-00-00' and deleted_at is null)");
+                            //->whereRaw("trabajador.id not in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina WHERE basificados=1 )"); //Esta filtro es para los de la opd
                             //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is not null)")
                             //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null )")
                             
-                            
+            $trabajador = $trabajador->whereRaw("trabajador.id in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina where basificados=0)");
             if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
                     

@@ -33,6 +33,7 @@ export class RegistroParticularComponent implements OnInit {
   selectedItemIndex: number = -1;
   paginas:any[] = [];
   selected = new FormControl(0);
+  id_edicion:number = 0;
 
   constructor(
     private sharedService: SharedService, 
@@ -46,6 +47,7 @@ export class RegistroParticularComponent implements OnInit {
   @ViewChild(MatTable) usersTable: MatTable<any>;
 
   public RegistroForm = this.fb.group({
+    'id':[''],
     'brigadista_id':[''],
     'descripcion':['',Validators.required],
     //'anio':['',Validators.required],
@@ -111,12 +113,13 @@ export class RegistroParticularComponent implements OnInit {
 
   editar(obj)
   {
+    this.id_edicion = obj.id;
     this.selected.setValue(2);
     //console.log(obj);
-    this.RegistroForm.patchValue({descripcion: obj.descripcion});
+    this.RegistroForm.patchValue({descripcion: obj.descripcion, id: obj.id});
     this.servicioService.verSubBrigadista(obj.id).subscribe(
       response =>{
-          console.log(response);
+          //console.log(response);
           response.data.mes.forEach(element => {
             this.RegistroForm.get("brigadista_"+element.mes).patchValue(element.brigadista);
             this.RegistroForm.get("vacunacion_"+element.mes).patchValue(element.vacunador);
@@ -231,21 +234,46 @@ export class RegistroParticularComponent implements OnInit {
     this.dialogRef.close(true);
   }
 
+ 
+
   guardar()
   {
-    this.servicioService.guardarsubProceso(this.RegistroForm.value).subscribe(
-      response =>{
-        this.sharedService.showSnackBar("SE HA GUARDADO CORRECTAMENTE", null, 3000);
-        this.cancelar();
-      },
-      errorResponse =>{
-        var errorMessage = "Ocurrió un error.";
-        if(errorResponse.status == 409){
-          errorMessage = errorResponse.error.error.message;
+    if(this.id_edicion!=0)
+    {
+      this.servicioService.editarsubProceso(this.id_edicion, this.RegistroForm.value).subscribe(
+        response =>{
+          this.sharedService.showSnackBar("SE HA GUARDADO CORRECTAMENTE", null, 3000);
+          this.selected.setValue(0);
+          this.RegistroForm.reset();
+          this.RegistroForm.patchValue({brigadista_id: this.data.id});
+          this.CargarLista();
+          this.id_edicion = 0;
+        },
+        errorResponse =>{
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
         }
-        this.sharedService.showSnackBar(errorMessage, null, 3000);
-      }
-    );
+      );
+    }else{
+      this.servicioService.guardarsubProceso(this.RegistroForm.value).subscribe(
+        response =>{
+          this.sharedService.showSnackBar("SE HA GUARDADO CORRECTAMENTE", null, 3000);
+          //this.cancelar();
+          this.selected.setValue(0);
+        },
+        errorResponse =>{
+          var errorMessage = "Ocurrió un error.";
+          if(errorResponse.status == 409){
+            errorMessage = errorResponse.error.error.message;
+          }
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+        }
+      );
+    }
+    
   }
 
 }

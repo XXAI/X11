@@ -390,6 +390,13 @@ class TrabajadorController extends Controller
             if(isset($parametros['comisionado']) && $parametros['comisionado'] == 1){
                 $main_query = $main_query->whereRaw("trabajador.id in (select rl.trabajador_id from rel_trabajador_datos_laborales rl, rel_trabajador_datos_laborales_nomina rln where rl.trabajador_id=rln.trabajador_id and rl.cr_fisico_id!=rln.cr_nomina_id)");
             }
+            
+            if(isset($parametros['opd']) && $parametros['opd'] == 1){
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina  where basificados=1)");
+            }
+            if(isset($parametros['opd']) && $parametros['opd'] == 2){
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina  where basificados=0)");
+            }
             if(isset($parametros['e4']) && $parametros['e4'] == 1){
                 $main_query = $main_query->join("rel_trabajador_e4", "rel_trabajador_e4.trabajador_id", "=", "trabajador.id");
             }

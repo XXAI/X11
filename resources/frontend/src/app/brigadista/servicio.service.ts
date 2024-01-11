@@ -66,6 +66,13 @@ export class ServicioService {
       }
     ));
   }
+  editarsubProceso(id, payload:any):Observable<any> {
+    return this.http.put<any>(this.url_subproceso+"/"+id, payload).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
 
   ListarSubProceso(payload:any):Observable<any> {
     return this.http.get<any>(this.url_subproceso, {params: payload}).pipe(
