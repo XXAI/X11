@@ -105,7 +105,8 @@ class CredencializacionController extends Controller
                 ini_set('memory_limit', '-1');
                 
                              $trabajadorx = Trabajador::whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )")
-                                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja='0000-00-00' and deleted_at is null)");     
+                                            ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja='0000-00-00' and deleted_at is null)")
+                                            ->whereRaw("trabajador.id in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina where basificados=0)");     
                              $trabajadorx = $this->aplicarFiltrosIndex($trabajadorx, $parametros, $access);
                              $trabajadorx = $trabajadorx->select(
                                  \DB::Raw("concat(nombre,' ', apellido_paterno,' ',apellido_materno) as nombre"), "rfc", "curp",
