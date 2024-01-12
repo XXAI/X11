@@ -357,6 +357,7 @@ class CredencializacionController extends Controller
             $trabajador = Trabajador::with('credencial.cargo', 'rel_datos_laborales')
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and deleted_at is null)")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id is null)")
+                            ->whereRaw("trabajador.id in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina where basificados=0)")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )");
                             
             $parametros['imprimible'] = 1;
