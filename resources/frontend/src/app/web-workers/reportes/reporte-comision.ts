@@ -145,6 +145,8 @@ export class ReporteComision {
         datos.header.columns[1].text = "\n\n2022, AÑO DE RICARDO FLORES MAGÓN,  PRECURSOR DE LA REVOLUCIÓN MEXICANA";
       }else if(anio_oficio == 2023){
         datos.header.columns[1].text = "\n\n\"2023, Año de Francisco Villa, el Revolucionario del Pueblo\"";
+      }else if(anio_oficio == 2024){
+        datos.header.columns[1].text = "\n\n\"2024, Año de Felipe Carrillo Puerto, Benemérito del Proletariado, Revolucionario y Defensor del Mayab\"";
       }else{
         datos.header.columns[1].text = "\n\n";
       }
@@ -207,6 +209,7 @@ export class ReporteComision {
       let responsable_notificacion = "";
       let responsable_copia = "";
 
+      
       if(comision.cr_destino)
       {
         destino = "( "+comision.cr_destino.clues.clasificacion+") "+comision.cr_destino.descripcion_actualizada+" "+comision.cr_destino.clues.clues;
@@ -225,6 +228,7 @@ export class ReporteComision {
           responsable_notificacion = "C. "+nombre_responsable.nombre+" "+nombre_responsable.apellido_paterno+" "+nombre_responsable.apellido_materno+"\n"+dato_responsable.cargo+"\n"+comision.cr_destino.municipio;
         }
       }
+      
 
       if(comision.cr_destino.dependencia.cr ==responsables.control.cr || comision.cr_destino.dependencia.cr ==responsables.juridico.cr || comision.cr_destino.dependencia.cr ==responsables.sistematizacion.cr || comision.cr_destino.dependencia.cr ==responsables.subdireccion_rh.cr)
       {

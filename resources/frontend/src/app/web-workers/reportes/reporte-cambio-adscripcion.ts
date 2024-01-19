@@ -173,6 +173,8 @@ export class ReporteTrabajadorCambioAdscripcion {
         datos.header.columns[1].text = "\n\n2022, AÑO DE RICARDO FLORES MAGÓN,  PRECURSOR DE LA REVOLUCIÓN MEXICANA";
       }else if(anio_oficio == 2023){
         datos.header.columns[1].text = "\n\n\"2023, Año de Francisco Villa, el Revolucionario del Pueblo\"";
+      }else if(anio_oficio == 2024){
+        datos.header.columns[1].text = "\n\n\"2024, Año de Felipe Carrillo Puerto, Benemérito del Proletariado, Revolucionario y Defensor del Mayab\"";
       }else{
         datos.header.columns[1].text = "\n\n";
       }
