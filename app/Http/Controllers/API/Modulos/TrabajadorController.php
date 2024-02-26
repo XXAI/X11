@@ -100,7 +100,7 @@ class TrabajadorController extends Controller
                     foreach ($value->permissions as $key2 => $value2) {
                         if($value2->id == 'nwcdIRRIc15CYI0EXn054CQb5B0urzbg')
                         {
-                            $trabajador = $trabajador->where("rfc", "=", $loggedUser->username);
+                            $trabajador = $trabajador->where("trabajador.rfc", "=", $loggedUser->username);
                             $permison_individual = true;
                         }
                     }
@@ -167,11 +167,16 @@ class TrabajadorController extends Controller
                                     ->leftJoin("rel_trabajador_datos_fiscales", "trabajador.id", "rel_trabajador_datos_fiscales.trabajador_id")
                                     ->leftJoin("rel_trabajador_documentacion", "trabajador.id", "rel_trabajador_documentacion.trabajador_id")
                                     ->leftJoin("rel_trabajador_credencial as rtc", "trabajador.id", "rtc.trabajador_id")
+                                    ->leftJoin("catalogo_grado_academico as estudios", "estudios.id", "trabajador.nivel_maximo_id")
                                     ->leftjoin('rel_trabajador_comision  as datos_comision', function ($join) {
                                         $join->on('datos_comision.trabajador_id', '=', 'trabajador.id')
                                              ->where('datos_comision.estatus', '=', 'A');
                                     })
-                                  
+                                    ->leftJoin('rel_trabajador_escolaridad as cedula_escolaridad', function($join)
+                                    {
+                                        $join->on('trabajador.id', '=', 'cedula_escolaridad.trabajador_id');
+                                        $join->on('cedula_escolaridad.grado_academico_id','=', 'estudios.id');
+                                    })
                                     ->where("trabajador.estatus", "=", 1)
                                     ->select(
                                         "trabajador.rfc",
@@ -242,7 +247,10 @@ class TrabajadorController extends Controller
                                         "rel_trabajador_datos_fiscales.regimen",
                                         "rel_trabajador_datos_fiscales.fecha_regimen as fecha_actividad",
                                         "rel_trabajador_datos_fiscales.documento_digital",
-                                        DB::RAW("IF(rel_trabajador_documentacion.estatus = 1, 'ENVIADO POR TRABAJADOR ', IF(rel_trabajador_documentacion.estatus = 2, 'RECHAZADO POR CS.',IF(rel_trabajador_documentacion.estatus = 3, 'ACEPTADO POR CS.',IF(rel_trabajador_documentacion.estatus = 4, 'RECHAZADO POR OF. CENTRAL',IF(rel_trabajador_documentacion.estatus = 5,'VALIDADO Y CORRECTO',IF(rel_trabajador_documentacion.estatus IS NULL,'NO ENVIADO','')))))) AS 'ESTATUS EXPEDIENTE'")
+                                        DB::RAW("IF(rel_trabajador_documentacion.estatus = 1, 'ENVIADO POR TRABAJADOR ', IF(rel_trabajador_documentacion.estatus = 2, 'RECHAZADO POR CS.',IF(rel_trabajador_documentacion.estatus = 3, 'ACEPTADO POR CS.',IF(rel_trabajador_documentacion.estatus = 4, 'RECHAZADO POR OF. CENTRAL',IF(rel_trabajador_documentacion.estatus = 5,'VALIDADO Y CORRECTO',IF(rel_trabajador_documentacion.estatus IS NULL,'NO ENVIADO','')))))) AS 'ESTATUS EXPEDIENTE'"),
+                                        "estudios.descripcion as nivel_maximo",
+                                        "cedula_escolaridad.no_cedula",
+                                        
                                         )
                                         ->orderby("rel_trabajador_datos_laborales.clues_adscripcion_fisica");
                                     //->get();
@@ -343,7 +351,7 @@ class TrabajadorController extends Controller
                 return $query//->where('nombre','LIKE','%'.$parametros['query'].'%')
                             ->whereRaw('concat(nombre," ", apellido_paterno, " ", apellido_materno) like "%'.$parametros['query'].'%"' )
                             ->orWhere('curp','LIKE','%'.$parametros['query'].'%')
-                            ->orWhere('rfc','LIKE','%'.$parametros['query'].'%');
+                            ->orWhere('trabajador.rfc','LIKE','%'.$parametros['query'].'%');
             });
         }
         //$main_query = $main_query->where("cr_fisico_id", "!=","cr_nomina_id");
