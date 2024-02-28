@@ -9,7 +9,7 @@ export class ReporteTrabajadorCambioAdscripcion {
         let nombres = reportData.responsable;
         let configuracion = reportData.config;
         let director = nombres.direccion_admon.responsable;
-        let nombre_director = director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno;
+        let nombre_director = nombres.direccion_admon.profesion+" "+director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno;
         
         let control = nombres.control.responsable;
         let nombre_control = control.nombre+" "+control.apellido_paterno+" "+control.apellido_materno;
@@ -268,7 +268,7 @@ export class ReporteTrabajadorCambioAdscripcion {
                     { text: "\n\n\n", style: "texto_num_oficio", colSpan:2},{},
                   ],
                   [
-                    { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
+                    { text: "A T E N T A M E N T E\n\n\n\n\n"+" "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
                     {qr: acuse_qr, fit: "210"},
                   ],
                   [
@@ -422,7 +422,7 @@ export class ReporteTrabajadorCambioAdscripcion {
                     { text: "\n\n\n", style: "texto_num_oficio", colSpan:2},{},
                   ],
                   [
-                    { text: "A T E N T A M E N T E\n\n\n\n\n"+"L.A. "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
+                    { text: "A T E N T A M E N T E\n\n\n\n\n"+" "+nombre_director+"\n"+nombres.direccion_admon.cargo+"\n\n", style: "texto_depto"},
                     {qr: acuse_qr, fit: "210"},
                   ],
                   [

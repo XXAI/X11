@@ -47,7 +47,7 @@ export class ReporteTrabajadorCambioAdscripcion {
     let nombre_secretario = "C.C.P. DR. "+secretario.nombre+" "+secretario.apellido_paterno+" "+secretario.apellido_materno+" - SECRETARIO DE SALUD Y DIRECTOR GENERAL DEL INSTITUTO DE SALUD";
     let nombre_rh = subdirector_rh.nombre+" "+subdirector_rh.apellido_paterno+" "+subdirector_rh.apellido_materno+" - "+responsables.subdireccion_rh.cargo;
     let nombre_depto_rh = depto_rh.nombre+" "+depto_rh.apellido_paterno+" "+depto_rh.apellido_materno+" - "+responsables.relaciones_laborales.cargo;
-    let nombre_director = director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno+"\n"+responsables.direccion_admon.cargo;
+    let nombre_director = responsables.direccion_admon.profesion+" "+director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno+"\n"+responsables.direccion_admon.cargo;
     let nombre_juridico = juridico.nombre+" "+juridico.apellido_paterno+" "+juridico.apellido_materno+" - "+responsables.juridico.cargo;
     let nombre_control = control.nombre+" "+control.apellido_paterno+" "+control.apellido_materno+" - "+responsables.control.cargo;
     let nombre_sistematizacion = sistematizacion.nombre+" "+sistematizacion.apellido_paterno+" "+sistematizacion.apellido_materno+" - "+responsables.sistematizacion.cargo;
@@ -321,7 +321,7 @@ export class ReporteTrabajadorCambioAdscripcion {
               { text: "\n", style: "texto_num_oficio", colSpan:2},{},
             ],
             [
-              { text: "A T E N T A M E N T E\n\n\n\n\n\n\n"+"L.A. "+nombre_director+"\n\n", style: "texto_depto"},
+              { text: "A T E N T A M E N T E\n\n\n\n\n\n\n"+" "+nombre_director+"\n\n", style: "texto_depto"},
               {qr: acuse_qr.toUpperCase(), fit: "180"},
             ],
             [
