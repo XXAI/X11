@@ -219,8 +219,8 @@ class TrabajadorController extends Controller
                                         "clues_nomina.nombre_unidad as nombre_unidad_nomina",
                                         "cr_nomina.descripcion as cr_nomina",
                                         //Fin Datos Adscripción Nominal
-                                        "rel_trabajador_datos_laborales.fecha_ingreso",
-                                        "rel_trabajador_datos_laborales.fecha_ingreso_federal",
+                                        //"rel_trabajador_datos_laborales.fecha_ingreso",
+                                        //"rel_trabajador_datos_laborales.fecha_ingreso_federal",
                                         "funcion.grupo as grupo",
                                         "rama.descripcion as rama_trabajo",
                                         "jornada.descripcion as jornada",
