@@ -13,6 +13,7 @@ import { ReporteSolicitudComision } from './reporte-solicitud-comision';
 import { ReporteTrabajadorCambioAdscripcion } from './reporte-cambio-adscripcion';
 import { ReporteTrabajadorReincorporacion } from './reporte-reincorporacion';
 import { ReporteTramiteDocumentacion } from './reporte-documentacion';
+import { OpdFormato } from './opd-formato';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -30,7 +31,8 @@ const reportes = {
   'participante/constancia': new ReporteConstanciaDengue(),
   
   'archivo/solicitudComision': new ReporteSolicitudComision(),
-  'tramites/reporte-documentacion': new ReporteTramiteDocumentacion()
+  'tramites/reporte-documentacion': new ReporteTramiteDocumentacion(),
+  'opd/formato': new OpdFormato()
 };
 
 addEventListener('message', ({ data }) => {

@@ -53,6 +53,7 @@ export const APPS:App [] = [
       ],
     },
     { name:'DIRECTORIO',              route: "directorio",              icon: "assets/icons/directorio.png",  permission:"RkggFnAkLcXiLUTbZk3A07y0c4WdjjCO" },
+    { name:'OPD',                     route: "opd",                     icon: "assets/icons/actas.png",  permission:"fbXoEtYYUgX2snZjIiVEqlTSgkisW59x" },
     
     /*{ name:'BRIGADISTAS',                route: "brigadista",                icon: "assets/icons/tramites.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt', isHub:true, hideHome:true, 
       children:[

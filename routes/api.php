@@ -175,11 +175,14 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('credencializacion-lote',            'API\Modulos\CredencializacionController@ImprimirLote');
     Route::put('registro_impreso/{id}',             'API\Modulos\CredencializacionController@RegistroImpreso');
     
+    
     Route::apiResource('expediente',                    'API\Modulos\ExpedienteController');
     Route::put('devolver-expediente/{id}',                   'API\Modulos\ExpedienteController@devolver');
 
     Route::apiResource('brigadista',                    'API\Modulos\Brigadistas\BrigadistaController');
     Route::apiResource('sub_proceso_brigadista',        'API\Modulos\Brigadistas\SubProcesoBrigadistaController');
+    Route::apiResource('opd',                           'API\Modulos\OPD\OpdController');
+    Route::put('registro_impreso_anexo/{id}',       'API\Modulos\OPD\OpdController@RegistroImpreso');
     
     Route::get('public//FromatoCredencial//default.jpg', function($filename) {
         $file = \Illuminate\Support\Facades\Storage::get($filename);

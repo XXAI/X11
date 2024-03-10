@@ -1,0 +1,159 @@
+<section class="profile">
+
+
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <section fxFlex="95" fxLayout="column" fxLayoutAlign="center">
+            <div class="data-loading-shade" *ngIf="isLoading">
+                <mat-spinner></mat-spinner>
+            </div>
+            <mat-card fxFlex.xs="100%" fxFlex="90%">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex fxLayout="row wrap">
+                        <mat-form-field fxFill appearance="outline">
+                            <mat-label>Buscar</mat-label>
+                            <input matInput [(ngModel)]="searchQuery" (keyup.escape)="cleanSearch()" (keyup.enter)="applyFilter()" placeholder="Buscar">
+                            <button matSuffix *ngIf="searchQuery" mat-icon-button (click)="cleanSearch()" [attr.aria-label]="'Clean Query'" [attr.aria-pressed]="'cleanQuery'">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            
+
+                        </mat-form-field>
+                    </div>
+                    
+                    <div fxFlex="none" fxFlex.xs="100" [@buttonInOut] [ifHasPermission]="'KxDd9oPP1HNSGdqNM1bD9gexIxSXhkkm'">
+                        <!--button mat-raised-button [matMenuTriggerFor]="menu" style="margin-left: 5px; padding: 10px; font-size: 14pt;"><mat-icon>more_horiz</mat-icon></button>
+                        <mat-menu #menu="matMenu">
+                            <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddEmployeDialog()"><mat-icon>person_search</mat-icon> BUSCAR TRABAJADOR</button>
+                            <mat-divider></mat-divider>
+                            <button *ngIf="!capturaFinalizada" mat-menu-item routerLink="/trabajadores/nuevo/"><mat-icon>person_add_alt</mat-icon> AGREGAR TRABAJADOR</button>
+                            <button *ngIf="!capturaFinalizada" mat-menu-item (click)="showAddSignerDialog()"><mat-icon>create</mat-icon> AGREGAR FIRMANTES</button>
+                            <mat-divider></mat-divider>
+                            <button mat-menu-item (click)="toggleReportPanel()" [class.button-spinner]="isLoadingPDF" [disabled]="isLoadingPDF">
+                                    <mat-icon fontSet="{{(!showReportForm)?'material-icons-outlined':''}}">{{(showReportForm)?'file_copy':'insert_drive_file'}}</mat-icon> REPORTE
+                                </button>
+                        </mat-menu-->
+                    </div>
+                </div>
+            </mat-card>
+           
+            <div *ngIf="showReportForm || showMyStepper">
+                <div *ngIf="showReportForm">
+                    <section fxLayout="row">
+                        <mat-form-field fxFlex>
+                            <input matInput [(ngModel)]="reportTitle" type="text" placeholder="Titulo del Reporte">
+                        </mat-form-field>
+                        <section fxFlex="none">
+                            <mat-checkbox [(ngModel)]="reportIncludeSigns" class="check-box">Incluir Firmas</mat-checkbox>
+                        </section>
+                        <button mat-stroked-button (click)="reporte()" color="primary"><mat-icon>insert_drive_file</mat-icon>Generar PDF</button>
+                    </section>
+                </div>
+                <div class="my-stepper" *ngIf="showMyStepper">
+                    <ng-container *ngFor="let step of stepperConfig.steps; let i = index">
+                        <div class="my-step" [class.my-step-active]="step.status == 2" [class.my-step-done]="step.status == 3" [class.my-step-error]="step.status == 0">
+                            <mat-icon>{{step.icon}}</mat-icon>
+                            <div class="my-step-label">
+                                {{(step.status
+                                < 2)?step.label.standBy:((step.status==2 )?step.label.active:step.label.done)}} <mat-progress-bar *ngIf="step.status == 2" mode="indeterminate">
+                                    </mat-progress-bar>
+                                    <small *ngIf="step.status == 0" class="my-step-error-message">{{step.errorMessage}}</small>
+                            </div>
+                            <mat-icon *ngIf="step.status == 3">done</mat-icon>
+                            <mat-icon *ngIf="step.status == 0">error</mat-icon>
+                        </div>
+                        <div *ngIf="(i+1) < stepperConfig.steps.length" class="my-step-separator"></div>
+                    </ng-container>
+                </div>
+
+            </div>
+
+            <mat-divider [inset]="true"></mat-divider>
+
+            <mat-card fxFlex.xs="100%" fxFlex="90%">
+                <mat-divider [inset]="true"></mat-divider>
+                <div class="data-container ">
+                    <div class="data-table-container">
+                        <table #dataTable mat-table [dataSource]="dataSource" class="data-table" matSort>
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="clues">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> CLUES </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                    {{ row.clues }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="nombre_unidad">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true"> NOMBRE UNIDAD </th>
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true">
+                                    {{ row.nombre_unidad }}
+                                </td>
+                            </ng-container>
+
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="municipio">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> MUNICIPIO </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <div>{{ row.municipio }}</div>
+                                    <div style="font-size: 8pt; font-style: italic;">{{ row.localidad }}</div>
+                                </td>
+                            </ng-container>
+
+                            <!-- Username Column -->
+                            <ng-container matColumnDef="vialidad">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> VIALIDAD </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{ row.vialidad }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="responsable">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> RESPONSABLE </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{ row.responsable }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="anexo_1">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>print</mat-icon> </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <div *ngIf="row.impresion_anexo_1_2 == 1"><mat-icon>check</mat-icon></div>
+                                    <div *ngIf="row.impresion_anexo_1_2 != 1"><mat-icon>close</mat-icon></div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="anexo_3">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> <mat-icon>print</mat-icon> </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <div *ngIf="row.impresion_anexo_3 == 1"><mat-icon>check</mat-icon></div>
+                                    <div *ngIf="row.impresion_anexo_3 != 1"><mat-icon>close</mat-icon></div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
+                                <td mat-cell *matCellDef="let row; let i = index">
+                                    <button mat-button [matMenuTriggerFor]="menu" >
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item  (click)="imprimirFormato(row, null)"><mat-icon color="primary">print</mat-icon>IMPRIMIR ANEXO 1 Y 2</button>
+                                    </mat-menu>
+
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noResultsFound">
+                                <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+                                    No se encontraron registros
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row [ngClass]="{'selected-item': i==selectedItemIndex}" *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+                            <tr mat-footer-row *matFooterRowDef="['noResultsFound']" class="not-results-found" [ngClass]="{'hide':!(dataSource!=null && dataSource.length==0)}"></tr>
+                        </table>
+                    </div>
+                    <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="currentPage" [length]="resultsLength" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons (page)="pageEvent = loadData($event)"></mat-paginator>
+                </div>
+            </mat-card>
+        </section>
+    </div>
+</section>

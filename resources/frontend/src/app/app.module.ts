@@ -50,6 +50,7 @@ import { CredencializacionModule } from './credencializacion/credencializacion.m
 import { ComisionSindicalModule } from './tramites/comision-sindical/comision-sindical.module';
 import { ExpedienteModule } from './expediente/expediente.module';
 import { BrigadistaModule } from './brigadista/brigadista.module';
+import { OpdModule } from './opd/opd.module';
 
 
 @NgModule({
@@ -86,6 +87,7 @@ import { BrigadistaModule } from './brigadista/brigadista.module';
     CredencializacionModule,
     BrigadistaModule,
     ComisionSindicalModule,
+    OpdModule,
     WildcardRoutingModule,
   ],
   providers: [
