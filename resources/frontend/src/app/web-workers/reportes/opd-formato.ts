@@ -147,7 +147,7 @@ export class OpdFormato{
         ' ORGANISMO PÚBLICO DESCENTRALIZADO DENOMINADO SERVICIOS DE SALUD DEL INSTITUTO MEXICANO DEL SEGURO SOCIAL PARA EL BIENESTAR,  EN LO SUCESIVO "EL IMSS-BIENESTAR", '+
         "REPRESENTADO EN ESTE ACTO POR EL COORDINADOR ESTATAL EN CHIAPAS, EL DR. ROBERTO SANCHEZ MOSCOSO ASISTIDOS POR LOS JEFES DE SERVICIOS DE ATENCIÓN A LA SALUD, JEFES DE"+
         " SERVICIOS JURÍDICOS Y EL JEFE DE DEPARTAMENTO ADMINISTRATIVO RESPECTIVAMENTE DE LA REFERIDA COORDINACIÓN, LOS CC. ROSALBA MORALES GARCIA, ERNESTO GUTIERREZ COELLO Y"+
-        " MANUEL ANTONIO MORENO ALVAREZ, PARA HACER CONSTAR LA ENTREGA-RECEPCIÓN FÍSICA Y JURÍDICA DE LA UNIDAD DE SALUD DENOMINADA ";
+        " MANUEL ANTONIO MORENO ALVAREZ, PARA HACER CONSTAR LA ENTREGA-RECEPCIÓN FÍSICA Y JURÍDICA DE LA UNIDAD DE SALUD DENOMINADA";
         let c_1_3_2 =registro.nombre_unidad;
         let c_1_3_3 = ", CLUES (";
         let c_1_3_4 = registro.clues;
@@ -159,7 +159,7 @@ export class OpdFormato{
         let c_1_4_1 = 'En ';
         let c_1_4_2 = registro.localidad;
         let c_1_4_3 = ', siendo las 9:00 horas del día 15 de marzo del año dos mil veinticuatro, se reunieron los representantes de ';
-        let c_1_4_4 = '"LA SSA"';
+        let c_1_4_4 = '"LA SSA" ';
         let c_1_4_5 = "y de ";
         let c_1_4_6 = '"EL IMSS-BIENESTAR"';
         let c_1_4_7 = " con la finalidad de llevar acabo el acto de entrega - recepción física y jurídica de los bienes muebles referidos en el ";
@@ -339,7 +339,7 @@ export class OpdFormato{
               [{ text: firmantes_3, style: "texto_centrado" , colSpan:2 },{}, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_4, style: "texto_centrado" , colSpan:2 },{} ],
               [{ text: "\n\n\n\n\n_________________________________________________\n"+firmantes_5, style: "texto_centrado" , colSpan:2 },{}, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_6, style: "texto_centrado" , colSpan:2 },{} ],
               [{ text: "\n\n\n\n\n_________________________________________________\n"+firmantes_7, style: "texto_centrado" , colSpan:2 },{}, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_8, style: "texto_centrado" , colSpan:2 },{} ],
-              [{ text: "\n\n\n\n\n_________________________________________________\n"+elaboro, style: "texto_centrado",colSpan:4 } , {},{},{} ],
+              [{ text: "ELABORO\n\n\n\n\n_________________________________________________\n"+elaboro, style: "texto_centrado",colSpan:4 } , {},{},{} ],
             ]
           }
         }
@@ -352,7 +352,7 @@ export class OpdFormato{
         "ASISTIDO POR LA LIC. MARIA ESTHER GARCÍA RUÍZ SECRETARIA DE HACIENDA Y DR. CORAZÓN DE JESUS PÉREZ MEDINA, ENCARGADO DE LA DIRECCIÓN DEL INSTITUTO DEL PATRIMONIO EN "+
         "EL ESTADO  CHIAPAS,Y POR OTRA, EN CALIDAD DE RECEPTOR EL ORGANISMO PÚBLICO DESCENTRALIZADO DENOMINADO SERVICIOS DE SALUD DEL INSTITUTO MEXICANO DEL SEGURO SOCIAL "+
         'PARA EL BIENESTAR,  EN LO SUCESIVO "EL IMSS-BIENESTAR", REPRESENTADO EN ESTE ACTO POR EL COORDINADOR ESTATAL EN CHIAPAS, EL DR. ROBERTO SANCHEZ MOSCOSO ';
-        let c_2_3_2 = "ASISTIDOS POR LOS";
+        let c_2_3_2 = "ASISTIDOS POR LOS ";
         let c_2_3_3 = "JEFES DE SERVICIOS DE ATENCIÓN A LA SALUD, JEFES DE SERVICIOS JURÍDICOS Y EL JEFE DE DEPARTAMENTO ADMINISTRATIVO RESPECTIVAMENTE DE LA REFERIDA COORDINACIÓN, "+
         "LOS CC: ROSALBA MORALES GARCIA, ERNESTO GUTIERREZ COELLO Y MANUEL ANTONIO MORENO ALVAREZ, ";
         let c_2_3_4 = "PARA HACER CONSTAR LA ENTREGA-RECEPCIÓN FÍSICA Y JURÍDICA DE LA UNIDAD DE SALUD DENOMINADA ";
@@ -390,7 +390,7 @@ export class OpdFormato{
         let c_2_5 = "DE LA ENTREGA Y RECEPCIÓN\n\n";
         let c_2_6_1 = 'PRIMERO.- ';
         let c_2_6_2 = "Con la presente acta se hace constar que ";
-        let c_2_6_3 = '"LA SSA"';
+        let c_2_6_3 = '"LA SSA" ';
         let c_2_6_4 = "entregan el inmueble que ocupa la unidad de salud denominada ";
         let c_2_6_5 = "("+registro.nombre_unidad+") "+registro.clues;
         let c_2_6_6 = ", ubicada en ";
@@ -576,53 +576,11 @@ export class OpdFormato{
               [{ text: firmantes_3, style: "texto_centrado" }, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_4, style: "texto_centrado" } ],
               [{ text: "\n\n\n\n\n_________________________________________________\n"+firmantes_5, style: "texto_centrado" }, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_6, style: "texto_centrado" } ],
               [{ text: "\n\n\n\n\n_________________________________________________\n"+firmantes_7, style: "texto_centrado" }, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_8, style: "texto_centrado" } ],
-              [{ text: "\n\n\n\n\n_________________________________________________\n"+elaboro, style: "texto_centrado",colSpan:2 } , { } ],
+              [{ text: "ELABORO\n\n\n\n\n_________________________________________________\n"+elaboro, style: "texto_centrado",colSpan:2 } , { } ],
             ]
           }
         }
         //Fin anexo 2
-        //Anexo 3
-        let c_3_1 = "ANEXO 3";
-        let c_3_2 = "MODELO DE RESGUARDO\n\n";
-        let c_3_3 = 'En '+registro.municipio+', siendo las 12:00hrs horas del día 15 del mes de marzo del año dos mil veinticuatro, el '+
-        "C. "+registro.responsable+" responsable de la UNIDAD DE SALUD DENOMINADA "+registro.nombre_unidad+", CLUES "+registro.clues+" de "+
-        '"EL IMSS-BIENESTAR" hace constar que recibe en resguardo los bienes objeto de las actas de entrega que a continuación se detallan: \n\n\n';
-        
-        let c_3_4 = '1.- ______________________________\n2.- ______________________________\n3.- ______________________________\n4.- ______________________________\n\n';
-        let c_3_5 = "Por lo anterior, se acepta y asume el compromiso de resguardar los bienes objeto de las actas detalladas con anterioridad, así como de dar aviso a la Unidad de "+
-        "Administración y Finanzas del IMSS-BIENESTAR, de cualquier modificación, alteración o daño que pudieran sufrir dichos bienes, procediendo a la formalización del presente "+
-        "resguardo, de conformidad con lo establecido en el artículo 3, fracción X de las BASES PARA LA RECEPCIÓN DE BIENES MUEBLES E INMUEBLES QUE TRANSFIERAN A FAVOR DE LOS "+
-        "SERVICIOS DE SALUD DEL INSTITUTO MEXICANO DEL SEGURO SOCIAL PARA EL BIENESTAR (IMSS-BIENESTAR), aprobadas por la Junta de Gobierno el día ___ de ____ de 2024. "+
-        "Se suscribe el presente por cuadruplicado y se manifiesta que es cierto lo que se asienta.\n\n";
-
-        let c_3_6 = 'ENTREGA\n\n\n\nDr. Roberto  Sánchez Moscoso\n_______________________________\nNOMBRE\nCoordinador Estatal Chiapas del  "IMSS-BIENESTAR"';
-        let c_3_7 = 'RECIBE EN REGUARDO\n\n\n\n'+registro.responsable+'\n_______________________________\nNOMBRE\nCARGO DEL "IMSS-BIENESTAR"\n(Responsable del establecimiento de Salud)';
-        
-        let c_3_8 = '\n\nLA PRESENTE HOJA CORRESPONDE AL RESGUARDO DE LA UNIDAD DE SALUD DENOMINADA '+registro.nombre_unidad+' CLUES '+registro.clues+' SUSCRITA EL 15 DE MARZO '+
-                    "DE DOS MIL VEINTICUATRO.\n\n";
-
-        
-        /*let informacion_bloque_6 = {
-          layout: 'noBorders',
-          pageBreak:'',
-          //margin: [11,margen_tabla,0,0],
-          //absolutePosition: {x: 49, y: margen_tabla},
-          table: {
-            widths: ['*', '*'],
-            body: [
-              [{ text: c_3_1, style: "texto_centrado", colSpan:2 }, {} ],
-              [{ text: c_3_2, style: "texto_centrado", colSpan:2 }, {} ],
-              [{ text: c_3_3, style: "texto_justificado", colSpan:2 }, {} ],
-              [{ text: c_3_4, style: "texto_justificado", colSpan:2 }, {} ],
-              [{ text: c_3_5, style: "texto_justificado", colSpan:2 }, {} ],
-              [{ text: c_3_6, style: "texto_centrado" }, {text: c_3_7, style: "texto_centrado"} ],
-              [{ text: c_3_8, style: "texto_justificado_cuadro", colSpan:2 }, {} ],
-              
-            ]
-          }
-        }*/
-        //Fin anexo 3
-
         //Cabecera
 
         datos.content.push(informacion_bloque_1);
@@ -631,82 +589,7 @@ export class OpdFormato{
         datos.content.push(informacion_bloque_3);
         datos.content.push(informacion_bloque_4);
         datos.content.push(informacion_bloque_5);
-        //datos.content.push(informacion_bloque_6);
-        /*data.forEach(element => {
-          let foto = "data:image/jpeg;base64,"+element.credencial.foto_trabajador;
-          
-          let id = String(element.id).padStart(6, "0");
-          let area = "";
-          let donador = "";
-          
-          if(element.credencial.donador_id == 1)
-          {
-            donador = LOGOS_CREDENCIAL[1].donador_si;
-          }else{
-            donador = LOGOS_CREDENCIAL[1].donador_no;
-          }
-
-          if(element.rel_datos_laborales.clues_adscripcion_fisica == "CSSSA017213")
-          {
-            area += element.rel_datos_laborales.clues_fisico.nombre_unidad+"\n";
-            area += element.rel_datos_laborales.cr_fisico.descripcion;
-          }else
-          {
-            area = element.rel_datos_laborales.cr_fisico.descripcion_actualizada;
-          }
-          let margen_tabla = 133;
-          let margen_imagen = 50;
-          let clasificacion = "";
-
-          if(element.rel_datos_laborales.clues_fisico)
-          {
-            clasificacion = element.rel_datos_laborales.clues_fisico.clasificacion_descripcion;
-          }
-          
-          if(iteraccion%2 == 0)
-          {
-            margen_tabla = 482;
-            margen_imagen = 400;
-            bandera = 1;
-          }
-
-          let informacion_credencial = {
-            layout: 'noBorders',
-            pageBreak:'',
-            //margin: [11,margen_tabla,0,0],
-            absolutePosition: {x: 49, y: margen_tabla},
-            table: {
-              widths: [6, 68, 133, 105, 110],
-              ],
-              body: [
-                [ {},{image: foto, width: 69, height: 83, rowSpan:5, margin:[0.5,4,0,0]},{text:"", margin:[0,3,0,0] },
-                {qr: "https://rhid.saludchiapas.gob.mx/#/ssa/"+element.encriptar, fit: "70", rowSpan:5, margin: [ 20,40,0,0 ]},
-                {image: donador, width: 75, height: 75, alignment: 'center', margin: [ 0,30,10,0 ], rowSpan:5}],
-                [{},{},{text: element.nombre+" "+element.apellido_paterno+" "+element.apellido_materno, style:"principal", margin:[0,0,0,1] },{},{}],
-                [{},{},{text:"ID: "+id, style:"subprincipal", margin:[0,0,0,1] },
-                {},
-                {}],
-                [{},{},{text:element.credencial.cargo.descripcion, style:"subprincipal", margin:[0,0,0,1] },{},{}],
-                [{},{},{},{},{}],
-                [{ text: area.toUpperCase(), style: "subtitulo", colSpan:3, margin: [ 0,0,0,0 ] }, {}, {}, {}, {} ],
-                [{ text: "CONTACTO DE EMERGENCIA:", style: "contacto", colSpan:3, margin: [ 0,0,0,0 ]}, {}, {}, {}, {} ],
-                [{ text: element.credencial.contacto.toUpperCase(), style: "contacto", colSpan:3 }, {}, {}, {}, {} ],
-                [{ text: element.credencial.contacto_telefono, style: "contacto", colSpan:3 }, {}, {}, {}, {} ]
-              ]
-            }
-            
-          }
-
-          if(bandera == 1 && iteraccion%2 == 0 && tamano_arreglo > iteraccion)
-          {
-            informacion_credencial.pageBreak = 'after';
-          }
-
-          datos.content.push(informacion_credencial);
-          iteraccion++;
-        });*/
-        
-        
+      
         return datos;
       }
 }

@@ -161,48 +161,48 @@ export class ListadoComponent implements OnInit {
     this.showReportForm = false;
     this.stepperConfig.steps[0].status = 2;
 
-    if(obj == null)
-    {
-      let params:any = {};
-      let countFilter = 0;
-
-      let appStoredData = this.sharedService.getArrayDataFromCurrentApp(['searchQuery','filter']);
-      params.reporte = 'formato';
-      
-      this.servicioService.imprimirLote((lote + 1), params).subscribe(
-        response =>{
-          if(response.error) {
-            this.error_pdf(response);
-          } else {    
-            //console.log(response);
-            this.loadData();
-             const reportWorker = this.iniciateWorker('FormatoHola');
-              let config = {  title: this.reportTitle, lote:true };
-              reportWorker.postMessage({data:{items: response.data, config:config, formato: response.formato},reporte:'opd/formato'});
-          }
-          this.isLoading = false;
-        },
-        errorResponse =>{
-          this.error_api(errorResponse);
-        });
-    }else{
-      this.servicioService.buscarRegistro(obj.id,{}).subscribe(
-        response =>{
-          if(response.error) {
-            this.error_pdf(response);
-          } else {    
-              this.GuardarRegistroAnexos(obj.id, 1);
-              const reportWorker = this.iniciateWorker('ACTA_'+response.data.nombre_unidad.replace(" ","_"));
-              let config = {  title: this.reportTitle, lote:false };
-              reportWorker.postMessage({data:{items: response.data, config:config, formato: response.formato},reporte:'opd/formato'});
-          }
-          this.isLoading = false;
-        },
-        errorResponse =>{
-          this.error_api(errorResponse);
+    this.servicioService.buscarRegistro(obj.id,{}).subscribe(
+      response =>{
+        if(response.error) {
+          this.error_pdf(response);
+        } else {    
+            this.GuardarRegistroAnexos(obj.id, 1);
+            const reportWorker = this.iniciateWorker('ANEXOS_'+response.data.clues+"_"+response.data.nombre_unidad.replace(" ","_"));
+            let config = {  title: this.reportTitle, lote:false };
+            reportWorker.postMessage({data:{items: response.data, config:config, formato: response.formato},reporte:'opd/formato'});
         }
-      );
-    }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        this.error_api(errorResponse);
+      }
+    );
+  }
+
+  imprimirFormatoAnexo(obj:any = null, lote:number = null)
+  {
+    this.toggleReportPanel();
+    this.isLoadingPDF = true;
+    this.showMyStepper = true;
+    this.showReportForm = false;
+    this.stepperConfig.steps[0].status = 2;
+
+    this.servicioService.buscarRegistro(obj.id,{}).subscribe(
+      response =>{
+        if(response.error) {
+          this.error_pdf(response);
+        } else {    
+            this.GuardarRegistroAnexos(obj.id, 2);
+            const reportWorker = this.iniciateWorker('ANEXO_3_'+response.data.clues+"_"+response.data.nombre_unidad.replace(" ","_"));
+            let config = {  title: this.reportTitle, lote:false };
+            reportWorker.postMessage({data:{items: response.data, config:config, formato: response.formato},reporte:'opd/formatoAnexo'});
+        }
+        this.isLoading = false;
+      },
+      errorResponse =>{
+        this.error_api(errorResponse);
+      }
+    );
   }
 
   GuardarRegistroAnexos(id ,tipo)

@@ -176,7 +176,7 @@ class OpdController extends Controller
             {
                 $obj->impresion_anexo_1_2 = 1;
                 $obj->fecha_impresion_anexo_1_2 = $carbon;    
-            }else if($parametros['params'] == 1)
+            }else if($parametros['params'] == 2)
             {
                 $obj->impresion_anexo_3 = 1;
                 $obj->fecha_impresion_anexo_3 = $carbon;

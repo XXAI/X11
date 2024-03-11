@@ -14,6 +14,7 @@ import { ReporteTrabajadorCambioAdscripcion } from './reporte-cambio-adscripcion
 import { ReporteTrabajadorReincorporacion } from './reporte-reincorporacion';
 import { ReporteTramiteDocumentacion } from './reporte-documentacion';
 import { OpdFormato } from './opd-formato';
+import { OpdFormatoAnexo } from './opd-formato-anexo3';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -32,7 +33,8 @@ const reportes = {
   
   'archivo/solicitudComision': new ReporteSolicitudComision(),
   'tramites/reporte-documentacion': new ReporteTramiteDocumentacion(),
-  'opd/formato': new OpdFormato()
+  'opd/formato': new OpdFormato(),
+  'opd/formatoAnexo': new OpdFormatoAnexo()
 };
 
 addEventListener('message', ({ data }) => {
