@@ -433,7 +433,7 @@ export class OpdFormato{
         let c_2_11_2 = 'En este acto la ';
         let c_2_11_3 = 'Coordinación Estatal de "EL IMSS-BIENESTAR" ';
         let c_2_11_4 = 'recibe en resguardo el expediente documental integrado por la Entidad Federativa '+
-                      "respecto del Inmueble a transferir, el cual se conforma, entre otros, de la siguiente documentación:\n\n1.- _____________________________________\n\n";
+                      "respecto del Inmueble a transferir, el cual se anexa a la presente acta como ANEXO UNICO, el cual pasa a formar parte integrante de la misma.\n\n";
         let c_2_12_1 = 'SEXTO.- "EL IMSS-BIENESTAR" ';
         let c_2_12_2 = 'recibe de manera integral, en este acto, el inmueble a fin de brindar servicios de salud a la población sin seguridad social en '+
                       "términos de lo pactado en el ";
