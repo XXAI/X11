@@ -234,7 +234,7 @@ export class OpdFormatoAnexo{
                 {text: c_3_4_3},
                 {text: c_3_4_4, style: "texto_justificado_bold"},
               ], style: "texto_justificado", colSpan:3 }, {}, {} ],
-              [{ text: c_3_5, style: "texto_justificado", colSpan:3 }, {},{} ],
+              //[{ text: c_3_5, style: "texto_justificado", colSpan:3 }, {},{} ],
               [{ text: c_3_6, style: "texto_justificado", colSpan:3 }, {},{} ],
               
             ]
