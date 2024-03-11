@@ -167,7 +167,7 @@ export class ListadoComponent implements OnInit {
           this.error_pdf(response);
         } else {    
             this.GuardarRegistroAnexos(obj.id, 1);
-            const reportWorker = this.iniciateWorker('ANEXOS_'+response.data.clues+"_"+response.data.nombre_unidad.replace(" ","_"));
+            const reportWorker = this.iniciateWorker('ANEXOS_'+response.data.nombre_unidad.replace(" ","_"));
             let config = {  title: this.reportTitle, lote:false };
             reportWorker.postMessage({data:{items: response.data, config:config, formato: response.formato},reporte:'opd/formato'});
         }
@@ -193,7 +193,7 @@ export class ListadoComponent implements OnInit {
           this.error_pdf(response);
         } else {    
             this.GuardarRegistroAnexos(obj.id, 2);
-            const reportWorker = this.iniciateWorker('ANEXO_3_'+response.data.clues+"_"+response.data.nombre_unidad.replace(" ","_"));
+            const reportWorker = this.iniciateWorker('ANEXO_3_'+response.data.nombre_unidad.replace(" ","_"));
             let config = {  title: this.reportTitle, lote:false };
             reportWorker.postMessage({data:{items: response.data, config:config, formato: response.formato},reporte:'opd/formatoAnexo'});
         }

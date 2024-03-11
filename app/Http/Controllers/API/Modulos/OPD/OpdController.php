@@ -23,9 +23,8 @@ class OpdController extends Controller
             $clues = opd::getModel();
             if(!$access->is_admin){
                 $clues = $clues->whereIn("clues",$access->lista_clues);
-                
             }
-           
+            $clues = $clues->where("jurisdiccion_id","=!",0);
             
             if(isset($parametros['query'])){
                 $clues = $clues->where(function($query)use($parametros){
