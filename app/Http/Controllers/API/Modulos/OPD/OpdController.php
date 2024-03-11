@@ -19,9 +19,10 @@ class OpdController extends Controller
     {
         try{
             $access = $this->getUserAccessData();
+            $loggedUser = auth()->userOrFail();
             $parametros = $request->all();
             $clues = opd::getModel();
-            if(!$access->is_admin){
+            if(!$access->is_admin && $loggedUser->id != 68771){
                 $clues = $clues->whereIn("clues",$access->lista_clues);
             }
             $clues = $clues->whereIn("jurisdiccion_id",[1,2,3,4,5,6,7,8,9,10]);
