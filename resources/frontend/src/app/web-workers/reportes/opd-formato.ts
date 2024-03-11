@@ -50,7 +50,7 @@ export class OpdFormato{
             if(currentPage>3)
             {
               pagina = currentPage -3;
-              pagina_total = 4;
+              //pagina_total = 3;
             }else{
               pagina = currentPage;
             }
@@ -232,7 +232,7 @@ export class OpdFormato{
         
         let informacion_bloque_1 = {
           layout: 'noBorders',
-          pageBreak:'after',
+          pageBreak:'',
           //margin: [11,margen_tabla,0,0],
           //absolutePosition: {x: 49, y: margen_tabla},
           table: {
@@ -337,7 +337,7 @@ export class OpdFormato{
             body: [
               [{ text: "\n\n\n\n\n_________________________________________________\n"+firmantes_1, style: "texto_centrado", colSpan:2 },{}, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_2, style: "texto_centrado" , colSpan:2 },{} ],
               [{ text: firmantes_3, style: "texto_centrado" , colSpan:2 },{}, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_4, style: "texto_centrado" , colSpan:2 },{} ],
-              [{ text: "\n\n\n\n\n_________________________________________________\n"+firmantes_5, style: "texto_centrado" , colSpan:2 },{}, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_6, style: "texto_centrado" , colSpan:2 },{} ],
+              [{ text: "\n\n\n\n\n\n\n\n\n\n_________________________________________________\n"+firmantes_5, style: "texto_centrado" , colSpan:2 },{}, { text: "\n\n\n\n\n\n\n\n\n\n_________________________________________________\n"+firmantes_6, style: "texto_centrado" , colSpan:2 },{} ],
               [{ text: "\n\n\n\n\n_________________________________________________\n"+firmantes_7, style: "texto_centrado" , colSpan:2 },{}, { text: "\n\n\n\n\n_________________________________________________\n"+firmantes_8, style: "texto_centrado" , colSpan:2 },{} ],
               [{ text: "ELABORO\n\n\n\n\n_________________________________________________\n"+elaboro, style: "texto_centrado",colSpan:4 } , {},{},{} ],
             ]
@@ -452,7 +452,7 @@ export class OpdFormato{
         
         let informacion_bloque_3 = {
           layout: 'noBorders',
-          pageBreak:'after',
+          pageBreak:'',
           //margin: [11,margen_tabla,0,0],
           //absolutePosition: {x: 49, y: margen_tabla},
           table: {
