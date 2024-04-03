@@ -17,7 +17,7 @@ export class ReporteComision {
     let control = responsables.control.responsable;
     
     let juridico = responsables.juridico.responsable;
-    let nombre_secretario = "C.C.P. DR. "+secretario.nombre+" "+secretario.apellido_paterno+" "+secretario.apellido_materno+" - SECRETARIO DE SALUD Y DIRECTOR GENERAL DEL INSTITUTO DE SALUD";
+    let nombre_secretario = "C.C.P. DR. "+secretario.nombre+" "+secretario.apellido_paterno+" "+secretario.apellido_materno+" - "+secretario.cargo;//SECRETARIO DE SALUD Y DIRECTOR GENERAL DEL INSTITUTO DE SALUD";
     let nombre_rh = subdirector_rh.nombre+" "+subdirector_rh.apellido_paterno+" "+subdirector_rh.apellido_materno+" - "+responsables.subdireccion_rh.cargo;
     let nombre_depto_rh = depto_rh.nombre+" "+depto_rh.apellido_paterno+" "+depto_rh.apellido_materno+" - "+responsables.relaciones_laborales.cargo;
     let nombre_director = responsables.direccion_admon.profesion+" "+director.nombre+" "+director.apellido_paterno+" "+director.apellido_materno+"\n"+responsables.direccion_admon.cargo;
