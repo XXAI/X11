@@ -148,13 +148,15 @@
                                         </div>
                                         <div fxLayout="row" fxLayout.xs="column">
                                             <div fxFlex="33" fxFlex.xs="100" style="font-weight: bold; color:red">
-                                                <b>OPD:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.basificados =="1")?'SI':'NO':'NO' }}
+                                                <b>OPD:</b> 
+                                                {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.basificados =="1" || dataTrabajador.rel_datos_laborales_nomina.ur === '420_OPD')?'SI':'NO':'NO' }}
                                             </div>
                                             <div fxFlex="33" fxFlex.xs="100">
                                                 <b>UR:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.ur)?dataTrabajador.rel_datos_laborales_nomina.ur:'NO REGISTRADO':'NO REGISTRADO' }}
                                             </div>
                                             <div fxFlex="33" fxFlex.xs="100">
-                                                <b>RAMA:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.rama)?dataTrabajador.rel_datos_laborales.rama.descripcion:'NO REGISTRADO':'NO REGISTRADO'}}
+                                                
+                                                <b>RAMA:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.rama)?dataTrabajador.rel_datos_laborales_nomina.rama:'NO REGISTRADO':'NO REGISTRADO'}}
                                             </div>
                                         </div>
                                         <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
