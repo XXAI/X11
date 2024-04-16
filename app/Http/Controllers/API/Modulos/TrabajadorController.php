@@ -400,7 +400,7 @@ class TrabajadorController extends Controller
             }
             
             if(isset($parametros['opd']) && $parametros['opd'] == 1){
-                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina  where basificados=1 or ud='420_OPD')");
+                $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina  where basificados=1 or ur='420_OPD')");
             }
             if(isset($parametros['opd']) && $parametros['opd'] == 2){
                 $main_query = $main_query->whereRaw("trabajador.id in (select trabajador_id from rel_trabajador_datos_laborales_nomina  where basificados=0)");
