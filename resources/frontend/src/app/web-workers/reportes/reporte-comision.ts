@@ -338,22 +338,26 @@ export class ReporteComision {
       };
       informacion_oficio.pageBreak = 'after';
 
-      let dato_unidad = "de esa Jurisdicción";
+      let dato_unidad = "de esa Jurisdicción a su cargo";
       if(comision.cr_destino)
       {
-        if(comision.cr_destino.clues.clasificacion == "H. G." || comision.cr_destino.clues.clasificacion == "CLINICA" || comision.cr_destino.clues.clasificacion == "CLINICA DE ESPECIALIDADES")
+        if(comision.cr_destino.cr == comision.cr_destino.cr_dependencia)
         {
-          dato_unidad= "de esa UNIDAD";
-        }
-        if(comision.cr_destino.clues.clues == "CSSSA017213")
+          dato_unidad = " con domicilio ubicado en "+comision.cr_destino.direccion; 
+        }else  if(comision.cr_destino.clues.clasificacion == "H. G." || comision.cr_destino.clues.clasificacion == "CLINICA" || comision.cr_destino.clues.clasificacion == "CLINICA DE ESPECIALIDADES")
+        {
+          dato_unidad= "de esa UNIDAD a su cargo";
+        }else if(comision.cr_destino.clues.clues == "CSSSA017213")
         {
           dato_unidad = "";
         }
+
       }
 
       
       
-      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir  "+periodo+", fue comisionado a "+destino+", Chiapas; "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
+      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir  "+periodo+", fue comisionado a "+destino+", Chiapas; "+
+      dato_unidad+", por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
       contenido_notificacion += "Por lo que, en 5 días hábiles a partir de la fecha de este documento, el encargado de recursos humanos deberá realizar la asignación de jornada y horario con numero de identificación de acuerdo a los controles de asistencia con los que cuente la unidad.\n\n";
       contenido_notificacion += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       let notificacion = {
