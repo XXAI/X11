@@ -373,7 +373,6 @@ class CredencializacionController extends Controller
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
             } 
 
-            return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
             $permison_individual = false;                
 
             $formato = base64_encode(\Storage::get('public\\FromatoCredencial\\Gafete2024_2.jpg'));
