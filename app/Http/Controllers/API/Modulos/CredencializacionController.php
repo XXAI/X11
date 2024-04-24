@@ -45,12 +45,11 @@ class CredencializacionController extends Controller
             $trabajador = Trabajador::with("rel_datos_comision", "rel_datos_laborales", "credencial.usuario")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja ='0000-00-00' and deleted_at is null)")
-                            ->whereRaw("trabajador.id in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina WHERE ur !='420_OPD')"); //Esta filtro es para los de la opd
-                            //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is not null)")
-                            //->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where deleted_at is null )")
+                            ->whereRaw("trabajador.rfc not in (select rfc_nomina FROM rel_trabajador_datos_laborales_nomina WHERE basificados=1 or ur='420_OPD')"); //Esta filtro es para los de la opd
+                            
              
             
-            $trabajador = $trabajador->whereRaw("trabajador.id in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina where basificados=0)");
+            //$trabajador = $trabajador->whereRaw("trabajador.id in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina where basificados=0)");
             if(!$access->is_admin){
                 foreach ($permisos->roles as $key => $value) {
                     
@@ -107,7 +106,7 @@ class CredencializacionController extends Controller
                 
                              $trabajadorx = Trabajador::whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )")
                                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and fecha_fin_baja='0000-00-00' and deleted_at is null)")
-                                            ->whereRaw("trabajador.id in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina where (basificados=0 or ur!='420_OPD'))");     
+                                            ->whereRaw("trabajador.rfc not in (select rfc_nomina FROM rel_trabajador_datos_laborales_nomina where basificados=1 or ur='420_OPD')");     
                              $trabajadorx = $this->aplicarFiltrosIndex($trabajadorx, $parametros, $access);
                              $trabajadorx = $trabajadorx->select(
                                  \DB::Raw("concat(nombre,' ', apellido_paterno,' ',apellido_materno) as nombre"), "rfc", "curp",
@@ -358,8 +357,9 @@ class CredencializacionController extends Controller
             $trabajador = Trabajador::with('credencial.cargo', 'rel_datos_laborales')
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_baja where tipo_baja_id=2 and deleted_at is null)")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_datos_laborales where cr_fisico_id is null)")
-                            ->whereRaw("trabajador.id in (select trabajador_id FROM rel_trabajador_datos_laborales_nomina where (basificados=0 or ur!='420_OPD'))")
+                            ->whereRaw("trabajador.rfc not in (select rfc_nomina FROM rel_trabajador_datos_laborales_nomina where ur='420_OPD' or basificados=1)")
                             ->whereRaw("trabajador.id not in (select trabajador_id from rel_trabajador_comision where tipo_comision_id='CS' and fecha_fin>=".$carbon->format('Y-m-d')." and estatus='A' )");
+                            
                             
             $parametros['imprimible'] = 1;
             $trabajador = $this->aplicarFiltros($trabajador, $parametros, $access);       
@@ -370,6 +370,8 @@ class CredencializacionController extends Controller
     
                 $trabajador = $trabajador->paginate($resultadosPorPagina);
             } 
+
+            return response()->json(['data'=>$trabajador],HttpResponse::HTTP_OK);
             $permison_individual = false;                
 
             $formato = base64_encode(\Storage::get('public\\FromatoCredencial\\Gafete2024_2.jpg'));
