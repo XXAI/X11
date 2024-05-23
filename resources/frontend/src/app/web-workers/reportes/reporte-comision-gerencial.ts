@@ -161,6 +161,7 @@ export class ReporteComisionGerencial {
       let TipoTrabajador = "";
       switch (datos_nominales.ur) {
         case "420": 
+        case "420_OPD": 
         case "416": TipoTrabajador = "BASE"; break;
         case "HOM": TipoTrabajador = "HOMOLOGADO"; break;
         case "REG": TipoTrabajador = "REGULARIZADO"; break;
@@ -173,6 +174,7 @@ export class ReporteComisionGerencial {
       let clave = "";
       switch (datos_nominales.ur) {
         case "420": 
+        case "420_OPD": 
         case "416": clave=" con clave presupuestal de base: "+datos_nominales.clave_presupuestal; break;
         case "HOM": clave=" con clave presupuestal de HOMOLOGADO: "+datos_nominales.clave_presupuestal; break;
         case "REG": clave=" con clave presupuestal de REGULARIZADO: "+datos_nominales.clave_presupuestal; break;
