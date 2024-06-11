@@ -1,0 +1,130 @@
+<mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>DATOS DE IMPORTACIÓN</ng-template>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+            <div fxFlex="100" fxFlex.xs="100">
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                    <mat-form-field fxFlex="100" fxFlex.xs="100">
+                        <mat-label>ARCHIVO</mat-label>
+                        <button mat-icon-button matPrefix (click)="f_input.click()">
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                        <input type="text" readonly matInput placeholder="" formControlName="archivo"  required="required" />
+                        <input
+                        type="file"
+                        hidden
+                        #f_input
+                        (change)="handleFileInputChange(f_input.files)" />
+                        <mat-error>Este campo es requerido</mat-error>
+                        
+                    </mat-form-field>
+                
+                </div>
+                <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+                    <button  mat-button matStepperNext [disabled]="isLoading || !firstFormGroup.valid">CONTINUAR</button>
+                </div>
+            
+        </div>    
+                        
+          
+        </div>
+      </form>
+      
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+      <ng-template matStepLabel>RESUMÉN DE DATOS DE IMPORTACIÓN</ng-template>
+        
+      <div class="centrado">
+        <div class="limites">
+          <div class="titulo">
+            DATOS
+          </div>
+          <div class="datos">
+            <mat-list>
+              <mat-list-item>NOMBRE:
+                {{ resumen.nombre }}
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>PESO: 
+                {{ resumen.peso}} MB.
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>REGISTROS: 
+
+                {{ resumen.base + resumen.homologado + resumen.formalizado + resumen.regularizado + resumen.contrato + resumen.otro | number}}
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>AÑO: 
+                {{ resumen.anio}}
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>QUINCENA: 
+                {{ resumen.quincena}}
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              <mat-list-item>
+                <div class="encabezado">
+                  <div class="conteos">
+                      <span>BASE</span> {{resumen.base | number}}
+                  </div>
+                  <div class="conteos">
+                      <span>HOMOLOGADOS</span> {{resumen.homologado | number}}
+                  </div>
+                  <div class="conteos">
+                      <span>FORMALIZADOS</span> {{resumen.formalizado | number}}
+                  </div>
+                  <div class="conteos">
+                      <span>REGULARIZADOS</span> {{resumen.regularizado | number}}
+                  </div>
+                  <div class="conteos">
+                      <span>CONTRATO</span> {{resumen.contrato | number}}
+                  </div>
+                  <div class="conteos">
+                    <span>OTROS</span> {{resumen.otro | number}}
+                </div>
+                </div>  
+              </mat-list-item>
+              
+            
+            </mat-list>
+          </div>
+          <div>
+            <button mat-button matStepperPrevious>REGRESAR</button>
+            <button mat-button matStepperNext (click)="importar()">IMPORTAR INFORMACIÓN</button>
+          </div>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>RESUMÉN DE IMPORTACIÓN DE INFORMACIÓN</ng-template>
+        <div class="centrado" *ngIf="!isLoading">
+          <div class="limites">
+            <div class="titulo">
+              DATOS
+            </div>
+            <div class="datos">
+              <div *ngIf="correcto">SE HA ACTUALIZADO CORRECTAMENTE LA NOMINA</div>
+              <mat-list *ngIf="incorrecto">
+                <mat-list-item>DUPLICADOS
+                  <mat-chip-list aria-label="Fish selection">
+                    <mat-chip color="accent"  *ngFor="let item of duplicados" selected>{{ item.rfc_nomina }}</mat-chip>
+                  </mat-chip-list>
+                  
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                
+              </mat-list>
+            </div>
+            
+          </div>
+        </div>
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+      
+      <div>
+        <button mat-button matStepperPrevious>REGRESAR</button>
+        <button mat-button (click)="stepper.reset(); reiniciarVariables();">REINICIAR</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>

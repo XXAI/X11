@@ -158,6 +158,7 @@
                                                 
                                                 <b>RAMA:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.rama)?dataTrabajador.rel_datos_laborales_nomina.rama:'NO REGISTRADO':'NO REGISTRADO'}}
                                             </div>
+                                            
                                         </div>
                                         <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
                                             <div fxFlex="100" fxFlex.xs="100">
@@ -182,6 +183,7 @@
                                                 <b>LICENCIA MATERNIDAD:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.licencia_maternidad == 1)?'SI':'NO':'NO REGISTRADO' }}
                                             </div>
                                         </div>
+                                            
                                         <div fxLayout="row" fxLayout.xs="column">
                                             <div fxFlex="100" fxFlex.xs="100">
                                                 <b>CENTRO DE RESPONSABILIDAD (ADSCRIPCIÓN NOMINAL):</b><br> {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.clues:'NO REGISTRADO':'NO REGISTRADO' }} {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.descripcion_actualizada:'':''
@@ -193,6 +195,11 @@
                                             
                                             </div>
 
+                                        </div>
+                                        <div fxLayout="row" fxLayout.xs="column">
+                                            <div fxFlex="100" fxFlex.xs="100" class="nomina" *ngIf="dataTrabajador.rel_datos_laborales_nomina && dataTrabajador.rel_datos_laborales_nomina.basificados == 0 && dataTrabajador.rel_datos_laborales_nomina.ur !='420_OPD'">
+                                                ACTUALIZACIÓN DE NOMINA: {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.quincena+" / "+dataTrabajador.rel_datos_laborales_nomina.anio:'--' }}
+                                            </div>
                                         </div>
                                     </div>
                                     <div *ngIf="datosNominales == null">

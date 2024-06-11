@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 export class DevToolsService {
   url                       = `${environment.base_url}/tramite-comision`;
   url_base                  = `${environment.base_url}/cargar-base`;
+  url_nomina                = `${environment.base_url}/cargar-nomina`;
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +26,15 @@ export class DevToolsService {
   importarDB(payload:any)
   {
     return this.http.post<any>(this.url , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+  }
+
+  importarData(payload:any)
+  {
+    return this.http.post<any>(this.url_nomina , {params: payload}).pipe(
       map( (response: any) => {        
         return response;
       }

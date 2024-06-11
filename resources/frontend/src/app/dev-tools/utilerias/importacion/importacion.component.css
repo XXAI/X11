@@ -1,0 +1,58 @@
+.file-input {
+    display: none;
+}
+
+.centrado
+{
+    display: flex;
+    justify-content: center;
+}
+
+.limites
+{
+    width: 50vw;
+}
+
+.datos
+{
+    padding: 10px;
+}
+
+.titulo
+{
+    background-color: #3f51b5;
+    color: white;
+    text-align: center;
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.encabezado{
+    display: flex;
+    flex-direction: row;
+    padding: 10pt;
+    background-color: #4a4848;
+    color: whitesmoke;
+}
+
+.encabezado > div > span{
+    font-weight: 500;
+}
+.conteos,
+.call-center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.conteos{
+    text-align: center;
+    font-size: small;
+}
+
+.conteos:not(:last-child){
+    padding-right: 10px;
+    margin-right: 10px;
+    border-right: 1px solid rgba(255,255,255,0.50);
+}

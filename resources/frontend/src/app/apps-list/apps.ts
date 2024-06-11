@@ -22,7 +22,8 @@ export const APPS:App [] = [
     { name:'HERRAMIENTAS',            route: "dev-tools",               icon: "assets/icons/herramientas.png",           isHub:true, hideHome:true, 
       children:[
         {name:'Reportes MySQL',                     route:'dev-tools/mysql-reportes', icon:'settings', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"},
-        {name:'Herramientas Administrativas',       route:'dev-tools/utilerias', icon:'settings', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"}
+        {name:'Herramientas Administrativas',       route:'dev-tools/utilerias', icon:'settings', permission:"6ARHQGj1N8YPkr02DY04K1Zy7HjIdDcj"},
+        {name:'Importación de Nomina',              route:'dev-tools/nomina', icon:'cloud_upload', permission:"ug1mNzfHlNo0rDY6jS3I6pgrBLgQDrqj"},
       ],
     },
     { name:'CATÁLOGOS',               route: "catalogos",               icon: "assets/icons/catalogos.png", isHub:true, hideHome:true, 
@@ -53,7 +54,7 @@ export const APPS:App [] = [
       ],
     },
     { name:'DIRECTORIO',              route: "directorio",              icon: "assets/icons/directorio.png",  permission:"RkggFnAkLcXiLUTbZk3A07y0c4WdjjCO" },
-    { name:'OPD',                     route: "opd",                     icon: "assets/icons/actas.png",  permission:"fbXoEtYYUgX2snZjIiVEqlTSgkisW59x" },
+    //{ name:'OPD',                     route: "opd",                     icon: "assets/icons/actas.png",  permission:"fbXoEtYYUgX2snZjIiVEqlTSgkisW59x" },
     
     /*{ name:'BRIGADISTAS',                route: "brigadista",                icon: "assets/icons/tramites.png", permission:'hEpNOyGTBaMrjcy1nhRymykXgsRv3jPt', isHub:true, hideHome:true, 
       children:[

@@ -218,3 +218,11 @@ mat-card-title {
 .tabla-asistencia {
     background-color: blue;
 }
+
+.nomina
+{
+    font-size: 9pt;
+    background-color: brown;
+    color: white;
+    padding: 0px 5px;
+}
