@@ -213,7 +213,7 @@ export class ReporteComisionGerencial {
       responsable_notificacion = "DR. "+datos_responsable.nombre+" "+datos_responsable.apellido_paterno+" "+datos_responsable.apellido_materno+"\n";
       if(datos_responsable.id ==27854)
       {
-        responsable_notificacion+= "OFICINAS ADMINISTRATIVASx\n";
+        responsable_notificacion+= "OFICINAS ADMINISTRATIVAS\n";
         destino_insabi = destino+", A SU CARGO ";
         
       }else if(datos_responsable.id ==24598)
