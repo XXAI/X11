@@ -196,38 +196,31 @@ export class ReporteComisionGerencial {
       let responsable = "";
       let responsable_notificacion = "";
       let responsable_copia = "";
-
+      let destino_insabi = "";
       let datos_responsable = element.rel_trabajador_comision_gerencial.responsable;
+      destino = element.rel_trabajador_comision_gerencial.destino;
+      
+      let dato_unidad = "Jurisdicción";
+      if(comision.cr_destino)
+      {
+        if(comision.cr_destino.clues.clasificacion == "H. G." || comision.cr_destino.clues.clasificacion == "CLINICA" || comision.cr_destino.clues.clasificacion == "CLINICA DE ESPECIALIDADES")
+        {
+          dato_unidad= "UNIDAD";
+        }
+      }
 
+      destino_insabi = destino+", Chiapas; de esa "+dato_unidad+"  A SU CARGO ";
       responsable_notificacion = "DR. "+datos_responsable.nombre+" "+datos_responsable.apellido_paterno+" "+datos_responsable.apellido_materno+"\n";
       if(datos_responsable.id ==27854)
       {
-        responsable_notificacion+= "OFICINAS DEL INSABI\n";
+        responsable_notificacion+= "OFICINAS ADMINISTRATIVASx\n";
+        destino_insabi = destino+", A SU CARGO ";
+        
       }else if(datos_responsable.id ==24598)
       {
         responsable_notificacion+= "JEFE DE MESA DE ANÁLISIS Y PAGO DE PROVEEDORES\n";
       }
       responsable_notificacion += "TUXTLA GUTIÉRREZ CHIAPAS."
-      /*if(comision.cr_destino)
-      {
-        destino = "( "+comision.cr_destino.clues.clasificacion+") "+comision.cr_destino.descripcion_actualizada+" "+comision.cr_destino.clues.clues;
-        if(comision.cr_destino.dependencia)
-        {
-          let dato_responsable = comision.cr_destino.dependencia.directorio_responsable;
-          let nombre_responsable = dato_responsable.responsable;
-          responsable = "C. "+nombre_responsable.nombre+" "+nombre_responsable.apellido_paterno+" "+nombre_responsable.apellido_materno+", "+dato_responsable.cargo+", con domicilio ubicado en "+comision.cr_destino.dependencia.direccion;
-          if(comision.cr_destino.dependencia.cr !="0700200001")
-          {
-            responsable_copia = "C.C.P. "+nombre_responsable.nombre+" "+nombre_responsable.apellido_paterno+" "+nombre_responsable.apellido_materno+" - "+dato_responsable.cargo+"\n";
-            
-          }else{
-            secretario = "";
-          }
-          responsable_notificacion = "C. "+nombre_responsable.nombre+" "+nombre_responsable.apellido_paterno+" "+nombre_responsable.apellido_materno+"\n"+dato_responsable.cargo+"\n"+comision.cr_destino.municipio;
-        }
-      }*/
-
-      destino = element.rel_trabajador_comision_gerencial.destino;
       let obj_responsable = element.rel_trabajador_comision_gerencial.responsable;
       responsable = "DR. "+obj_responsable.nombre+" "+obj_responsable.apellido_paterno+" "+obj_responsable.apellido_materno
 
@@ -259,14 +252,12 @@ export class ReporteComisionGerencial {
       contenido += "Cabe hacer mención, que la continuidad de prórroga de comisión, no le da el derecho de antigüedad, para cambio de adscripción, donde actualmente se encuentra comisionado.";
       contenido += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       
-      //console.log(iteracciones+" "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+" "+acuse_qr.length);
       let dato_origen = "";
       let unidad_origen = "";
       if(comision.cr_origen)
       {
         if(comision.cr_origen.clues.clasificacion == "H. G." || comision.cr_origen.clues.clasificacion == "CLINICA" || comision.cr_origen.clues.clasificacion == "CLINICA DE ESPECIALIDADES" || comision.cr_origen.clues.clues == "CSSSA017213")
         {
-          //dato_origen= comision.cr_origen;
           unidad_origen = "C.C.P. ("+comision.cr_origen.clues.clasificacion+") "+comision.cr_origen.clues.nombre_unidad;
         }else
         {
@@ -328,18 +319,8 @@ export class ReporteComisionGerencial {
       };
       informacion_oficio.pageBreak = 'after';
 
-      let dato_unidad = "Jurisdicción";
-      if(comision.cr_destino)
-      {
-        if(comision.cr_destino.clues.clasificacion == "H. G." || comision.cr_destino.clues.clasificacion == "CLINICA" || comision.cr_destino.clues.clasificacion == "CLINICA DE ESPECIALIDADES")
-        {
-          dato_unidad= "UNIDAD";
-        }
-      }
-
       
-      
-      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir del día "+fecha_inicio+", fue comisionado a "+destino+", Chiapas; de esa "+dato_unidad+" a su cargo, por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
+      let contenido_notificacion = "Por medio del presente, le hago del conocimiento que el/la C. "+trabajador.nombre+" "+trabajador.apellido_paterno+" "+trabajador.apellido_materno+", PERSONAL CON CÓDIGO DE "+datos_nominales.codigo.descripcion+" "+datos_nominales.codigo_puesto_id+",  a partir del día "+fecha_inicio+", fue comisionado a "+destino_insabi+", por tal motivo, deberá asignarle las actividades, horario y funciones a ejecutar de acuerdo a su categoría, en el entendido, que de no presentarse a laborar deberá aplicar la normatividad que rige a la Institución para tal efecto; se adjunta copia de la comisión  para mayor constancia.\n\n";
       contenido_notificacion += "Por lo que, en 5 días hábiles a partir de la fecha de este documento, el encargado de recursos humanos deberá realizar la asignación de jornada y horario con numero de identificación de acuerdo a los controles de asistencia con los que cuente la unidad.\n\n";
       contenido_notificacion += "Lo que comunico a Usted, para los efectos legales a que haya lugar.";
       let notificacion = {

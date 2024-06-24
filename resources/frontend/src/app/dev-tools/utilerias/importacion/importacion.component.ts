@@ -44,7 +44,7 @@ export class ImportacionComponent implements OnInit {
       { label:'CODIGO',               key:'codigo_puesto_id'          },
       { label:'PUESTO',               key:'descripcion_puesto'        }, 
       { label:'RAMA',                 key:'rama'                      }, 
-      { label:'CLAVE_PRESUPUESTAL',   key:'clave_presupuestal'        },       
+      { label:'CLAVE PRESUPUESTAL',   key:'clave_presupuestal'        },       
       { label:'ZE',                   key:'ze'                        },       
       { label:'FIGF',                 key:'fecha_ingreso_federal'     },       
       { label:'FISSA',                key:'fecha_ingreso'             },       
