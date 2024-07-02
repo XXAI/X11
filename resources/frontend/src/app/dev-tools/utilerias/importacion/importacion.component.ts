@@ -106,6 +106,13 @@ export class ImportacionComponent implements OnInit {
           let seguimiento:any = {};
 
           columnas_archivo.forEach(columna => {
+            if(columna == 'UR')
+            {
+              if(registro[columna] == 610)
+                {
+                  return false;
+                }
+            }
             if(columna == 'AÑO' && this.resumen.anio=='')
             {
               this.resumen.anio = registro[columna];

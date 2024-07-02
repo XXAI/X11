@@ -170,7 +170,7 @@ class CredencializacionController extends Controller
                 $trabajador->clave_credencial = \Encryption::encrypt($trabajador->rfc);
             }*/
 
-            $image = base64_encode(\Storage::get('public\\FromatoCredencial\\Gafete2024_2.jpg'));
+            $image = base64_encode(\Storage::get('public\\FromatoCredencial\\Gafete2024_3.jpg'));
             if($trabajador->credencial != null)
             {
                 
@@ -375,7 +375,7 @@ class CredencializacionController extends Controller
 
             $permison_individual = false;                
 
-            $formato = base64_encode(\Storage::get('public\\FromatoCredencial\\Gafete2024_2.jpg'));
+            $formato = base64_encode(\Storage::get('public\\FromatoCredencial\\Gafete2024_3.jpg'));
             
             $encriptacion = "ubp((%kU0";
             foreach ($trabajador as $key => $value) {
