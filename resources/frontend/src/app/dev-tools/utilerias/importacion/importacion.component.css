@@ -56,3 +56,16 @@
     margin-right: 10px;
     border-right: 1px solid rgba(255,255,255,0.50);
 }
+
+.campos
+{
+    padding: 10px;
+    background-color: antiquewhite;
+    font-weight: bold;
+    margin-top: 18px;
+}
+
+.btn-mosaico
+{
+    padding: 10px
+}

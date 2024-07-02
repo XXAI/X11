@@ -103,6 +103,7 @@ Route::group(['middleware'=>'auth'],function($router){
     Route::get('ejecutar-query',                    'API\Admin\DevReporterController@executeQuery');
     Route::get('exportar-query',                    'API\Admin\DevReporterController@exportExcel');
     Route::post('cargar-nomina',                    'API\Admin\DevReporterController@importarNomina');
+    Route::get('exportar-nomina-sistematizacion',  'API\Admin\DevReporterController@exportarNominaSistamtizacion');
     
 
     Route::get('catalogos-filtro-empleados', 'API\Modulos\EmpleadosController@getFilterCatalogs');

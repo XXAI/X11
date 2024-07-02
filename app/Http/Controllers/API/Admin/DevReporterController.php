@@ -164,4 +164,27 @@ class DevReporterController extends Controller
             return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
         }
     }
+
+    public function exportarNominaSistamtizacion(Request $request)
+    {
+        try{
+            ini_set('memory_limit', '-1');
+            
+            $obj = DB::TABLE("reporte_sistematizacion")->get();
+           
+            $columnas = array_keys(collect($obj[0])->toArray());
+
+            if(isset($parametros['nombre_archivo']) && $parametros['nombre_archivo']){
+                $filename = $parametros['nombre_archivo'];
+            }else{
+                $filename = 'reporte-personal-activo';
+            }
+            //echo "hola";
+            //exit;
+            return (new DevReportExport($obj,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
+        }catch(\Exception $e){
+            return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
+        }
+    }
+
 }

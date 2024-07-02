@@ -3,6 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as XLSX from 'xlsx';
 import { DevToolsService } from '../../dev-tools.service';
+import * as FileSaver from 'file-saver';
+import { SharedService } from '../../../shared/shared.service';
+import { ConfirmActionDialogComponent } from '../../../utils/confirm-action-dialog/confirm-action-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-importacion',
@@ -21,10 +25,12 @@ export class ImportacionComponent implements OnInit {
   resumen:any = { base: 0, homologado:0, formalizado:0, regularizado:0, contrato:0, otro:0, nombre:'', peso:0, anio:'', quincena:0 };
   data:any[] = [];
   duplicados:any[] = [];
+  camposFaltantes:any[] = [];
   correcto:boolean = false;
   incorrecto:Boolean = false;
+  impresionReporte:boolean = false;
 
-  constructor(private _formBuilder: FormBuilder, private devToolsService:DevToolsService) { }
+  constructor(private sharedService: SharedService,private _formBuilder: FormBuilder, private devToolsService:DevToolsService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.firstFormGroup = this._formBuilder.group({
@@ -62,6 +68,39 @@ export class ImportacionComponent implements OnInit {
 
   }
 
+  imprimirReporte():void{
+    this.isLoading = true;
+    const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
+      width: '500px',
+      data:{dialogTitle:'INFORMACIÓN',dialogMessage:'Este Modulo es para generar el reporte de sistematización, ¿Realmente quiere generarlo? Escriba ACEPTAR a continuación para realizar el proceso.',validationString:'ACEPTAR',btnColor:'primary',btnText:'aceptar'}
+    });
+    
+    dialogRef.afterClosed().subscribe(valid => {
+      if(valid){
+        this.impresionReporte = true;
+        this.devToolsService.ExportarSistematizacion({}).subscribe(
+          response => {
+            FileSaver.saveAs(response,'Reporte-Sistematizacion');
+            this.impresionReporte = false;
+          },
+          errorResponse =>{
+            console.log(errorResponse);
+            this.impresionReporte = false;
+            var errorMessage = "Ocurrió un error.";
+            if(errorResponse.status == 409){
+              errorMessage = errorResponse.error.error.message;
+            }
+            //this.sharedService.showSnackBar(errorMessage, null, 3000);
+            this.impresionReporte = false;
+          }
+        );
+      }else{
+        this.isLoading =false;
+      }
+    });
+    
+  }
+
   reiniciarVariables()
   {
     this.firstFormGroup.reset();
@@ -86,6 +125,7 @@ export class ImportacionComponent implements OnInit {
 
   cargarDatosArchivo(event: any){
     this.isLoading =  true;
+    
     const reader: FileReader = new FileReader();
     reader.readAsBinaryString(this.file_store[0]);
     reader.onload = (e: any) => {
@@ -101,6 +141,15 @@ export class ImportacionComponent implements OnInit {
       const raw_data:any = XLSX.utils.sheet_to_json(ws); // to get 2d array pass 2nd parameter as object {header: 1}
       if(raw_data.length > 0){
         let columnas_archivo:string[] = Object.keys(raw_data[0]);
+        console.log(columnas_archivo);
+
+        if(!this.validarCabeceras(columnas_archivo))
+        {
+          let errorMessage = "Existen Campos no Encontrados";
+          this.sharedService.showSnackBar(errorMessage, null, 3000);
+          this.isLoading =  false;
+          return false;
+        }
 
         let datos:any[] = raw_data.map(registro => {
           let seguimiento:any = {};
@@ -170,6 +219,41 @@ export class ImportacionComponent implements OnInit {
         //this.alertPanel.showInfo('El archivo seleccionado esta vacío');
       }
     };  
+  }
+
+  validarCabeceras(cabecera)
+  {
+    let cantidad_campos:number = 17;
+    let campos_correctos:number = 0;
+    this.camposFaltantes = [];
+    console.log("validacion 1");
+    console.log(cabecera.length, cantidad_campos);
+    if(cabecera.length < cantidad_campos)
+    {
+      return false;
+    }
+
+    this.relacionCampos.forEach(element =>
+      {
+        if(cabecera.includes(element.label)){
+          campos_correctos++;
+        }else{
+         this.camposFaltantes.push(element.label);
+        }
+        console.log(campos_correctos,element.label);
+      }
+    );
+    console.log("validacion 2");
+    console.log(campos_correctos);
+    console.log(cantidad_campos);
+    console.log(this.camposFaltantes);
+    if(campos_correctos<cantidad_campos)
+    {
+      return false;
+    }
+
+    return true;
+
   }
 
   importar()

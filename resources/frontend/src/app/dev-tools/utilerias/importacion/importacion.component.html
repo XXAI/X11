@@ -1,7 +1,20 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+  <div fxFlex="100" fxFlex.xs="100">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
+      <button mat-raised-button color="primary" (click)="imprimirReporte()" [disabled]="impresionReporte" class="btn-mosaico">
+        <mat-icon>print</mat-icon>&nbsp;&nbsp; EXPORTAR BD
+        <mat-progress-bar mode="indeterminate" *ngIf="impresionReporte"></mat-progress-bar>
+      </button>
+    </div>
+    
+  </div>
+</div>    
 <mat-horizontal-stepper linear #stepper>
     <mat-step [stepControl]="firstFormGroup">
       <form [formGroup]="firstFormGroup">
         <ng-template matStepLabel>DATOS DE IMPORTACIÓN</ng-template>
+        
+        
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
             <div fxFlex="100" fxFlex.xs="100">
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
@@ -24,12 +37,27 @@
                 <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3px">
                     <button  mat-button matStepperNext [disabled]="isLoading || !firstFormGroup.valid">CONTINUAR</button>
+                    
                 </div>
             
-        </div>    
-                        
+            </div>
+          </div>
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="5px" style="margin-top:10px">
+            <div fxFlex="100" fxFlex.xs="100" *ngIf="camposFaltantes.length > 0">
+              <div class="campos">
+                Campos Faltantes
+                
+                <ul>
+                  <li *ngFor="let item of camposFaltantes">
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+            </div>     
+          </div>      
+               
           
-        </div>
+        
       </form>
       
     </mat-step>

@@ -72,7 +72,7 @@ import { OpdModule } from './opd/opd.module';
     SharedModule,
     AppsListModule,
     UsersModule,
-    EmpleadosModule,
+    //EmpleadosModule,
     TrabajadorModule,
     TramitesModule,
     RegistroModule,

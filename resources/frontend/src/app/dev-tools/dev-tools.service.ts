@@ -11,6 +11,7 @@ export class DevToolsService {
   url                       = `${environment.base_url}/tramite-comision`;
   url_base                  = `${environment.base_url}/cargar-base`;
   url_nomina                = `${environment.base_url}/cargar-nomina`;
+  url_nomina_sistematizacion = `${environment.base_url}/exportar-nomina-sistematizacion`;
 
   constructor(private http: HttpClient) { }
 
@@ -39,5 +40,10 @@ export class DevToolsService {
         return response;
       }
     ));
+  }
+  
+  ExportarSistematizacion(payload:any)
+  {
+      return this.http.get<any>(this.url_nomina_sistematizacion, {params:payload, responseType: 'blob' as 'json'});
   }
 }
