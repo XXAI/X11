@@ -290,8 +290,8 @@ export class ReporteComision {
         }
       }
 
-      let num_oficio        = comision.folio;
-      let num_notificacion  = comision.folio + 1; 
+      let num_oficio        = parseInt(comision.folio);
+      let num_notificacion  = parseInt(comision.folio) + 1; 
       let informacion_oficio = {
         layout: 'noBorders',
         pageBreak:'',

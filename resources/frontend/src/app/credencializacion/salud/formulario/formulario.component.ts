@@ -233,7 +233,7 @@ export class FormularioComponent implements OnInit {
       event.base64,
       this.imageChangedEvent.target.files[0].name,
     );
-      console.log(this.FotoCredencial);
+  
     //const imageBlob = this.dataURItoBlob(this.imageUrl);
     //this.image = new File([imageBlob], this.imagename.name, { type: 'image/jpeg' });
     //this.imageselect = true;

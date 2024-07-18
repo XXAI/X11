@@ -82,9 +82,10 @@ export class ImportacionComponent implements OnInit {
           response => {
             FileSaver.saveAs(response,'Reporte-Sistematizacion');
             this.impresionReporte = false;
+            this.isLoading =false;
           },
           errorResponse =>{
-            console.log(errorResponse);
+            this.isLoading =false;
             this.impresionReporte = false;
             var errorMessage = "Ocurrió un error.";
             if(errorResponse.status == 409){
