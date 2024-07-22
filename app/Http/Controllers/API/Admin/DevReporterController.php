@@ -169,8 +169,7 @@ class DevReporterController extends Controller
     {
         try{
             ini_set('memory_limit', '-1');
-            DB::statement("SET GLOBAL table_definition_cache = 1024");
-            $obj = DB::TABLE("reporte_sistematizacion")->get();
+            $obj = DB::statement("select * from reporte_sistematizacion")->get();
            
             $columnas = array_keys(collect($obj[0])->toArray());
 

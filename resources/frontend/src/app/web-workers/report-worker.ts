@@ -11,8 +11,9 @@ export class ReportWorker {
     const WORKER_ENABLED = !!(Worker);
 
     if (WORKER_ENABLED) {
-      this.worker = new Worker(('./reportes/reporte-pdf.worker'), { type: 'module' });
-
+      //this.worker = new Worker(('./reportes/reporte-pdf.worker'), { type: 'module' });
+      this.worker = new Worker(new URL('./reportes/reporte-pdf.worker', import.meta.url));
+      
       this.worker.onmessage = (data) => {
         this.onMessage.next(data);
       };
