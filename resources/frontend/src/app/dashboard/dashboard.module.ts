@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ChartModule } from 'angular-highcharts';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { VisorComponent } from './visor/visor.component';
@@ -14,8 +13,7 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
-    DashboardRoutingModule,
-    ChartModule
+    DashboardRoutingModule
   ]
 })
 export class DashboardModule { }

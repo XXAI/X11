@@ -8,6 +8,9 @@ import { SharedService } from '../../../shared/shared.service';
 import { ConfirmActionDialogComponent } from '../../../utils/confirm-action-dialog/confirm-action-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
+
 @Component({
   selector: 'app-importacion',
   templateUrl: './importacion.component.html',
@@ -80,9 +83,11 @@ export class ImportacionComponent implements OnInit {
         this.impresionReporte = true;
         this.devToolsService.ExportarSistematizacion({}).subscribe(
           response => {
-            FileSaver.saveAs(response,'Reporte-Sistematizacion');
+            /*FileSaver.saveAs(response,'Reporte-Sistematizacion');*/
             this.impresionReporte = false;
             this.isLoading =false;
+            console.log(response.data);
+            this.exportAsExcelFile(response.data, "BaseTrabajadores");
           },
           errorResponse =>{
             this.isLoading =false;
@@ -100,6 +105,22 @@ export class ImportacionComponent implements OnInit {
       }
     });
     
+  }
+  public exportAsExcelFile(json: any[], excelFileName: string): void {
+    console.log("-->",json);
+    console.log("-->",json.length);
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+    //this.loadReporteExcel = false;
+  }
+
+  private saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_SSA_' + new Date().getTime() + EXCEL_EXTENSION);
   }
 
   reiniciarVariables()

@@ -181,7 +181,8 @@ class DevReporterController extends Controller
             }
             //echo "hola";
             //exit;
-            return (new DevReportExport($obj,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
+            return response()->json(['data'=>$obj],HttpResponse::HTTP_OK);
+            //return (new DevReportExport($obj,$columnas))->download($filename.'.xlsx'); //Excel::XLSX, ['Access-Control-Allow-Origin'=>'*','Access-Control-Allow-Methods'=>'GET']
         }catch(\Exception $e){
             return response()->json(['error' => $e->getMessage(),'line'=>$e->getLine()], HttpResponse::HTTP_CONFLICT);
         }

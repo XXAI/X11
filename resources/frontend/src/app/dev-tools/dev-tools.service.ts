@@ -44,6 +44,11 @@ export class DevToolsService {
   
   ExportarSistematizacion(payload:any)
   {
-      return this.http.get<any>(this.url_nomina_sistematizacion, {params:payload, responseType: 'blob' as 'json'});
+    return this.http.get<any>(this.url_nomina_sistematizacion , {params: payload}).pipe(
+      map( (response: any) => {        
+        return response;
+      }
+    ));
+      //return this.http.get<any>(this.url_nomina_sistematizacion, {params:payload, responseType: 'blob' as 'json'});
   }
 }

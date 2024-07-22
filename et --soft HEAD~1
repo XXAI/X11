@@ -1,0 +1,3350 @@
+[33mcommit 3fb4beb17058ee01938df1dba059593f5d31e46c[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;32mv12[m[33m)[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Mon Jul 22 13:05:08 2024 -0600
+
+    proyecto a version 12 y con exportacion con libreria
+
+[33mcommit efee2477bf7c861917799b47bf24c777e54e1c81[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Mon Jul 22 11:42:44 2024 -0600
+
+    paquetes
+
+[33mcommit a07a09811d4ba2a3dc611f834d8d5f2af96f3052[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Mon Jul 22 10:47:18 2024 -0600
+
+    se agrega version para la 12
+
+[33mcommit 09eb90b74e8b2c4458365313f3f3e81dc8ed7b8f[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Mon Jul 22 10:45:50 2024 -0600
+
+    se quitan errores
+
+[33mcommit b99ef1e2c3fe5200fe58bf63e585e335f40e7f23[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Sat Jul 20 14:54:16 2024 -0600
+
+    se borrara
+
+[33mcommit 712e296e5e634aa69d6326d359ca63d24ca39cb5[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Sat Jul 20 13:02:23 2024 -0600
+
+    se quitan librerias en des uso
+
+[33mcommit e47bd24ac83391b35e4aee3fb4fda2a2da985c1f[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Fri Jul 19 13:42:43 2024 -0600
+
+    se quita lo del reporte ahora vemos como lo resolvemos
+
+[33mcommit d1038986ac91b15f734196a115b774bba75ab37e[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Thu Jul 18 12:35:51 2024 -0600
+
+    correccion de numero de notificacion
+
+[33mcommit 9b269f5127776686af158d4b06fa34a7f0d1d580[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Jul 16 16:03:05 2024 -0600
+
+    actualizacion de consultas
+
+[33mcommit 382fb349262da9a9cccc475c3689360509b1d779[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Jul 2 13:14:48 2024 -0600
+
+    actualizacion de modulo de reportes para sistematizacion
+
+[33mcommit e8e7dbbb54ad1915a9e10e2ec247b7218691e6dd[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Jul 2 09:29:41 2024 -0600
+
+    se actualiza firmante credencial
+
+[33mcommit 2754e4b39e60e0f0285548eb0c364e12b92aa5c3[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Mon Jun 24 15:19:29 2024 -0600
+
+    actualizacion de reporte gerenciales
+
+[33mcommit d462615a24bd4f87bab39b301aea299872541720[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Mon Jun 24 15:06:30 2024 -0600
+
+    actualizacion de notificaciones
+
+[33mcommit 821668a2a4a760d8758e7bfb594bd97dfac36624[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Thu Jun 20 08:57:47 2024 -0600
+
+    actualizacion en formato de comision
+
+[33mcommit 0ee493a69e2d197a630f796a23b9898637993304[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Jun 11 13:49:44 2024 -0600
+
+    se actualiza con la herramienta de nomina
+
+[33mcommit 33ac6caae195ea6fb7df4d7542ac194b593118e3[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Thu May 23 12:23:26 2024 -0600
+
+    actualizacion de reporte de comision
+
+[33mcommit 57cb1fc441b87350a26ba077acb6fac9f06a55a3[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 24 13:21:16 2024 -0600
+
+    se quita prueba de datos
+
+[33mcommit 2ed5f0c49cd82b3fcb7460e45b82b5664b93cf03[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 24 13:16:22 2024 -0600
+
+    actualiza filtro opd
+
+[33mcommit 0fad402d93f10086cbce51c77496c1c9f365fefc[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 24 12:49:53 2024 -0600
+
+    actualizacion de api
+
+[33mcommit 4db6ee9dae96b1a586782f91bf5df47c178fd898[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 24 12:12:15 2024 -0600
+
+    correccion de descarga de credenciales por lote
+
+[33mcommit 4777bf8a4bcc1676ccce53d9dada0a8d373c0a37[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Fri Apr 19 11:08:38 2024 -0600
+
+    se modifica las notificaciones y los documentos
+
+[33mcommit 8d7a46c18842d20fa46d5c9b3493395b6efd306c[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 16 14:31:24 2024 -0600
+
+    se agrega filtro de opd
+
+[33mcommit f7a084e2a7960d01ff743660c051745b06ae55f0[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 16 14:29:43 2024 -0600
+
+    se agrega filtro de opd
+
+[33mcommit d169c8459dcb73949f28e001b3d72b0aa86816a5[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 16 14:28:20 2024 -0600
+
+    se agrega filtro de opd
+
+[33mcommit acf8d6e77e8c023e80537a4e98ed5a2c97fbfa56[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 16 14:26:31 2024 -0600
+
+    se agrega filtro de opd
+
+[33mcommit aceb6ecf625b202c0b37ca50e4dacfdee17901f8[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 16 14:05:27 2024 -0600
+
+    actualizacion de plataforma para opd
+
+[33mcommit 192e63437ddb1f7c8e24e423ed9f8cc970b4e92b[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 10 16:12:34 2024 -0600
+
+    actualizacion de reporte de comisiones, se quita error de cargo de secretario
+
+[33mcommit aac641b36d5f3f9303d3b42fffe676f8fbfae4a8[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 3 12:04:45 2024 -0600
+
+    actualizar comisiones, se ponde el cargo en el secretario
+
+[33mcommit 433d491a54af8f1f8f94665cd25dd41f088720a5[m
+Author: ing.marrio.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 20 10:57:08 2024 -0600
+
+    correccion en notificaciones
+
+[33mcommit b9f84c1987f9647e85bfc76a848c6af886dda42c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 11 12:03:40 2024 -0600
+
+    anexo 2 se modifica 5 punto
+
+[33mcommit ac56d5dcb5a357f4961a3fa96a7372c0bc40851c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 11 10:59:59 2024 -0600
+
+    reduccion de espacios reporte opd
+
+[33mcommit fd941dafba4c13f0472d2c4ef5abb4fecd9be09a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 11 10:34:18 2024 -0600
+
+    se elimina el segundo parrafo del anexo 3
+
+[33mcommit 994ac17dcb79e48383de046d18ca8f636053cdd0[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 11 09:02:57 2024 -0600
+
+    usuario general
+
+[33mcommit 020ac639d2bd8fa948188d6287195ca5326cba16[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Mar 10 22:51:53 2024 -0600
+
+    correcion nombre archivo
+
+[33mcommit 3ae6a8f2439d8e66b9f2d2514ed3ed328745cfe5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Mar 10 22:42:12 2024 -0600
+
+    correcion api
+
+[33mcommit 3366b54b5ef936186b4135fec47c092d299dbbb7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Mar 10 22:31:41 2024 -0600
+
+    todas las cuentas y correccion de totales
+
+[33mcommit 38d92914340999af716e36d3f2b622404b18310c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Mar 10 21:34:15 2024 -0600
+
+    modulo completo de opd
+
+[33mcommit 4939120099bb06bf7adf812558db9949d85a3ea4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Mar 10 12:45:46 2024 -0600
+
+    modulo de opd
+
+[33mcommit 0a7fd8ef0712d26ed5ce88a8c46b0b8763171148[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Mar 8 10:47:24 2024 -0600
+
+    actualizacion de caratula de credencia
+
+[33mcommit 4ee719df5bc6c4d08f4098f582b5681db15a5f67[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Feb 29 09:13:43 2024 -0600
+
+    correccion de fechas en reporte
+
+[33mcommit d1c8408c35a7a422ec9651b95a9a5e02e9fadacd[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 28 09:14:26 2024 -0600
+
+    correccion de reporte de comision
+
+[33mcommit 809c9b3ad22c83c6f380bb3502af2d9cfd59b9c8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Feb 26 15:51:18 2024 -0600
+
+    se agregan 2 campos en del sirh de escolaridad
+
+[33mcommit 82b4a1ac42f917037a48f04af74d186ed413d149[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 19 15:33:25 2024 -0600
+
+    se agrega leyenda para los oficios del 2024
+
+[33mcommit 9dfd2c0d17f48ebabf53c0692ba19bff48a87a56[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 12 15:02:00 2024 -0600
+
+    se agrega filtro de opd en lotes
+
+[33mcommit 55904b1129c1247d35c2efed8ce8723e508e2370[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 12 11:08:27 2024 -0600
+
+    modificacion de controlador de credenciales
+
+[33mcommit f58edfbc10e1668b6f80c0f84bc5e8fbbe05cd1b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jan 11 15:29:28 2024 -0600
+
+    se quitan los de la opd de la credencializacion
+
+[33mcommit b5e9b341eac16f8a6f73d734b089da36481f292f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jan 9 10:34:14 2024 -0600
+
+    actualizacion de credencial error en nombres
+
+[33mcommit 54dea80dd9f3410a7f57f977f424a47dd70305f7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 8 20:05:04 2024 -0600
+
+    se agrega credencial nueva 2024
+
+[33mcommit d0f8e92fb55953e2ecb7d5ae2f0e9b0ca9c584f3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Nov 27 14:35:23 2023 -0600
+
+    migracion de contrato
+
+[33mcommit 146456d0f2d3542d935d9f5769c82bc7b6e6f10b[m[33m ([m[1;32mdev[m[33m)[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 31 14:06:19 2023 -0600
+
+    se corrige la notificacion en la comision interna, el periodo
+
+[33mcommit e81e55261903605471dde50fc589ffe56a33f72e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Oct 27 17:41:14 2023 -0600
+
+    se agrega fecha de recepcion a las comisiones
+
+[33mcommit ab2c6796a117e0abc48a164cd8910875d211ccef[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Oct 27 15:23:05 2023 -0600
+
+    cambios en reporte de sirh, se agrega tipo de sandre y desglosado domicilio
+
+[33mcommit a7ff59b9d659327c967b339a00b373fddfe42263[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 16 13:13:30 2023 -0600
+
+    correccion de error por clues eliminada
+
+[33mcommit 1c20894613cdcc98b3e3ed6ec1125ea66f41021b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 10 14:07:28 2023 -0600
+
+    se quita el status en la vista
+
+[33mcommit 39e5e8c42d548f48f9d21c798e0f419ea21a8109[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 10 13:55:02 2023 -0600
+
+    actualizacion de modulo de expedientes, ahora mas bonito y funcional
+
+[33mcommit 6d8619f652cb556211f74d6d888060e52e880ee8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 2 13:33:38 2023 -0600
+
+    quita validacion de fecha en comision interna
+
+[33mcommit 660429e28b9a9ae61eb1dfe4732389d98a57132f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Sep 27 17:26:24 2023 -0600
+
+    correccion de puntos en expediente
+
+[33mcommit f6333c5810f49eedd36db9f146a57c87ba94dea1[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Sep 21 08:59:00 2023 -0600
+
+    correccion de error en buscador de trabajadores
+
+[33mcommit b4d1e5ec6096afe1254cb2a758bc547c0c69c61e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Sep 4 13:36:16 2023 -0600
+
+    se quitarn las relaciones foraneas
+
+[33mcommit 642ea96373d97537470ac31c07b54ca9c82ef6b0[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Sep 4 13:16:23 2023 -0600
+
+    actualizacion de modulo de clues y de reporte de comisiones
+
+[33mcommit 0ac58f8884da7b06055f0e0281c6f9bbaf63989e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 2 11:30:27 2023 -0600
+
+    se visualizan las cr eliminadas en la relacion de tramites
+
+[33mcommit d2e2be333aaf4afd44c5fb428fcedc88c28a02fb[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jul 10 13:09:27 2023 -0600
+
+    se baja medio punto a letra de comision interna
+
+[33mcommit 27b7d4eb75ddf84f60e4dc1fec90a5ee1d098e88[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jun 27 11:34:23 2023 -0600
+
+    se corrige la comision interna
+
+[33mcommit 498458a7217345ab0880db770a779a0734fcfd08[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jun 26 14:29:13 2023 -0600
+
+    se modifica el sistema de comisiones, haber si aqui no salen errores
+
+[33mcommit f1637ff04ea99fb47ecb54fde3b120eae8c092f6[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jun 26 11:11:59 2023 -0600
+
+    actualizar plataforma para hiram
+
+[33mcommit ccf4e30edb8ad3aa3cdc2b93e3bc50195b650226[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jun 26 11:01:27 2023 -0600
+
+    actualizacion de plataforma se puede ver los datos aun cuando no tiene clues asignada
+
+[33mcommit 8d0479c2095d3e57bf17fce91fe18a9f700759f5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Jun 14 09:10:09 2023 -0600
+
+    cambio en oficio de comision
+
+[33mcommit 26d8b9910387d511592b3cd46503ac6958c5abab[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed May 31 12:08:57 2023 -0600
+
+    se compone controller
+
+[33mcommit 11f2cc928dc30fa45d7a4af46f8ae28eb05bd5b8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed May 31 09:40:15 2023 -0600
+
+    modificacion tabla comisiones
+
+[33mcommit 86ee182ddf21a8b3e975b643619cd122b1ea016f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue May 30 13:04:52 2023 -0600
+
+    se actualiza la tabla de tramites
+
+[33mcommit dcd39d199a515bfb72ae1b248cca8a18eee1b6cd[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon May 29 22:56:05 2023 -0600
+
+    se actualiza la importacion masiva de comision interna
+
+[33mcommit 0e82a4b922a4b6de71988add29544a13fe6cfc5c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed May 24 12:13:28 2023 -0600
+
+    se actualiza buscador de personal
+
+[33mcommit 91df887adbf5434d031469c928e5b19a5437375e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed May 17 14:16:11 2023 -0600
+
+    actualizacion de tramites internos, se revisa los activos y se setea como inactivo
+
+[33mcommit 851733bf3c9bf60639a3e9edb674a629d05562e2[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Fri May 12 13:18:41 2023 -0600
+
+    se permite ver los detalles de los visores de trabajadores
+
+[33mcommit 095d95416c2d8c16d9b9300b0a1d59e2987d07aa[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue May 9 17:57:44 2023 -0600
+
+    actualizacion de modulo de ver datos de trabajador, se agrega permiso para ver fecha
+
+[33mcommit feb595d6c170015f23ad174cf392f48619e7d522[m
+Merge: 91c4893 4f15341
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue May 9 17:48:50 2023 -0600
+
+    se corregien errores y se agrega permiso de ver fecha
+
+[33mcommit 4f153416cfeb5034f49a16c2ef6586c25de7ce3a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue May 9 17:41:42 2023 -0600
+
+    se crea permiso para ver fecha de ingreso en trabajadores
+
+[33mcommit 91c4893546ff7aca1cbeb86b8440cb6cc7d25294[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue May 9 10:46:30 2023 -0600
+
+    se revisa los que no estan en nomina
+
+[33mcommit b48d49818c9d4631702ee38bb95475e91804939d[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Mon May 8 14:33:04 2023 -0600
+
+    se corrije en la busqueda para que puedan linkearlo un desligado
+
+[33mcommit fadabe4ae2785e5304e6820a22897b47a568c418[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Mon May 8 14:13:00 2023 -0600
+
+    se verifica que tenga cr fisico
+
+[33mcommit 73d0a8ab28b62ab4147aeb718991eb7128dcd06d[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Thu May 4 12:45:54 2023 -0600
+
+    se modifica permisos de trabajador
+
+[33mcommit 34e03708bc2b84fca594e571fc3cb3cb4fca785a[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Thu May 4 11:13:36 2023 -0600
+
+    permiso de visor para el modulo de trabajadores
+
+[33mcommit ea370f04b964c774b4708c22093348f89442e83b[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Fri Apr 28 18:32:52 2023 -0600
+
+    se modifica el proyecto se visualiza clues dadas de  baja para que no salga error
+
+[33mcommit 3deeec2d5e0cd6caffdc4dd83e49f24448992cd5[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 27 14:12:26 2023 -0600
+
+    se corrige error al crear comision sindical, se actualiza al guardar y cierra la ventana
+
+[33mcommit 88b9786025f2e7aad0a0f6dd18ae106cd9faed9d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 12 17:12:15 2023 -0600
+
+    acti
+
+[33mcommit 20e76ce6af5e0f126ac18ece6dae7eeb34ba16c1[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 12 15:34:57 2023 -0600
+
+    actualizacion se ingresa permiso a archivo
+
+[33mcommit 991c309add6c84d2b4d61c3e0f5e4045efc431aa[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 12 14:22:15 2023 -0600
+
+    actualizacion modulo de tramites y se agrega modulo de expediente
+
+[33mcommit 56af77352712ad1eaff94cdf35cdaad267af46e3[m
+Author: ing.mario.villatoro@gmail.com <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 4 14:04:03 2023 -0500
+
+    actualizacion de sistema
+
+[33mcommit 3d7303971bc06f2626053003b2d5b01bcf8af2ef[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 6 13:25:20 2023 -0600
+
+    actualizacion de oficio gerenciales
+
+[33mcommit 3f48eea4073b8c8e895006002319d6925f8f5fc3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Mar 4 14:53:43 2023 -0600
+
+    se corrije asunto en comision
+
+[33mcommit ad3afb0cc8f60067f1dc50d57eaa562cdb1b61e7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Mar 4 14:30:33 2023 -0600
+
+    actualizacion de formato
+
+[33mcommit 55cbe496680548c412ecdf682dd2b8499d018ef7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Feb 7 16:35:57 2023 -0600
+
+    actualizacion, se agrega reporte en comisiones
+
+[33mcommit aebc570372fe292333d6b8f41fb2137201d9c975[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 20 12:04:51 2023 -0600
+
+    actualizacion de credencial
+
+[33mcommit ac551026a8e101ae59415476f4d45a326ecffb7c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 20 11:42:50 2023 -0600
+
+    se compone credencial, tamaño de contacto
+
+[33mcommit 732f797f7f39c71f5c0e0fe10be83ff85d36ac9a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jan 17 13:32:19 2023 -0600
+
+    actualizar credencial
+
+[33mcommit 26209d6a0ad7ef40184a047ad7a3f937b3e797e4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 16 22:41:34 2023 -0600
+
+    correccion de credencial
+
+[33mcommit 8c52e3a721476538a2be3c6cb643045a041991f9[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 13 11:57:15 2023 -0600
+
+    actualizacion de sistema de credenciales
+
+[33mcommit b4fe97561f3a4f8deaa371d525398317f6b727fa[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jan 10 11:41:17 2023 -0600
+
+    actualizacion de sistema, se agrega zonas economicas a adscripcion
+
+[33mcommit 84c3e9c8d7715babca251e93c4c25d161913b8e5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 6 11:17:57 2023 -0600
+
+    actualizacion de sistema se agrega validadores en el ssitema
+
+[33mcommit b7c02926fd1f0126be29fc585f174d4173d5e975[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Jan 4 16:19:34 2023 -0600
+
+    actualizacion de sistema se modifica la notificacion
+
+[33mcommit 44f6eb33f1073d07c67922c94cfe1bec64454ced[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Jan 4 13:29:52 2023 -0600
+
+    actualizacion de sistema , se actualizan todos los modulos
+
+[33mcommit 6580604ab7b8c10224987c722c2eb038f4c1ee40[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 2 14:08:20 2023 -0600
+
+    actualizacion deleyenda en oficios
+
+[33mcommit f14cd2157007740f41d1f64a2b77ce1360b59921[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 2 14:01:39 2023 -0600
+
+    actualizacion de leyenda
+
+[33mcommit d70469918e8175945d0d5fba0ac9bbbb462771e9[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 2 13:48:28 2023 -0600
+
+    actualizacion de sistema, se agrega leyenda a oficios
+
+[33mcommit 2a6526c75f3f16a80a928ca0a821cbca138f7ef1[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 2 11:29:07 2023 -0600
+
+    actualizacion de sistema sirh
+
+[33mcommit a499f80409346c6e4e9a877e64262373f2652f23[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Dec 29 08:44:49 2022 -0600
+
+    actualizacion de controller de gerenciales
+
+[33mcommit a7b1c73c249931616115d15314bbd61a032f141e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 28 23:13:43 2022 -0600
+
+    actualizacion de gerenciales, se rompe la regla de inicio de año para fecha de oficio menor a fecha inicial
+
+[33mcommit 3eadbae79069eaadbdf383af18124ae45aa4d978[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 28 15:05:26 2022 -0600
+
+    actualizacion de sistema, se actualiza controlador para registros nuevos
+
+[33mcommit b6ec61df7443e7fcc66e62d1100eb2ac79dc9193[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 28 12:15:10 2022 -0600
+
+    modulo de gerenciales
+
+[33mcommit 5ef1c947a095fdf8760fb8ca866d372c77b434b0[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Dec 19 22:50:29 2022 -0600
+
+    actualizacion de sistema de credencial
+
+[33mcommit 04cb28fb46d00cbef78e9801d694fd3a566aec8f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Dec 15 11:05:51 2022 -0600
+
+    actualizacion de sistema con certificado
+
+[33mcommit e9978e33248ae6c2587d599beefceab3c2106a7e[m
+Author: JAVIER ALEJANDRO GOSAIN DÍAZ <alksmaniac@gmail.com>
+Date:   Tue Nov 15 09:45:09 2022 -0600
+
+    se quito el https del service de trabajador
+
+[33mcommit 5ed5bc03f4991eb4d9827de297426e7a1792b614[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 24 14:03:29 2022 -0500
+
+    actualizacion de sistema
+
+[33mcommit c9d48cc6e9fb350d5a22e788ae26726a050dc242[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 20 14:43:40 2022 -0500
+
+    se agrega id a la lista de trabajadoroes
+
+[33mcommit 12fd550bc48ee8b868cb2e7d0812578f1a4ecba3[m
+Merge: b4958c8 b010cf8
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 4 17:03:26 2022 -0500
+
+    Merge branch 'dev'
+
+[33mcommit b010cf83f56fbee9500c70a0daaf7ab4485939f7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 4 17:02:57 2022 -0500
+
+    actualizacion se pone fondo a asistencias
+
+[33mcommit b4958c8e15801349611b25c9b4645ccab98d4a06[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Mon Sep 19 12:19:03 2022 -0500
+
+    actualizacion de reporte en excel
+
+[33mcommit 6243834f61c6760b46a9c5e7fd3917250c6b0a19[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 31 11:21:13 2022 -0500
+
+    actualizacionn de comision interna, se quita error
+
+[33mcommit 0136e5b6b30a085c55d8708d2afeb6bd39ec60cf[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 24 18:01:24 2022 -0500
+
+    actualizacion de importaciones de comisiones
+
+[33mcommit 500962307d7067e8de712eb3353fe8820833a01f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Aug 12 09:40:45 2022 -0500
+
+    actualizacion de reporte de comisiones, y cambio en plataforma
+
+[33mcommit f7fe6a0eb41b98cac875dc015262b9658d351ddf[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jul 28 13:10:27 2022 -0500
+
+    actualizacion se quita error
+
+[33mcommit 10b18239487a17f10c5e2f2bea4cd0ce65e2a680[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jul 26 13:31:24 2022 -0500
+
+    correccion de formato
+
+[33mcommit 5d85c74a7b376a20068d13d0f8d2dc201d49b4d2[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jul 26 11:08:24 2022 -0500
+
+    actualizacion de modulo de comision interna
+
+[33mcommit 352108f855d8dde407f8c4501c7872a63b60ad29[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Jul 24 23:18:52 2022 -0500
+
+    actualizacion de modulo de comisiones
+
+[33mcommit 6e51afdd454bb790e65963a1c600a0dc40fdde39[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jul 22 00:41:06 2022 -0500
+
+    actualizacion de sistema de tramites
+
+[33mcommit 903a6232197979f12ed67892a2178b825f970e42[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jul 4 11:52:05 2022 -0500
+
+    actualizacion sistema, se activa filtro en trabajadores
+
+[33mcommit f0ccbb290730987b992d5e4951fedc2c153e02fb[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Jul 3 00:17:24 2022 -0500
+
+    actualizacion de sistema
+
+[33mcommit 766a49d6f2175e4dac0d346193193c3ff971cf05[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Jul 2 22:31:51 2022 -0500
+
+    actualizacion de vista de modulo de trabajador
+
+[33mcommit 6880f61602db75910ba287e73f4aa12a934a0701[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Thu Jun 30 15:23:22 2022 -0500
+
+    actualizacion de sistema, se agrega ingresar y editar comision interna
+
+[33mcommit 92197c08f1cd91602c597bd2b5d8207cdf71b16f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jun 30 14:43:08 2022 -0500
+
+    actualizacion de modulo de comision interna
+
+[33mcommit 531af98479caa63d7a55a933f74cc92733d9d121[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Wed Jun 29 16:04:01 2022 -0500
+
+    actualizacion de tramites
+
+[33mcommit b7711f9371ef63a8635c58bf592ac0b728189514[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Thu Jun 23 11:40:42 2022 -0500
+
+    actualizacion de sistema, se verifica la fecha de ingreso
+
+[33mcommit 2336240a3882a8ce0767f84b7aa01250eb69ed61[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Mon Jun 13 14:38:55 2022 -0500
+
+    actualizacion, se agrega fuente de financiamiento para el root
+
+[33mcommit 36ba8d9878b9f5385ae3edbfda429f0d564454bb[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Thu Jun 9 10:17:21 2022 -0500
+
+    se agrega el modulo completo de comision sindical estatal
+
+[33mcommit 1a682fa98070845d87392ffd7b136a4e691baf7e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jun 9 00:03:43 2022 -0500
+
+    actualizacion de comisiones sindicales
+
+[33mcommit 34a2f1051d4752f24c4892f47acf3eff40aac462[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Wed Jun 8 21:34:08 2022 -0500
+
+    modulo nuevo de sindicato
+
+[33mcommit ffe4240983c5233a8101381961c97e9bf9349f2e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jun 7 23:26:12 2022 -0500
+
+    actualizacion, completa del reporte de documentacion
+
+[33mcommit 469d3ff955c90acf7a2c8c082b70ea6f4dee1b1a[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Tue Jun 7 16:05:54 2022 -0500
+
+    actualizacion, se agrega reporte de docuemntos expediente
+
+[33mcommit baa584df4bb12fc20ab1fa7ff095e8ddb4bd3b03[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Mon Jun 6 16:27:45 2022 -0500
+
+    parte del reporte de documentacion
+
+[33mcommit 2886a1ffc4a1dbd4224732fde6b98140cea26b78[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jun 3 13:31:40 2022 -0500
+
+    actualizacion de sistema, se agrega fecha de creacion en los formularios en tramites
+
+[33mcommit b9f0f48230c2e1db2d24d29a4932ffa3c3fdf0cb[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Tue May 31 10:39:48 2022 -0500
+
+    actualizacion de sistema, se agrega suspension de cuentas
+
+[33mcommit f817de2241489b97de4eb67b421af90d37d90439[m
+Author: ingmav <ing.mario.villatoro@gmail.com>
+Date:   Fri May 27 11:10:21 2022 -0500
+
+    actualizacion de plataforma
+
+[33mcommit 35e0b2384cbe7e8622f1b2de6a47d2f71643020a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri May 20 20:53:17 2022 -0500
+
+    actualizacion de sistema, se agrega al filtro de reporte los datos fiscales
+
+[33mcommit 7dbd92ff757ab566bc46d5785747db93eaae4692[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed May 18 18:03:39 2022 -0500
+
+    actualizacion de sistema
+
+[33mcommit 7dd2aaf324ab82637db43545f5d8235b9c12dc04[m
+Merge: 200987c c61dd23
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed May 18 15:08:54 2022 -0500
+
+    Merge branch 'dev'
+
+[33mcommit c61dd23dc3a5c39940d89da3dcd0535eb3f3a859[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed May 18 15:08:42 2022 -0500
+
+    actualizacion de visualizacion
+
+[33mcommit 200987c6b0868f090b41572942690dce14c6107d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon May 16 13:10:06 2022 -0500
+
+    actualizacion de sistema sirh
+
+[33mcommit 7817dec10fda7de5128a5714eb8e28cf7dc34a51[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed May 4 10:09:06 2022 -0500
+
+    actualizacion de datos fiscales
+
+[33mcommit e5c32bb4c0e788f5d0b9917f6af552229f36c8a6[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue May 3 14:51:35 2022 -0500
+
+    actualizacion de sistema
+
+[33mcommit dabbe6088d98ac9c7aeb0abc01a722e40772d12f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon May 2 14:50:42 2022 -0500
+
+    correccion de error
+
+[33mcommit 358e87d72d3804e112c484c1d8df61617d76234f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon May 2 14:11:50 2022 -0500
+
+    actualizacion de datos fiscales
+
+[33mcommit 051aa6b48dfe5d7bbd2127f20d55c7d433cc0cb4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 28 16:43:43 2022 -0500
+
+    actualizacion se corrige texto
+
+[33mcommit 1bfe52616505c1dd1253aa86fd2228a53fd06e88[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 28 09:43:29 2022 -0500
+
+    correccion de error
+
+[33mcommit a24f98918a1481a6f1c827fda0c08de8272ec242[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 28 09:28:19 2022 -0500
+
+    actualizacion de reporte y de sistema
+
+[33mcommit eb9f9316ec5efc3e9c1457625f2684851f981335[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 27 10:02:30 2022 -0500
+
+    actualizacion se agrega los avisos
+
+[33mcommit b7df5633dc937b5abe4c39a31ccb63b946fea6e4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 26 15:51:46 2022 -0500
+
+    actualizacion de sistema se agrega convocatoria
+
+[33mcommit 2a1a01971829a1aec09107e8c2ece2f3a934a2f6[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Apr 25 12:17:01 2022 -0500
+
+    actualizacion de sistema
+
+[33mcommit 6dea9181ed3c3cd54b9dcb8e4bd8e706423116a0[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 21 19:31:53 2022 -0500
+
+    actualizacion de formulario
+
+[33mcommit 891475e8a23bee09d43387578e65854daf3b24e4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 21 14:42:07 2022 -0500
+
+    correccion de error de usuario
+
+[33mcommit b37cbb1362dd7c9eb056c7f2a866e5ce2330a737[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 21 14:21:39 2022 -0500
+
+    se quita el error que si no cambia el rfc de usuario no lo cambia
+
+[33mcommit 24942fb75ec0259dce72df98e94878cb9734a6bc[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 20 14:05:00 2022 -0500
+
+    se activa la subida de documentos
+
+[33mcommit b528e1598bd380cc56d2ab4c11f36f9b257d089f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 20 13:33:19 2022 -0500
+
+    actualizacion se activan los expedientes y se agrega la activacion del personal del sindicato
+
+[33mcommit cb3993387e4b1ca16b5664739381de961635c120[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 19 10:36:07 2022 -0500
+
+    se activa el permiso de cambio de rfc
+
+[33mcommit c5cad8aeea5696bc891a12611efea929df46497f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 19 09:02:32 2022 -0500
+
+    se actualiza para activar cambio de rfc
+
+[33mcommit 2c2022ce18b8a4a957569a54b8cc8bff9283a318[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Apr 6 14:52:28 2022 -0500
+
+    actualizacion, se agrega permisos para adjudicados
+
+[33mcommit 7b73042cb631d55dffbf1052143012163e3a99a2[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 28 14:16:45 2022 -0600
+
+    actualizacion de sistema
+
+[33mcommit fdee5c49d188f80e324fa7c5d22c7e9e5250e2cb[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Mar 17 14:59:02 2022 -0600
+
+    actualizacion de sirh, se activa reset contraseña
+
+[33mcommit 98109088fc034a290c29e3271a59af2281ca76f5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 14 12:39:06 2022 -0600
+
+    actualizacion de plataforma se puede actualizar datos laborales
+
+[33mcommit 06128ef68ac922b01f052b6946a01acb83691aac[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Mar 13 23:34:52 2022 -0600
+
+    se quitar las fechas registradas y se deja las fechas nominales
+
+[33mcommit 55c48ecc5eeb47950a119c3aabd6a2655b534ec5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Mar 10 14:08:37 2022 -0600
+
+    actualizacion de sistema
+
+[33mcommit 111bd1c56bbb4f5ea336fec31fbdc6c2003f3bb5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Mar 6 22:54:10 2022 -0600
+
+    actualizacion de sistema, se corrigen errores
+
+[33mcommit 29736246b4f4dbad4c3378035d7cd7571d720a24[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Mar 3 13:09:22 2022 -0600
+
+    actualizacion de controller permitir revisar la foto
+
+[33mcommit 04393dccae00f4606d4fe19df9bf5a7ffdf03ab8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 2 15:31:54 2022 -0600
+
+    actualizacion de boton de expedientes
+
+[33mcommit 00202df7c7ab8fe33b4150bb5938f2cc1b18a82c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 2 11:06:57 2022 -0600
+
+    se agrega filtro de actualizado
+
+[33mcommit c7ceafc1e0aec725cb640e7f2c7c9862f44f46bc[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 2 00:00:19 2022 -0600
+
+    actualizacion de la herramienta completa
+
+[33mcommit a279a0079a74d3e0ba16aa2b1fecd7e7153d715f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Feb 26 11:38:54 2022 -0600
+
+    actualizacion de modal de trabajadores, mas chula
+
+[33mcommit 4ec14e96230d519ff3c275797e9e7abf88cc2d16[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Feb 25 14:33:44 2022 -0600
+
+    actualizacion de sistema de reportes reintegracion
+
+[33mcommit ee4e340209f2969b3875ff24597c79e63a1b0000[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 23 16:19:28 2022 -0600
+
+    se corrije la reincorporacion
+
+[33mcommit c1e473ad024840b34ab2585d4fe72ec5dbeb9771[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 23 15:24:27 2022 -0600
+
+    correccion de errores de sistema
+
+[33mcommit cbce9bc283a5249b0ec6438128d2abfb670378d8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 23 11:08:43 2022 -0600
+
+    actualizacion del sistema
+
+[33mcommit 35c11075e8d415b7b8188449208b50ea82bf68fe[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Feb 22 11:39:25 2022 -0600
+
+    correccion de error
+
+[33mcommit 01ba9ca6e7ad2ec784684d259f1e9a763c24d3dc[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Feb 21 15:06:56 2022 -0600
+
+    actualizacion de credencializacion y reincorporacion
+
+[33mcommit 51180fbe6b737a6664d5dbb5caf482da2fb95d9c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Feb 21 10:05:52 2022 -0600
+
+    actualizacion de cr para el sistema
+
+[33mcommit 077576cade13c54f07d7b6b59ec77dc01ed31bbf[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Feb 18 12:30:07 2022 -0600
+
+    correccion de error, se agrega filtro
+
+[33mcommit 57df4f50b0d448f3d898b9254b4e9d23a0abf63d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Feb 18 11:13:34 2022 -0600
+
+    actualizacion del sistema
+
+[33mcommit a113dd988d3f5050c2b212f83f94539ab984ca8c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Feb 17 21:25:27 2022 -0600
+
+    actualizacion de modulos de tramites
+
+[33mcommit 63f517b708783a8f390f59b2150aa4aba32352d2[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 16 15:28:51 2022 -0600
+
+    actualizacion de filtro de credencializacion
+
+[33mcommit 288915f08571371c4f572962c117ec11baca0835[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 16 13:37:38 2022 -0600
+
+    se corrge error de filtro en credenciales
+
+[33mcommit 3ec005c1f339a6edb57cf8dc39f83b9f5d6a353e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 16 13:05:17 2022 -0600
+
+    actualizacion de formulario
+
+[33mcommit 53e70be5ba8e4504a8288f9d12dd59b702c5661a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 16 12:10:57 2022 -0600
+
+    actualizacion del sistema
+
+[33mcommit 7829ed0e83a2140ea33ca74d26048e6d3b625906[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Feb 10 13:19:30 2022 -0600
+
+    se valida la asistencia se pueda ver nuevamente
+
+[33mcommit 1124964486410211ba44ee173d199ff738865da7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Feb 10 11:11:35 2022 -0600
+
+    correccion en el nombre del quien elabora
+
+[33mcommit d8696269ac6babf6fa34ec70149e2d4d9acdbbaf[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Feb 10 09:49:58 2022 -0600
+
+    se agregan correcciones al sistema de tramites
+
+[33mcommit c385c21ceef2a60a5be998f2797164475d5830d4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Feb 8 10:02:30 2022 -0600
+
+    se corrige caracteristicas del proceso de tramites
+
+[33mcommit b9025ea8b8872c754ca70c136e369ce0c4889d55[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 2 13:06:10 2022 -0600
+
+    correccion si no tiene cr no muestra registro
+
+[33mcommit 4b9060f81817bfd158898c5c04928c5336d80581[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Feb 1 15:06:41 2022 -0600
+
+    actualizacion de modulo de credencializacion se corrige error de cr
+
+[33mcommit cd687c8b487184e7c2bc22608bd2929e4869863b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 31 15:31:37 2022 -0600
+
+    actualizacion de credenciales, campo cargo
+
+[33mcommit ce5b1b6222d4dc95130874576e6516ff6b31cd51[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jan 27 15:23:50 2022 -0600
+
+    correcion extrangeros
+
+[33mcommit 9dc95c6ebc2244f76d795352e9d8186d9f4cd45f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 21 13:57:13 2022 -0600
+
+    actualizacion de impresion de creendiales
+
+[33mcommit 7cf165f5362b0e3970c7762cee93c808c2d175a0[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jan 20 10:44:43 2022 -0600
+
+    correccion de credencial y se agregar el api de sirh
+
+[33mcommit 7558aa96c2012b836edea0a475da0f2f8e6e3226[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 17 13:19:10 2022 -0600
+
+    actualizacion se crea link externo
+
+[33mcommit 56c3ccdd0da8d638a8a66a3f6ccd556d93ff999f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jan 11 14:39:16 2022 -0600
+
+    actualizacion de modulo se modifica la consulta de las demas areas
+
+[33mcommit 02dd093dd136af6ff0bc7f8b2649689195e57507[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jan 11 13:51:30 2022 -0600
+
+    se anexa cambios en el modulo de credencializacion
+
+[33mcommit c045ef596ba2095a2e7fe5facb05bfcd4e375cf9[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 10 15:06:40 2022 -0600
+
+    actualizacion de modulo de credencializacion
+
+[33mcommit 0b67ba83f5dd9f5a7a73430a7d21db0a7473507d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 7 14:42:25 2022 -0600
+
+    actualizacion de plataforma se corrigen errores
+
+[33mcommit cbfe630e7dcc38fa1d334c7ac0a857ad4f478f21[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 22 11:25:44 2021 -0600
+
+    se corrige que no puedan subir archivos
+
+[33mcommit ad1d22f352cf01d6267253cb1641286f4335c9cb[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Dec 21 13:38:59 2021 -0600
+
+    actualizacion para ver checadas
+
+[33mcommit 0e61aa2e4d241e82f1f3e1cda6608ffa494489bf[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Dec 21 10:22:21 2021 -0600
+
+    se agrega el modulo de credencializacion
+
+[33mcommit c72338bc9c93637df25d58d2f3b9f8498cbfc434[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 1 11:17:14 2021 -0600
+
+    Se volvio a generar el archivo para evitar problemas
+
+[33mcommit 80db9d0e32ef74a9df44b97177afd143222a5a25[m
+Merge: 85ff2f1 32649da
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 1 11:06:23 2021 -0600
+
+    correccion de merge
+
+[33mcommit 32649da439e43ca540503d4e448ea9333319e779[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 1 10:43:56 2021 -0600
+
+    se actualiza el reporte en excel, se agrega area y actividades
+
+[33mcommit 85ff2f135b79598af1f5ddc8ac695ee863128e16[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Nov 10 11:58:30 2021 -0600
+
+    actualizacion se quita lo de tipo de nomina y se agrega validacion cuando deneguen o aprueben en tramites
+
+[33mcommit 8701e8de53028e2fd480c08766ad6c8cf2ea0c5f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Nov 5 19:07:53 2021 -0600
+
+    se corrige texto
+
+[33mcommit 833c57fe9726134320230fd65af0979cc580d0ef[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Nov 5 18:53:48 2021 -0600
+
+    actualizacion se pone alerta antes de enviar los documentos
+
+[33mcommit 9830217e22cd94e62d74c6cf096f505a74aa5f23[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 4 13:58:28 2021 -0600
+
+    actualizacion de vista de escolaridad y se actualiza api de documentos, se pide solo pdf
+
+[33mcommit a1333e7d65e163a2c32b50eab6ff93b2a243cb0a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Nov 3 13:59:20 2021 -0600
+
+    actualizacion se quita aviso de documentacion
+
+[33mcommit 4cf37182fbc2c831950371fed8c7d8b6ac77cb4c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Nov 3 10:07:57 2021 -0600
+
+    actualizacion de baja
+
+[33mcommit 0ad1c04a497c98cd635d4db4bd0ed4a887dccc8e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Nov 1 13:59:43 2021 -0600
+
+    correcion de error en plataforma
+
+[33mcommit 2fb1915f108c8f0fef95b28fcc06201663ed53ec[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Nov 1 10:02:29 2021 -0600
+
+    actualizacion de fecha de entrega de documentacion
+
+[33mcommit e5140f10509638b242f9506b1f4cb611dce7f13f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Oct 29 11:34:36 2021 -0500
+
+    actualizacion de datoa de improtar archivos
+
+[33mcommit eba4cbed232c80c0b21cf6e3efebcbd3a0c28ec2[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Oct 29 11:13:51 2021 -0500
+
+    Actualizacion de eviso
+
+[33mcommit d87aefd6c8233b38e2d9b265d919e804a47e519d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 26 12:05:56 2021 -0500
+
+    actualizacion de modulo de vista y de tramites
+
+[33mcommit 31fb431e3f78a75159bdbc3cd571dd6881db9a47[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 25 21:48:47 2021 -0500
+
+    actualizacion
+
+[33mcommit f240a7808ad360ad5f2e3909161db73457041c15[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 21 12:02:18 2021 -0500
+
+    actualizacion de vista trabajadores
+
+[33mcommit 1706973b1d4775605945336ccc614b94d51cf015[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 21 11:00:18 2021 -0500
+
+    correccion de error por cr
+
+[33mcommit c7ce1d25fa0e67fe69be43d80c36766be8d98b0b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 21 10:22:26 2021 -0500
+
+    se actualiza vista de trabajadores
+
+[33mcommit a42e159dcafbddc4a7ca95141567443ac7df564b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 21 00:12:42 2021 -0500
+
+    termina el estilo de tramites de documentacion
+
+[33mcommit 7e26a20508447af7f2d04a5f3521e711774b4f44[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Oct 20 16:03:18 2021 -0500
+
+    actualizacion de diseño de documentacion
+
+[33mcommit 26586f64e5bf2d521792c48efac521180827ad54[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 19 13:40:02 2021 -0500
+
+    actualizacicon de formulario para que guarde sin estudios
+
+[33mcommit 52f3fad50e19b3c1cb0185c15fa7d88c69126338[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 18 15:18:08 2021 -0500
+
+    actualizacion de modulo
+
+[33mcommit 18ec079a1d872afb3eeb58fbedc53b3047d69c1c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 14 14:24:43 2021 -0500
+
+    actualizacion de modulode tramites y de comision sindical
+
+[33mcommit e990fc48d4753b7084eca2d6d4e319bb9020c673[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Oct 13 15:52:13 2021 -0500
+
+    actualizacion se agrega comision sindical
+
+[33mcommit a6a93bf4645da373c33a1f1c2d5641d9e197a008[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 12 11:19:57 2021 -0500
+
+    acualizar vista y revisar rfc
+
+[33mcommit c1baefd5b86d806022595bafdd9cd7994093c6a7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 11 15:13:54 2021 -0500
+
+    actualizacion de modulo de documentos
+
+[33mcommit f997ebfaf3a42615967829bd824dc9ab79ce7a5a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 7 15:10:08 2021 -0500
+
+    actualizacion de modulo de buscador trabajador
+
+[33mcommit 65c0ae1b215ff64d8e8732bee2f4b8e55866533f[m
+Merge: dc2c553 6180ea9
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 7 14:57:44 2021 -0500
+
+    Merge branch 'dev'
+
+[33mcommit 6180ea960f1ae5430d521d18ba4c6db99dab933c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 7 14:57:35 2021 -0500
+
+    se actualiza se podra reactivar un trabajador dado de baja temporal
+
+[33mcommit dc2c5533aed756c91a49b522526cca4a8a6ef570[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Oct 7 12:54:50 2021 -0500
+
+    build a produccion
+
+[33mcommit 3cef8f749b53964eff6229a0da0e53d4e413b14f[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Oct 7 12:45:07 2021 -0500
+
+    correciones en lista de documentacion y tramites
+
+[33mcommit fd2a51954816eebbc975cba6c558cc8842ba2cf8[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Oct 7 10:52:34 2021 -0500
+
+    build a produccion
+
+[33mcommit 97b4d9cf32e6198c5496c9307b16449cfbff0980[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Oct 6 14:47:08 2021 -0500
+
+    arreglando
+
+[33mcommit 4de6db3d5161d1bfda4dbabdef66b97a6db4cc7f[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Oct 6 12:32:57 2021 -0500
+
+    correcion en formato de comision
+
+[33mcommit b3a2ed027bd8d4d00dee8bc6afbbe23174e94ac5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Oct 6 10:19:30 2021 -0500
+
+    correccion para los de baja
+
+[33mcommit ec965f037c2853730ce3cdd6abd9739a1738040c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Oct 1 15:45:26 2021 -0500
+
+    actualizacion de sistema
+
+[33mcommit 08bc2fab96af834e97f9d8fd009691a9ff3731da[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Oct 1 15:10:26 2021 -0500
+
+    actualizacion de modulo de trabajador
+
+[33mcommit 2fe4ff4ed8e88605ed324dc9bd2165b305e4bcd9[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Sep 29 09:43:28 2021 -0500
+
+    actualizacion de sistema, pestaña de checadas y modulo de tramites
+
+[33mcommit f7a4cd3c0165ca9477fda5c5aa0a8e877f51db23[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 28 23:26:07 2021 -0500
+
+    actualizacion de modulo de tramites, se agrega botones segun estatus
+
+[33mcommit 4a54463e5c34e2a3f71022c2e40d5678ddec2e63[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 28 13:52:41 2021 -0500
+
+    actulizacion de modulo de tramites
+
+[33mcommit d0cdf13e3940cee99ee417c667dde7add869b4f5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Sep 27 23:52:17 2021 -0500
+
+    se actualiza el visualizar
+
+[33mcommit 0fe70bb82d3c14529fe3b1dbf6752c25bad78370[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Sep 27 15:28:51 2021 -0500
+
+    se actualiza el modulo de tramite
+
+[33mcommit 9f531a2c4fb2227aa87526d08b623a2e1841b823[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Sep 27 08:55:31 2021 -0500
+
+    actualizacion de modulo de tramites
+
+[33mcommit 7437efaac4097dc424dcb4aed6652afd207ef560[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Sep 24 18:41:29 2021 -0500
+
+    actualizacion de modulo de tramites
+
+[33mcommit bc80c3be4e3cf92194208770792c1c07dc5a3a7c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Sep 22 13:54:53 2021 -0500
+
+    actualizacion de migracion
+
+[33mcommit 2508395b44c1fd146d83bff2edc2ac787cbeb5ca[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Sep 22 12:38:42 2021 -0500
+
+    se actualiza la base nominal
+
+[33mcommit ad5b9a20b5c63c36e9264d30c06509cffdd4ca9b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 21 09:38:23 2021 -0500
+
+    actualizacion de modulo de tramites
+
+[33mcommit 0d79a284b084af2c579025a744f547a0472db438[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Sep 15 15:04:45 2021 -0500
+
+    se agrega el modulo de documentos
+
+[33mcommit e46d65c84b1fa112a8c86556d54e75dc03553480[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Sep 11 11:04:46 2021 -0500
+
+    actualizacion de modulo de documentos
+
+[33mcommit 65ddb7160feb96ac143af1e241a9b66199482c1a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Sep 9 21:47:53 2021 -0500
+
+    modulo de documentacion
+
+[33mcommit b8a0c7bf7ee59a07fbfadec8687949af1016a964[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Aug 25 14:59:58 2021 -0500
+
+    build a produccion
+
+[33mcommit cfb33ec9fd0157691253addf829f761a93b85318[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Aug 25 14:35:22 2021 -0500
+
+    se agregaron botones, anterior y siguiente al editar trabajadores
+
+[33mcommit 868fa70cef64a580de28d2747b97058b64ff41fe[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Fri Aug 20 14:25:51 2021 -0500
+
+    se comienza implementacion de botones, anterior y siguiente
+
+[33mcommit 1c574f72f27c6812fb7c4a79ecc82bc6d0b6e301[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Aug 20 08:44:12 2021 -0500
+
+    correccion de errores de formulario
+
+[33mcommit b686d095ddacef715a86297466efe6d85c93b141[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Aug 17 14:39:33 2021 -0500
+
+    actualizacion de sistema, se elimina error cuando la persona no tiene nomina
+
+[33mcommit 87fc09840d5c9e5fdf1564f0a557b52072b6cda3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 11 13:55:35 2021 -0500
+
+    actualizacion de herramienta
+
+[33mcommit 3c408a3457abe373f36b8460d5822b299ede2631[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 11 13:17:03 2021 -0500
+
+    actualizacion del sistema se abre tramites y directorio
+
+[33mcommit ba3784ed720d20a7e1efbf8cae62a3ee39a14b72[m
+Merge: d54b290 3a1b771
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 4 13:38:56 2021 -0500
+
+    Merge branch 'dev'
+
+[33mcommit 3a1b771beb3ec8ddc41e3555ce4ccee8299f20b3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 4 13:36:57 2021 -0500
+
+    actualizacion, se quita el error de no aparecer en nomina y se quita lo de tramites
+
+[33mcommit d54b29091e38f4b434b504ae7566435c3b1ffee1[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Aug 4 10:03:08 2021 -0500
+
+    se modifica el style en el correo de reset password para gmail
+
+[33mcommit 36747615ae2732934bccd9e99ab11ab0cdfe1928[m
+Merge: b48cc3b d2d2038
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Aug 4 09:44:07 2021 -0500
+
+    Merge branch 'master' of https://github.com/XXAI/X11
+
+[33mcommit b48cc3b7d93af65c8eb381dfdca62a104c293ff1[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Aug 4 09:42:36 2021 -0500
+
+    se corrige la ruta de reset password en el token
+
+[33mcommit d2d2038e194c1130b4b39610882e6182361d719a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 4 09:35:06 2021 -0500
+
+    correcion de tramites y correo
+
+[33mcommit bdbb9a2ffbc19e779abab93585c6bb423c09dfa9[m
+Merge: d805f29 e46d8a3
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 4 09:26:04 2021 -0500
+
+    Merge branch 'dev'
+
+[33mcommit e46d8a352899434948e93d7de47e8f244210cea3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 4 09:25:36 2021 -0500
+
+    correcion de modulo de tramites
+
+[33mcommit d805f2969b0e1be7f88d57852ec6406fd89911dc[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Aug 3 22:56:15 2021 -0500
+
+    correcion en index de trabajadores
+
+[33mcommit 24bdccc55124c3196dfc8cb109d274bccf0b8507[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Aug 3 17:21:46 2021 -0500
+
+    build a produccion
+
+[33mcommit c84213f4e0f733dc7690bba11fefcc97f73f040e[m
+Merge: 5a43862 68120c1
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Aug 3 17:09:30 2021 -0500
+
+    Merge branch 'master' of https://github.com/XXAI/X11
+
+[33mcommit 68120c1e5d5609071924f6a0abc87f216fcca35e[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Tue Aug 3 17:05:47 2021 -0500
+
+    se actualiza la vista del email para ResetPassword
+
+[33mcommit 5a438628b2a5fac6b62bd37dbc96af02707fa74e[m
+Merge: 798f0e3 812237f
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Aug 3 17:02:57 2021 -0500
+
+    Merge branch 'master' of https://github.com/XXAI/X11
+
+[33mcommit 798f0e37f841d39b8caa24b789a4890c02fbab84[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Aug 3 17:02:21 2021 -0500
+
+    agregando selector de grupos en usuarios
+
+[33mcommit 812237fca0108d720c5d34ce65740cb329964e31[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Aug 3 14:45:52 2021 -0500
+
+    correcion de error lista trabajadores
+
+[33mcommit c2612f575defc7b624b8401c673b4a2ccac780e5[m
+Merge: 850a4f5 d9fba85
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Aug 3 14:13:35 2021 -0500
+
+    actualizacion de sistema completo, recuperar contraseña, e4 y tramites
+
+[33mcommit d9fba85c7c6d9f89726540bf964c45d639c6ac80[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Aug 3 13:42:47 2021 -0500
+
+    Actualizacion tramites y e4
+
+[33mcommit 850a4f5a7bcaf9f30246b47ea5661dea16425974[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Aug 3 09:46:30 2021 -0500
+
+    build a produccion
+
+[33mcommit 64562767d3539a74902d201f69f0d6596b332976[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Aug 3 09:35:14 2021 -0500
+
+    arreglos en los filtros de adscripcion
+
+[33mcommit d9f35159b7d29d368802a8c3119c8d79e7aa0ac3[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Sun Aug 1 21:47:04 2021 -0500
+
+    build a produccion
+
+[33mcommit aaf92d3bcb97c42ee834e7773bbd69efa14c7fa4[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Sun Aug 1 21:36:04 2021 -0500
+
+    se agrega filtro por lugar de adscripcion
+
+[33mcommit e6f39bbcae204485fb5c090575eb42306e9ad6c2[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Jul 28 13:27:22 2021 -0500
+
+    se implenta cambiar contraseña para el Usuario
+
+[33mcommit a71faf7bbab865ef0efb7f9de961756b839b47b1[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jul 20 15:42:19 2021 -0500
+
+    se agrega modulo de tramites
+
+[33mcommit 75b73c5f0403e3681092c688acacae132b9318ee[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Jun 30 13:17:55 2021 -0500
+
+    actualizacion de checadas, se agrega el almacen
+
+[33mcommit e72ad637aa2dca8520acd5e316bda0d66a426a24[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jun 24 12:02:37 2021 -0500
+
+    actualizacion, se agrega el campo del ulitmo usuario que desligo
+
+[33mcommit a332e7163ef7f7f9d536c26e905b81cb4c28c544[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Jun 3 15:41:58 2021 -0500
+
+    se agrego index unico para el numero de cedula
+
+[33mcommit 00d85aa55ac1729348a013313ef1682bac24f5cf[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Jun 3 12:14:30 2021 -0500
+
+    correcion en migrations y se agregan indexes a tablas con ids relacionados
+
+[33mcommit 5b8ef33b8b31a1ead7426da61b9fb43cd346d6ef[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri May 21 14:39:59 2021 -0500
+
+    actualizacion de sistema sirh, se arregla la clues del buscador
+
+[33mcommit 307e68a7421fad1ec9cc4d5a44c39473fe1c0617[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon May 17 13:15:16 2021 -0500
+
+    actualizacion se agrega reporte de asistencia y se quita transferencia
+
+[33mcommit f49c259975293e682fef283f2522e01935b67455[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Apr 23 00:32:52 2021 -0500
+
+    se agrega la transferencia pero solo por grupos
+
+[33mcommit 36274b7e2dc9a21c4c30262629a87b0bda6fcd4f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 22 09:48:05 2021 -0500
+
+    actualizacion, correccion de errores
+
+[33mcommit b9e508a429e5656b9ac6e2d4f2d4ec29406b84f5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Apr 16 14:51:41 2021 -0500
+
+    actualizacion del sistema, se renderizo mejor y ahora se pide confirmar correo al registrar
+
+[33mcommit 2d35c54755c221e3a5d092caa0db0f99fa23cef5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 15 23:24:15 2021 -0500
+
+    actualizacion se corrige el visual de telefono
+
+[33mcommit ac0c6687db7f8ce7437d6e9d5f8f1b679557a910[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 15 15:49:06 2021 -0500
+
+    se activa los reportes y firmantes
+
+[33mcommit 2f976a3324aca33595b67143874d48d315b7efea[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Apr 12 15:23:24 2021 -0500
+
+    actualizacion se quita lo de desligar desde el formulario
+
+[33mcommit df18b95103136af6b17c02ef2afc48c2942535f4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Apr 8 19:50:23 2021 -0500
+
+    actualizacion de sistema
+
+[33mcommit 7ccdd709fe5668767678ba480d65ba5f69c41469[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Apr 6 10:23:30 2021 -0500
+
+    actualizacion se agrega validacion y activar desligado
+
+[33mcommit b749837f7b75c4f912eb51791e5b9db12389fcb4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 31 23:44:26 2021 -0600
+
+    actualizacion del sistema, correccion de agregar trabajador
+
+[33mcommit e08b0cda550631626175e6bd207fb12190182253[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Mar 30 14:36:57 2021 -0600
+
+    correccion se agrega form de estudios
+
+[33mcommit 7be53fdf214dcc3a648f570080f98261de4bb6ed[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Mar 30 14:17:25 2021 -0600
+
+    actualizacion se quita el cr como requerido
+
+[33mcommit a635dacb5e419dd26438d629b47bc18b1f12f06c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Mar 30 10:43:01 2021 -0600
+
+    correccion de plataforma, se agregan arreglos
+
+[33mcommit 599ec9b78a8fd4a567f622c1aa7e390189223ed8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 29 23:05:17 2021 -0600
+
+    se realizan las correcciones a la plataforma
+
+[33mcommit 6fcb2c1df94382e05d875d94fc16cb84131871e6[m
+Merge: b290dc0 70c7ef4
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 29 22:40:42 2021 -0600
+
+    Merge branch 'master_dev'
+
+[33mcommit 70c7ef42cf6c873989db5accca5e517cf00213b7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 29 22:40:18 2021 -0600
+
+    cambios en el formulario
+
+[33mcommit b290dc02e013c2db5a5fcaeca308de166baeb762[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Mon Mar 29 22:35:59 2021 -0600
+
+    se genero desligar trabajador en el formulario empleados
+
+[33mcommit 6c4659dc463cfca25ae91fad92ad1d1bc4d7502e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 29 20:15:03 2021 -0600
+
+    se actualiza el sistema manual
+
+[33mcommit 145bb1ce7f044d55d878541232afb88b1c85b20a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 29 15:29:50 2021 -0600
+
+    actualizacion de sinerhias
+
+[33mcommit 034a9f6f3e30a57de4b82fc44a54a3b1e2aebfee[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Mon Mar 22 16:21:05 2021 -0600
+
+    se agrego el boton de librar trabajador en la lista
+
+[33mcommit 830fd993e3368b20640ef4097cc8a56aef983721[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Mar 11 14:34:33 2021 -0600
+
+    angular updates
+
+[33mcommit 481b28a3900b323960bcff61dbe0fb915fcdc396[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 10 16:28:10 2021 -0600
+
+    ultimos updates antes de pruebas
+
+[33mcommit 938979c2022877f9d0dcf57ae5c3a4c8ddc25809[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 10 16:20:38 2021 -0600
+
+    mas updates
+
+[33mcommit 4100ea602e70c8e7b1dcee5added9e719c79a5c4[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 10 16:00:06 2021 -0600
+
+    more updates
+
+[33mcommit 1a05778384961eef9a2c90cfd24be51e2e3f3aa9[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 10 15:55:56 2021 -0600
+
+    update angular 11
+
+[33mcommit 57863dccd50b938a21d97279a90c5d03162c5808[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 10 14:36:27 2021 -0600
+
+    update angular 10
+
+[33mcommit fd7fd222187ec3059caa3dfa21a12f13ef596d74[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 10 12:37:41 2021 -0600
+
+    angular update 9
+
+[33mcommit 758a1b57a36eaeb4b19df1249fb6427c0c03512f[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 10 11:50:44 2021 -0600
+
+    update angular 8
+
+[33mcommit 820c2da0068f42bbcb236dc0683b24171000623f[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 10 09:51:26 2021 -0600
+
+    actualizaciones angular
+
+[33mcommit 8db188e183e8ee289f4f2d583ac33d0ff2a072d2[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Mar 9 17:32:25 2021 -0600
+
+    atualizacion de la version de laravel a 8
+
+[33mcommit 436de859882eaa9466ca60197733e4fd3574202f[m[33m ([m[1;32mproduccion[m[33m)[m
+Merge: b7665c8 9e63a7a
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 8 10:56:15 2021 -0600
+
+    Merge branch 'master' of https://github.com/XXAI/X11
+
+[33mcommit b7665c88929dec2d812a5ebe01e24a5500831b37[m
+Merge: 04117ea e5385b6
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Mar 8 10:51:19 2021 -0600
+
+    correcion de errores merge sinerhias y master
+
+[33mcommit 9e63a7a9536757886e3c7a8bf492a213329b0ac6[m[33m ([m[1;31morigin/produccion[m[33m)[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Feb 11 10:08:11 2021 -0600
+
+    correcion en filtro para generar excel de empleados
+
+[33mcommit 08c774c39d4f41ab839c995588018895bb24bd97[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Dec 30 15:43:25 2020 -0600
+
+    agregando municipio y entidad al reporte en excel
+
+[33mcommit 04117ea370b76bd2a155ec0799dc422749a687a0[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 30 12:08:30 2020 -0600
+
+    se agrega catalogo de cp
+
+[33mcommit 5c0938755b053d4281a595a43df250dab159b597[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Dec 28 12:59:00 2020 -0600
+
+    actualizacion de reporte excel
+
+[33mcommit 83e12b2fa848baf9f5a8cb554e8064e510101d0c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Dec 28 12:51:12 2020 -0600
+
+    actualizacion de reporte en excel
+
+[33mcommit e5385b69ff8de9278c883be24c0cc687b7303f6a[m[33m ([m[1;31morigin/sinerhias[m[33m, [m[1;32msinerhias[m[33m)[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Dec 28 12:37:14 2020 -0600
+
+    se arregla lo de vista a celulares
+
+[33mcommit c43c01ff346178da2a970c062b86cdeb067d68b8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Dec 28 12:36:06 2020 -0600
+
+    actualizacion de plataforma, se arregla la vista a celulares
+
+[33mcommit ced557a67eb7968fa0c1a7bf2aeb2a7c67f04e1f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Dec 24 11:40:57 2020 -0600
+
+    actualizacion de plataforma se inhabilita el boton de finalizar
+
+[33mcommit 1eae9d5ef134651951a2c27020b15792614a5342[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Dec 23 12:52:01 2020 -0600
+
+    actualizacion de update
+
+[33mcommit 021e51eafa79167f26684ac053dd907bed990ae6[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Dec 22 12:56:45 2020 -0600
+
+    actualizacion de reporte
+
+[33mcommit 317c3564b70edcc5643bf8364b9ed888fa19ec0b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Dec 15 15:35:09 2020 -0600
+
+    actualizacion de sistema sinerhias
+
+[33mcommit c2005e2fce3582901feb59bc4e66da6f6c269ab9[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 26 13:37:55 2020 -0600
+
+    actualizacion de cuestionario
+
+[33mcommit 58ff939352a61ce87ba61ebd25120bc083f06339[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Nov 23 13:57:10 2020 -0600
+
+    actualizado
+
+[33mcommit 526cb63d217feca3b38ef770c4258481b14971b9[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Nov 18 13:03:01 2020 -0600
+
+    actualizacion de formulario
+
+[33mcommit 2341b09c40c9bb13fdc08691162d784822947e22[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Nov 18 12:56:04 2020 -0600
+
+    actualizacion de formulario sinerhias
+
+[33mcommit f8b431ff9baf7a575d568a65750de5b7c8008bd2[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Nov 11 15:27:29 2020 -0600
+
+    actualizacion de todo el formulario de trabajadores
+
+[33mcommit dd4fa96f2024fb66ee571f971068dc43fbb8eb87[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 5 15:58:08 2020 -0600
+
+    actualizacion de formulario casi termino
+
+[33mcommit 71f15f4c500b7215a06c974947529b9db95cec7d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 5 10:00:54 2020 -0600
+
+    actualizacion de sistema sirh a sinerhias
+
+[33mcommit d06e84eb8d8da5b16bf528d3f2a37133054aadbf[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Nov 3 15:42:16 2020 -0600
+
+    actualizacion de formaulario
+
+[33mcommit ce7f586213cc6c5d105b5e7544a2fa3b635c87e0[m
+Merge: 3244723 bcb8967
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Nov 3 11:28:41 2020 -0600
+
+    correccion de error en mergin
+
+[33mcommit bcb896766c969172ff14b2581bb870f0f51c86e8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Nov 3 10:29:39 2020 -0600
+
+    actualizacion de formulario y lo que se viene
+
+[33mcommit 32447238e7f9c407f5b92455337190fe97569281[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Oct 28 17:22:45 2020 -0600
+
+    se continua en detalles del trabajador en el avista
+
+[33mcommit a9cb269393fd96198ef42c0d4574e47589867caf[m
+Merge: 98b872b 0291cdc
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Mon Oct 26 17:08:14 2020 -0600
+
+    Merge branch 'sinerhias' of https://github.com/XXAI/X11 into sinerhias
+
+[33mcommit 98b872bea53a953db1def7a0a4001d5278c2f1ce[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Mon Oct 26 17:08:08 2020 -0600
+
+    se trabaja con las vistas de cursos del trabajador
+
+[33mcommit 0291cdc57a966afbd82b27785314d447ac912c61[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 26 15:28:46 2020 -0600
+
+    actualizacion, se guarda jornada
+
+[33mcommit 7a57c2c2d4b7bc70cbe3b9f3dd72e5a9711211ba[m
+Merge: a63504a aea1a7f
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 26 09:29:35 2020 -0600
+
+    Merge branch 'dev' into sinerhias
+
+[33mcommit aea1a7f0b1ed5b5a97a9aed6e664b303342809e6[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 26 09:29:17 2020 -0600
+
+    actualizacion de formulario se esta empezando a guardar
+
+[33mcommit a63504aa81d119369913c989a11a4a469c3f96fe[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Thu Oct 22 15:27:56 2020 -0500
+
+    se trabajo con las relaciones del trabajador en la api
+
+[33mcommit 58df77edab17469eb796160acebac5d70d0c66bf[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Oct 21 18:36:37 2020 -0500
+
+    se continua con la informacion del trabajador en la vista
+
+[33mcommit 76864a39d57e8074c656d2538460717d62b5c84e[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Tue Oct 20 15:49:41 2020 -0500
+
+    se comenzo el maquetado de los datos del trabajador
+
+[33mcommit 2e43e8c5ba7d83a7c5a1ebe98a5aa770df6802b5[m
+Merge: 0024694 561fc79
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Oct 16 15:54:50 2020 -0500
+
+    Merge branch 'dev' into sinerhias
+
+[33mcommit 561fc796880c7ed64700626c892c584ac174668b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Oct 16 15:53:59 2020 -0500
+
+    actualizacion de formulario
+
+[33mcommit 0024694a2d68193ca584bd2da0b4bc7cbdf70bc5[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Fri Oct 16 15:32:27 2020 -0500
+
+    se agregaron las relaciones con datos del trabajador y respuesta de los datos con su id
+
+[33mcommit df641a4d2a35502b9680eaa9461c9c69389cbb92[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Fri Oct 16 09:26:41 2020 -0500
+
+    update migrations, se quito institucion puesto
+
+[33mcommit 0465326b75966ca35d7745aaebfb3741e77bae27[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Thu Oct 15 14:44:20 2020 -0500
+
+    se dividio la migracion de datos laborales y laborales_nomina, se creo tipo_baja e institucion_puesto
+
+[33mcommit 802d328178f9254b11df2353dd2c9c670696493f[m
+Merge: 0fe091c 080ae0a
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Oct 14 23:03:27 2020 -0500
+
+    Merge branch 'sinerhias' of https://github.com/XXAI/X11 into sinerhias
+
+[33mcommit 080ae0a0fed2c59b102123dfec285544957cb96b[m
+Merge: 0b46949 afb8906
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Oct 14 15:44:40 2020 -0500
+
+    Merge branch 'sinerhias' of https://github.com/XXAI/X11 into sinerhias
+
+[33mcommit 0b469498121f88555580e873091f57df44cae352[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Wed Oct 14 15:44:09 2020 -0500
+
+    se comenzo el boton de  detalle-datos del trabajador
+
+[33mcommit afb890671b8f86a71639347b37f45e876b33b053[m
+Merge: 6f26eae 9a5ba72
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Oct 14 12:33:30 2020 -0500
+
+    Merge branch 'dev' into sinerhias
+
+[33mcommit 9a5ba72f20df7f7747976a9122231896c1ab979a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Oct 14 12:32:20 2020 -0500
+
+    actualizacion de formulario trabajador
+
+[33mcommit 0fe091c9e4f2b33c03b6ecd32e71d188d639015e[m
+Merge: 74df68f 6f26eae
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Tue Oct 13 11:01:45 2020 -0500
+
+    Merge branch 'sinerhias' of https://github.com/XXAI/X11 into sinerhias
+
+[33mcommit 6f26eaeea905ea3a14c6426617558073b05c0aa1[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Mon Oct 12 17:48:19 2020 -0500
+
+    se agrega id del trabajador y cambio el tipo de dato para el codigo del trabajador, en la migracion de datos laborales
+
+[33mcommit 9b0c6ceb34c93677891d4dc21fef4e580ce61eb1[m
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Mon Oct 12 16:29:07 2020 -0500
+
+    se actualiza archivo package-lock.json
+
+[33mcommit bbc1b100f42594eb955c2ed52a5caa0061b11508[m
+Merge: 75d6d4c 07b67aa
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Mon Oct 12 14:09:46 2020 -0500
+
+    Merge branch 'sinerhias' of https://github.com/XXAI/X11 into sinerhias
+
+[33mcommit 75d6d4ce7782eea604e86d1b28b30c9804c10122[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 8 11:22:19 2020 -0500
+
+    se actualiza el catalogo de perfil
+
+[33mcommit 07b67aad1b8f724b2ce79e8824aa9819f5251847[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Oct 6 09:29:37 2020 -0500
+
+    actualizacion de forumario baja y comision
+
+[33mcommit 7452e8b92b5ce071f69005c180e985bf75549a68[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Oct 1 23:10:51 2020 -0500
+
+    actualizacion reporte de dengue
+
+[33mcommit 711e7764cb9acb714403b949df8c7c30d1673a7f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Sep 30 15:17:43 2020 -0500
+
+    se agrega el apartado de cursos
+
+[33mcommit 74df68ff0435a39f5522b42b75e0fe37684565e1[m
+Merge: 558eccd 6b70f7f
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Mon Sep 28 11:43:51 2020 -0500
+
+    Merge branch 'sinerhias' of https://github.com/XXAI/X11 into sinerhias
+
+[33mcommit 6b70f7f68e230ac1290ad1cfb7649c38d5ade46f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Sep 24 15:32:14 2020 -0500
+
+    actualizacion de formulario, casi estudios
+
+[33mcommit 3256403410e8f44a186406b99afcbfcbbdac4d9a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Sep 24 09:30:47 2020 -0500
+
+    actualizacion de formulario se agrega jornadas
+
+[33mcommit 7ebb5f2fd4d7dc0a368af422825668370899cf74[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 22 15:30:51 2020 -0500
+
+    actualizacion de formulario salud
+
+[33mcommit d0a2e7d23a8a1245bb6739205a58d26ff9e4c60f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 22 09:40:29 2020 -0500
+
+    actualizacion de formulario
+
+[33mcommit b25ee0819f853455382feebe6b1e911ebe194b0a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Sep 19 13:24:39 2020 -0500
+
+    actualizacion de los videos del cuestionario de dengue
+
+[33mcommit 4b7d94c3354f3199ab175f97c0132bf041fa4f15[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Sep 19 13:12:54 2020 -0500
+
+    actualizacion de formulario 2
+
+[33mcommit fa3f2bad0b509aeda5b4a2184555fb36f4786500[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Sep 19 13:10:13 2020 -0500
+
+    actualizacion de formulario de sinerhias
+
+[33mcommit 558eccd35c05a1833d0363db324872e108e659d9[m
+Merge: 70b9d25 017c5bd
+Author: goraider <alejandro_gosain@hotmail.com>
+Date:   Fri Sep 18 20:24:17 2020 -0500
+
+    Merge branch 'sinerhias' of https://github.com/XXAI/X11 into sinerhias
+
+[33mcommit 70b9d258d22dc5d829ce6421ec5f4d5de4fa9ce4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 15 13:28:31 2020 -0500
+
+    correccion de conflicto y arreglo de controlador
+
+[33mcommit 54777de6a5fb07302c2893f4c34654bfa456cbb7[m
+Merge: aaa7dea 45a48bd
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 15 13:17:25 2020 -0500
+
+    correccion de conflicto
+
+[33mcommit aaa7deaab53d68a9d9f468d18c88c15b0daf24ec[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 15 13:13:29 2020 -0500
+
+    actualizacion de cuestionario, para los que fracasan en el cuestionario
+
+[33mcommit 45a48bd56bbfcedd446616af01599c0b233a0dad[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Sep 15 11:14:51 2020 -0500
+
+    build a produccion
+
+[33mcommit 19e8ca0e57859dbe16e7b70aea6c2f357c85104b[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Sep 15 11:07:15 2020 -0500
+
+    se agrego columna tipo de empelado
+
+[33mcommit 51fb41d8241f5c8b083ebcbb086c37175a66e89d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 15 08:23:22 2020 -0500
+
+    correccion de cuestionario
+
+[33mcommit 7938d36f4d20d1176c08b414556755be8dcadb5a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Sep 14 12:10:58 2020 -0500
+
+    actualizacion de cuestionario, se agregan videos
+
+[33mcommit 017c5bd379b3df9ad204c0d7f1b11c844f3eb036[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sun Sep 13 23:06:48 2020 -0500
+
+    actualizacion de formulario
+
+[33mcommit 150e2d6592832e754b8c5d8332cfd1c0006f09e5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Sep 11 14:48:15 2020 -0500
+
+    Se agrega el cuestionario primera entrega y algunos modelos
+
+[33mcommit ab90bfaa0374156c006a090f9123e0a083f77986[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Sep 11 09:00:34 2020 -0500
+
+    actualizacion de formulario trabajador
+
+[33mcommit 37e36e72856769e464aa4b17a15db5096b3a75fb[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Sep 9 15:29:58 2020 -0500
+
+    actualizacion de formulario
+
+[33mcommit e845c945d473571fcc91ed9f8c101fc6bc05779d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Sep 9 09:26:06 2020 -0500
+
+    actualizacion de vista sinerhias
+
+[33mcommit c66ef80a245f126c3be075968dea1ed60937559b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Sep 8 12:06:25 2020 -0500
+
+    actualizacion de cuestionario, se agrega reconocimiento
+
+[33mcommit d10ce6c7e1e23599fe77633b333bae43d5ddc56c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Sep 7 19:09:39 2020 -0500
+
+    actualizacion de sinerhias
+
+[33mcommit 3169a6b8122e0f5eab57eeca64a1b351f6f8015f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Sat Sep 5 10:50:50 2020 -0500
+
+    actualizacion, se agregan logos al cuestionario
+
+[33mcommit a0536638791e4b53d30ffed1b9e15e9ddf6b9bc7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Sep 4 07:58:40 2020 -0500
+
+    actualizacion de cuestionario, ultimos retoques antes queden retro
+
+[33mcommit c3c33aa1f29136749590d4df4c26d1860fb81165[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Sep 4 00:04:15 2020 -0500
+
+    se actualiza completo el sistema
+
+[33mcommit 1cd13881d874cf8c9a43b2ddd1fd2bd88146d2cc[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Sep 3 19:39:04 2020 -0500
+
+    actualizacion de sistema de cuestionario
+
+[33mcommit c2f67344dc5eae73337318705f20b03cc7d05523[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Aug 27 14:59:57 2020 -0500
+
+    actualizacion del sistema para comisines
+
+[33mcommit a05381626be8cd0747b78aedbf3326c51c40e4f7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Aug 27 13:41:35 2020 -0500
+
+    se actualiza al reporte solo activos o en transferencia
+
+[33mcommit 11e885e57a2a251064ecc98e3a7b58d0ea904294[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Aug 27 13:33:23 2020 -0500
+
+    actualizacion de sistema
+
+[33mcommit 791ae511261c6f1e6d027cfd8a6fffcdfca8fb37[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Aug 27 08:39:17 2020 -0500
+
+    actualizacion se corrige error, de compo de tabla
+
+[33mcommit 24dc07bcf88f879accf69ca90c7ef9da0119ed4b[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Aug 27 08:30:17 2020 -0500
+
+    actualizacion de reporte
+
+[33mcommit 609b8c5a27b05c52364d5f64fcef4a8c6fd7f70f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Aug 27 08:15:49 2020 -0500
+
+    actualizacion de reportes
+
+[33mcommit 6a92defee5145f511ce5448ef8b07e6af8602f51[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 26 23:47:44 2020 -0500
+
+    actualizacion se agrega campo de actualizacion de cr
+
+[33mcommit 419e8fb89d00d14e18284e8b5c5f1cdd59baf6e3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Aug 24 08:53:46 2020 -0500
+
+    se agrega los comisionados sindicales al reporte
+
+[33mcommit 40d12319bd7a543db6aa880484335f9928dbf59f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Aug 19 17:57:21 2020 -0500
+
+    actualizacion se quita las migraciones de sinerhias
+
+[33mcommit 8b7cc692405136a44c0a5a5f5de8bf84a9e5db5f[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Mon Mar 23 08:33:29 2020 -0600
+
+    se agrego apellido paterno, materno y nombre al reporte en excel
+
+[33mcommit d2d792919159152ee0e97879b48c214d557b6e18[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Fri Mar 13 15:18:08 2020 -0600
+
+    build a produccion
+
+[33mcommit 421092e8f89c5ff1b5323d54baacc1c4f1bcfc72[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Fri Mar 13 15:12:15 2020 -0600
+
+    Correcion en generar reporte de personal activo en pdf, se agrego exportar a excel, y reporte de asistencias del empleado
+
+[33mcommit dd28a2d5c990f3b3b08159d6d24480930991e6b3[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Mar 12 09:06:13 2020 -0600
+
+    build a produccion
+
+[33mcommit 3f1d86c58e50070b6355faed8b661ca2702450d0[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Mar 12 09:03:17 2020 -0600
+
+    aumentando el budget size de la aplicacion
+
+[33mcommit d90ac62d139e12c96e949d2e7497a0bb2d9b8bda[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Mar 12 08:58:27 2020 -0600
+
+    correcio en formlulario de grupos
+
+[33mcommit 36551b31bb9c9134c3e9daebaadaf41f44a8eb61[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 11 15:49:46 2020 -0600
+
+    ver empleado con mini paginacion
+
+[33mcommit a6dc487fe658c412b28942bdfde8cf1c192dff4c[m
+Merge: 4bd2543 8293245
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 11 14:17:49 2020 -0600
+
+    Merge branch 'master' of https://github.com/XXAI/X11
+
+[33mcommit 4bd25432b49e932a889bd573169f7ab703a279ab[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 11 14:17:09 2020 -0600
+
+    correciones y modificaciones en dialogo de ver empleado
+
+[33mcommit 8293245e0b78cf138aca4ff4e5663ffb14e80964[m
+Merge: 739ae53 aaa98b0
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 11 14:06:27 2020 -0600
+
+    Merge branch 'dev'
+
+[33mcommit aaa98b0bc12ec8918ddcdf2def9d152a26fc9e62[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 11 14:06:08 2020 -0600
+
+    se actualiza la modificacion de estudios y se agrega el admin de archivos
+
+[33mcommit 739ae537d0cd8d1510b52cee44924e35547d366b[m
+Merge: d3a0d9d 65b6677
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 11 13:25:27 2020 -0600
+
+    Merge branch 'master' of https://github.com/XXAI/X11
+
+[33mcommit d3a0d9d5b8cfab5054b5749e4d7ddb4a9eaaca8d[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 11 13:24:59 2020 -0600
+
+    se agrego dialogo de ver en lista de empleados y se actualizo el response de la llamada al servicio para lista de empleados
+
+[33mcommit 65b6677e3441b5a7760fb6e30b63f359022640e4[m
+Merge: ef8ec8e 72f1867
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 11 12:14:01 2020 -0600
+
+    Merge branch 'dev'
+
+[33mcommit 72f18677fa2cf43e369a58494511f8cc527c163e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Mar 11 12:13:34 2020 -0600
+
+    actualizacion de sistema para soportar sinerhias
+
+[33mcommit ef8ec8e1adb349e0794dee5b80d59898b31be739[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Mon Mar 9 11:31:08 2020 -0600
+
+    se trabaja en modulo de grupos, y se agrega dialogo para ver la informacion de los empleados ya validados para no entrar en editar
+
+[33mcommit b75a63128a685c53077b3d3a46293dbe57b1fc29[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 4 10:46:59 2020 -0600
+
+    build a produccion
+
+[33mcommit c5cc42fb7d31fb16337fab3a54409bef119245cf[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 4 10:40:40 2020 -0600
+
+    se agrego id a editar empleado, al mostrar el historial de asistencias
+
+[33mcommit 3853b43df86db96f1db733d1ae59ce2e4b86a238[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Mar 4 10:19:12 2020 -0600
+
+    Avance en admin de grupos de unidades, y se creo llamada a API para regresar empleados por grupo de unidades
+
+[33mcommit e37836d134cf0ab9cf4de50c402b994b52af0727[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Feb 26 10:43:54 2020 -0600
+
+    build a produccion
+
+[33mcommit a6647e90cdee0a1a63caa8aa20eb0cef69296005[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Feb 26 10:38:13 2020 -0600
+
+    se quito columna de agente y se agrego checado fuera de horario a la lista de asistencia en ver datos del empleado
+
+[33mcommit ec19c9b446a8fc564d0f3ae60c166cd8682e423a[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Feb 25 13:09:21 2020 -0600
+
+    build a produccion
+
+[33mcommit 696f540961a8b45332fbc40337dbff74b5cce8e6[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Feb 25 13:03:34 2020 -0600
+
+    se agrego campo para agentes certificadores
+
+[33mcommit bc26a385424357aa6a0ea361d27d9e7cce5ea5b4[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Feb 25 12:31:12 2020 -0600
+
+    primer parte de creacion de dashboard
+
+[33mcommit 457b08b460ff79bcdc8408bc29a530e549c643ee[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Feb 14 07:59:20 2020 -0600
+
+    actualizacion de sistema por comisiones
+
+[33mcommit 2fe1bd6c3033e285fd02dddbb299e05310053a01[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Feb 13 22:33:21 2020 -0600
+
+    correcion en detalles de transferencia y comisiones internas del empleado
+
+[33mcommit 8e357055af3b160a525f417c7006834bea65cc89[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Thu Feb 13 16:14:26 2020 -0600
+
+    se corrigio error al cargar datos de asistencia, y se grego filtro para grupos si el usuairo es administrador de personal activo
+
+[33mcommit ba4b69ebc7590bc99c35b8e4fa2290464e952c4f[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Feb 12 16:09:27 2020 -0600
+
+    build a produccion
+
+[33mcommit fbed6e663a1ba3fc39502eab9a5da3298c50410a[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Feb 12 16:04:33 2020 -0600
+
+    correcion de conflictos
+
+[33mcommit 95515514e060504c6a0918ed885e46bcff0e1ae7[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 12 12:45:55 2020 -0600
+
+    actualizacion de resporte
+
+[33mcommit 4e8699a47ed30f8f547c473d8359365dc721d0c8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Feb 12 08:38:49 2020 -0600
+
+    se desbloquea los firmantes
+
+[33mcommit cfda387746b5c943cb059109450b3627215e30b8[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Feb 11 08:50:49 2020 -0600
+
+    actualizacion en el reporte de ff
+
+[33mcommit b769bcd9dfea926dc08eb89fa6ea90c386446b59[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Feb 10 09:39:27 2020 -0600
+
+    actualizacion de comision, se agrega licencia humanitaria
+
+[33mcommit d7bc8e4bdc6e8809ed15f41b25893c0b3f5bd779[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Fri Feb 7 16:21:16 2020 -0600
+
+    build a produccion
+
+[33mcommit d6518496dd8b3842913c39175f309bb8bd8b9a67[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Fri Feb 7 16:11:42 2020 -0600
+
+    se incremento el tamño del budget de angular
+
+[33mcommit 91355e0671242e4be8fff5d0a4d04ee1b2b44a34[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Fri Feb 7 16:02:12 2020 -0600
+
+    se agrego porcentaje de avance, y boton de finalizar captura
+
+[33mcommit 4afb6c99ae0fe7dd1cb9d832a51dd211ed025a71[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Feb 4 12:25:35 2020 -0600
+
+    build a producccion
+
+[33mcommit 3b7940c722a71bc7a561d5a76390219ee8f6e962[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Feb 4 12:08:17 2020 -0600
+
+    cambios en el reporte de personal activo, agregando carrera tecnica en caso de que no tengan licenciatura, y se agrego titulo y cedula para tal en editar empleado
+
+[33mcommit 604deb0c7f1edb38401df153e29a3510933e87d2[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Feb 3 21:06:56 2020 -0600
+
+    se arregla error de fecha federal, no dejaba guardar
+
+[33mcommit 52b0d805520b9e3de4bc11ff90929d5741d27f18[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 31 16:06:22 2020 -0600
+
+    se actualiza resporte de firmantes
+
+[33mcommit cb4615d9654761718c65ae985103240cc7d437c0[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Jan 31 14:56:09 2020 -0600
+
+    ocultar los empleados dados de baja en la lista de empleados
+
+[33mcommit 97d0627f1ab3fd191b983b6049a7ecf8b4a4800d[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Wed Jan 29 15:03:54 2020 -0600
+
+    build a produccion
+
+[33mcommit 5c243f78c6976202718af1f65875b5a587c02eff[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Wed Jan 29 14:55:01 2020 -0600
+
+    correcion de error al limpiar fecha de ingreso al gobierno federal en editar empleado
+
+[33mcommit da34a47d6ac097188cf2181d6cb61e2e238f68a7[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Wed Jan 29 14:37:41 2020 -0600
+
+    correciones en formulario de captura de empleado, al mostrar errores de captura en correo personal, se agrega rama a catalogo de profesiones, se inicia modulo de creacion de grupos de clues
+
+[33mcommit 0f3858fcd983105a655d46fb54a235c1178f20a8[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Jan 24 15:51:56 2020 -0600
+
+    correcion en datos de reporte, al obtener profesion
+
+[33mcommit 2101cea89a2e6554ea4ac78e167c94627ae72419[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Jan 23 11:31:11 2020 -0600
+
+    build a produccion
+
+[33mcommit 8a98b3954eac73015aedb1cf2e18699a93c27919[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Jan 23 11:22:17 2020 -0600
+
+     mas correciones en listado de empleados y se agregaron tool tips para los botones en editar
+
+[33mcommit 7b221e352fb97956ff598abcd7f67a737bb4820d[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Jan 23 11:02:17 2020 -0600
+
+    build a produccion
+
+[33mcommit f16c85c5661c16725a8af1138d55c3a8031daa80[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Jan 23 10:43:33 2020 -0600
+
+    Correcion en busqueda de empleados y manejo de paginador en editar
+
+[33mcommit 5fc05cc9ee339f99a3b73045e60b2a913f280854[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Wed Jan 22 15:32:18 2020 -0600
+
+    correciones con nulls y excepciones
+
+[33mcommit b6d4ef6687af44e88afab0a36a4b931492c2ff29[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Wed Jan 22 15:01:14 2020 -0600
+
+    correcion de error al transferir empleado
+
+[33mcommit 32d4c26320f45258004759c1030855683931a493[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Jan 21 13:08:25 2020 -0600
+
+    build a produccion
+
+[33mcommit 7b2fe2cfd6288296e44fbf7e9e48b5dd4806ec43[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Jan 21 13:01:19 2020 -0600
+
+    correcion en cambios de validacion para maximo grado de estudios
+
+[33mcommit 4fc7f385aead80d6d32758071eb97ddb8261ed69[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Jan 21 11:00:37 2020 -0600
+
+    build a produccion
+
+[33mcommit 144e9f2db557ce669f104f0507e00016a3e11ba3[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Jan 21 10:52:25 2020 -0600
+
+    se agrego balidacion en maxico grado e estudios
+
+[33mcommit 1ab5eada76f099290bb6950e554ecdae7e7d18b3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 20 22:57:03 2020 -0600
+
+    actualizacion de plantilla web de empleados
+
+[33mcommit caa44148bf9d79fe7243e42bcc16584cb3362ef0[m
+Merge: f28e5c6 a45c770
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 20 22:30:52 2020 -0600
+
+    correccion de conflictos
+
+[33mcommit a45c7709317c19bc8c49fa7be00bf520aa12b892[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 20 18:48:49 2020 -0600
+
+    se actualiza catalogo de maximo grado de estudios y los apellidos
+
+[33mcommit f28e5c6d88b0075c3487d14526875952fc0d667e[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Jan 20 14:49:42 2020 -0600
+
+    build a produccion
+
+[33mcommit 7cd9d15987f19ba50bf81ca3975acc67e4b02ccd[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Jan 20 14:43:21 2020 -0600
+
+    correcion en vista
+
+[33mcommit d1a8273f375f9637edc81fbc34c2cc80d53fed7c[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Jan 20 14:36:17 2020 -0600
+
+    Se agrego modulo para CRUD de profesiones - falta eliminar
+
+[33mcommit 722f955e4b20416fda3f8a3376c96585bdc0dd41[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jan 16 11:47:11 2020 -0600
+
+    actualizacion de formulario
+
+[33mcommit 083786f08bf35a398ec88a6793505f1b4bf082eb[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Wed Jan 15 09:49:16 2020 -0600
+
+    actualizacion de reporte
+
+[33mcommit 432b84f371cf70272f45740f5dd7016815789f1c[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jan 14 16:39:44 2020 -0600
+
+    actualizacion de reporte area
+
+[33mcommit bdd49632536f5abbd4c0e1b4f17e3fe2bbde3010[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jan 14 11:29:59 2020 -0600
+
+    creacion de reporte por area
+
+[33mcommit b8a3a96ef14fdf8984ca2e96dcbfb5c7642c23fe[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Jan 13 11:36:13 2020 -0600
+
+    actualizacion de catalogo de estudidios
+
+[33mcommit d90ce45ff6daaef7a2625100f536e813ee346e97[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Jan 13 10:42:41 2020 -0600
+
+    build a produccion
+
+[33mcommit cabf4b67bd4bad4314e628b30f8ffe6b24d499e4[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Jan 13 10:23:21 2020 -0600
+
+    se agrego campo actividades
+
+[33mcommit e4001f80d6a7af2f75437f40915996909f96fa0e[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 10 12:54:13 2020 -0600
+
+    actualizacion de la plantilla de personal activo
+
+[33mcommit 21c61827a09ec95a5c93301b0c45361404350376[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Jan 9 15:58:41 2020 -0600
+
+    trabajand el guardado de datos de escolaridad
+
+[33mcommit 2986e1872f27554b57b31cd5abc05af240200c70[m
+Merge: 9a299a9 60d318a
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jan 9 09:00:47 2020 -0600
+
+    Merge branch 'master' of https://github.com/XXAI/X11
+
+[33mcommit 9a299a94ba59867aa5da72f864e31269ab862b24[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Jan 9 09:00:12 2020 -0600
+
+    Correcion en formulario empleado, se divide nombre en apellidos
+
+[33mcommit 60d318a060e1d1cef406cc89b1b000a016cd5983[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Wed Jan 8 15:43:00 2020 -0600
+
+    se comienzo correcion en estudios
+
+[33mcommit 12cc8e59e955b3994fa01bc0199a424f69ee53c3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Jan 7 10:56:36 2020 -0600
+
+    actualizacion de vista técnica sin c
+
+[33mcommit 4e11bbff067eecf4ed4ac6e657acd2cb7b16dc54[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Jan 3 15:37:25 2020 -0600
+
+    cambios en texto en formulario
+
+[33mcommit 2376e1faf8b9f33746ee89e62c04e959323fd25f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Dec 30 08:44:27 2019 -0600
+
+    actualizacion del sistema para que aparezca solo las escolaridades
+
+[33mcommit 2c928af6ea5ac4a8c7fc4a89b9cba94f0844d025[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Dec 26 11:07:31 2019 -0600
+
+    correccion de formulario
+
+[33mcommit 39174c9238a422df6455a5cada4f4487acd73bb3[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Dec 24 20:18:11 2019 -0600
+
+    actualizacion de sistema se agrega comisinoes y campos extras
+
+[33mcommit 6535423c314341506a4fc72313e422a1b98b1114[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Sun Dec 22 19:27:37 2019 -0600
+
+    Se agrego funcionalidad basica para la parte de comision en editar
+    empleado
+
+[33mcommit a303e97376f36e0343ddb7b393780219edc2773f[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Dec 20 15:35:18 2019 -0600
+
+    se comienza maquetado para la funcion de asignar comisiones al trabajador, se crearon  migraciones para tal funcion
+
+[33mcommit c6e2bff360c2e6dd20307f46067997bcd50ab075[m
+Merge: 1fb5d57 98ff38c
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Dec 19 14:05:01 2019 -0600
+
+    se corrigen conflictos, esperemos que no crashee
+
+[33mcommit 98ff38cd080f93634a5ab68b81c8755e0d595f41[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Dec 19 13:38:35 2019 -0600
+
+    se agrega modulo de firmantes, tambien en el reporte, se agrega modulo de catalogos clues
+
+[33mcommit 1fb5d578a530955bc55480f528eec46b3067e5d1[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Dec 17 10:28:07 2019 -0600
+
+    build a produccion
+
+[33mcommit e033b507cc73b506172eae3e891fdc1d07d4521a[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Dec 17 10:21:47 2019 -0600
+
+    correcciones en formulario de edicion y migracion para catalogo de fuentes de financiamiento
+
+[33mcommit e86b65cb8b101faac807ad8ff873a3af77fd7d6d[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Dec 16 15:38:01 2019 -0600
+
+    al transferir un empleado, si el usuario tiene asignada la clues destino, la transferencia se hace automatica
+
+[33mcommit afc340bef8fe16e40ecb732be72c29484320eb3c[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Dec 9 13:48:53 2019 -0600
+
+    build a produccion
+
+[33mcommit ee1218ba8a006a6cc0e4fe7f08a79500a16c3292[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Dec 9 13:09:56 2019 -0600
+
+    se movio crear nuevo empleado a editar empleado
+
+[33mcommit 336e4c6f3164a7ba44e28f102afcd7398cee57ca[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Dec 5 15:28:54 2019 -0600
+
+     se agrego migracion para el catalogo de UR
+
+[33mcommit 69c90a332883da585c596d3137825ce17c22405a[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Dec 3 15:30:01 2019 -0600
+
+    Se modifica la migracion para los grupos de unidades, y se deja listo el reporte de personal activo, faltando solo la inclusion de las firmas
+
+[33mcommit 8c7e3e1152d6bd26a99964350a43587992fca19f[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Dec 3 08:26:29 2019 -0600
+
+    se hacen cambios en las tablas de relacion con clues
+
+[33mcommit 764d12a5834d4d4fe943a5a7f33f453f7dd0fc79[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 29 15:43:45 2019 -0600
+
+    trabajando el reporte de personal activo, primer acercamiento al componente para mostrar el avance de la creacion del reporte
+
+[33mcommit 3b742cc09a146a87f4f10691dc617981c68f9180[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 29 09:03:29 2019 -0600
+
+    correcion de conflictos y se mueve generacion de reportes para usar web-workers
+
+[33mcommit 6f9c5a24e7e43595a4313083ad331b5994ab3566[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 28 09:29:36 2019 -0600
+
+    se agregar nueva vista del proyecto
+
+[33mcommit a64f0eca030103cd8aca7138f19b5c7e2a852374[m
+Merge: 48f2009 a326d2f
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 28 09:25:01 2019 -0600
+
+    se corregien errrores en reporte y bajas
+
+[33mcommit a326d2f3a23ef4f17d1d60ee5cb2470642c7f098[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 28 09:13:31 2019 -0600
+
+    se agrega reporte de pesonal activo
+
+[33mcommit 48f20098565ebe85b92624e76c90636a64b2d626[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 26 16:12:56 2019 -0600
+
+    build a produccion
+
+[33mcommit a9cfd5de614c97dcd6c60864a4894570b6e7a8f1[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 26 16:08:10 2019 -0600
+
+    correcion en vistas para mobiles, y se agrego funcion de dar de baja al empleado
+
+[33mcommit 37f251d8e81694b4aef90cf21e1d2cc2d7836dc9[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 22 16:05:41 2019 -0600
+
+    casi finalizado el reporteador por queries, se agrego entrada en los permisos para cambio de lugar, a Herramientas Dev, ya que no es especifica solo para empleados, falta obtener nombre del archivo y el CRUD de queries para almacenar los favoritos
+
+[33mcommit dea0c762fd7f8891f2a13ec31d131258b7ea1f71[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 22 12:34:29 2019 -0600
+
+    trabajando en modulo de reportes a partir de una query en excel
+
+[33mcommit c7c10f13ec4af891aaf761117dbb3d21b5ab0184[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Nov 21 16:06:27 2019 -0600
+
+    build a produccion
+
+[33mcommit f4916135095c2e994cc16ae3436edaaaca530b5a[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Nov 21 16:01:55 2019 -0600
+
+    correcion de errores para poder realizar el build
+
+[33mcommit fedcee48965dc10bd8f02d8183de7a527cf1986e[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Nov 21 15:55:22 2019 -0600
+
+    se continua modulo de reportes y se agrega funcionalidad para solicitar la  transferencia de empleados
+
+[33mcommit 5d9a9a65f3967f9ef0b39c1337089649e3aea886[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Wed Nov 20 15:44:41 2019 -0600
+
+    se comienza modulo de reportes experto
+
+[33mcommit fa0c375c4ee5830158783d703f36815b2641d149[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 19 16:15:25 2019 -0600
+
+    build a produccion
+
+[33mcommit e8c08ca02a63471163bcd3c0ed6f6fbcaa339523[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 19 16:10:28 2019 -0600
+
+    permiso para agregar empleado en lista
+
+[33mcommit 2d7f24c7df976ffee5fe769756b7515dd212714f[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 19 16:08:10 2019 -0600
+
+    proceso de agregar nuevo empleados y busqueda de empleados no activos
+
+[33mcommit b843e9f48ad9a93795afa3f246257777b34d3cdb[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 19 13:55:23 2019 -0600
+
+    build a produccion
+
+[33mcommit 2ffc5ad864852160e46d8092b7710f86988f1a5c[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 19 13:49:10 2019 -0600
+
+    correcion en formulario de editar empleado, se cambio al obtener el id del empleado para guardar sus datos actualizados
+
+[33mcommit 617ce7a19ecbe8825614913738450f5f2747ad4d[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 19 10:47:40 2019 -0600
+
+    build a produccion
+
+[33mcommit d23ed624cd4e60823558cafaf0fdc0eecffe3300[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 19 10:43:18 2019 -0600
+
+    correcion en fecha de ingreso y profesion en editar empleado
+
+[33mcommit e5465d9b26969f2849d14a0859c5299745b423e5[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Nov 18 23:35:34 2019 -0600
+
+    actualizacion, se agrega migracion de clues y cr adscripcion, y se agrega el modulo de agregar nuevo empleado
+
+[33mcommit adf2f4023a3f8426ad13922afe92180971a4c14f[m
+Merge: 828870f ddc8381
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 15 15:45:14 2019 -0600
+
+    Merge branch 'master' of https://github.com/XXAI/X11
+
+[33mcommit 828870f9ecf816e890ed5b8f81af17575e9e8b5a[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 15 15:44:51 2019 -0600
+
+    Se agrega directiva para permisos del usuario (ocultar botones y ver elementos de interfaz), se trabaja en lista de permisos globales
+
+[33mcommit ddc8381d3933ddb4662de74480b48d96c6dcaf14[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Fri Nov 15 15:03:56 2019 -0600
+
+    actualizaciond de visualizador
+
+[33mcommit fe82a5095b22d0b828d89729a8a267c2ae34e6c9[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 15 10:34:15 2019 -0600
+
+    correccion en la configuracion del mysql
+
+[33mcommit 28f075c6b30370f14f446772bba836630c6d2b9d[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 15 10:28:34 2019 -0600
+
+    build a produccion
+
+[33mcommit 80594a5b261ba952da567da858f7af0288207203[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 15 10:23:29 2019 -0600
+
+    correciones y mejoras en interfaz del usuario
+
+[33mcommit 45ce1c673623ab39de4a62de66b8dbad7740c3c1[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 14 19:52:02 2019 -0600
+
+    actualizacion de seeder correccion
+
+[33mcommit ae9474eb415d46b97d8355d8ac80afbf3402dc20[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 14 15:38:20 2019 -0600
+
+    correccion de ruta por wey
+
+[33mcommit 67dc9c1c1573c41a7ccb39312d941d7ca9b27f84[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 14 15:31:06 2019 -0600
+
+    correccion de campo clues 255
+
+[33mcommit 80232dcab020fe37dbe906b5b095acf34231c37c[m
+Merge: c091ec6 7ef90e0
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 14 15:23:34 2019 -0600
+
+    correccion de gitignore
+
+[33mcommit 7ef90e09f21988691ecce96b1eab1312b632a37d[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Thu Nov 14 15:21:07 2019 -0600
+
+    se agregar seeder corregidos
+
+[33mcommit c091ec694278205bc5e871962a799cfe476f0694[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Nov 14 14:49:43 2019 -0600
+
+    se agregaron los permisos al seeder para el modulo de personal activo
+
+[33mcommit 36e42c5e79b5022e4d6eff4a83e86878177768d7[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Nov 14 14:36:05 2019 -0600
+
+    Se agregaron los seeders para grupo_funcion, turnos y codigos, tambien se generó segunda prueba del build a producción
+
+[33mcommit ca8dc6d625bc4d69d50acd068e5d24b5964d9217[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Nov 14 12:34:47 2019 -0600
+
+    se agregaron campos al formulario del empleado
+
+[33mcommit c92ee187b45bcc6c9498f5308f85ec55adc4ec82[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Nov 14 09:00:42 2019 -0600
+
+    prueba de build a produccion
+
+[33mcommit e3850776c3c461363820355d64e581c6de8ddd3e[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Wed Nov 13 22:04:08 2019 -0600
+
+    se agregaron catalogos y las migracion y modelos correspondientes, se mejoro el filtro de access por tipo de usuario
+
+[33mcommit 3adaa2815bc6d8aa5fd5887e3fc344ec46e5a034[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Wed Nov 13 16:29:50 2019 -0600
+
+    se agrego filtro por cr y clues al usuario y correciones en formulario para mejor presentacion de la informacion, queda pendiente agregar turnos y funciones en base al codigo
+
+[33mcommit cdbfe9090f33628627a132d35591020b4e36a0e3[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Nov 12 16:07:17 2019 -0600
+
+    Agregando confirmacion de transferencia y corrigiendo detalles en los filtros
+
+[33mcommit 4f097eaea3f7a788c143daa5001ad1bea017295a[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Tue Nov 12 14:53:40 2019 -0600
+
+    actualizacion de controladores para guardar cambios en el empleado
+
+[33mcommit f3dc62600da04768278e2c356578275c28fcf272[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Tue Nov 12 00:59:40 2019 -0600
+
+    Se continua modulo de edicion de empleado, agregando dialogo para
+    confirmar la transferencia del empleado
+
+[33mcommit 2b8162f12fee4e2bfc964186b99af0471012e9ca[m
+Merge: f8ae6f0 adb0bc9
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Nov 11 17:52:06 2019 -0600
+
+    Merge branch 'dev'
+
+[33mcommit adb0bc9332ffcaa497f79c445cb6383217395da4[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Nov 11 17:51:51 2019 -0600
+
+    actualizacion proyecto, se agrega migrate para cambios en varias tablas
+
+[33mcommit f8ae6f0820c5c03cfc4e03acada03eac03d06eae[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Mon Nov 11 15:58:11 2019 -0600
+
+    Continuacion en modulo de empleados:  se agrego paginacion siguiente-anterior, se estan arreglando los catalogso en editar
+
+[33mcommit 77295ef1f1c5f8f3e0402170ee6f9ec82c02d1be[m
+Author: Mario Alberto Cabrera Alfaro <maca.15c@gmail.com>
+Date:   Sun Nov 10 21:43:38 2019 -0600
+
+    Continuacion en modulo de empleado, agregando accion de transferencia de clues
+
+[33mcommit 3fe93f31f1a71f39cdc1432091326e79a00cec09[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Fri Nov 8 15:47:43 2019 -0600
+
+    Trajando modulo de empleados, acualizar datos del presonal activo
+
+[33mcommit 8149948642a63a16f4a2b0f06ab6bb721ac79b72[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Oct 31 15:50:10 2019 -0600
+
+    se continua el modulo de empleados, se esta trabajando el filtro para la validacion de datos, y conexion con credencializacion para ver los datos de la credencial del trabajador
+
+[33mcommit 979968944362e310670dd1e14240546d8a15b285[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 28 19:35:14 2019 -0600
+
+    actualizacion de base de datos
+
+[33mcommit 9367d1c5131058d40df5ac88bd633a7a55a7c3a2[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 28 11:22:25 2019 -0600
+
+    actualizacion de proyecto plersonal activo
+
+[33mcommit fa241898139d667af0c70857a1c0c0afd79e17d9[m
+Author: Mario Villatoro <ing.mario.villatoro@gmail.com>
+Date:   Mon Oct 21 17:44:34 2019 -0500
+
+    actualizacion de modelo de tablas para proyecto base
+
+[33mcommit 936a6ad670834cb689a88e3f16b279816fd74a31[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Oct 17 15:01:42 2019 -0500
+
+    correcion al obtener el avatar en el login y se elimina el environment del repositorio, para permitir a cada desarrollador tener su propio archivo local
+
+[33mcommit ac658ba3a342e477165243a7ba8357205c778aee[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Thu Oct 17 09:24:58 2019 -0500
+
+    correcion en plataforma base, presentacion de las applicaciones del usuario, genración del build a producción y seeders
+
+[33mcommit 4bd6226232fab7750708625fa7cfde22f729bf74[m
+Author: Harima037 <maca.15c@gmail.com>
+Date:   Tue Oct 15 15:49:53 2019 -0500
+
+    Initial Commit
