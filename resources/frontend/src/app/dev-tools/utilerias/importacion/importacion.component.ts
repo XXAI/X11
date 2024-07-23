@@ -72,7 +72,7 @@ export class ImportacionComponent implements OnInit {
   }
 
   imprimirReporte():void{
-    this.isLoading = true;
+    
     const dialogRef = this.dialog.open(ConfirmActionDialogComponent, {
       width: '500px',
       data:{dialogTitle:'INFORMACIÓN',dialogMessage:'Este Modulo es para generar el reporte de sistematización, ¿Realmente quiere generarlo? Escriba ACEPTAR a continuación para realizar el proceso.',validationString:'ACEPTAR',btnColor:'primary',btnText:'aceptar'}
@@ -84,9 +84,7 @@ export class ImportacionComponent implements OnInit {
         this.devToolsService.ExportarSistematizacion({}).subscribe(
           response => {
             /*FileSaver.saveAs(response,'Reporte-Sistematizacion');*/
-            this.impresionReporte = false;
-            this.isLoading =false;
-            console.log(response.data);
+            
             this.exportAsExcelFile(response.data, "BaseTrabajadores");
           },
           errorResponse =>{
@@ -107,13 +105,14 @@ export class ImportacionComponent implements OnInit {
     
   }
   public exportAsExcelFile(json: any[], excelFileName: string): void {
-    console.log("-->",json);
-    console.log("-->",json.length);
+    
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const workbook: XLSX.WorkBook = { Sheets: { 'TRABAJADORES': worksheet }, SheetNames: ['TRABAJADORES'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
     this.saveAsExcelFile(excelBuffer, excelFileName);
     //this.loadReporteExcel = false;
+    this.impresionReporte = false;
+            
   }
 
   private saveAsExcelFile(buffer: any, fileName: string): void {
@@ -163,8 +162,7 @@ export class ImportacionComponent implements OnInit {
       const raw_data:any = XLSX.utils.sheet_to_json(ws); // to get 2d array pass 2nd parameter as object {header: 1}
       if(raw_data.length > 0){
         let columnas_archivo:string[] = Object.keys(raw_data[0]);
-        console.log(columnas_archivo);
-
+        
         if(!this.validarCabeceras(columnas_archivo))
         {
           let errorMessage = "Existen Campos no Encontrados";
@@ -175,43 +173,48 @@ export class ImportacionComponent implements OnInit {
 
         let datos:any[] = raw_data.map(registro => {
           let seguimiento:any = {};
-
-          columnas_archivo.forEach(columna => {
-            if(columna == 'UR')
-            {
-              if(registro[columna] == 610)
-                {
-                  return false;
-                }
-            }
-            if(columna == 'AÑO' && this.resumen.anio=='')
-            {
-              this.resumen.anio = registro[columna];
-            }
-            if(columna == 'QNA' && this.resumen.quincena == 0)
-            {
-              this.resumen.quincena = registro[columna];
-            }
-            if(this.controlCampos[columna])
-            {
-              seguimiento[this.controlCampos[columna]] = registro[columna];
-              if(columna == 'UR')
-                {
-                  switch (registro[columna]) {
-                    case '420':
-                    case '420_OPD': this.resumen.base++;   break;
-                    case 'FOR':
-                    case 'FO2':
-                    case 'FO3': this.resumen.formalizado++;   break;
-                    case 'REG': this.resumen.regularizado++;   break;
-                    case 'CON': this.resumen.contrato++;   break;
-                    case 'HOM': this.resumen.homologado++;   break;
-                  
-                    default: this.resumen.otro++; break;
-                  }  
-                }
-            }
-          });
+          if(registro.UR != 610)
+          {
+            columnas_archivo.forEach(columna => {
+              /*if(columna == 'UR')
+              {
+                if(registro[columna] == 610)
+                  {
+                    return false;
+                  }
+              }*/
+              if(columna == 'AÑO' && this.resumen.anio=='')
+              {
+                this.resumen.anio = registro[columna];
+              }
+              if(columna == 'QNA' && this.resumen.quincena == 0)
+              {
+                this.resumen.quincena = registro[columna];
+              }
+              if(this.controlCampos[columna])
+              {
+                seguimiento[this.controlCampos[columna]] = registro[columna];
+                if(columna == 'UR')
+                  {
+                    switch (registro[columna]) {
+                      case '420':
+                      case '420_OPD': this.resumen.base++;   break;
+                      case 'FOR':
+                      case 'FO2':
+                      case 'FO3': this.resumen.formalizado++;   break;
+                      case 'REG': this.resumen.regularizado++;   break;
+                      case 'CON': this.resumen.contrato++;   break;
+                      case 'HOM': this.resumen.homologado++;   break;
+                    
+                      default: this.resumen.otro++; break;
+                    }  
+                  }
+              }
+            });  
+          }else{
+            return null;
+          }
+          
           return seguimiento;
         });
 
@@ -219,8 +222,11 @@ export class ImportacionComponent implements OnInit {
         let limite = 1000;
         let contador = 1;
         let arreglo:Array<any> = [];
-        for (let index = 0; index < datos.length; index++) {
-          const element = datos[index];
+
+        let arreglo_sin_ensenanza:Array<any> = datos.filter(x => x!=null);
+        
+        for (let index = 0; index < arreglo_sin_ensenanza.length; index++) {
+          const element = arreglo_sin_ensenanza[index];
           
           arreglo.push(element);
           contador++;
@@ -248,8 +254,6 @@ export class ImportacionComponent implements OnInit {
     let cantidad_campos:number = 17;
     let campos_correctos:number = 0;
     this.camposFaltantes = [];
-    console.log("validacion 1");
-    console.log(cabecera.length, cantidad_campos);
     if(cabecera.length < cantidad_campos)
     {
       return false;
@@ -262,13 +266,8 @@ export class ImportacionComponent implements OnInit {
         }else{
          this.camposFaltantes.push(element.label);
         }
-        console.log(campos_correctos,element.label);
       }
     );
-    console.log("validacion 2");
-    console.log(campos_correctos);
-    console.log(cantidad_campos);
-    console.log(this.camposFaltantes);
     if(campos_correctos<cantidad_campos)
     {
       return false;
