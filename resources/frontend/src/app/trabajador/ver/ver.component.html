@@ -137,7 +137,7 @@
                                 <mat-card-content>
                                     <div *ngIf="datosNominales != null">
                                         <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
-                                        
+
                                             <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
                                                 <b>FUENTE DE FINANCIAMIENTO:</b>
                                                 <BR> {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fuente_financiamiento:'NO REGISTRADO' }}
@@ -148,17 +148,17 @@
                                         </div>
                                         <div fxLayout="row" fxLayout.xs="column">
                                             <div fxFlex="33" fxFlex.xs="100" style="font-weight: bold; color:red">
-                                                <b>OPD:</b> 
+                                                <b>OPD:</b>
                                                 {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.basificados =="1" || dataTrabajador.rel_datos_laborales_nomina.ur === '420_OPD')?'SI':'NO':'NO' }}
                                             </div>
                                             <div fxFlex="33" fxFlex.xs="100">
                                                 <b>UR:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.ur)?dataTrabajador.rel_datos_laborales_nomina.ur:'NO REGISTRADO':'NO REGISTRADO' }}
                                             </div>
                                             <div fxFlex="33" fxFlex.xs="100">
-                                                
+
                                                 <b>RAMA:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.rama)?dataTrabajador.rel_datos_laborales_nomina.rama:'NO REGISTRADO':'NO REGISTRADO'}}
                                             </div>
-                                            
+
                                         </div>
                                         <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
                                             <div fxFlex="100" fxFlex.xs="100">
@@ -183,16 +183,16 @@
                                                 <b>LICENCIA MATERNIDAD:</b> {{ (dataTrabajador.rel_datos_laborales)?(dataTrabajador.rel_datos_laborales.licencia_maternidad == 1)?'SI':'NO':'NO REGISTRADO' }}
                                             </div>
                                         </div>
-                                            
+
                                         <div fxLayout="row" fxLayout.xs="column">
                                             <div fxFlex="100" fxFlex.xs="100">
                                                 <b>CENTRO DE RESPONSABILIDAD (ADSCRIPCIÓN NOMINAL):</b><br> {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.clues:'NO REGISTRADO':'NO REGISTRADO' }} {{ (datosNominales)?(datosNominales.cr)?datosNominales.cr.descripcion_actualizada:'':''
                                                 }}
-                                                
+
                                                 <div *ngIf="datosNominales.cr && datosNominales.cr.deleted_at != null" style="color:red">
                                                     UNIDAD DE DE BAJA
                                                 </div>
-                                            
+
                                             </div>
 
                                         </div>
@@ -212,7 +212,7 @@
                                                 <li>No este ingresado correctamente su rfc o curp, en el sistema o en nomina</li>
                                             </ul>
                                         </DIV>
-                                    </div>    
+                                    </div>
 
                                 </mat-card-content>
                             </mat-card>
@@ -464,7 +464,7 @@
                     </div>
                     <div fxLayout="row column" fxLayoutGap="3px" style="margin-top: -15px;font-size: 10pt;background-color: rgba(200,0,0,0.1);" *ngIf="!isLoadingAsistencia && Asitencia && validadorEstudios">
                     <!--* Si no puede observar sus asistencias aun cuando ha checado correctamente, favor de pasar al área de control de asistencias de su unidad-->
-                    </div>    
+                    </div>
                     <!--<section fxLayout="row wrap" fxLayoutGap="10px" style="margin-top: -10px;" *ngIf="!isLoadingAsistencia && Asitencia && validadorEstudios">
                         <div fxFlex="40" fxFlex.xs="45" class="tarjeta-info-empleado">
                             <button fxFlex fxFlex.xs="45" mat-raised-button color="accent" (click)="buscarFechasAssitencia()"><mat-icon>search</mat-icon></button>
@@ -486,12 +486,12 @@
 
                             <ng-container matColumnDef="hora_entrada">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true" style="color: brown !important;background-color: burlywood;"> Hora Entrada </th>
-                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.checado_entrada}} 
+                                <td mat-cell *matCellDef="let row" fxHide.xs="true"> {{row.checado_entrada}}
                                     <i *ngIf="row.retardo == 1"><mat-icon style="color:red; vertical-align: middle; cursor: pointer;" title="RETARDO">assignment_late</mat-icon></i>
                                     <span matTooltip="Entrada Fuera de Horario" *ngIf="row.checado_entrada == 'SIN REGISTRO'" style="display:block; color:red;">
                                         [ {{(row.checado_entrada_fuera)?row.checado_entrada_fuera:'--:--'}} ]
 
-                                       
+
                                     </span>
                                 </td>
                             </ng-container>
@@ -504,7 +504,10 @@
                             <ng-container matColumnDef="justificado">
                                 <th mat-header-cell *matHeaderCellDef style="color: brown !important;background-color: burlywood;">Justificado</th>
                                 <td mat-cell width="1" *matCellDef="let row; let i = index">
-                                    <mat-icon [color]="(row.validacion)?'primary':'warn'">{{(row.validacion)?'check_circle':'remove_circle'}}</mat-icon>
+                                    <mat-icon [color]="(row.validacion)?'primary':'warn'" matTooltip="HORARIO ASIGNADO: {{ row.jorini | date:'HH:mm'}} - {{ row.jorfin | date:'HH:mm'}}">{{(row.validacion)?'check_circle':'remove_circle'}}</mat-icon>
+                                    <!-- <span  style="display:block; color:red;">
+                                        {{ row.jorini }} - {{ row.jorfin }}
+                                    </span> -->
                                 </td>
                             </ng-container>
 
