@@ -667,7 +667,7 @@ class TrabajadorController extends Controller
                 $fecha_inicio = Carbon::parse($inputs['fecha_inicio']);
                 $fecha_fin = Carbon::parse($inputs['fecha_fin']);
                 //Actualizamos el estatus de comision
-                $actualizacion = RelComision::where("fecha_fin", "<=",$fecha_fin->toDateString())->where("estatus", "A");
+                $actualizacion = RelComision::where("trabajador_id",$inputs['trabajador_id'])->where("fecha_fin", "<=",$fecha_actual->toDateString())->where("estatus", "A");
                 $actualizacion->update(['estatus'=> 'E']);
                 //
                 
