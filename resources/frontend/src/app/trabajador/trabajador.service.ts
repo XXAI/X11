@@ -25,9 +25,9 @@ export class TrabajadorService {
   url_activar_comision = `${environment.base_url}/activar-trabajador-sindical`;
   url_permisos_trabajador = `${environment.base_url}/permisos_trabajador`;
 
-  url_asistencia = 'http://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
+  url_asistencia = 'https://sistematizacion.saludchiapas.gob.mx/api/consulta-asistencia';
 
-  url_credencial = 'http://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
+  url_credencial = 'https://credencializacion.saludchiapas.gob.mx/ConsultaRhPersonal.php?buscar=';
 
   url_unlink                  = `${environment.base_url}/liberar-trabajador/`;
 
