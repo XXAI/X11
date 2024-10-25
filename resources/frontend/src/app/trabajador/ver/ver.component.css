@@ -171,7 +171,7 @@ th {
 }
 
 .linea_registro {
-    background-color: gainsboro;
+    /*background-color: gainsboro;*/
 }
 
 mat-card-title {
@@ -225,4 +225,8 @@ mat-card-title {
     background-color: brown;
     color: white;
     padding: 0px 5px;
+}
+
+.datos_formulario >div:nth-child(odd){
+    background-color: gainsboro;
 }

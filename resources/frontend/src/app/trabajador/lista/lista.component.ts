@@ -652,8 +652,8 @@ export class ListaComponent implements OnInit {
     if(this.mediaSize == 'lg'){
       configDialog = {
         maxWidth: '100vw',
-        maxHeight: '91vh',
-        height: '620px',
+        maxHeight: '94vh',
+        height: '660px',
         width: '100%',
         data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia, puedeVerFecha: this.permisoFecha}
       }
@@ -669,15 +669,15 @@ export class ListaComponent implements OnInit {
       configDialog = {
         maxWidth: '100vw',
         maxHeight: '100vh',
-        height: '72%',
+        height: '75%',
         width: '100%',
         data:{id: id, puedeEditar: !this.capturaFinalizada, scSize:this.mediaSize, cluesAsistencia: this.cluesAsistencia, puedeVerFecha: this.permisoFecha}
       };
     }else{
       configDialog = {
         width: '99%',
-        maxHeight: '91vh',
-        height: '620px',
+        maxHeight: '94vh',
+        height: '660px',
         data:{id: id, puedeEditar: !this.capturaFinalizada, cluesAsistencia: this.cluesAsistencia, puedeVerFecha: this.permisoFecha}
       }
     }

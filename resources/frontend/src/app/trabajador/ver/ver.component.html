@@ -71,7 +71,7 @@
                         <div fxFlex="49" fxFlex.xs="100">
                             <mat-card>
                                 <mat-card-title>Datos Personales</mat-card-title>
-                                <mat-card-content>
+                                <mat-card-content class="datos_formulario">
                                     <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
                                         <div fxFlex="50" fxFlex.xs="100">
                                             <b>CURP:</b> {{ dataTrabajador.curp }}
@@ -135,7 +135,7 @@
                             <mat-card>
                                 <mat-card-title>Datos Laborales</mat-card-title>
                                 <mat-card-content>
-                                    <div *ngIf="datosNominales != null">
+                                    <div *ngIf="datosNominales != null" class="datos_formulario">
                                         <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
 
                                             <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
@@ -145,6 +145,13 @@
                                             <div fxFlex="50" fxFlex.xs="100" *ngIf="superUser">
                                                 <b>INGRESO GOBIERNO FEDERAL:</b> <br>{{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.fecha_ingreso_federal:'NO REGISTRADO' }}
                                             </div>
+                                        </div>
+                                        <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+                                            <div fxFlex="100" fxFlex.xs="100" style="font-weight: bold;">
+                                                <b>CLAVE PRESUPUESTAL:</b>
+                                                {{ (dataTrabajador.rel_datos_laborales_nomina)?dataTrabajador.rel_datos_laborales_nomina.clave_presupuestal:'SIN DATO' }}
+                                            </div>
+                                            
                                         </div>
                                         <div fxLayout="row" fxLayout.xs="column">
                                             <div fxFlex="33" fxFlex.xs="100" style="font-weight: bold; color:red">
@@ -160,7 +167,7 @@
                                             </div>
 
                                         </div>
-                                        <div fxLayout="row" fxLayout.xs="column" class="linea_registro">
+                                        <div fxLayout="row" fxLayout.xs="column" >
                                             <div fxFlex="100" fxFlex.xs="100">
                                                 <b>CODIGO:</b> {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.codigo)?dataTrabajador.rel_datos_laborales_nomina.codigo.codigo:'NO REGISTRADO':'NO REGISTRADO'}} {{ (dataTrabajador.rel_datos_laborales_nomina)?(dataTrabajador.rel_datos_laborales_nomina.codigo)?dataTrabajador.rel_datos_laborales_nomina.codigo.descripcion:'':''
                                                 }}
