@@ -229,7 +229,7 @@
                                             <button mat-menu-item (click)="VerificacionAprobar(row.id, 5);"><mat-icon style="color: green;">check_box</mat-icon>APROBAR</button>
                                             <mat-divider></mat-divider>    
                                         </div>
-                                        
+                                        <button mat-menu-item  *ngIf="row.estatus == 5" (click)="ObservacionCancelar(row, row.id, 5);"><mat-icon color="warn">cancel_presentation</mat-icon>DENEGAR ADMINISTRADOR</button>
                                         <button mat-menu-item color="primary" (click)="descargar(row)"  *ngIf="row.estatus != null">
                                             <mat-icon style="color: darkslategray;">visibility</mat-icon> Ver Documento
                                         </button>
