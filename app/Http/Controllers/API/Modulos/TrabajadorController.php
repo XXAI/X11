@@ -196,6 +196,7 @@ class TrabajadorController extends Controller
                                         //db::raw("concat(trabajador.calle,' ', trabajador.no_exterior,' Col.',trabajador.colonia,' C.P. ', trabajador.cp) as calle"),
                                         "datos_nominales.fecha_ingreso",
                                         "datos_nominales.fecha_ingreso_federal",
+                                        "datos_nominales.clave_presupuestal",
                                         "codigo.codigo",
                                         "codigo.descripcion as descripcion_codigo",
                                         "ur.descripcion as ur",
